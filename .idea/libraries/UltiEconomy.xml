@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="UltiEconomy">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../Minecraft/lib/plugins/UltiEconomy.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Ultilevel">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../Minecraft/lib/plugins/Ultilevel.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../Minecraft/lib/plugins/UltiEconomy.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/src/main/java" />
+    </SOURCES>
+  </library>
+</component>

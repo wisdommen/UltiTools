@@ -1,0 +1,16 @@
+# 进服提示延迟时间 此处单位为秒
+sendMessageDelay: 3
+
+#设置true为使用mysql数据库，设置false为使用yml储存数据
+enableDataBase: false
+
+# 填写你的Host, 默认为Localhost
+host: localhost
+# 填写你的Mysql端口, 默认为3306
+port: 3306
+# 填写你的用户名，默认为root
+username: root
+# 填写你的密码
+password: root
+# 填写你需要连接的数据库
+database: minecraft

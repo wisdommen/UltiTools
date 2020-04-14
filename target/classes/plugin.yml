@@ -1,0 +1,34 @@
+name: UltiTools
+version: 1.0-SNAPSHOT
+main: com.minecraft.ultikits.ultitools.UltiTools
+api-version: 1.13
+prefix: UltiTools
+depend: [Economy, Level]
+authors: [wisdomme]
+description: This is a plugin inclouds some basic plugins fuctions for a server
+
+commands:
+  email:
+    description: 读邮件
+    usage: /email read
+  home:
+    description: Got Back to Player's home
+    usage: /home 家的名字（不设置则为默认）
+    permissions:
+      home.use:
+        defailt: [true]
+  sethome:
+    description: Set Player's home
+    usage: /sethome 家的名字（不设置则为默认）
+    permissions:
+      home.use:
+        defailt: [true]
+  homelist:
+    description: 家的列表
+    usage: /homelist
+  delhome:
+    description: 删除家
+    usage: /delhome [名字]
+  wl:
+    description: 白名单
+    usage: /wl help
