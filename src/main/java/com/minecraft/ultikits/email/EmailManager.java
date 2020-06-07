@@ -57,14 +57,18 @@ public class EmailManager {
 
     public StringBuilder getEmails() {
         StringBuilder emails = new StringBuilder();
-        for (int i = 1; i <= config.getConfigurationSection("email").getKeys(false).size(); i++) {
-            try {
-                String mail = Objects.requireNonNull(config.getString("email." + i));
-                emails.append("第").append(i).append("封邮件：\n");
-                emails.append(mail).append("\n");
-            } catch (NullPointerException e) {
-                break;
+        try {
+            for (int i = 1; i <= config.getConfigurationSection("email").getKeys(false).size(); i++) {
+                try {
+                    String mail = Objects.requireNonNull(config.getString("email." + i));
+                    emails.append("第").append(i).append("封邮件：\n");
+                    emails.append(mail).append("\n");
+                }catch (NullPointerException e){
+                    break;
+                }
             }
+        } catch (NullPointerException e) {
+            return emails;
         }
         return emails;
     }
@@ -99,7 +103,7 @@ public class EmailManager {
         }
     }
 
-    public Boolean deleteHistoryEmails(){
+    public Boolean deleteHistoryEmails() {
         if (config.getString("historyEmail") != null) {
             config.set("historyEmail", null);
             try {
@@ -113,7 +117,7 @@ public class EmailManager {
         }
     }
 
-    public Boolean sendEmail(Player target, String message){
+    public Boolean sendEmail(Player target, String message) {
         File f = new File(UltiTools.getInstance().getDataFolder() + "/playerData", target.getName() + ".yml");
         YamlConfiguration config2;
         if (!f.exists()) {
@@ -138,9 +142,9 @@ public class EmailManager {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                if (Bukkit.getOnlinePlayers().contains(target)){
-                    target.sendMessage(ChatColor.GOLD+"收到来自"+player.getName()+"的新邮件！");
-                    target.sendMessage(ChatColor.GOLD+"输入 /email read 来查看！");
+                if (Bukkit.getOnlinePlayers().contains(target)) {
+                    target.sendMessage(ChatColor.GOLD + "收到来自" + player.getName() + "的新邮件！");
+                    target.sendMessage(ChatColor.GOLD + "输入 /email read 来查看！");
                 }
             }
             return true;
