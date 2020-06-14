@@ -80,7 +80,7 @@ public class runTask extends BukkitRunnable {
                 level.setScore(95);
             }
             if (checkExp(p) >= 0) {
-                Score level = information.getScore(ChatColor.WHITE + "经验值： " + ChatColor.YELLOW + checkExp(p) + ChatColor.BOLD + " / " + ChatColor.GOLD + 100);
+                Score level = information.getScore(ChatColor.WHITE + "经验值： " + ChatColor.YELLOW + checkExp(p) + ChatColor.BOLD + " / " + ChatColor.GOLD + (checkLevel(p)*5+100));
                 level.setScore(94);
             }
             if (configL.getInt("CDq") != 0) {
