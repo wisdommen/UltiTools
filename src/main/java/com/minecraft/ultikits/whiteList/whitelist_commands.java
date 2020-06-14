@@ -26,41 +26,41 @@ public class whitelist_commands implements CommandExecutor {
                 YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
 
-                    if (command.getName().equalsIgnoreCase("wl")) {
-                        if (args.length == 1) {
-                            switch (args[0]) {
-                                case "help":
-                                    player.sendMessage(ChatColor.YELLOW + "白名单系统帮助：");
-                                    player.sendMessage(ChatColor.AQUA + "/wl help 帮助");
-                                    player.sendMessage(ChatColor.AQUA + "/wl list 白名单列表");
-                                    player.sendMessage(ChatColor.AQUA + "/wl add [玩家名] 添加玩家到白名单");
-                                    player.sendMessage(ChatColor.AQUA + "/wl remove [玩家名] 将玩家移出白名单");
-                                    return true;
-                                case "list":
-                                    List<String> whitelist = config.getStringList("whitelist");
-                                    player.sendMessage(String.format("%s白名单列表有：", ChatColor.YELLOW));
-                                    for (String each : whitelist) {
-                                        player.sendMessage(String.format("-%s", each));
-                                    }
-                                    return true;
-                            }
-                        } else if (args.length == 2) {
-                            if (args[0].equalsIgnoreCase("add")) {
-                                addPlayerToWhitelist(file, config, args[1]);
-                                player.sendMessage(String.format("%s已将%s加入白名单！", ChatColor.RED, args[1]));
+                if (command.getName().equalsIgnoreCase("wl")) {
+                    if (args.length == 1) {
+                        switch (args[0]) {
+                            case "help":
+                                player.sendMessage(ChatColor.YELLOW + "白名单系统帮助：");
+                                player.sendMessage(ChatColor.AQUA + "/wl help 帮助");
+                                player.sendMessage(ChatColor.AQUA + "/wl list 白名单列表");
+                                player.sendMessage(ChatColor.AQUA + "/wl add [玩家名] 添加玩家到白名单");
+                                player.sendMessage(ChatColor.AQUA + "/wl remove [玩家名] 将玩家移出白名单");
                                 return true;
-                            } else if (args[0].equalsIgnoreCase("remove")) {
-                                removePlayerFromWhitelist(file, config, args[1]);
-                                player.sendMessage(String.format("%s已将%s移出白名单！", ChatColor.RED, args[1]));
+                            case "list":
+                                List<String> whitelist = config.getStringList("whitelist");
+                                player.sendMessage(String.format("%s白名单列表有：", ChatColor.YELLOW));
+                                for (String each : whitelist) {
+                                    player.sendMessage(String.format("-%s", each));
+                                }
                                 return true;
-                            }
+                        }
+                    } else if (args.length == 2) {
+                        if (args[0].equalsIgnoreCase("add")) {
+                            addPlayerToWhitelist(file, config, args[1]);
+                            player.sendMessage(String.format("%s已将%s加入白名单！", ChatColor.RED, args[1]));
+                            return true;
+                        } else if (args[0].equalsIgnoreCase("remove")) {
+                            removePlayerFromWhitelist(file, config, args[1]);
+                            player.sendMessage(String.format("%s已将%s移出白名单！", ChatColor.RED, args[1]));
+                            return true;
                         }
                     }
-            }else {
-                player.sendMessage(ChatColor.RED+"你没有权限！");
+                }
+            } else {
+                player.sendMessage(ChatColor.RED + "你没有权限！");
                 return true;
             }
-        }else {
+        } else {
             File file = new File(UltiTools.getInstance().getDataFolder(), "whitelist.yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             if (command.getName().equalsIgnoreCase("wl")) {

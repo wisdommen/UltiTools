@@ -55,7 +55,7 @@ public class Home implements CommandExecutor {
                         if (!config.getString(player.getName() + ".homelist").contains(args[0])) {
                             config.set(player.getName() + ".homelist", homelist + " " + args[0]);
                         }
-                    }else {
+                    } else {
                         config.set(player.getName() + ".homelist", args[0]);
                     }
                     try {

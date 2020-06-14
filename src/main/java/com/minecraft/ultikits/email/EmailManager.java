@@ -1,6 +1,7 @@
 package com.minecraft.ultikits.email;
 
 import com.minecraft.ultikits.ultitools.UltiTools;
+import net.minecraft.server.v1_15_R1.PacketPlayOutChat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -47,10 +48,6 @@ public class EmailManager {
         return file;
     }
 
-    public File getFolder() {
-        return folder;
-    }
-
     public YamlConfiguration getConfig() {
         return config;
     }
@@ -86,8 +83,7 @@ public class EmailManager {
                 String Hmail = Objects.requireNonNull(config.getString("email." + a));
                 if (config.getString("historyEmail") != null) {
                     config.set("historyEmail", config.getString("historyEmail") + Hmail + "\n");
-                }
-                if (config.getString("historyEmail") == null) {
+                } else {
                     config.set("historyEmail", config.getString("email." + a) + "\n");
                 }
             } catch (NullPointerException e) {
@@ -151,4 +147,7 @@ public class EmailManager {
         }
     }
 
+    public void sendTeamInvitation(){
+
+    }
 }

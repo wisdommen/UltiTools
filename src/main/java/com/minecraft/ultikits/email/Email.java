@@ -66,7 +66,7 @@ public class Email implements CommandExecutor {
                         return false;
                     }
                 } else {
-                    player.sendMessage(ChatColor.RED+"格式错误！");
+                    player.sendMessage(ChatColor.RED + "格式错误！");
                 }
             }
         }

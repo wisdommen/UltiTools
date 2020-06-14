@@ -1,5 +1,6 @@
 package com.minecraft.ultikits.scoreBoard;
 
+import com.minecraft.economy.apis.UltiEconomy;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -14,14 +15,13 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import static com.minecraft.Ultilevel.utils.checkLevel.*;
-import static com.minecraft.economy.apis.checkMoney.checkbank;
-import static com.minecraft.economy.apis.checkMoney.checkmoney;
 
 public class runTask extends BukkitRunnable {
 
     @Override
     public void run() {
         for (Player p : Bukkit.getOnlinePlayers()) {
+            UltiEconomy economy = UltiTools.getEconomy();
             File folderM = new File(UltiTools.getInstance().getDataFolder() + "/playerData");
             File fileM = new File(folderM, p.getName() + ".yml");
             File folderL = new File("plugins/Level/playerData");
@@ -56,7 +56,9 @@ public class runTask extends BukkitRunnable {
 //                team.setAllowFriendlyFire(false);
 //            }
 //        创建一个计分板对象
-            Objective information = scoreboard.registerNewObjective("金币：", "", ChatColor.DARK_AQUA + "欢迎来到世界之树服务器");
+            String title = UltiTools.getInstance().getConfig().getString("scoreBoardTitle");
+
+            Objective information = scoreboard.registerNewObjective("金币：", "", ChatColor.DARK_AQUA + title);
 
 //        设置计分板样式
             information.setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -65,9 +67,9 @@ public class runTask extends BukkitRunnable {
 //            Score team1 = team.getScore("成员："+p.getName());
 //            team1.setScore(1);
 
-            Score gold = information.getScore(ChatColor.WHITE + "金币： " + ChatColor.GOLD + checkmoney(p.getName()));
+            Score gold = information.getScore(ChatColor.WHITE + "金币： " + ChatColor.GOLD + economy.checkMoney(p.getName()));
             gold.setScore(97);
-            Score bank = information.getScore(ChatColor.WHITE + "存款： " + ChatColor.GOLD + checkbank(p.getName()));
+            Score bank = information.getScore(ChatColor.WHITE + "存款： " + ChatColor.GOLD + economy.checkBank(p.getName()));
             bank.setScore(96);
             if (configM.getInt("count") > 0) {
                 Score mail = information.getScore(ChatColor.WHITE + "新邮件： " + ChatColor.GOLD + configM.getInt("count") + "封");

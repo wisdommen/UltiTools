@@ -25,7 +25,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Ultilevel" level="project" />
-    <orderEntry type="library" name="UltiEconomy" level="project" />
     <orderEntry type="library" name="ProtocolLib" level="project" />
     <orderEntry type="library" name="Bukkit-1.15.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT" level="project" />
@@ -36,5 +35,6 @@
     <orderEntry type="library" name="Maven: org.spigotmc:minecraft-server:1.15.2-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.spigotmc:spigot-api:1.15.2-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: net.md-5:bungeecord-chat:1.15-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="UltiEconomy" level="project" />
   </component>
 </module>

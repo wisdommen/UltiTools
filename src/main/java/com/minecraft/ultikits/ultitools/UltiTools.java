@@ -1,6 +1,7 @@
 package com.minecraft.ultikits.ultitools;
 
 
+import com.minecraft.economy.apis.UltiEconomy;
 import com.minecraft.economy.database.DataBase;
 import com.minecraft.economy.database.LinkedDataBase;
 import com.minecraft.ultikits.email.Email;
@@ -23,9 +24,30 @@ public final class UltiTools extends JavaPlugin {
 
     public static DataBase dataBase;
 
+    private static UltiEconomy economy;
+
+    public static UltiEconomy getEconomy() {
+        return economy;
+    }
+
+    private Boolean setupEconomy(){
+        if (getServer().getPluginManager().getPlugin("Economy") == null){
+            return false;
+        }else {
+            economy = new UltiEconomy();
+            return true;
+        }
+    }
+
     @Override
     public void onEnable() {
         plugin = this;
+
+        if (!setupEconomy()){
+            getServer().getConsoleSender().sendMessage("无法找到经济前置插件，关闭本插件。。。");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
         File folder = new File(String.valueOf(getDataFolder()));
         File playerDataFolder = new File(getDataFolder() + "/playerData");
         if (!folder.exists()) {
