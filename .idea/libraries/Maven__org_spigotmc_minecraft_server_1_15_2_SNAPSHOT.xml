@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.spigotmc:minecraft-server:1.15.2-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/spigotmc/minecraft-server/1.15.2-SNAPSHOT/minecraft-server-1.15.2-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/spigotmc/minecraft-server/1.15.2-SNAPSHOT/minecraft-server-1.15.2-SNAPSHOT-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/spigotmc/minecraft-server/1.15.2-SNAPSHOT/minecraft-server-1.15.2-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

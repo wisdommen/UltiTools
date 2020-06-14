@@ -17,8 +17,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 
-import static com.minecraft.Ultilevel.utils.checkLevel.checkJob;
-import static com.minecraft.Ultilevel.utils.checkLevel.checkLevel;
 
 public class onJoin implements Listener {
 

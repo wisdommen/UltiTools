@@ -1,7 +1,5 @@
 package com.minecraft.ultikits.whiteList;
 
-import com.minecraft.Ultilevel.database.DataBase;
-import com.minecraft.Ultilevel.level.level.levelMain;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;

@@ -1,10 +1,12 @@
 package com.minecraft.ultikits.scoreBoard;
 
+import com.minecraft.Ultilevel.level.level.levelMain;
 import com.minecraft.economy.apis.UltiEconomy;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -29,12 +31,15 @@ public class runTask extends BukkitRunnable {
             YamlConfiguration configM;
             configM = YamlConfiguration.loadConfiguration(fileM);
             YamlConfiguration configL;
+            FileConfiguration config = levelMain.getInstance().getConfig();
+            boolean isCustomized = config.getBoolean("enable_customize_rpg");
+
             configL = YamlConfiguration.loadConfiguration(fileL);
-            //        创建一个计分板管理对象
+            // 创建一个计分板管理对象
             ScoreboardManager sb = Bukkit.getScoreboardManager();
-//        创建一个计分板
+            // 创建一个计分板
             Scoreboard scoreboard = sb.getNewScoreboard();
-            //创建队伍
+            // 创建队伍
 //            if (isTeamLeader(p)) {
 //                Team team = scoreboard.registerNewTeam(p.getName());
 //                List<String> teamMember = getFileConfig("teams").getStringList(p.getName());
@@ -104,7 +109,12 @@ public class runTask extends BukkitRunnable {
                 job.setScore(98);
             }
             if (isWizard(p) && configL.getInt("Magic") >= 0) {
-                Score magic = information.getScore(ChatColor.WHITE + "魔力值：" + ChatColor.YELLOW + configL.getDouble("Magic") + ChatColor.BOLD + "/" + ChatColor.GOLD + 1000);
+                Score magic;
+                if (!isCustomized) {
+                    magic = information.getScore(ChatColor.WHITE + "魔力值：" + ChatColor.YELLOW + configL.getDouble("Magic") + ChatColor.BOLD + "/" + ChatColor.GOLD + (1000 + checkLevel(p) * 10));
+                }else {
+                    magic = information.getScore(ChatColor.WHITE + "魔力值：" + ChatColor.YELLOW + configL.getDouble("Magic") + ChatColor.BOLD + "/" + ChatColor.GOLD + config.getDouble("player_max_mp"));
+                }
                 magic.setScore(90);
             }
             Score name = information.getScore(ChatColor.WHITE + "名字： " + ChatColor.GOLD + p.getName());

@@ -1,18 +1,12 @@
 package com.minecraft.ultikits.email;
 
-import com.minecraft.ultikits.ultitools.UltiTools;
-import com.mysql.jdbc.Buffer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Objects;
 
 public class Email implements CommandExecutor {
 
