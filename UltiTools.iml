@@ -26,16 +26,51 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="ProtocolLib" level="project" />
     <orderEntry type="library" name="Bukkit-1.15.2" level="project" />
+    <orderEntry type="library" name="UltiEconomy" level="project" />
+    <orderEntry type="library" name="Ultilevel" level="project" />
+    <orderEntry type="library" name="PlaceholderAPI-2.10.6" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/PlaceholderAPI-2.10.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/ProtocolLib.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/UltiEconomy.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/Ultilevel.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:21.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.0" level="project" />
     <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.25" level="project" />
-    <orderEntry type="library" name="Maven: org.spigotmc:minecraft-server:1.15.2-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: org.spigotmc:spigot-api:1.15.2-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: net.md-5:bungeecord-chat:1.15-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="UltiEconomy" level="project" />
-    <orderEntry type="library" name="Ultilevel" level="project" />
-    <orderEntry type="library" name="PlaceholderAPI-2.10.6" level="project" />
   </component>
 </module>

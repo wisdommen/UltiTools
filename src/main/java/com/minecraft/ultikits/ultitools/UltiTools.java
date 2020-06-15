@@ -86,7 +86,9 @@ public final class UltiTools extends JavaPlugin {
 
         //注册监听器
         Bukkit.getPluginManager().registerEvents(new onJoin(), this);
-        Bukkit.getPluginManager().registerEvents(new whitelist_listener(), this);
+        if (getConfig().getBoolean("enable_white_list")) {
+            Bukkit.getPluginManager().registerEvents(new whitelist_listener(), this);
+        }
 
         //注册任务
         BukkitTask t1 = new runTask().runTaskTimer(this, 0, 20L);

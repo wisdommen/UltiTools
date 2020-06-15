@@ -20,3 +20,6 @@ joinWebsite: 'None'
 
 '注释8请勿修改': '（侧边栏）记分板标题'
 scoreBoardTitle: '欢迎加入服务器'
+
+'注释9请勿修改': '（白名单）开启白名单'
+enable_white_list: false
