@@ -8,6 +8,7 @@ import com.minecraft.ultikits.email.Email;
 import com.minecraft.ultikits.home.Home;
 import com.minecraft.ultikits.joinWelcome.onJoin;
 import com.minecraft.ultikits.scoreBoard.runTask;
+import com.minecraft.ultikits.scoreBoard.sb_commands;
 import com.minecraft.ultikits.whiteList.whitelist_commands;
 import com.minecraft.ultikits.whiteList.whitelist_listener;
 import org.bukkit.Bukkit;
@@ -25,6 +26,8 @@ public final class UltiTools extends JavaPlugin {
     public static DataBase dataBase;
 
     private static UltiEconomy economy;
+
+    public static boolean isPAPILoaded;
 
     public static UltiEconomy getEconomy() {
         return economy;
@@ -48,6 +51,8 @@ public final class UltiTools extends JavaPlugin {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
+        isPAPILoaded = getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
+
         File folder = new File(String.valueOf(getDataFolder()));
         File playerDataFolder = new File(getDataFolder() + "/playerData");
         if (!folder.exists()) {
@@ -83,6 +88,7 @@ public final class UltiTools extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("delhome")).setExecutor(new Home());
         Objects.requireNonNull(this.getCommand("homelist")).setExecutor(new Home());
         Objects.requireNonNull(this.getCommand("wl")).setExecutor(new whitelist_commands());
+        Objects.requireNonNull(this.getCommand("sb")).setExecutor(new sb_commands());
 
         //注册监听器
         Bukkit.getPluginManager().registerEvents(new onJoin(), this);

@@ -1,9 +1,10 @@
 name: UltiTools
-version: 1.0-SNAPSHOT
+version: 0.2.1
 main: com.minecraft.ultikits.ultitools.UltiTools
 api-version: 1.13
 prefix: UltiTools
 depend: [Economy, Level]
+softdepend: [PlaceholderAPI]
 authors: [wisdomme]
 description: This is a plugin inclouds some basic plugins fuctions for a server
 
@@ -32,3 +33,6 @@ commands:
   wl:
     description: 白名单
     usage: /wl help
+  sb:
+    description: 开关侧边栏
+    usage: /sb [open/close]
