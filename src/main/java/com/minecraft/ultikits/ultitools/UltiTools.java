@@ -4,6 +4,8 @@ package com.minecraft.ultikits.ultitools;
 import com.minecraft.economy.apis.UltiEconomy;
 import com.minecraft.economy.database.DataBase;
 import com.minecraft.economy.database.LinkedDataBase;
+import com.minecraft.ultikits.UpdateChecker.ConfigFileChecker;
+import com.minecraft.ultikits.UpdateChecker.VersionChecker;
 import com.minecraft.ultikits.email.Email;
 import com.minecraft.ultikits.home.Home;
 import com.minecraft.ultikits.joinWelcome.onJoin;
@@ -55,12 +57,14 @@ public final class UltiTools extends JavaPlugin {
 
         File folder = new File(String.valueOf(getDataFolder()));
         File playerDataFolder = new File(getDataFolder() + "/playerData");
-        if (!folder.exists()) {
+        File config_file = new File(getDataFolder(), "config.yml");
+        if (!folder.exists() || !config_file.exists()) {
             saveDefaultConfig();
         }
         if (!playerDataFolder.exists()) {
             playerDataFolder.mkdirs();
         }
+        ConfigFileChecker.reviewConfigFile();
 
         if (getConfig().getBoolean("enableDataBase")) {
             String username = getConfig().getString("username");
@@ -102,6 +106,10 @@ public final class UltiTools extends JavaPlugin {
         getServer().getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "基础插件已加载！");
         getServer().getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "作者：wisdomme");
 
+        //检查更新
+        if (getConfig().getBoolean("enable_version_check")) {
+            VersionChecker.setupThread();
+        }
     }
 
     @Override

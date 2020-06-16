@@ -23,6 +23,9 @@ scoreBoardTitle: '欢迎加入服务器'
 '注释10请勿修改': '（侧边栏)已关闭记分板的玩家'
 player_closed_sb: []
 
+'注释21请勿修改': '是否开启自动版本检查'
+enable_version_check: false
+
 '注释9请勿修改': '（白名单）开启白名单'
 enable_white_list: false
 
