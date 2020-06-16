@@ -21,7 +21,7 @@ public class whitelist_listener implements Listener {
         List<String> whitelist = config.getStringList("whitelist");
 
         if (!UltiTools.getInstance().getConfig().getBoolean("enableDataBase")) {
-            if (!whitelist.contains(player.getName()) && !player.isOp()) {
+            if (!whitelist.contains(player.getName())) {
                 event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.AQUA + "你不在白名单上哦！");
             }
         } else {

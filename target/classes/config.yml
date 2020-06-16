@@ -26,7 +26,7 @@ player_closed_sb: []
 '注释9请勿修改': '（白名单）开启白名单'
 enable_white_list: false
 
-'注释11请勿修改': '（侧边栏）在安装PlaceholderAPI的情况下生效。空出则为默认值'
+'注释11请勿修改': '（侧边栏）在安装PlaceholderAPI的情况下生效。空出（""）则为不显示'
 '注释12请勿修改': '（侧边栏）技能变量'
 enable_PAPI: false
 '注释17请勿修改': '（侧边栏）技能冷却值变量'
