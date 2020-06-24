@@ -121,10 +121,10 @@ public class runTask extends BukkitRunnable {
                     deposit = economy.checkBank(p.getName());
                     level_num = checkLevel(p);
                     exp = checkExp(p);
-                    max_exp = (exp * 5 + 100);
+                    max_exp = (level_num * 5 + 100);
                     mp = getPlayerMagicPoint(p);
                     if (!isCustomized) {
-                        max_mp = (1000 + checkLevel(p) * 10);
+                        max_mp = (1000 + level_num * 10);
                     }else {
                         max_mp = config.getDouble("player_max_mp");
                     }

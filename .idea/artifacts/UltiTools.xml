@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" build-on-make="true" name="UltiTools">
-    <output-path>$PROJECT_DIR$/../Minecraft/lib/plugins/plugins/Ultitools</output-path>
+    <output-path>$PROJECT_DIR$/../wisdommen.github.io/collections/Ultitools</output-path>
     <root id="archive" name="UltiTools.jar">
       <element id="module-output" name="UltiTools" />
       <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/plugin.yml" />

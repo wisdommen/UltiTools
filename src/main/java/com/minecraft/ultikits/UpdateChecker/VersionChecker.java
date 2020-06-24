@@ -22,7 +22,7 @@ public class VersionChecker {
             public void run() {
                 try {
                     //连接
-                    HttpURLConnection connection = (HttpURLConnection) new URL("https://www.mcbbs.net/thread-1060351-1-1.html").openConnection();
+                    HttpURLConnection connection = (HttpURLConnection) new URL("https://wisdommen.github.io").openConnection();
                     connection.setDoInput(true);
                     connection.setRequestMethod("GET");
                     //伪装
@@ -37,12 +37,12 @@ public class VersionChecker {
                     String data = br.readLine();
                     while (data != null) {
                         //获取带有附件id的文本
-                        if (data.contains("attach_1619113")) {
+                        if (data.contains("UltiTools")) {
                             boolean isOutDate = false;
                             br.readLine();
                             String target = br.readLine();
                             //获取版本
-                            String version = target.split("-")[1].split(".jar")[0];
+                            String version = target.split(" ")[1];
                             String current_version = UltiTools.getInstance().getDescription().getVersion();
                             List<String> current_version_list = Arrays.asList(current_version.split("\\."));
                             List<String> online_version_list = Arrays.asList(version.split("\\."));
@@ -52,9 +52,9 @@ public class VersionChecker {
                                 String b = online_version_list.get(i);
                                 if (Integer.parseInt(a) < Integer.parseInt(b)) {
                                     if (i <= 1) {
-                                        UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] 经济插件有 重要 更新，请到mcbbs上下载最新版本！");
+                                        UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] 工具插件有 重要 更新，请下载最新版本！");
                                     } else {
-                                        UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] 经济插件有更新，请到mcbbs上下载最新版本！");
+                                        UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] 工具插件有更新，请下载最新版本！");
                                     }
                                     UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools] 下载地址：https://www.mcbbs.net/thread-1060351-1-1.html");
                                     isOutDate = true;
