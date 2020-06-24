@@ -1,6 +1,7 @@
 package com.minecraft.ultikits.UpdateChecker;
 
 import com.minecraft.ultikits.ultitools.UltiTools;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.io.BufferedReader;
@@ -39,10 +40,9 @@ public class VersionChecker {
                         //获取带有附件id的文本
                         if (data.contains("UltiTools")) {
                             boolean isOutDate = false;
-                            br.readLine();
                             String target = br.readLine();
                             //获取版本
-                            String version = target.split(" ")[1];
+                            String version = target.split("version: ")[1].split("<")[0];
                             String current_version = UltiTools.getInstance().getDescription().getVersion();
                             List<String> current_version_list = Arrays.asList(current_version.split("\\."));
                             List<String> online_version_list = Arrays.asList(version.split("\\."));
@@ -62,7 +62,7 @@ public class VersionChecker {
                                 }
                             }
                             if (!isOutDate) {
-                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[Ultilevel]太棒了！你的插件是最新的！保持最新的版本可以为你带来最好的体验！");
+                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools]太棒了！你的插件是最新的！保持最新的版本可以为你带来最好的体验！");
                             }
                             break;
                         }
