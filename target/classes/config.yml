@@ -26,6 +26,9 @@ player_closed_sb: []
 '注释21请勿修改': '是否开启自动版本检查'
 enable_version_check: false
 
+'注释22请勿修改': '是否开启家功能'
+enable_home: true
+
 '注释9请勿修改': '（白名单）开启白名单'
 enable_white_list: false
 
@@ -49,5 +52,7 @@ exp: "%ul_exp%"
 mp: "%ul_mp%"
 '注释20请勿修改': '（侧边栏）玩家最大魔力值变量'
 max_mp: ""
+'注释23请勿修改': '（侧边栏）玩家最大生命值变量'
+max_hp: ""
 '注释19请勿修改': '（侧边栏）玩家职业变量'
 occupation: "%ul_job%"

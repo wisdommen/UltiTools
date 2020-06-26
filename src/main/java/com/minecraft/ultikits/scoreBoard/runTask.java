@@ -49,6 +49,7 @@ public class runTask extends BukkitRunnable {
                 int max_exp;
                 int mp;
                 double max_mp;
+                double max_hp;
                 String occupation;
 
                 if (isPAPILoaded && tool_config.getBoolean("enable_PAPI")){
@@ -108,6 +109,11 @@ public class runTask extends BukkitRunnable {
                         max_mp=0;
                     }
                     try {
+                        max_hp = Integer.parseInt(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("max_hp"))));
+                    } catch (Exception e) {
+                        max_hp=0;
+                    }
+                    try {
                         occupation = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("occupation")));
                     } catch (Exception e) {
                         occupation = null;
@@ -121,10 +127,11 @@ public class runTask extends BukkitRunnable {
                     deposit = economy.checkBank(p.getName());
                     level_num = checkLevel(p);
                     exp = checkExp(p);
-                    max_exp = (level_num * 5 + 100);
+                    max_exp = ((level_num-1) * 5 + 100);
                     mp = getPlayerMagicPoint(p);
+                    max_hp = getPlayerMaxHealth(p);
                     if (!isCustomized) {
-                        max_mp = (1000 + level_num * 10);
+                        max_mp = (1000 + (level_num-1) * 10);
                     }else {
                         max_mp = config.getDouble("player_max_mp");
                     }
@@ -211,7 +218,7 @@ public class runTask extends BukkitRunnable {
                 Score name = information.getScore(ChatColor.WHITE + "名字： " + ChatColor.GOLD + p.getName());
                 name.setScore(99);
                 DecimalFormat format1 = new DecimalFormat("0.0");
-                Score health = information.getScore(ChatColor.WHITE + "生命值： " + ChatColor.YELLOW + format1.format(p.getHealth()) + ChatColor.BOLD + " / " + ChatColor.GOLD + format1.format(p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()));
+                Score health = information.getScore(ChatColor.WHITE + "生命值： " + ChatColor.YELLOW + format1.format(p.getHealth()) + ChatColor.BOLD + " / " + ChatColor.GOLD + format1.format(max_hp));
                 health.setScore(93);
                 Score onlineplayer = information.getScore(ChatColor.WHITE + "在线人数： " + ChatColor.GOLD + Bukkit.getOnlinePlayers().size());
                 onlineplayer.setScore(84);

@@ -56,7 +56,7 @@ public class VersionChecker {
                                     } else {
                                         UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] 工具插件有更新，请下载最新版本！");
                                     }
-                                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools] 下载地址：https://www.mcbbs.net/thread-1060351-1-1.html");
+                                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools] 下载地址：https://github.com/wisdommen/wisdommen.github.io/tree/master/collections/Ultitools");
                                     isOutDate = true;
                                     break;
                                 }
