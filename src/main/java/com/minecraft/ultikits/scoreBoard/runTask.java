@@ -48,11 +48,11 @@ public class runTask extends BukkitRunnable {
                 int exp;
                 int max_exp;
                 int mp;
-                double max_mp;
+                double max_mp = getPlayerMaxMagicPoint(p);
                 double max_hp;
                 String occupation;
 
-                if (isPAPILoaded && tool_config.getBoolean("enable_PAPI")){
+                if (isPAPILoaded && tool_config.getBoolean("enable_PAPI")) {
                     try {
                         CDq = Integer.parseInt(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("CDq"))));
                     } catch (Exception e) {
@@ -104,21 +104,16 @@ public class runTask extends BukkitRunnable {
                         mp = 0;
                     }
                     try {
-                        max_mp = Integer.parseInt(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("max_mp"))));
-                    } catch (Exception e) {
-                        max_mp=0;
-                    }
-                    try {
                         max_hp = Integer.parseInt(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("max_hp"))));
                     } catch (Exception e) {
-                        max_hp=0;
+                        max_hp = 0;
                     }
                     try {
                         occupation = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("occupation")));
                     } catch (Exception e) {
                         occupation = null;
                     }
-                }else {
+                } else {
                     CDq = coolDown(p, "CDq");
                     CDw = coolDown(p, "CDw");
                     CDe = coolDown(p, "CDe");
@@ -127,14 +122,9 @@ public class runTask extends BukkitRunnable {
                     deposit = economy.checkBank(p.getName());
                     level_num = checkLevel(p);
                     exp = checkExp(p);
-                    max_exp = ((level_num-1) * 5 + 100);
+                    max_exp = ((level_num - 1) * 5 + 100);
                     mp = getPlayerMagicPoint(p);
                     max_hp = getPlayerMaxHealth(p);
-                    if (!isCustomized) {
-                        max_mp = (1000 + (level_num-1) * 10);
-                    }else {
-                        max_mp = config.getDouble("player_max_mp");
-                    }
                     occupation = checkJob(p);
                 }
 
@@ -211,7 +201,7 @@ public class runTask extends BukkitRunnable {
                     Score job = information.getScore(ChatColor.WHITE + "职业： " + ChatColor.GOLD + occupation);
                     job.setScore(98);
                 }
-                if (isWizard(p) && mp >= 0 && max_mp >0) {
+                if (isWizard(p) && mp >= 0 && max_mp > 0) {
                     Score magic = information.getScore(ChatColor.WHITE + "魔力值：" + ChatColor.YELLOW + mp + ChatColor.BOLD + "/" + ChatColor.GOLD + max_mp);
                     magic.setScore(90);
                 }
