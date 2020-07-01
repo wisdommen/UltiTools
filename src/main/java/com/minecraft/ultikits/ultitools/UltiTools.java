@@ -35,12 +35,9 @@ public final class UltiTools extends JavaPlugin {
         return economy;
     }
 
-    private Boolean setupEconomy(){
-        if (getServer().getPluginManager().getPlugin("Economy") == null){
-            return false;
-        }else {
+    private void setupEconomy(){
+        if (getServer().getPluginManager().getPlugin("Economy") != null){
             economy = new UltiEconomy();
-            return true;
         }
     }
 
@@ -48,11 +45,8 @@ public final class UltiTools extends JavaPlugin {
     public void onEnable() {
         plugin = this;
 
-        if (!setupEconomy()){
-            getServer().getConsoleSender().sendMessage("无法找到经济前置插件，关闭本插件。。。");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
+        setupEconomy();
+
         isPAPILoaded = getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
 
         File folder = new File(String.valueOf(getDataFolder()));
@@ -101,7 +95,9 @@ public final class UltiTools extends JavaPlugin {
         }
 
         //注册任务
-        BukkitTask t1 = new runTask().runTaskTimer(this, 0, 20L);
+        if (this.getConfig().getBoolean("enable_scoreboard")) {
+            BukkitTask t1 = new runTask().runTaskTimer(this, 0, 20L);
+        }
 
         getServer().getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "基础插件已加载！");
         getServer().getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "作者：wisdomme");

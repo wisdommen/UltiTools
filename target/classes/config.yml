@@ -20,6 +20,8 @@ joinWebsite: 'None'
 
 '注释8请勿修改': '（侧边栏）记分板标题'
 scoreBoardTitle: '欢迎加入服务器'
+'注释25请勿修改': '（侧边栏)开关记分板'
+enable_scoreboard: true
 '注释10请勿修改': '（侧边栏)已关闭记分板的玩家'
 player_closed_sb: []
 

@@ -1,5 +1,5 @@
 name: UltiTools
-version: 0.2.9
+version: 0.2.10
 main: com.minecraft.ultikits.ultitools.UltiTools
 api-version: 1.13
 prefix: UltiTools
@@ -13,13 +13,13 @@ commands:
     description: 读邮件
     usage: /email read
   home:
-    description: Got Back to Player's home
+    description: 回家
     usage: /home 家的名字（不设置则为默认）
     permissions:
       home.use:
         defailt: [true]
   sethome:
-    description: Set Player's home
+    description: 设置家
     usage: /sethome 家的名字（不设置则为默认）
     permissions:
       home.use:
