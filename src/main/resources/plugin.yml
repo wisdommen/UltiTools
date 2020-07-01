@@ -1,10 +1,10 @@
 name: UltiTools
-version: ${project.version}
+version: 0.2.9
 main: com.minecraft.ultikits.ultitools.UltiTools
 api-version: 1.13
 prefix: UltiTools
-depend: [Economy, Level]
-softdepend: [PlaceholderAPI]
+depend: []
+softdepend: [PlaceholderAPI, Level, Economy]
 authors: [wisdomme]
 description: This is a plugin inclouds some basic plugins fuctions for a server
 

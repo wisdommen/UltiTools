@@ -1,13 +1,10 @@
 package com.minecraft.ultikits.scoreBoard;
 
-import com.minecraft.Ultilevel.level.level.levelMain;
-import com.minecraft.Ultilevel.utils.checkLevel;
 import com.minecraft.economy.apis.UltiEconomy;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -23,8 +20,6 @@ import static com.minecraft.Ultilevel.utils.checkLevel.*;
 
 public class runTask extends BukkitRunnable {
 
-    FileConfiguration config = levelMain.getInstance().getConfig();
-    boolean isCustomized = config.getBoolean("enable_customize_rpg");
     UltiEconomy economy = UltiTools.getEconomy();
 
     boolean isPAPILoaded = UltiTools.isPAPILoaded;
@@ -38,94 +33,104 @@ public class runTask extends BukkitRunnable {
                 File fileM = new File(UltiTools.getInstance().getDataFolder() + "/playerData", p.getName() + ".yml");
                 YamlConfiguration configM = YamlConfiguration.loadConfiguration(fileM);
 
-                int CDq;
-                int CDw;
-                int CDe;
-                int CDr;
-                int money;
-                int deposit;
-                int level_num;
-                int exp;
-                int max_exp;
-                int mp;
-                double max_mp = getPlayerMaxMagicPoint(p);
-                double max_hp;
+                String CDq;
+                String CDw;
+                String CDe;
+                String CDr;
+                String money;
+                String deposit;
+                String level_num;
+                String exp;
+                String max_exp;
+                String mp;
+                String max_mp;
+                String max_hp;
+                boolean isWizard;
                 String occupation;
 
                 if (isPAPILoaded && tool_config.getBoolean("enable_PAPI")) {
                     try {
-                        CDq = Integer.parseInt(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("CDq"))));
+                        CDq = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("CDq")));
                     } catch (Exception e) {
-                        CDq = 0;
+                        CDq = null;
                     }
                     try {
-                        CDw = Integer.parseInt(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("CDw"))));
+                        CDw = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("CDw")));
                     } catch (Exception e) {
-                        CDw = 0;
+                        CDw = null;
                     }
                     try {
-                        CDe = Integer.parseInt(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("CDe"))));
+                        CDe = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("CDe")));
                     } catch (Exception e) {
-                        CDe = 0;
+                        CDe = null;
                     }
                     try {
-                        CDr = Integer.parseInt(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("CDr"))));
+                        CDr = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("CDr")));
                     } catch (Exception e) {
-                        CDr = 0;
+                        CDr = null;
                     }
                     try {
-                        money = Integer.parseInt(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("money"))));
+                        money = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("money")));
                     } catch (Exception e) {
-                        money = 0;
+                        money = null;
                     }
                     try {
-                        deposit = Integer.parseInt(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("deposit"))));
+                        deposit = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("deposit")));
                     } catch (Exception e) {
-                        deposit = 0;
+                        deposit = null;
                     }
                     try {
-                        level_num = Integer.parseInt(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("level"))));
+                        level_num = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("level")));
                     } catch (Exception e) {
-                        level_num = 0;
+                        level_num = null;
                     }
                     try {
-                        exp = Integer.parseInt(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("exp"))));
+                        exp = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("exp")));
                     } catch (Exception e) {
-                        exp = 0;
+                        exp = null;
                     }
                     try {
-                        max_exp = Integer.parseInt(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("exp"))));
+                        max_exp = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("max_exp")));
                     } catch (Exception e) {
-                        max_exp = 0;
+                        max_exp = null;
                     }
                     try {
-                        mp = Integer.parseInt(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("mp"))));
+                        mp = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("mp")));
                     } catch (Exception e) {
-                        mp = 0;
+                        mp = null;
                     }
                     try {
-                        max_hp = Integer.parseInt(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("max_hp"))));
+                        max_hp = String.format("%.1f", Double.parseDouble(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("max_hp")))));
                     } catch (Exception e) {
-                        max_hp = 0;
+                        max_hp = null;
+                    }
+                    try {
+                        max_mp = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("max_mp")));
+                    } catch (Exception e) {
+                        max_mp = null;
                     }
                     try {
                         occupation = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("occupation")));
                     } catch (Exception e) {
                         occupation = null;
                     }
+                    isWizard = true;
                 } else {
-                    CDq = coolDown(p, "CDq");
-                    CDw = coolDown(p, "CDw");
-                    CDe = coolDown(p, "CDe");
-                    CDr = coolDown(p, "CDr");
-                    money = economy.checkMoney(p.getName());
-                    deposit = economy.checkBank(p.getName());
-                    level_num = checkLevel(p);
-                    exp = checkExp(p);
-                    max_exp = ((level_num - 1) * 5 + 100);
-                    mp = getPlayerMagicPoint(p);
-                    max_hp = getPlayerMaxHealth(p);
+                    DecimalFormat format = new DecimalFormat("0.0");
+                    CDq = coolDown(p, "CDq")+"";
+                    CDw = coolDown(p, "CDw")+"";
+                    CDe = coolDown(p, "CDe")+"";
+                    CDr = coolDown(p, "CDr")+"";
+                    money = economy.checkMoney(p.getName())+"";
+                    deposit = economy.checkBank(p.getName())+"";
+                    level_num = checkLevel(p)+"";
+                    exp = checkExp(p)+"";
+                    max_exp = ((Integer.parseInt(level_num) - 1) * 5 + 100)+"";
+                    mp = getPlayerMagicPoint(p)+"";
+                    max_hp = format.format(getPlayerMaxHealth(p))+"";
+                    max_mp = getPlayerMaxMagicPoint(p)+"";
                     occupation = checkJob(p);
+                    isWizard = isWizard(p);
                 }
 
                 // 创建一个计分板管理对象
@@ -173,27 +178,27 @@ public class runTask extends BukkitRunnable {
                     Score mail = information.getScore(ChatColor.WHITE + "新邮件： " + ChatColor.GOLD + configM.getInt("count") + "封");
                     mail.setScore(92);
                 }
-                if (level_num > 0) {
+                if (level_num != null) {
                     Score level = information.getScore(ChatColor.WHITE + "等级： " + ChatColor.GOLD + level_num);
                     level.setScore(95);
                 }
-                if (exp >= 0 && max_exp > 0) {
+                if (exp != null && max_exp != null) {
                     Score level = information.getScore(ChatColor.WHITE + "经验值： " + ChatColor.YELLOW + exp + ChatColor.BOLD + " / " + ChatColor.GOLD + max_exp);
                     level.setScore(94);
                 }
-                if (CDq != 0) {
+                if (CDq != null && Integer.parseInt(CDq) > 0) {
                     Score CD = information.getScore(ChatColor.WHITE + "Q技能CD还剩 " + ChatColor.GOLD + CDq + "秒");
                     CD.setScore(89);
                 }
-                if (CDw != 0) {
+                if (CDw != null&& Integer.parseInt(CDw) > 0) {
                     Score CD = information.getScore(ChatColor.WHITE + "W技能CD还剩 " + ChatColor.GOLD + CDw + "秒");
                     CD.setScore(88);
                 }
-                if (CDe != 0) {
+                if (CDe != null&& Integer.parseInt(CDe) > 0) {
                     Score CD = information.getScore(ChatColor.WHITE + "E技能CD还剩 " + ChatColor.GOLD + CDe + "秒");
                     CD.setScore(87);
                 }
-                if (CDr != 0) {
+                if (CDr != null&& Integer.parseInt(CDr) > 0) {
                     Score CD = information.getScore(ChatColor.WHITE + "R技能CD还剩 " + ChatColor.GOLD + CDr + "秒");
                     CD.setScore(86);
                 }
@@ -201,14 +206,14 @@ public class runTask extends BukkitRunnable {
                     Score job = information.getScore(ChatColor.WHITE + "职业： " + ChatColor.GOLD + occupation);
                     job.setScore(98);
                 }
-                if (isWizard(p) && mp >= 0 && max_mp > 0) {
+                if (isWizard && mp != null && max_mp !=null) {
                     Score magic = information.getScore(ChatColor.WHITE + "魔力值：" + ChatColor.YELLOW + mp + ChatColor.BOLD + "/" + ChatColor.GOLD + max_mp);
                     magic.setScore(90);
                 }
                 Score name = information.getScore(ChatColor.WHITE + "名字： " + ChatColor.GOLD + p.getName());
                 name.setScore(99);
                 DecimalFormat format1 = new DecimalFormat("0.0");
-                Score health = information.getScore(ChatColor.WHITE + "生命值： " + ChatColor.YELLOW + format1.format(p.getHealth()) + ChatColor.BOLD + " / " + ChatColor.GOLD + format1.format(max_hp));
+                Score health = information.getScore(ChatColor.WHITE + "生命值： " + ChatColor.YELLOW + format1.format(p.getHealth()) + ChatColor.BOLD + " / " + ChatColor.GOLD + max_hp);
                 health.setScore(93);
                 Score onlineplayer = information.getScore(ChatColor.WHITE + "在线人数： " + ChatColor.GOLD + Bukkit.getOnlinePlayers().size());
                 onlineplayer.setScore(84);
