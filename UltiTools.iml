@@ -63,7 +63,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="craftbukkit-1.16.1" level="project" />
     <orderEntry type="library" name="Ultilevel-0.3.6" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
