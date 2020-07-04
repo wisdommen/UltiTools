@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Ultilevel-1.0.0_release">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/Ultilevel-1.0.0_release.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/UltiEconomy-1.0.0_release.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

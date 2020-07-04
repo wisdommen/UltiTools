@@ -6,6 +6,8 @@ import com.minecraft.economy.database.DataBase;
 import com.minecraft.economy.database.LinkedDataBase;
 import com.minecraft.ultikits.UpdateChecker.ConfigFileChecker;
 import com.minecraft.ultikits.UpdateChecker.VersionChecker;
+import com.minecraft.ultikits.chestLock.ChestLock;
+import com.minecraft.ultikits.chestLock.ChestLockCMD;
 import com.minecraft.ultikits.email.Email;
 import com.minecraft.ultikits.home.Home;
 import com.minecraft.ultikits.joinWelcome.onJoin;
@@ -80,18 +82,36 @@ public final class UltiTools extends JavaPlugin {
         }
 
         //注册命令
-        Objects.requireNonNull(this.getCommand("email")).setExecutor(new Email());
-        Objects.requireNonNull(this.getCommand("home")).setExecutor(new Home());
-        Objects.requireNonNull(this.getCommand("sethome")).setExecutor(new Home());
-        Objects.requireNonNull(this.getCommand("delhome")).setExecutor(new Home());
-        Objects.requireNonNull(this.getCommand("homelist")).setExecutor(new Home());
-        Objects.requireNonNull(this.getCommand("wl")).setExecutor(new whitelist_commands());
-        Objects.requireNonNull(this.getCommand("sb")).setExecutor(new sb_commands());
+        if (this.getConfig().getBoolean("enable_email")) {
+            Objects.requireNonNull(this.getCommand("email")).setExecutor(new Email());
+        }
+        if (this.getConfig().getBoolean("enable_home")) {
+            Objects.requireNonNull(this.getCommand("home")).setExecutor(new Home());
+            Objects.requireNonNull(this.getCommand("sethome")).setExecutor(new Home());
+            Objects.requireNonNull(this.getCommand("delhome")).setExecutor(new Home());
+            Objects.requireNonNull(this.getCommand("homelist")).setExecutor(new Home());
+        }
+        if (this.getConfig().getBoolean("enable_white_list")) {
+            Objects.requireNonNull(this.getCommand("wl")).setExecutor(new whitelist_commands());
+        }
+        if (this.getConfig().getBoolean("enable_scoreboard")) {
+            Objects.requireNonNull(this.getCommand("sb")).setExecutor(new sb_commands());
+        }
+        if (this.getConfig().getBoolean("enable_lock")) {
+            Objects.requireNonNull(this.getCommand("lock")).setExecutor(new ChestLockCMD());
+            Objects.requireNonNull(this.getCommand("unlock")).setExecutor(new ChestLockCMD());
+        }
+
 
         //注册监听器
-        Bukkit.getPluginManager().registerEvents(new onJoin(), this);
+        if (getConfig().getBoolean("enable_onjoin")) {
+            Bukkit.getPluginManager().registerEvents(new onJoin(), this);
+        }
         if (getConfig().getBoolean("enable_white_list")) {
             Bukkit.getPluginManager().registerEvents(new whitelist_listener(), this);
+        }
+        if (this.getConfig().getBoolean("enable_lock")) {
+            Bukkit.getPluginManager().registerEvents(new ChestLock(), this);
         }
 
         //注册任务

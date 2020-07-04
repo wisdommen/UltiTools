@@ -1,5 +1,5 @@
 name: UltiTools
-version: 0.2.10
+version: 1.1.0
 main: com.minecraft.ultikits.ultitools.UltiTools
 api-version: 1.13
 prefix: UltiTools
@@ -36,3 +36,9 @@ commands:
   sb:
     description: 开关侧边栏
     usage: /sb [open/close]
+  lock:
+    description: 上锁箱子
+    usage: /lock 点击你需要锁的箱子
+  unlock:
+    description: 解锁箱子
+    usage: /unlock 点击你需要解锁的箱子
