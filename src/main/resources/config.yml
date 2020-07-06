@@ -44,7 +44,7 @@ enable_onjoin: true
 enable_white_list: false
 
 '注释11请勿修改': '（侧边栏）在安装PlaceholderAPI的情况下生效。空出（""）则为不显示'
-'注释12请勿修改': '（侧边栏）技能变量'
+'注释12请勿修改': '（侧边栏）开启PAPI变量'
 enable_PAPI: false
 '注释17请勿修改': '（侧边栏）技能冷却值变量'
 CDq: "%ul_q_cd%"
@@ -69,6 +69,12 @@ max_mp: ""
 max_hp: ""
 '注释19请勿修改': '（侧边栏）玩家职业变量'
 occupation: "%ul_job%"
+'注释28请勿修改': '（侧边栏）自定义内容'
+customerline:
+  - '这是自定义的内容'
+  - '可以在配置文件里改'
+  - '你好，%player_name%'
+  - '你甚至可以在里面加上PAPI变量'
 
 '注释26请勿修改': '（锁箱子）OP是否可以打开上锁的箱子（并非解锁，仅查看）'
 op_unlock: true

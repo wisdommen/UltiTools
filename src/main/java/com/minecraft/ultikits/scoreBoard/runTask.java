@@ -1,5 +1,6 @@
 package com.minecraft.ultikits.scoreBoard;
 
+import com.google.common.collect.Lists;
 import com.minecraft.economy.apis.UltiEconomy;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -13,7 +14,9 @@ import org.bukkit.scoreboard.*;
 
 import java.io.File;
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.minecraft.Ultilevel.utils.checkLevel.*;
@@ -218,6 +221,25 @@ public class runTask extends BukkitRunnable {
                     health.setScore(93);
                     Score onlineplayer = information.getScore(ChatColor.WHITE + "在线人数： " + ChatColor.GOLD + Bukkit.getOnlinePlayers().size());
                     onlineplayer.setScore(84);
+
+                    List<String> temp_list = tool_config.getStringList("customerline");
+                    List<String> customer_line = Lists.reverse(temp_list);
+                    int i = 1;
+                    for (String each_line : customer_line){
+                        Score customer;
+                        if (each_line.contains("%")){
+                            each_line.replace("%", "");
+                            if (!each_line.contains("%")){
+                                customer = information.getScore(ChatColor.WHITE + each_line);
+                            }else {
+                                customer = information.getScore(ChatColor.WHITE + PlaceholderAPI.setPlaceholders(p, each_line));
+                            }
+                        }else {
+                            customer = information.getScore(ChatColor.WHITE + each_line);
+                        }
+                        customer.setScore(i);
+                        i++;
+                    }
                     p.setScoreboard(scoreboard);
                 } else {
                     p.setScoreboard(Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard());
