@@ -174,53 +174,59 @@ public class runTask extends BukkitRunnable {
 //            Score team1 = team.getScore("成员："+p.getName());
 //            team1.setScore(1);
 
-                    Score gold = information.getScore(ChatColor.WHITE + "金币： " + ChatColor.GOLD + money);
-                    gold.setScore(97);
-                    Score bank = information.getScore(ChatColor.WHITE + "存款： " + ChatColor.GOLD + deposit);
-                    bank.setScore(96);
+                    if (money!=null && !money.equals("")) {
+                        Score gold = information.getScore(ChatColor.WHITE + "金币： " + ChatColor.GOLD + money);
+                        gold.setScore(97);
+                    }
+                    if (deposit!=null && !deposit.equals("")) {
+                        Score bank = information.getScore(ChatColor.WHITE + "存款： " + ChatColor.GOLD + deposit);
+                        bank.setScore(96);
+                    }
                     if (configM.getInt("count") > 0) {
                         Score mail = information.getScore(ChatColor.WHITE + "新邮件： " + ChatColor.GOLD + configM.getInt("count") + "封");
                         mail.setScore(92);
                     }
-                    if (level_num != null) {
+                    if (level_num != null && !level_num.equals("")) {
                         Score level = information.getScore(ChatColor.WHITE + "等级： " + ChatColor.GOLD + level_num);
                         level.setScore(95);
                     }
-                    if (exp != null && max_exp != null) {
+                    if (exp != null && max_exp != null && !max_exp.equals("") && !exp.equals("")) {
                         Score level = information.getScore(ChatColor.WHITE + "经验值： " + ChatColor.YELLOW + exp + ChatColor.BOLD + " / " + ChatColor.GOLD + max_exp);
                         level.setScore(94);
                     }
-                    if (CDq != null && Integer.parseInt(CDq) > 0) {
+                    if (CDq != null && Integer.parseInt(CDq) > 0 && !CDq.equals("")) {
                         Score CD = information.getScore(ChatColor.WHITE + "Q技能CD还剩 " + ChatColor.GOLD + CDq + "秒");
                         CD.setScore(89);
                     }
-                    if (CDw != null && Integer.parseInt(CDw) > 0) {
+                    if (CDw != null && Integer.parseInt(CDw) > 0&& !CDw.equals("")) {
                         Score CD = information.getScore(ChatColor.WHITE + "W技能CD还剩 " + ChatColor.GOLD + CDw + "秒");
                         CD.setScore(88);
                     }
-                    if (CDe != null && Integer.parseInt(CDe) > 0) {
+                    if (CDe != null && Integer.parseInt(CDe) > 0&& !CDe.equals("")) {
                         Score CD = information.getScore(ChatColor.WHITE + "E技能CD还剩 " + ChatColor.GOLD + CDe + "秒");
                         CD.setScore(87);
                     }
-                    if (CDr != null && Integer.parseInt(CDr) > 0) {
+                    if (CDr != null && Integer.parseInt(CDr) > 0&& !CDr.equals("")) {
                         Score CD = information.getScore(ChatColor.WHITE + "R技能CD还剩 " + ChatColor.GOLD + CDr + "秒");
                         CD.setScore(86);
                     }
-                    if (occupation != null) {
+                    if (occupation != null && !occupation.equals("")) {
                         Score job = information.getScore(ChatColor.WHITE + "职业： " + ChatColor.GOLD + occupation);
                         job.setScore(98);
                     }
-                    if (isWizard && mp != null && max_mp != null) {
+                    if (isWizard && mp != null && max_mp != null && !mp.equals("")) {
                         Score magic = information.getScore(ChatColor.WHITE + "魔力值：" + ChatColor.YELLOW + mp + ChatColor.BOLD + "/" + ChatColor.GOLD + max_mp);
                         magic.setScore(90);
                     }
                     Score name = information.getScore(ChatColor.WHITE + "名字： " + ChatColor.GOLD + p.getName());
                     name.setScore(99);
                     DecimalFormat format1 = new DecimalFormat("0.0");
-                    Score health = information.getScore(ChatColor.WHITE + "生命值： " + ChatColor.YELLOW + format1.format(p.getHealth()) + ChatColor.BOLD + " / " + ChatColor.GOLD + max_hp);
-                    health.setScore(93);
+                    if (max_hp!=null && !max_hp.equals("")) {
+                        Score health = information.getScore(ChatColor.WHITE + "生命值： " + ChatColor.YELLOW + format1.format(p.getHealth()) + ChatColor.BOLD + " / " + ChatColor.GOLD + max_hp);
+                        health.setScore(93);
+                    }
                     Score onlineplayer = information.getScore(ChatColor.WHITE + "在线人数： " + ChatColor.GOLD + Bukkit.getOnlinePlayers().size());
-                    onlineplayer.setScore(84);
+                    onlineplayer.setScore(0);
 
                     List<String> temp_list = tool_config.getStringList("customerline");
                     List<String> customer_line = Lists.reverse(temp_list);
