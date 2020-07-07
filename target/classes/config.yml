@@ -40,11 +40,14 @@ enable_email: true
 '注释32请勿修改': '是否开启入服提示功能'
 enable_onjoin: true
 
+'注释35请勿修改': '是否开启远程背包功能'
+enable_remote_chest: true
+
 '注释9请勿修改': '（白名单）开启白名单'
 enable_white_list: false
 
 '注释11请勿修改': '（侧边栏）在安装PlaceholderAPI的情况下生效。空出（""）则为不显示'
-'注释12请勿修改': '（侧边栏）技能变量'
+'注释12请勿修改': '（侧边栏）开启PAPI变量'
 enable_PAPI: false
 '注释17请勿修改': '（侧边栏）技能冷却值变量'
 CDq: "%ul_q_cd%"
@@ -69,8 +72,17 @@ max_mp: ""
 max_hp: ""
 '注释19请勿修改': '（侧边栏）玩家职业变量'
 occupation: "%ul_job%"
+'注释28请勿修改': '（侧边栏）自定义内容'
+customerline:
+  - '这是自定义的内容'
+  - '可以在配置文件里改'
+  - '你好，%player_name%'
+  - '你甚至可以在里面加上PAPI变量'
 
 '注释26请勿修改': '（锁箱子）OP是否可以打开上锁的箱子（并非解锁，仅查看）'
 op_unlock: true
 '注释27请勿修改': '（锁箱子）OP是否可以破坏上锁的箱子'
 op_break_locked: true
+
+'注释29请勿修改': '（远程背包）创建一个远程背包所需的价格'
+price_of_create_a_remote_chest: 10000

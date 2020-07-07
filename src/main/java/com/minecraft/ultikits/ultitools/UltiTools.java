@@ -4,6 +4,7 @@ package com.minecraft.ultikits.ultitools;
 import com.minecraft.economy.apis.UltiEconomy;
 import com.minecraft.economy.database.DataBase;
 import com.minecraft.economy.database.LinkedDataBase;
+import com.minecraft.ultikits.GUIs.GUISetup;
 import com.minecraft.ultikits.UpdateChecker.ConfigFileChecker;
 import com.minecraft.ultikits.UpdateChecker.VersionChecker;
 import com.minecraft.ultikits.chestLock.ChestLock;
@@ -11,6 +12,8 @@ import com.minecraft.ultikits.chestLock.ChestLockCMD;
 import com.minecraft.ultikits.email.Email;
 import com.minecraft.ultikits.home.Home;
 import com.minecraft.ultikits.joinWelcome.onJoin;
+import com.minecraft.ultikits.remoteChest.ChestPage;
+import com.minecraft.ultikits.remoteChest.RemoteBagCMD;
 import com.minecraft.ultikits.scoreBoard.runTask;
 import com.minecraft.ultikits.scoreBoard.sb_commands;
 import com.minecraft.ultikits.whiteList.whitelist_commands;
@@ -101,7 +104,9 @@ public final class UltiTools extends JavaPlugin {
             Objects.requireNonNull(this.getCommand("lock")).setExecutor(new ChestLockCMD());
             Objects.requireNonNull(this.getCommand("unlock")).setExecutor(new ChestLockCMD());
         }
-
+        if (this.getConfig().getBoolean("enable_remote_chest")) {
+            Objects.requireNonNull(this.getCommand("bag")).setExecutor(new RemoteBagCMD());
+        }
 
         //注册监听器
         if (getConfig().getBoolean("enable_onjoin")) {
@@ -113,10 +118,18 @@ public final class UltiTools extends JavaPlugin {
         if (this.getConfig().getBoolean("enable_lock")) {
             Bukkit.getPluginManager().registerEvents(new ChestLock(), this);
         }
+        if (this.getConfig().getBoolean("enable_remote_chest")) {
+            Bukkit.getPluginManager().registerEvents(new ChestPage(), this);
+        }
 
         //注册任务
         if (this.getConfig().getBoolean("enable_scoreboard")) {
             BukkitTask t1 = new runTask().runTaskTimer(this, 0, 20L);
+        }
+
+        //初始化GUI
+        if (this.getConfig().getBoolean("enable_remote_chest")) {
+            GUISetup.setUpGUIs();
         }
 
         getServer().getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "基础插件已加载！");

@@ -24,22 +24,20 @@ public class Email implements CommandExecutor {
 
                             player.sendMessage(emailManager.getEmails().toString());
                             emailManager.setHistoryEmail();
-                            return true;
                         } else {
                             player.sendMessage(ChatColor.AQUA + "你没有新邮件可读！");
-                            return true;
                         }
+                        return true;
                     } else if (strings[0].equalsIgnoreCase("history")) {
                         player.sendMessage(emailManager.getHistoryEmails());
                         return true;
                     } else if (strings[0].equalsIgnoreCase("delhistory")) {
                         if (emailManager.deleteHistoryEmails()) {
                             player.sendMessage(ChatColor.RED + "所有历史邮件都已删除！");
-                            return true;
                         } else {
                             player.sendMessage(ChatColor.RED + "你还没有收到过任何邮件！");
-                            return true;
                         }
+                        return true;
                     }
                 } else if (strings.length == 3) {
                     if (strings[0].equalsIgnoreCase("send")) {
@@ -47,15 +45,13 @@ public class Email implements CommandExecutor {
                             if (emailManager.sendEmail(Bukkit.getPlayer(strings[1]), strings[2])) {
                                 player.sendMessage(ChatColor.GOLD + "正在发送邮件...");
                                 player.sendMessage(ChatColor.GOLD + "发送成功！");
-                                return true;
                             } else {
                                 player.sendMessage(ChatColor.RED + "未找到指定的收件人！");
-                                return true;
                             }
                         } else {
                             player.sendMessage(ChatColor.RED + "未找到指定的收件人！");
-                            return true;
                         }
+                        return true;
                     } else {
                         return false;
                     }

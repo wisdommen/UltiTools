@@ -40,6 +40,9 @@ enable_email: true
 '注释32请勿修改': '是否开启入服提示功能'
 enable_onjoin: true
 
+'注释35请勿修改': '是否开启远程背包功能'
+enable_remote_chest: true
+
 '注释9请勿修改': '（白名单）开启白名单'
 enable_white_list: false
 
@@ -80,3 +83,6 @@ customerline:
 op_unlock: true
 '注释27请勿修改': '（锁箱子）OP是否可以破坏上锁的箱子'
 op_break_locked: true
+
+'注释29请勿修改': '（远程背包）创建一个远程背包所需的价格'
+price_of_create_a_remote_chest: 10000
