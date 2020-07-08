@@ -24,7 +24,9 @@ public class InventoryManager {
     }
 
     public void setItem(int position, ItemStack item) {
-        if (position < 0) return;
+        if (position < 0) {
+            return;
+        }
         if (inventory.getItem(position) == null) {
             inventory.setItem(position, item);
         }

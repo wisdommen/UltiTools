@@ -23,10 +23,10 @@ public class Home implements CommandExecutor {
             Player player = (Player) sender;
             File file = new File(UltiTools.getInstance().getDataFolder() + "/playerData", player.getName() + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-            boolean enable_home = UltiTools.getInstance().getConfig().getBoolean("enable_home");
+            boolean enableHome = UltiTools.getInstance().getConfig().getBoolean("enable_home");
 
-            if (cmd.getName().equalsIgnoreCase("sethome")) {
-                if (enable_home) {
+            if ("sethome".equalsIgnoreCase(cmd.getName())) {
+                if (enableHome) {
                     if (args.length == 0) {
                         String homelist = config.getString(player.getName() + ".homelist");
                         config.set(player.getName() + ".Def.world", player.getWorld().getName());
@@ -75,8 +75,8 @@ public class Home implements CommandExecutor {
                     player.sendMessage(ChatColor.RED + "[家插件]此功能已被屏蔽！");
                     return true;
                 }
-            } else if (cmd.getName().equalsIgnoreCase("home")) {
-                if (enable_home) {
+            } else if ("home".equalsIgnoreCase(cmd.getName())) {
+                if (enableHome) {
                     if (file.exists()) {
                         try {
                             if (args.length == 0) {
@@ -103,21 +103,19 @@ public class Home implements CommandExecutor {
                     } else {
                         player.sendMessage(ChatColor.RED + "[家插件]你还没有设置家！");
                     }
-                    return true;
                 }else {
                     player.sendMessage(ChatColor.RED + "[家插件]此功能已被屏蔽！");
-                    return true;
                 }
-            } else if (cmd.getName().equalsIgnoreCase("homelist")) {
-                if (enable_home) {
+                return true;
+            } else if ("homelist".equalsIgnoreCase(cmd.getName())) {
+                if (enableHome) {
                     player.sendMessage(ChatColor.GREEN + "你的家：" + config.getString(player.getName() + ".homelist"));
-                    return true;
                 }else {
                     player.sendMessage(ChatColor.RED + "[家插件]此功能已被屏蔽！");
-                    return true;
                 }
-            } else if (cmd.getName().equalsIgnoreCase("delhome")) {
-                if (enable_home) {
+                return true;
+            } else if ("delhome".equalsIgnoreCase(cmd.getName())) {
+                if (enableHome) {
                     if (file.exists() && args.length == 1) {
                         if (config.get(player.getName() + "." + args[0]) != null) {
                             config.set(player.getName() + "." + args[0], "");

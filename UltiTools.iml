@@ -71,5 +71,6 @@
     <orderEntry type="library" name="Maven: net.md-5:bungeecord-chat:1.15-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Ultilevel-1.0.0_release" level="project" />
     <orderEntry type="library" name="UltiEconomy-1.0.0_release" level="project" />
+    <orderEntry type="library" name="VaultAPI-1.7" level="project" />
   </component>
 </module>

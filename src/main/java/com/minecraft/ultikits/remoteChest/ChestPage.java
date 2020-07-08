@@ -1,6 +1,5 @@
 package com.minecraft.ultikits.remoteChest;
 
-import com.minecraft.economy.apis.UltiEconomy;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import com.minecraft.ultikits.utils.Utils;
 import org.bukkit.Bukkit;
@@ -76,23 +75,23 @@ public class ChestPage implements Listener {
         Player player = (Player) event.getWhoClicked();
         ItemStack clicked = event.getCurrentItem();
         YamlConfiguration config = Utils.getConfig(Utils.getConfigFile());
-        File chest_file = new File(UltiTools.getInstance().getDataFolder() + "/chestData", player.getName() + ".yml");
-        YamlConfiguration chest_config = YamlConfiguration.loadConfiguration(chest_file);
+        File chestFile = new File(UltiTools.getInstance().getDataFolder() + "/chestData", player.getName() + ".yml");
+        YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
 
-        UltiEconomy economy = UltiTools.getEconomy();
-
-        if (event.getView().getTitle().equals("远程背包")) {
+        if ("远程背包".equals(event.getView().getTitle())) {
             if (clicked != null && clicked.getItemMeta()!=null) {
                 event.setCancelled(true);
                 if (clicked.getItemMeta().getDisplayName().contains("号背包")) {
-                    String chest_name = ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
-                    loadBag(chest_name, player);
-                } else if (ChatColor.stripColor(clicked.getItemMeta().getDisplayName()).equals("创建背包")) {
-                    if (economy.checkMoney(player.getName()) >= config.getInt("price_of_create_a_remote_chest")) {
-                        economy.takeFrom(player.getName(), config.getInt("price_of_create_a_remote_chest"));
-                        loadBag((chest_config.getKeys(false).size() + 1) + "号背包", player);
-                    } else {
-                        player.sendMessage(not_enough_money);
+                    String chestName = ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
+                    loadBag(chestName, player);
+                } else if ("创建背包".equals(ChatColor.stripColor(clicked.getItemMeta().getDisplayName()))) {
+                    if (UltiTools.getIsVaultInstalled()) {
+                        if (UltiTools.getEcon().has(Bukkit.getOfflinePlayer(player.getUniqueId()), config.getInt("price_of_create_a_remote_chest"))) {
+                            UltiTools.getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(player.getUniqueId()), config.getInt("price_of_create_a_remote_chest"));
+                            loadBag((chestConfig.getKeys(false).size() + 1) + "号背包", player);
+                        } else {
+                            player.sendMessage(not_enough_money);
+                        }
                     }
                 }
             }
@@ -104,44 +103,44 @@ public class ChestPage implements Listener {
         Player player = (Player) event.getPlayer();
         Inventory inventory = event.getInventory();
         if (event.getView().getTitle().contains("号背包")) {
-            File chest_file = new File(UltiTools.getInstance().getDataFolder() + "/chestData", player.getName() + ".yml");
-            YamlConfiguration chest_config = YamlConfiguration.loadConfiguration(chest_file);
+            File chestFile = new File(UltiTools.getInstance().getDataFolder() + "/chestData", player.getName() + ".yml");
+            YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
 
-            chest_config.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]), "");
-            ItemStack[] chest_contents = inventory.getContents();
+            chestConfig.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]), "");
+            ItemStack[] chestContents = inventory.getContents();
             int a = 0;
             int l = 0;
-            for (ItemStack item : chest_contents) {
+            for (ItemStack item : chestContents) {
                 if (item != null) {
                     if (item.getItemMeta()!=null) {
-                        chest_config.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]) + "." + l + ".name", item.getItemMeta().getDisplayName());
+                        chestConfig.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]) + "." + l + ".name", item.getItemMeta().getDisplayName());
                     }
-                    chest_config.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]) + "." + l + ".type", item.getType().name());
-                    chest_config.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]) + "." + l + ".quantity", item.getAmount());
-                    chest_config.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]) + "." + l + ".position", l);
+                    chestConfig.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]) + "." + l + ".type", item.getType().name());
+                    chestConfig.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]) + "." + l + ".quantity", item.getAmount());
+                    chestConfig.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]) + "." + l + ".position", l);
                     if (((Damageable) item.getItemMeta()).getDamage() > 0) {
-                        chest_config.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]) + "." + l + ".durability", ((Damageable) item.getItemMeta()).getDamage());
+                        chestConfig.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]) + "." + l + ".durability", ((Damageable) item.getItemMeta()).getDamage());
                     }
                     if (!item.getEnchantments().isEmpty()) {
                         int i = 0;
                         for (Enchantment itemEnchantments : item.getEnchantments().keySet()) {
-                            chest_config.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]) + "." + l + ".enchant." + i + ".name", itemEnchantments.getKey().toString().split(":")[1]);
-                            chest_config.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]) + "." + l + ".enchant." + i + ".level", item.getEnchantmentLevel(itemEnchantments));
+                            chestConfig.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]) + "." + l + ".enchant." + i + ".name", itemEnchantments.getKey().toString().split(":")[1]);
+                            chestConfig.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]) + "." + l + ".enchant." + i + ".level", item.getEnchantmentLevel(itemEnchantments));
                             i++;
                         }
                     }
                     if (item.getItemMeta().getLore() != null && item.getItemMeta().getLore().size() > 0) {
                         List<String> lore = item.getItemMeta().getLore();
-                        chest_config.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]) + "." + l + ".lore", lore);
+                        chestConfig.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]) + "." + l + ".lore", lore);
                     }
                     a++;
                 }
                 l++;
             }
             if (a == 0) {
-                chest_config.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]), "");
+                chestConfig.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]), "");
             }
-            chest_config.save(chest_file);
+            chestConfig.save(chestFile);
         }
     }
 }

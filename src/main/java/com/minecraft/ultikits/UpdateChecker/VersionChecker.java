@@ -20,6 +20,7 @@ public class VersionChecker {
 
     public static void setupThread() {
         Thread checkVersionThread = new Thread() {
+            @Override
             public void run() {
                 try {
                     //连接
@@ -46,7 +47,7 @@ public class VersionChecker {
                             String current_version = UltiTools.getInstance().getDescription().getVersion();
                             List<String> current_version_list = Arrays.asList(current_version.split("\\."));
                             List<String> online_version_list = Arrays.asList(version.split("\\."));
-                            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools] 正在检查更新...");
+                            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 正在检查更新...");
                             for (int i = 0; i < 3; i++) {
                                 String a = current_version_list.get(i);
                                 String b = online_version_list.get(i);
@@ -56,13 +57,13 @@ public class VersionChecker {
                                     } else {
                                         UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] 工具插件有更新，请下载最新版本！");
                                     }
-                                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools] 下载地址：https://www.mcbbs.net/thread-1060351-1-1.html");
+                                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] 下载地址：https://www.mcbbs.net/thread-1060351-1-1.html");
                                     isOutDate = true;
                                     break;
                                 }
                             }
                             if (!isOutDate) {
-                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools]太棒了！你的插件是最新的！保持最新的版本可以为你带来最好的体验！");
+                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools]太棒了！你的插件是最新的！保持最新的版本可以为你带来最好的体验！");
                             }
                             break;
                         }

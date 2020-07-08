@@ -43,6 +43,9 @@ enable_onjoin: true
 '注释35请勿修改': '是否开启远程背包功能'
 enable_remote_chest: true
 
+'注释36请勿修改': '是否开启侧边栏显示装备耐久度功能（如果性能不足请关闭这个功能）'
+enable_armor_check: true
+
 '注释9请勿修改': '（白名单）开启白名单'
 enable_white_list: false
 

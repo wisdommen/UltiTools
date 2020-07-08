@@ -24,7 +24,7 @@ public class whitelist_commands implements CommandExecutor {
                 YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
 
-                if (command.getName().equalsIgnoreCase("wl")) {
+                if ("wl".equalsIgnoreCase(command.getName())) {
                     if (args.length == 1) {
                         switch (args[0]) {
                             case "help":
@@ -41,13 +41,15 @@ public class whitelist_commands implements CommandExecutor {
                                     player.sendMessage(String.format("-%s", each));
                                 }
                                 return true;
+                            default:
+                                return false;
                         }
                     } else if (args.length == 2) {
-                        if (args[0].equalsIgnoreCase("add")) {
+                        if ("add".equalsIgnoreCase(args[0])) {
                             addPlayerToWhitelist(file, config, args[1]);
                             player.sendMessage(String.format("%s已将%s加入白名单！", ChatColor.RED, args[1]));
                             return true;
-                        } else if (args[0].equalsIgnoreCase("remove")) {
+                        } else if ("remove".equalsIgnoreCase(args[0])) {
                             removePlayerFromWhitelist(file, config, args[1]);
                             player.sendMessage(String.format("%s已将%s移出白名单！", ChatColor.RED, args[1]));
                             return true;
@@ -61,7 +63,7 @@ public class whitelist_commands implements CommandExecutor {
         } else {
             File file = new File(UltiTools.getInstance().getDataFolder(), "whitelist.yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-            if (command.getName().equalsIgnoreCase("wl")) {
+            if ("wl".equalsIgnoreCase(command.getName())) {
                 if (args.length == 1) {
                     switch (args[0]) {
                         case "help":
@@ -78,13 +80,15 @@ public class whitelist_commands implements CommandExecutor {
                                 sender.sendMessage(String.format("-%s", each));
                             }
                             return true;
+                        default:
+                            return false;
                     }
                 } else if (args.length == 2) {
-                    if (args[0].equalsIgnoreCase("add")) {
+                    if ("add".equalsIgnoreCase(args[0])) {
                         addPlayerToWhitelist(file, config, args[1]);
                         sender.sendMessage(String.format("%s已将%s加入白名单！", ChatColor.RED, args[1]));
                         return true;
-                    } else if (args[0].equalsIgnoreCase("remove")) {
+                    } else if ("remove".equalsIgnoreCase(args[0])) {
                         removePlayerFromWhitelist(file, config, args[1]);
                         sender.sendMessage(String.format("%s已将%s移出白名单！", ChatColor.RED, args[1]));
                         return true;

@@ -18,8 +18,10 @@ import com.minecraft.ultikits.scoreBoard.runTask;
 import com.minecraft.ultikits.scoreBoard.sb_commands;
 import com.minecraft.ultikits.whiteList.whitelist_commands;
 import com.minecraft.ultikits.whiteList.whitelist_listener;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -29,20 +31,42 @@ import java.util.Objects;
 public final class UltiTools extends JavaPlugin {
 
     private static UltiTools plugin;
-
     public static DataBase dataBase;
-
     private static UltiEconomy economy;
-
     public static boolean isPAPILoaded;
+    private static Economy econ = null;
+    private static Boolean isVaultInstalled;
+
+    private boolean setupVault() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
+    }
+
+    public static Economy getEcon() {
+        return econ;
+    }
+
+    public static Boolean getIsVaultInstalled() {
+        return isVaultInstalled;
+    }
 
     public static UltiEconomy getEconomy() {
         return economy;
     }
 
-    private void setupEconomy(){
+    private Boolean setupEconomy(){
         if (getServer().getPluginManager().getPlugin("Economy") != null){
             economy = new UltiEconomy();
+            return true;
+        }else {
+            return false;
         }
     }
 
@@ -50,7 +74,14 @@ public final class UltiTools extends JavaPlugin {
     public void onEnable() {
         plugin = this;
 
-        setupEconomy();
+        Boolean economyEnabled = setupEconomy();
+        boolean vaultEnabled = setupVault();
+
+        if (!economyEnabled && !vaultEnabled){
+            getLogger().info(ChatColor.RED + "UltiTools插件未找到经济插件，关闭中...");
+            getLogger().info(ChatColor.RED + "UltiTools插件至少需要Vault或者UltiEconomy才能运行");
+            getServer().getPluginManager().disablePlugin(this);
+        }
 
         isPAPILoaded = getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
 
@@ -76,12 +107,12 @@ public final class UltiTools extends JavaPlugin {
             dataBase = new LinkedDataBase(new String[]{"username", "password", "email", "token", "active", "token_exptime", "regtime", "ban"});
 
             dataBase.login(host, String.valueOf(port), username, password, database, table);
-            getServer().getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "基础插件正在接入数据库...");
+            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件正在接入数据库...");
             dataBase.connect();
-            getServer().getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "基础插件正在初始化数据库...");
+            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件正在初始化数据库...");
             dataBase.createTable();
             dataBase.close();
-            getServer().getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "基础插件已接入数据库！");
+            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件已接入数据库！");
         }
 
         //注册命令
@@ -95,7 +126,12 @@ public final class UltiTools extends JavaPlugin {
             Objects.requireNonNull(this.getCommand("homelist")).setExecutor(new Home());
         }
         if (this.getConfig().getBoolean("enable_white_list")) {
-            Objects.requireNonNull(this.getCommand("wl")).setExecutor(new whitelist_commands());
+            if (economyEnabled) {
+                Objects.requireNonNull(this.getCommand("wl")).setExecutor(new whitelist_commands());
+            }else {
+                getLogger().info(ChatColor.RED + "未找到UltiEconomy插件，关闭白名单功能");
+                getLogger().info(ChatColor.RED + "白名单功能需要配合UltiEconomy使用");
+            }
         }
         if (this.getConfig().getBoolean("enable_scoreboard")) {
             Objects.requireNonNull(this.getCommand("sb")).setExecutor(new sb_commands());
@@ -132,8 +168,8 @@ public final class UltiTools extends JavaPlugin {
             GUISetup.setUpGUIs();
         }
 
-        getServer().getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "基础插件已加载！");
-        getServer().getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "作者：wisdomme");
+        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件已加载！");
+        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "作者：wisdomme");
 
         //检查更新
         if (getConfig().getBoolean("enable_version_check")) {
@@ -143,7 +179,7 @@ public final class UltiTools extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getServer().getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "基础插件已卸载！");
+        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件已卸载！");
     }
 
     public static UltiTools getInstance() {

@@ -30,10 +30,10 @@ public class GUISetup {
 
     public static void setPlayerRemoteChest(Player player) {
         YamlConfiguration config = Utils.getConfig(Utils.getConfigFile());
-        File chest_file = new File(UltiTools.getInstance().getDataFolder() + "/chestData", player.getName() + ".yml");
-        YamlConfiguration chest_config = YamlConfiguration.loadConfiguration(chest_file);
-        if (!chest_config.getKeys(false).isEmpty()) {
-            for (int i = 1; i <= chest_config.getKeys(false).size(); i++) {
+        File chestFile = new File(UltiTools.getInstance().getDataFolder() + "/chestData", player.getName() + ".yml");
+        YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
+        if (!chestConfig.getKeys(false).isEmpty()) {
+            for (int i = 1; i <= chestConfig.getKeys(false).size(); i++) {
                 ItemStackManager itemStackManager = new ItemStackManager(new ItemStack(Material.CHEST), new ArrayList<>(), info(i + "号背包"));
                 itemStackManager.setUpItem();
                 inventoryMap.get("chest").setItem(i - 1, itemStackManager.getItem());

@@ -1,6 +1,6 @@
 package com.minecraft.ultikits.joinWelcome;
 
-import com.minecraft.ultikits.reflection.ReflectionUtils;
+//import com.minecraft.ultikits.reflection.ReflectionUtils;
 import com.minecraft.ultikits.ultitools.UltiTools;
 //import net.minecraft.server.v1_15_R1.IChatBaseComponent;
 //import net.minecraft.server.v1_15_R1.PacketPlayOutChat;
@@ -18,7 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 
-import static com.minecraft.ultikits.reflection.ReflectionUtils.*;
+//import static com.minecraft.ultikits.reflection.ReflectionUtils.*;
 
 
 public class onJoin implements Listener {
@@ -79,7 +79,7 @@ public class onJoin implements Listener {
 //                    connection.sendPacket(packet);
                     player.sendMessage(ChatColor.AQUA + "当前在线人数：" + ChatColor.YELLOW + UltiTools.getInstance().getServer().getOnlinePlayers().size() + ChatColor.AQUA + " ，快和他们打个招呼吧！");
                     player.sendMessage(ChatColor.AQUA + "你有 " + ChatColor.YELLOW + config.getInt("count") + ChatColor.AQUA + " 封未读邮件！");
-                    if (!website.equalsIgnoreCase("none")) {
+                    if (!"none".equalsIgnoreCase(website)) {
                         player.sendMessage(ChatColor.AQUA + "服务器网址：" + ChatColor.YELLOW + website);
                     }
                 }

@@ -6,9 +6,13 @@ import com.minecraft.ultikits.ultitools.UltiTools;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 
@@ -29,7 +33,7 @@ public class runTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        try {
+
             FileConfiguration tool_config = UltiTools.getInstance().getConfig();
             List<String> players = tool_config.getStringList("player_closed_sb");
             for (Player p : Bukkit.getOnlinePlayers()) {
@@ -174,11 +178,11 @@ public class runTask extends BukkitRunnable {
 //            Score team1 = team.getScore("成员："+p.getName());
 //            team1.setScore(1);
 
-                    if (money!=null && !money.equals("")) {
+                    if (money != null && !money.equals("")) {
                         Score gold = information.getScore(ChatColor.WHITE + "金币： " + ChatColor.GOLD + money);
                         gold.setScore(97);
                     }
-                    if (deposit!=null && !deposit.equals("")) {
+                    if (deposit != null && !deposit.equals("")) {
                         Score bank = information.getScore(ChatColor.WHITE + "存款： " + ChatColor.GOLD + deposit);
                         bank.setScore(96);
                     }
@@ -198,15 +202,15 @@ public class runTask extends BukkitRunnable {
                         Score CD = information.getScore(ChatColor.WHITE + "Q技能CD还剩 " + ChatColor.GOLD + CDq + "秒");
                         CD.setScore(89);
                     }
-                    if (CDw != null && Integer.parseInt(CDw) > 0&& !CDw.equals("")) {
+                    if (CDw != null && Integer.parseInt(CDw) > 0 && !CDw.equals("")) {
                         Score CD = information.getScore(ChatColor.WHITE + "W技能CD还剩 " + ChatColor.GOLD + CDw + "秒");
                         CD.setScore(88);
                     }
-                    if (CDe != null && Integer.parseInt(CDe) > 0&& !CDe.equals("")) {
+                    if (CDe != null && Integer.parseInt(CDe) > 0 && !CDe.equals("")) {
                         Score CD = information.getScore(ChatColor.WHITE + "E技能CD还剩 " + ChatColor.GOLD + CDe + "秒");
                         CD.setScore(87);
                     }
-                    if (CDr != null && Integer.parseInt(CDr) > 0&& !CDr.equals("")) {
+                    if (CDr != null && Integer.parseInt(CDr) > 0 && !CDr.equals("")) {
                         Score CD = information.getScore(ChatColor.WHITE + "R技能CD还剩 " + ChatColor.GOLD + CDr + "秒");
                         CD.setScore(86);
                     }
@@ -221,26 +225,72 @@ public class runTask extends BukkitRunnable {
                     Score name = information.getScore(ChatColor.WHITE + "名字： " + ChatColor.GOLD + p.getName());
                     name.setScore(99);
                     DecimalFormat format1 = new DecimalFormat("0.0");
-                    if (max_hp!=null && !max_hp.equals("")) {
+                    if (max_hp != null && !"".equals(max_hp)) {
                         Score health = information.getScore(ChatColor.WHITE + "生命值： " + ChatColor.YELLOW + format1.format(p.getHealth()) + ChatColor.BOLD + " / " + ChatColor.GOLD + max_hp);
                         health.setScore(93);
                     }
                     Score onlineplayer = information.getScore(ChatColor.WHITE + "在线人数： " + ChatColor.GOLD + Bukkit.getOnlinePlayers().size());
                     onlineplayer.setScore(0);
 
-                    List<String> temp_list = tool_config.getStringList("customerline");
-                    List<String> customer_line = Lists.reverse(temp_list);
+                    if (UltiTools.getInstance().getConfig().getBoolean("enable_armor_check")) {
+                        ArmorsManager armorsManager = new ArmorsManager(p);
+                        String H = String.valueOf(armorsManager.getHatDurability());
+                        String C = String.valueOf(armorsManager.getChestDurability());
+                        String L = String.valueOf(armorsManager.getLegDurability());
+                        String B = String.valueOf(armorsManager.getBootsDurability());
+                        String M = String.valueOf(armorsManager.getMainHandDurability());
+                        String O = String.valueOf(armorsManager.getOffHandDurability());
+                        if ("-1".equals(H)) {
+                            H = "无";
+                        } else if ("0".equals(H)) {
+                            H = "∞";
+                        }
+                        if ("-1".equals(C)) {
+                            C = "无";
+                        } else if ("0".equals(C)) {
+                            C = "∞";
+                        }
+                        if ("-1".equals(L)) {
+                            L = "无";
+                        } else if ("0".equals(L)) {
+                            L = "∞";
+                        }
+                        if ("-1".equals(B)) {
+                            B = "无";
+                        } else if ("0".equals(B)) {
+                            B = "∞";
+                        }
+                        if ("-1".equals(M)) {
+                            M = "无";
+                        } else if ("0".equals(M)) {
+                            M = "∞";
+                        }
+                        if ("-1".equals(O)) {
+                            O = "无";
+                        } else if ("0".equals(O)) {
+                            O = "∞";
+                        }
+                        Score equipment1 = information.getScore(ChatColor.GREEN + "H " + H + " C " + C);
+                        Score equipment2 = information.getScore(ChatColor.GREEN + "L " + L + " B " + B);
+                        Score equipment3 = information.getScore(ChatColor.GREEN + "M " + M + " O " + O);
+                        equipment1.setScore(-1);
+                        equipment2.setScore(-2);
+                        equipment3.setScore(-3);
+                    }
+
+                    List<String> tempList = tool_config.getStringList("customerline");
+                    List<String> customer_line = Lists.reverse(tempList);
                     int i = 1;
-                    for (String each_line : customer_line){
+                    for (String each_line : customer_line) {
                         Score customer;
-                        if (each_line.contains("%")){
+                        if (each_line.contains("%")) {
                             each_line.replace("%", "");
-                            if (!each_line.contains("%")){
+                            if (!each_line.contains("%")) {
                                 customer = information.getScore(ChatColor.WHITE + each_line);
-                            }else {
+                            } else {
                                 customer = information.getScore(ChatColor.WHITE + PlaceholderAPI.setPlaceholders(p, each_line));
                             }
-                        }else {
+                        } else {
                             customer = information.getScore(ChatColor.WHITE + each_line);
                         }
                         customer.setScore(i);
@@ -251,7 +301,6 @@ public class runTask extends BukkitRunnable {
                     p.setScoreboard(Objects.requireNonNull(Bukkit.getScoreboardManager()).getNewScoreboard());
                 }
             }
-        }catch (Exception ignored){
-        }
+
     }
 }

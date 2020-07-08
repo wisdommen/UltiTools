@@ -17,30 +17,33 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author wisdomme
+ */
 public class ChestLock implements Listener {
 
     @EventHandler
     public void onPlayerOpenChest(PlayerInteractEvent event) {
         if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.CHEST) {
             Player player = event.getPlayer();
-            Location chest_location = event.getClickedBlock().getLocation();
-            File chest_file = new File(UltiTools.getInstance().getDataFolder(), "chestData.yml");
-            File player_file = new File(UltiTools.getInstance().getDataFolder() + "/playerData", player.getName() + ".yml");
-            YamlConfiguration chest_data = YamlConfiguration.loadConfiguration(chest_file);
-            YamlConfiguration player_data = YamlConfiguration.loadConfiguration(player_file);
-            List<String> chests = chest_data.getStringList("locked");
+            Location chestLocation = event.getClickedBlock().getLocation();
+            File chestFile = new File(UltiTools.getInstance().getDataFolder(), "chestData.yml");
+            File playerFile = new File(UltiTools.getInstance().getDataFolder() + "/playerData", player.getName() + ".yml");
+            YamlConfiguration chestData = YamlConfiguration.loadConfiguration(chestFile);
+            YamlConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
+            List<String> chests = chestData.getStringList("locked");
 
-            String world = Objects.requireNonNull(chest_location.getWorld()).getName();
-            double x = chest_location.getX();
-            double y = chest_location.getY();
-            double z = chest_location.getZ();
+            String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
+            double x = chestLocation.getX();
+            double y = chestLocation.getY();
+            double z = chestLocation.getZ();
             String local = player.getName() + "/" + world + "/" + x + "/" + y + "/" + z;
 
-            if (player_data.getBoolean("lock")) {
+            if (playerData.getBoolean("lock")) {
                 event.setCancelled(true);
-                player_data.set("lock", false);
+                playerData.set("lock", false);
                 try {
-                    player_data.save(player_file);
+                    playerData.save(playerFile);
                 } catch (IOException e) {
                     player.sendMessage(ChatColor.RED + "文件保存失败，上锁失败！请再次点击。");
                     return;
@@ -57,9 +60,9 @@ public class ChestLock implements Listener {
                     }
                 }
                 chests.add(local);
-                chest_data.set("locked", chests);
+                chestData.set("locked", chests);
                 try {
-                    chest_data.save(chest_file);
+                    chestData.save(chestFile);
                 } catch (IOException e) {
                     player.sendMessage(ChatColor.RED + "文件保存失败，上锁失败！重新输入/lock指令。");
                     return;
@@ -68,20 +71,20 @@ public class ChestLock implements Listener {
                 player.sendMessage(ChatColor.RED + "如果是大箱子，请将另一半也锁上");
                 player.sendMessage(ChatColor.RED + "或者你可以让另一个人锁，即为共享箱子");
                 return;
-            } else if (player_data.getBoolean("unlock")) {
+            } else if (playerData.getBoolean("unlock")) {
                 event.setCancelled(true);
-                player_data.set("unlock", false);
+                playerData.set("unlock", false);
                 try {
-                    player_data.save(player_file);
+                    playerData.save(playerFile);
                 } catch (IOException e) {
                     player.sendMessage(ChatColor.RED + "文件保存失败，解锁失败！请再次点击。");
                     return;
                 }
                 if (chests.contains(local)) {
                     chests.remove(local);
-                    chest_data.set("locked", chests);
+                    chestData.set("locked", chests);
                     try {
-                        chest_data.save(chest_file);
+                        chestData.save(chestFile);
                     } catch (IOException e) {
                         player.sendMessage(ChatColor.RED + "文件保存失败，解锁失败！重新输入/lock指令。");
                         return;
@@ -120,17 +123,17 @@ public class ChestLock implements Listener {
     @EventHandler
     public void onPlayerDestroyChest(BlockBreakEvent event) {
         if (event.getBlock().getType() == Material.CHEST) {
-            Location chest_location = event.getBlock().getLocation();
+            Location chestLocation = event.getBlock().getLocation();
             Player player = event.getPlayer();
-            File chest_file = new File(UltiTools.getInstance().getDataFolder(), "chestData.yml");
-            YamlConfiguration chest_data = YamlConfiguration.loadConfiguration(chest_file);
-            List<String> chests = chest_data.getStringList("locked");
-            int size_before = chests.size();
+            File chestFile = new File(UltiTools.getInstance().getDataFolder(), "chestData.yml");
+            YamlConfiguration chestData = YamlConfiguration.loadConfiguration(chestFile);
+            List<String> chests = chestData.getStringList("locked");
+            int sizeBefore = chests.size();
 
-            String world = Objects.requireNonNull(chest_location.getWorld()).getName();
-            double x = chest_location.getX();
-            double y = chest_location.getY();
-            double z = chest_location.getZ();
+            String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
+            double x = chestLocation.getX();
+            double y = chestLocation.getY();
+            double z = chestLocation.getZ();
             String local = player.getName() + "/" + world + "/" + x + "/" + y + "/" + z;
 
             if (player.isOp()) {
@@ -138,10 +141,10 @@ public class ChestLock implements Listener {
             } else {
                 chests.remove(local);
             }
-            if (size_before>chests.size()) {
-                chest_data.set("locked", chests);
+            if (sizeBefore>chests.size()) {
+                chestData.set("locked", chests);
                 try {
-                    chest_data.save(chest_file);
+                    chestData.save(chestFile);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

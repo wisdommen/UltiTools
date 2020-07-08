@@ -15,7 +15,7 @@ public class sb_commands implements CommandExecutor {
         if (commandSender instanceof Player){
             Player player = (Player) commandSender;
             List<String> players = UltiTools.getInstance().getConfig().getStringList("player_closed_sb");
-            if (command.getName().equalsIgnoreCase("sb") && strings.length == 1){
+            if ("sb".equalsIgnoreCase(command.getName()) && strings.length == 1){
                 switch (strings[0]){
                     case "open":
                         players.remove(player.getName());

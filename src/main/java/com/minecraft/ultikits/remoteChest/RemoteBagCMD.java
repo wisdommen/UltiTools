@@ -19,16 +19,16 @@ public class RemoteBagCMD implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player){
             Player player = (Player) sender;
-            if (command.getName().equals("bag")){
+            if ("bag".equals(command.getName())){
                 GUISetup.setPlayerRemoteChest(player);
                 player.openInventory(GUISetup.inventoryMap.get("chest").getInventory());
                 return true;
             }
-            else if (command.getName().equals("book")){
+            else if ("book".equals(command.getName())){
                 getRandomEnchantBook();
                 return true;
             }
-            else if (command.getName().equals("test")){
+            else if ("test".equals(command.getName())){
                 ArrayList<String> lore = new ArrayList<>();
                 lore.add("lore1");
                 lore.add("lore2");

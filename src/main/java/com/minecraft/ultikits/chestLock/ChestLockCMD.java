@@ -11,34 +11,37 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * @author wisdomme
+ */
 public class ChestLockCMD implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player){
             Player player = (Player) sender;
-            File player_file = new File(UltiTools.getInstance().getDataFolder() + "/playerData", player.getName()+".yml");
-            YamlConfiguration player_data = YamlConfiguration.loadConfiguration(player_file);
+            File playerFile = new File(UltiTools.getInstance().getDataFolder() + "/playerData", player.getName()+".yml");
+            YamlConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
 
-            if (command.getName().equalsIgnoreCase("lock")){
-                player_data.set("lock", true);
-                if (player_data.getBoolean("unlock")){
-                    player_data.set("unlock", false);
+            if ("lock".equalsIgnoreCase(command.getName())){
+                playerData.set("lock", true);
+                if (playerData.getBoolean("unlock")){
+                    playerData.set("unlock", false);
                 }
                 try {
-                    player_data.save(player_file);
+                    playerData.save(playerFile);
                 } catch (IOException e) {
                     player.sendMessage(ChatColor.RED + "文件保存失败，上锁失败！重新输入/lock指令。");
                     return true;
                 }
                 player.sendMessage(ChatColor.GREEN + "请点击箱子来上锁！");
                 return true;
-            }else if (command.getName().equalsIgnoreCase("unlock")){
-                player_data.set("unlock", true);
-                if (player_data.getBoolean("lock")){
-                    player_data.set("lock", false);
+            }else if ("unlock".equalsIgnoreCase(command.getName())){
+                playerData.set("unlock", true);
+                if (playerData.getBoolean("lock")){
+                    playerData.set("lock", false);
                 }
                 try {
-                    player_data.save(player_file);
+                    playerData.save(playerFile);
                 } catch (IOException e) {
                     player.sendMessage(ChatColor.RED + "文件保存失败，解锁失败！重新输入/unlock指令。");
                     return true;

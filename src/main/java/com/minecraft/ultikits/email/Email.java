@@ -16,9 +16,9 @@ public class Email implements CommandExecutor {
             Player player = (Player) commandSender;
             EmailManager emailManager = new EmailManager(player);
 
-            if (command.getName().equalsIgnoreCase("email")) {
+            if ("email".equalsIgnoreCase(command.getName())) {
                 if (strings.length == 1) {
-                    if (strings[0].equalsIgnoreCase("read")) {
+                    if ("read".equalsIgnoreCase(strings[0])) {
                         if (emailManager.getEmails().length() != 0) {
                             player.sendMessage(ChatColor.AQUA + "以下是你的收到的邮件！共有" + ChatColor.RED + emailManager.getEmailNum() + ChatColor.AQUA + "封邮件！");
 
@@ -28,10 +28,10 @@ public class Email implements CommandExecutor {
                             player.sendMessage(ChatColor.AQUA + "你没有新邮件可读！");
                         }
                         return true;
-                    } else if (strings[0].equalsIgnoreCase("history")) {
+                    } else if ("history".equalsIgnoreCase(strings[0])) {
                         player.sendMessage(emailManager.getHistoryEmails());
                         return true;
-                    } else if (strings[0].equalsIgnoreCase("delhistory")) {
+                    } else if ("delhistory".equalsIgnoreCase(strings[0])) {
                         if (emailManager.deleteHistoryEmails()) {
                             player.sendMessage(ChatColor.RED + "所有历史邮件都已删除！");
                         } else {
@@ -40,7 +40,7 @@ public class Email implements CommandExecutor {
                         return true;
                     }
                 } else if (strings.length == 3) {
-                    if (strings[0].equalsIgnoreCase("send")) {
+                    if ("send".equalsIgnoreCase(strings[0])) {
                         if (Bukkit.getPlayer(strings[1]) != null) {
                             if (emailManager.sendEmail(Bukkit.getPlayer(strings[1]), strings[2])) {
                                 player.sendMessage(ChatColor.GOLD + "正在发送邮件...");
