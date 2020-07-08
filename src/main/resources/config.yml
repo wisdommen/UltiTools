@@ -46,6 +46,9 @@ enable_remote_chest: true
 '注释36请勿修改': '是否开启侧边栏显示装备耐久度功能（如果性能不足请关闭这个功能）'
 enable_armor_check: true
 
+'注释37请勿修改': '是否开启多世界管理/传送'
+enable_multiworlds: true
+
 '注释9请勿修改': '（白名单）开启白名单'
 enable_white_list: false
 
@@ -89,3 +92,6 @@ op_break_locked: true
 
 '注释29请勿修改': '（远程背包）创建一个远程背包所需的价格'
 price_of_create_a_remote_chest: 10000
+
+'注释38请勿修改': '禁止传送进入的世界'
+blocked_worlds: []

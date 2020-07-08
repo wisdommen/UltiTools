@@ -1,5 +1,5 @@
 name: UltiTools
-version: 1.4.0
+version: 1.5.0
 main: com.minecraft.ultikits.ultitools.UltiTools
 api-version: 1.13
 prefix: UltiTools
@@ -45,3 +45,6 @@ commands:
   bag:
     description: 远程背包
     usage: /bag 打开远程背包
+  mw:
+    description: 多世界管理
+    usage: /mw help

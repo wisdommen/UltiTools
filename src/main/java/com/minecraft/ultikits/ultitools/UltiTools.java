@@ -12,6 +12,7 @@ import com.minecraft.ultikits.chestLock.ChestLockCMD;
 import com.minecraft.ultikits.email.Email;
 import com.minecraft.ultikits.home.Home;
 import com.minecraft.ultikits.joinWelcome.onJoin;
+import com.minecraft.ultikits.multiworlds.multiWorlds;
 import com.minecraft.ultikits.remoteChest.ChestPage;
 import com.minecraft.ultikits.remoteChest.RemoteBagCMD;
 import com.minecraft.ultikits.scoreBoard.runTask;
@@ -142,6 +143,9 @@ public final class UltiTools extends JavaPlugin {
         }
         if (this.getConfig().getBoolean("enable_remote_chest")) {
             Objects.requireNonNull(this.getCommand("bag")).setExecutor(new RemoteBagCMD());
+        }
+        if (this.getConfig().getBoolean("enable_multiworlds")) {
+            Objects.requireNonNull(this.getCommand("mw")).setExecutor(new multiWorlds());
         }
 
         //注册监听器
