@@ -49,6 +49,9 @@ enable_armor_check: true
 '注释37请勿修改': '是否开启多世界管理/传送'
 enable_multiworlds: true
 
+'注释39请勿修改': '是否开启聊天前缀功能'
+enable_chat: true
+
 '注释9请勿修改': '（白名单）开启白名单'
 enable_white_list: false
 
@@ -95,3 +98,6 @@ price_of_create_a_remote_chest: 10000
 
 '注释38请勿修改': '禁止传送进入的世界'
 blocked_worlds: []
+
+'注释41请勿修改': '(chat) 自定义聊天前缀'
+chat_prefix: '§e[§a%player_world%§e][§c%ul_job%§dLv.%ul_level%§e][§b%player_name%§e]'

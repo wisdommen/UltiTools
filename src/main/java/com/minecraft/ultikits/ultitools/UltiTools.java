@@ -1,6 +1,7 @@
 package com.minecraft.ultikits.ultitools;
 
 
+import com.minecraft.Ultilevel.level.listener.chat;
 import com.minecraft.economy.apis.UltiEconomy;
 import com.minecraft.economy.database.DataBase;
 import com.minecraft.economy.database.LinkedDataBase;
@@ -13,6 +14,7 @@ import com.minecraft.ultikits.email.Email;
 import com.minecraft.ultikits.home.Home;
 import com.minecraft.ultikits.joinWelcome.onJoin;
 import com.minecraft.ultikits.multiworlds.multiWorlds;
+import com.minecraft.ultikits.prefix.Chat;
 import com.minecraft.ultikits.remoteChest.ChestPage;
 import com.minecraft.ultikits.remoteChest.RemoteBagCMD;
 import com.minecraft.ultikits.scoreBoard.runTask;
@@ -160,6 +162,9 @@ public final class UltiTools extends JavaPlugin {
         }
         if (this.getConfig().getBoolean("enable_remote_chest")) {
             Bukkit.getPluginManager().registerEvents(new ChestPage(), this);
+        }
+        if (getConfig().getBoolean("enable_chat")) {
+            getServer().getPluginManager().registerEvents(new Chat(), this);
         }
 
         //注册任务
