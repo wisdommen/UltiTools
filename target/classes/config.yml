@@ -26,7 +26,7 @@ enable_scoreboard: true
 player_closed_sb: []
 
 '注释21请勿修改': '是否开启自动版本检查'
-enable_version_check: false
+enable_version_check: true
 
 '注释22请勿修改': '是否开启家功能'
 enable_home: true

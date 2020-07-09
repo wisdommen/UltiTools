@@ -1,6 +1,7 @@
 package com.minecraft.ultikits.chestLock;
 
 import com.minecraft.ultikits.ultitools.UltiTools;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.io.File;
@@ -149,6 +151,26 @@ public class ChestLock implements Listener {
                     e.printStackTrace();
                 }
                 player.sendMessage(ChatColor.RED + "你删除了一个上锁的箱子！");
+            }
+        }
+    }
+
+    @EventHandler
+    public void onItemRemovedByHopper(InventoryMoveItemEvent event){
+        Location chestLocation = event.getSource().getLocation();
+        File chestFile = new File(UltiTools.getInstance().getDataFolder(), "chestData.yml");
+        YamlConfiguration chestData = YamlConfiguration.loadConfiguration(chestFile);
+        List<String> chests = chestData.getStringList("locked");
+
+        String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
+        double x = chestLocation.getX();
+        double y = chestLocation.getY();
+        double z = chestLocation.getZ();
+        String local = world + "/" + x + "/" + y + "/" + z;
+
+        for (String each : chests){
+            if (each.contains(local)){
+                event.setCancelled(true);
             }
         }
     }
