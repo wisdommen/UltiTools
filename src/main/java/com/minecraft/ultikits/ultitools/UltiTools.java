@@ -78,9 +78,9 @@ public final class UltiTools extends JavaPlugin {
         plugin = this;
 
         Boolean economyEnabled = setupEconomy();
-        boolean vaultEnabled = setupVault();
+        isVaultInstalled = setupVault();
 
-        if (!economyEnabled && !vaultEnabled){
+        if (!economyEnabled && !isVaultInstalled){
             getLogger().info(ChatColor.RED + "UltiTools插件未找到经济插件，关闭中...");
             getLogger().info(ChatColor.RED + "UltiTools插件至少需要Vault或者UltiEconomy才能运行");
             getServer().getPluginManager().disablePlugin(this);

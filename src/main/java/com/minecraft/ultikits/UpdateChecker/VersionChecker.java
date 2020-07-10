@@ -1,7 +1,6 @@
 package com.minecraft.ultikits.UpdateChecker;
 
 import com.minecraft.ultikits.ultitools.UltiTools;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.io.BufferedReader;
@@ -16,6 +15,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class VersionChecker {
+
+    public static boolean isOutDate = false;
 
 
     public static void setupThread() {
@@ -40,7 +41,6 @@ public class VersionChecker {
                     while (data != null) {
                         //获取带有附件id的文本
                         if (data.contains("UltiTools")) {
-                            boolean isOutDate = false;
                             String target = br.readLine();
                             //获取版本
                             String version = target.split("version: ")[1].split("<")[0];
