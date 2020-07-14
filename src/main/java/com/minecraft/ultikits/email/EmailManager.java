@@ -1,25 +1,33 @@
 package com.minecraft.ultikits.email;
 
+import com.minecraft.ultikits.GUIs.ItemStackManager;
 import com.minecraft.ultikits.ultitools.UltiTools;
+import com.minecraft.ultikits.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
+import java.util.*;
+
+import static com.minecraft.ultikits.utils.Enchants.getEnchantment;
 
 public class EmailManager {
 
     private final File folder;
     private final File file;
     private final YamlConfiguration config;
-    private final Integer count;
-    private final Player player;
+    private final OfflinePlayer player;
 
-    public EmailManager(Player player) {
-        folder = new File(UltiTools.getInstance().getDataFolder() + "/playerData");
+    public EmailManager(OfflinePlayer player) {
+        folder = new File(UltiTools.getInstance().getDataFolder() + "/emailData");
         file = new File(folder, player.getName() + ".yml");
 
         this.player = player;
@@ -35,12 +43,6 @@ public class EmailManager {
         } else {
             config = YamlConfiguration.loadConfiguration(file);
         }
-
-        count = config.getInt("count");
-    }
-
-    public Integer getEmailNum() {
-        return count;
     }
 
     public File getFile() {
@@ -51,46 +53,108 @@ public class EmailManager {
         return config;
     }
 
-    public StringBuilder getEmails() {
-        StringBuilder emails = new StringBuilder();
-        try {
-            for (int i = 1; i <= config.getConfigurationSection("email").getKeys(false).size(); i++) {
-                try {
-                    String mail = Objects.requireNonNull(config.getString("email." + i));
-                    emails.append("第").append(i).append("封邮件：\n");
-                    emails.append(mail).append("\n");
-                }catch (NullPointerException e){
-                    break;
+    public Map<String, EmailContentManager> getEmails() {
+        Map<String, EmailContentManager> emails = new HashMap<>();
+
+        for (String uuid : config.getKeys(false)){
+            if (config.getConfigurationSection(uuid).getKeys(false).contains("item")){
+                int item_quantity = config.getInt(uuid + ".item.amount");
+                Material item_material = Material.valueOf(config.getString(uuid + ".item.type"));
+                ItemStack contained_item = new ItemStack(item_material, item_quantity);
+                List<String> item_lore = config.getStringList(uuid + ".item.lore");
+                String item_name = config.getString(uuid + ".item.name");
+                int durability = config.getInt(uuid + ".item.durability");
+
+                int i = 0;
+                while (config.get(uuid + ".item.enchant." + i) != null) {
+                    if (!Objects.equals(config.getString(uuid + ".item.enchant." + i + ".name"), "")) {
+                        int enchantment_level = config.getInt(uuid + ".item.enchant.level");
+                        String enchantment_name = config.getString(uuid + ".item.enchant.name");
+                        contained_item.addUnsafeEnchantment(Objects.requireNonNull(getEnchantment(enchantment_name)), enchantment_level);
+                        i++;
+                    }
                 }
+                ItemStackManager itemStackManager = new ItemStackManager(contained_item, (ArrayList<String>) item_lore, item_name);
+                itemStackManager.setUpItem();
+                itemStackManager.setDurability(durability);
+                emails.put(uuid, new EmailContentManager(uuid, config.getString(uuid+".sender"), config.getString(uuid+".message"), itemStackManager, config.getBoolean(uuid+".isRead"), config.getBoolean(uuid+".isClaimed")));
+            }else {
+                emails.put(uuid, new EmailContentManager(uuid, config.getString(uuid+".sender"), config.getString(uuid+".message"), config.getBoolean(uuid+".isRead")));
             }
-        } catch (NullPointerException e) {
-            return emails;
         }
         return emails;
     }
 
-    public String getHistoryEmails() {
-        if (config.getString("historyEmail") != null) {
-            return Objects.requireNonNull(config.getString("historyEmail"));
-        }
-        return "你还没有收到过任何邮件！";
-    }
 
-    public void setHistoryEmail() {
-        for (int a = 1; a <= config.getConfigurationSection("email").getKeys(false).size(); a++) {
-            try {
-                String Hmail = Objects.requireNonNull(config.getString("email." + a));
-                if (config.getString("historyEmail") != null) {
-                    config.set("historyEmail", config.getString("historyEmail") + Hmail + "\n");
-                } else {
-                    config.set("historyEmail", config.getString("email." + a) + "\n");
+    /**
+     * @param receiver 发送给某个人
+     * @param message 所要发送的消息
+     * @param itemStackManager 发送包含的物品
+     * @return 是否发送成功
+     */
+    public Boolean sendTo(OfflinePlayer receiver, String message, ItemStackManager itemStackManager){
+        List<File> files = Utils.getFile(folder.getPath());
+        if (files!=null) {
+            for (File file : files) {
+                if (!file.getName().contains(receiver.getName())) {
+                    EmailManager emailManager = new EmailManager(receiver);
+                    EmailContentManager emailContentManager = new EmailContentManager(generateUUID(), player.getName(), message, itemStackManager, false, false);
+                    emailManager.saveEmail(emailContentManager.getUuid(), emailContentManager.getSender(), emailContentManager.getMessage(), emailContentManager.getItemStackManager());
+                    return true;
                 }
-            } catch (NullPointerException e) {
-                break;
             }
         }
-        config.set("email", null);
-        config.set("count", 0);
+        return false;
+    }
+
+    public Boolean sendTo(OfflinePlayer receiver, String message){
+        List<File> files = Utils.getFile(folder.getPath());
+        if (files!=null) {
+            for (File file : files) {
+                if (file.getName().contains(receiver.getName())) {
+                    EmailManager emailManager = new EmailManager(receiver);
+                    EmailContentManager emailContentManager = new EmailContentManager(generateUUID(), player.getName(), message, false);
+                    emailManager.saveEmail(emailContentManager.getUuid(), emailContentManager.getSender(), emailContentManager.getMessage());
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void saveEmail(String uuid, String sender, String message){
+        config.set(uuid+".sender", sender);
+        config.set(uuid+".message", message);
+        config.set(uuid+".isRead", false);
+        try {
+            config.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveEmail(String uuid, String sender, String message, ItemStackManager itemStackManager){
+        config.set(uuid+".sender", sender);
+        config.set(uuid+".message", message);
+        config.set(uuid+".isRead", false);
+        config.set(uuid+".isClaimed", false);
+        config.set(uuid+".item.type", itemStackManager.getItem().getType().name());
+        config.set(uuid+".item.amount", itemStackManager.getAmount());
+        config.set(uuid+".item.lore", itemStackManager.getLore());
+        if (ChatColor.stripColor(itemStackManager.getItem().getItemMeta().getDisplayName()).equals("")) {
+            config.set(uuid + ".item.name", ChatColor.stripColor(itemStackManager.getItem().getItemMeta().getDisplayName()));
+        }else {
+            config.set(uuid + ".item.name", itemStackManager.getItem().getItemMeta().getDisplayName());
+        }
+        config.set(uuid+".item.durability", itemStackManager.getDurability());
+        if (itemStackManager.getEnchantment().keySet().size()>0) {
+            int i = 1;
+            for (String name : itemStackManager.getEnchantment().keySet()) {
+                config.set(uuid + ".item.enchant."+i+".name", name);
+                config.set(uuid + ".item.enchant."+i+".level", itemStackManager.getEnchantment().get(name));
+                i++;
+            }
+        }
         try {
             config.save(file);
         } catch (IOException e) {
@@ -99,54 +163,19 @@ public class EmailManager {
     }
 
     public Boolean deleteHistoryEmails() {
-        if (config.getString("historyEmail") != null) {
-            config.set("historyEmail", null);
-            try {
-                config.save(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return true;
-        } else {
-            return false;
+        if (config.getKeys(false).size() != 0) {
+            return file.delete();
         }
-    }
-
-    public Boolean sendEmail(Player target, String message) {
-        File f = new File(UltiTools.getInstance().getDataFolder() + "/playerData", target.getName() + ".yml");
-        YamlConfiguration config2;
-        if (!f.exists()) {
-            return false;
-        } else {
-            config2 = YamlConfiguration.loadConfiguration(f);
-            if (config2.getString("email.1") == null) {
-                config2.set("email.1", "来自" + player.getName() + ":" + message);
-                config2.set("count", 1);
-                try {
-                    config2.save(f);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return true;
-            } else {
-                int x = config.getConfigurationSection("email").getKeys(false).size();
-                config2.set("email." + (x + 1), "来自" + player.getName() + ":" + message);
-                config2.set("count", config2.getInt("count") + 1);
-                try {
-                    config2.save(f);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (Bukkit.getOnlinePlayers().contains(target)) {
-                    target.sendMessage(ChatColor.GOLD + "收到来自" + player.getName() + "的新邮件！");
-                    target.sendMessage(ChatColor.GOLD + "输入 /email read 来查看！");
-                }
-            }
-            return true;
-        }
+        return false;
     }
 
     public void sendTeamInvitation(){
 
     }
+
+    public static String generateUUID(){
+        Date date = new Date();
+        return String.valueOf(date.getTime());
+    }
+
 }

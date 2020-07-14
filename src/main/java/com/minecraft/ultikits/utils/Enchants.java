@@ -1,5 +1,6 @@
 package com.minecraft.ultikits.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 
 import java.util.HashMap;
@@ -29,7 +30,7 @@ public class Enchants {
         diff_namings.put("blastprotection", "protectionexplosions");
         diff_namings.put("mobloot", "lootbonusmobs");
         diff_namings.put("projectileprotection", "protectionprojectile");
-        diff_namings.put("fireprotect", "protectionfire");
+        //diff_namings.put("fireprotection", "protectionfire");
         diff_namings.put("fallprot", "protectionfall");
         diff_namings.put("infarrows", "arrowinfinite");
 
@@ -37,9 +38,8 @@ public class Enchants {
         if (change != null) {
             enchantment = change;
         }
-
         for (Enchantment value : Enchantment.values()) {
-            if (value.getKey().toString().replaceAll("[ _-]", "").replaceAll("minecraft:", "").equalsIgnoreCase(enchantment)) {
+            if (value.getKey().toString().replaceAll("[ _-]", "").contains(enchantment)) {
                 return value;
             }
         }

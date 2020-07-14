@@ -1,7 +1,6 @@
 package com.minecraft.ultikits.ultitools;
 
 
-import com.minecraft.Ultilevel.level.listener.chat;
 import com.minecraft.economy.apis.UltiEconomy;
 import com.minecraft.economy.database.DataBase;
 import com.minecraft.economy.database.LinkedDataBase;
@@ -11,6 +10,7 @@ import com.minecraft.ultikits.UpdateChecker.VersionChecker;
 import com.minecraft.ultikits.chestLock.ChestLock;
 import com.minecraft.ultikits.chestLock.ChestLockCMD;
 import com.minecraft.ultikits.email.Email;
+import com.minecraft.ultikits.email.EmailPage;
 import com.minecraft.ultikits.home.Home;
 import com.minecraft.ultikits.joinWelcome.onJoin;
 import com.minecraft.ultikits.multiworlds.multiWorlds;
@@ -34,11 +34,12 @@ import java.util.Objects;
 public final class UltiTools extends JavaPlugin {
 
     private static UltiTools plugin;
-    public static DataBase dataBase;
     private static UltiEconomy economy;
     public static boolean isPAPILoaded;
+    public static boolean isUltiEconomyInstalled;
     private static Economy econ = null;
     private static Boolean isVaultInstalled;
+    public static DataBase dataBase;
 
     private boolean setupVault() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
@@ -64,11 +65,11 @@ public final class UltiTools extends JavaPlugin {
         return economy;
     }
 
-    private Boolean setupEconomy(){
-        if (getServer().getPluginManager().getPlugin("Economy") != null){
+    private Boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Economy") != null) {
             economy = new UltiEconomy();
             return true;
-        }else {
+        } else {
             return false;
         }
     }
@@ -77,16 +78,23 @@ public final class UltiTools extends JavaPlugin {
     public void onEnable() {
         plugin = this;
 
-        Boolean economyEnabled = setupEconomy();
+        isUltiEconomyInstalled = setupEconomy();
         isVaultInstalled = setupVault();
 
-        if (!economyEnabled && !isVaultInstalled){
-            getLogger().info(ChatColor.RED + "UltiTools插件未找到经济插件，关闭中...");
-            getLogger().info(ChatColor.RED + "UltiTools插件至少需要Vault或者UltiEconomy才能运行");
-            getServer().getPluginManager().disablePlugin(this);
-        }
-
         isPAPILoaded = getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
+
+        if (!isPAPILoaded) {
+            getLogger().warning("UltiTools插件未找到PAPI前置插件，查找其他可行依赖中...");
+            if (!isUltiEconomyInstalled) {
+                getLogger().warning("UltiTools插件未找到经济前置插件，关闭中...");
+                getLogger().warning("UltiTools插件至少需要Vault或者UltiEconomy, 或者安装PAPI才能运行");
+                getServer().getPluginManager().disablePlugin(this);
+            }
+
+            if (getServer().getPluginManager().getPlugin("Level") == null) {
+                getLogger().warning("UltiTools插件未找到UltiLevel等级插件，关闭计分板等级相关显示！");
+            }
+        }
 
         File folder = new File(String.valueOf(getDataFolder()));
         File playerDataFolder = new File(getDataFolder() + "/playerData");
@@ -129,9 +137,9 @@ public final class UltiTools extends JavaPlugin {
             Objects.requireNonNull(this.getCommand("homelist")).setExecutor(new Home());
         }
         if (this.getConfig().getBoolean("enable_white_list")) {
-            if (economyEnabled) {
+            if (isUltiEconomyInstalled) {
                 Objects.requireNonNull(this.getCommand("wl")).setExecutor(new whitelist_commands());
-            }else {
+            } else {
                 getLogger().info(ChatColor.RED + "未找到UltiEconomy插件，关闭白名单功能");
                 getLogger().info(ChatColor.RED + "白名单功能需要配合UltiEconomy使用");
             }
@@ -151,6 +159,9 @@ public final class UltiTools extends JavaPlugin {
         }
 
         //注册监听器
+        if (this.getConfig().getBoolean("enable_email")) {
+            Bukkit.getPluginManager().registerEvents(new EmailPage(), this);
+        }
         if (getConfig().getBoolean("enable_onjoin")) {
             Bukkit.getPluginManager().registerEvents(new onJoin(), this);
         }

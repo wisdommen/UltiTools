@@ -1,6 +1,8 @@
 package com.minecraft.ultikits.joinWelcome;
 
 //import com.minecraft.ultikits.reflection.ReflectionUtils;
+import com.minecraft.ultikits.UpdateChecker.VersionChecker;
+import com.minecraft.ultikits.scoreBoard.runTask;
 import com.minecraft.ultikits.ultitools.UltiTools;
 //import net.minecraft.server.v1_15_R1.IChatBaseComponent;
 //import net.minecraft.server.v1_15_R1.PacketPlayOutChat;
@@ -59,6 +61,14 @@ public class onJoin implements Listener {
 
         if (event.getPlayer().isOp()) {
             event.setJoinMessage(null);
+            if (VersionChecker.isOutDate) {
+                new BukkitRunnable(){
+                    @Override
+                    public void run() {
+                        player.sendMessage(ChatColor.AQUA+"UltiTools有新的更新！下载地址：https://www.mcbbs.net/thread-1060351-1-1.html");
+                    }
+                }.runTaskLater(UltiTools.getInstance(), 4);
+            }
             Bukkit.broadcastMessage(ChatColor.RED + "[管理员]" + ChatColor.YELLOW + event.getPlayer().getName() + ChatColor.RED + "已上线！");
             Bukkit.broadcastMessage(ChatColor.RED + "有问题请询问他！");
 
@@ -78,7 +88,7 @@ public class onJoin implements Listener {
 //                    methodSendPacket.of(connection).call(packet);
 //                    connection.sendPacket(packet);
                     player.sendMessage(ChatColor.AQUA + "当前在线人数：" + ChatColor.YELLOW + UltiTools.getInstance().getServer().getOnlinePlayers().size() + ChatColor.AQUA + " ，快和他们打个招呼吧！");
-                    player.sendMessage(ChatColor.AQUA + "你有 " + ChatColor.YELLOW + config.getInt("count") + ChatColor.AQUA + " 封未读邮件！");
+                    player.sendMessage(ChatColor.AQUA + "你有 " + ChatColor.YELLOW + runTask.getUnReadEmailNum(player) + ChatColor.AQUA + " 封未读邮件！");
                     if (!"none".equalsIgnoreCase(website)) {
                         player.sendMessage(ChatColor.AQUA + "服务器网址：" + ChatColor.YELLOW + website);
                     }

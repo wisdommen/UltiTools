@@ -1,14 +1,24 @@
 package com.minecraft.ultikits.email;
 
+import com.minecraft.ultikits.GUIs.GUISetup;
+import com.minecraft.ultikits.GUIs.ItemStackManager;
+import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Map;
 
 
 public class Email implements CommandExecutor {
+
+    public static Map<String, EmailContentManager> emailContentManagerMap;
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] strings) {
@@ -19,19 +29,11 @@ public class Email implements CommandExecutor {
             if ("email".equalsIgnoreCase(command.getName())) {
                 if (strings.length == 1) {
                     if ("read".equalsIgnoreCase(strings[0])) {
-                        if (emailManager.getEmails().length() != 0) {
-                            player.sendMessage(ChatColor.AQUA + "以下是你的收到的邮件！共有" + ChatColor.RED + emailManager.getEmailNum() + ChatColor.AQUA + "封邮件！");
-
-                            player.sendMessage(emailManager.getEmails().toString());
-                            emailManager.setHistoryEmail();
-                        } else {
-                            player.sendMessage(ChatColor.AQUA + "你没有新邮件可读！");
-                        }
+                        emailContentManagerMap = GUISetup.setUpEmailInBox(player);
+                        player.openInventory(GUISetup.inventoryMap.get(player.getName()+".inbox").getInventory());
                         return true;
-                    } else if ("history".equalsIgnoreCase(strings[0])) {
-                        player.sendMessage(emailManager.getHistoryEmails());
-                        return true;
-                    } else if ("delhistory".equalsIgnoreCase(strings[0])) {
+                    }
+                    else if ("delhistory".equalsIgnoreCase(strings[0])) {
                         if (emailManager.deleteHistoryEmails()) {
                             player.sendMessage(ChatColor.RED + "所有历史邮件都已删除！");
                         } else {
@@ -39,10 +41,30 @@ public class Email implements CommandExecutor {
                         }
                         return true;
                     }
-                } else if (strings.length == 3) {
+                }else if (strings.length == 2){
+                    if ("sendall".equalsIgnoreCase(strings[0])){
+                        if (player.isOp()){
+                            if (player.getInventory().getItemInMainHand().getType()!= Material.AIR) {
+                                ItemStack itemStack = player.getInventory().getItemInMainHand();
+                                ItemStackManager itemStackManager = new ItemStackManager(itemStack);
+                                itemStackManager.setUpItem();
+                                for (OfflinePlayer player1 : UltiTools.getInstance().getServer().getOfflinePlayers()){
+                                    emailManager.sendTo(player1, strings[1], itemStackManager);
+                                }
+                            }else {
+                                for (OfflinePlayer player2 : UltiTools.getInstance().getServer().getOfflinePlayers()){
+                                    emailManager.sendTo(player2, strings[1]);
+                                }
+                            }
+                            player.sendMessage(ChatColor.GOLD + "正在发送全体邮件...");
+                            player.sendMessage(ChatColor.GOLD + "发送成功！");
+                        }
+                        return true;
+                    }
+                }else if (strings.length == 3) {
                     if ("send".equalsIgnoreCase(strings[0])) {
-                        if (Bukkit.getPlayer(strings[1]) != null) {
-                            if (emailManager.sendEmail(Bukkit.getPlayer(strings[1]), strings[2])) {
+                        if (Bukkit.getOfflinePlayer(strings[1]) != null) {
+                            if (emailManager.sendTo(Bukkit.getOfflinePlayer(strings[1]), strings[2])) {
                                 player.sendMessage(ChatColor.GOLD + "正在发送邮件...");
                                 player.sendMessage(ChatColor.GOLD + "发送成功！");
                             } else {
@@ -52,7 +74,26 @@ public class Email implements CommandExecutor {
                             player.sendMessage(ChatColor.RED + "未找到指定的收件人！");
                         }
                         return true;
-                    } else {
+                    }else if ("senditem".equalsIgnoreCase(strings[0])){
+                        if (Bukkit.getOfflinePlayer(strings[1]) != null) {
+                            if (player.getInventory().getItemInMainHand().getType()!= Material.AIR){
+                                ItemStack itemStack = player.getInventory().getItemInMainHand();
+                                ItemStackManager itemStackManager = new ItemStackManager(itemStack);
+                                itemStackManager.setUpItem();
+                                if (emailManager.sendTo(Bukkit.getOfflinePlayer(strings[1]), strings[2], itemStackManager)) {
+                                    player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                                    player.sendMessage(ChatColor.RED + "发送成功！");
+                                } else {
+                                    player.sendMessage(ChatColor.RED + "发送失败！");
+                                }
+                            }else {
+                                player.sendMessage(ChatColor.RED+"请手持需要发送的物品！");
+                            }
+                        } else {
+                            player.sendMessage(ChatColor.RED + "未找到指定的收件人！");
+                        }
+                        return true;
+                    }else {
                         return false;
                     }
                 } else {

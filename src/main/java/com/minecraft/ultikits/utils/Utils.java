@@ -5,6 +5,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class Utils {
@@ -36,5 +39,13 @@ public class Utils {
         final int i = (int) (l % 100);
         Random random = new Random(i);
         return random.nextInt(range);
+    }
+
+    public static List<File> getFile(String path) {
+        File folder = new File(path);
+        if (folder.listFiles() != null) {
+            return Arrays.asList(Objects.requireNonNull(folder.listFiles()));
+        }
+        return null;
     }
 }

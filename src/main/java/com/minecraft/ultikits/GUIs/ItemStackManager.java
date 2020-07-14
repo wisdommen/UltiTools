@@ -1,27 +1,29 @@
 package com.minecraft.ultikits.GUIs;
 
 import org.bukkit.ChatColor;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ItemStackManager {
 
     private ArrayList<String> lore = new ArrayList<>();
 
-    private ItemStack item;
+    private final ItemStack item;
     private String displayName;
     private int position;
     private Inventory page;
     private List<String> in;
     private List<String> commands;
+    Map<String, Integer> enchants = new HashMap<>();
 
     public ItemStackManager(ItemStack item) {
         this.item = item;
+        this.displayName = item.getItemMeta().getDisplayName();
     }
 
     public ItemStackManager(ItemStack item, String displayName) {
@@ -65,23 +67,13 @@ public class ItemStackManager {
         ItemMeta itemMeta = this.item.getItemMeta();
         if (lore.size() != 0) {
             Objects.requireNonNull(itemMeta).setLore(lore);
+        } else {
+            lore = (ArrayList<String>) itemMeta.getLore();
         }
         if (displayName != null) {
             itemMeta.setDisplayName(ChatColor.AQUA + displayName);
         }
         item.setItemMeta(itemMeta);
-    }
-
-    public ItemStack setItem() {
-        ItemMeta itemMeta = this.item.getItemMeta();
-        if (lore.size() != 0) {
-            Objects.requireNonNull(itemMeta).setLore(lore);
-        }
-        if (displayName != null) {
-            itemMeta.setDisplayName(ChatColor.AQUA + displayName);
-        }
-        item.setItemMeta(itemMeta);
-        return item;
     }
 
     public void setDisplayName(String displayName) {
@@ -114,5 +106,35 @@ public class ItemStackManager {
 
     public void setCommands(List<String> commands) {
         this.commands = commands;
+    }
+
+    public ArrayList<String> getLore() {
+        return lore;
+    }
+
+    public Integer getAmount() {
+        return this.item.getAmount();
+    }
+
+    public Map<String, Integer> getEnchantment() {
+        if (!item.getEnchantments().isEmpty()) {
+            for (Enchantment itemEnchantments : item.getEnchantments().keySet()) {
+                enchants.put(itemEnchantments.getKey().toString().split(":")[1], item.getEnchantmentLevel(itemEnchantments));
+            }
+        }
+        return enchants;
+    }
+
+    public double getDurability() {
+        if (item.getItemMeta() != null && !item.getItemMeta().isUnbreakable()) {
+            return ((Damageable) item.getItemMeta()).getDamage();
+        }
+        return -1;
+    }
+
+    public void setDurability(int durability) {
+        if (item.getItemMeta() != null && !item.getItemMeta().isUnbreakable()) {
+            ((Damageable) item.getItemMeta()).setDamage(durability);
+        }
     }
 }

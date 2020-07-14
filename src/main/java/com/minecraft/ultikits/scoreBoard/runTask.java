@@ -2,23 +2,20 @@ package com.minecraft.ultikits.scoreBoard;
 
 import com.google.common.collect.Lists;
 import com.minecraft.economy.apis.UltiEconomy;
+import com.minecraft.ultikits.email.EmailContentManager;
+import com.minecraft.ultikits.email.EmailManager;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 
 import java.io.File;
 import java.text.DecimalFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -41,20 +38,20 @@ public class runTask extends BukkitRunnable {
                     File fileM = new File(UltiTools.getInstance().getDataFolder() + "/playerData", p.getName() + ".yml");
                     YamlConfiguration configM = YamlConfiguration.loadConfiguration(fileM);
 
-                    String CDq;
-                    String CDw;
-                    String CDe;
-                    String CDr;
-                    String money;
-                    String deposit;
-                    String level_num;
-                    String exp;
-                    String max_exp;
-                    String mp;
-                    String max_mp;
-                    String max_hp;
-                    boolean isWizard;
-                    String occupation;
+                    String CDq = "";
+                    String CDw = "";
+                    String CDe = "";
+                    String CDr = "";
+                    String money = "";
+                    String deposit = "";
+                    String level_num = "";
+                    String exp = "";
+                    String max_exp = "";
+                    String mp = "";
+                    String max_mp = "";
+                    String max_hp = "";
+                    boolean isWizard = false;
+                    String occupation  = "";
 
                     if (isPAPILoaded && tool_config.getBoolean("enable_PAPI")) {
                         try {
@@ -124,21 +121,25 @@ public class runTask extends BukkitRunnable {
                         }
                         isWizard = true;
                     } else {
-                        DecimalFormat format = new DecimalFormat("0.0");
-                        CDq = coolDown(p, "CDq") + "";
-                        CDw = coolDown(p, "CDw") + "";
-                        CDe = coolDown(p, "CDe") + "";
-                        CDr = coolDown(p, "CDr") + "";
-                        money = economy.checkMoney(p.getName()) + "";
-                        deposit = economy.checkBank(p.getName()) + "";
-                        level_num = checkLevel(p) + "";
-                        exp = checkExp(p) + "";
-                        max_exp = ((Integer.parseInt(level_num) - 1) * 5 + 100) + "";
-                        mp = getPlayerMagicPoint(p) + "";
-                        max_hp = format.format(getPlayerMaxHealth(p)) + "";
-                        max_mp = getPlayerMaxMagicPoint(p) + "";
-                        occupation = checkJob(p);
-                        isWizard = isWizard(p);
+                        if (UltiTools.isUltiEconomyInstalled) {
+                            money = economy.checkMoney(p.getName()) + "";
+                            deposit = economy.checkBank(p.getName()) + "";
+                        }
+                        if (Bukkit.getPluginManager().getPlugin("Level")!=null) {
+                            DecimalFormat format = new DecimalFormat("0.0");
+                            CDq = coolDown(p, "CDq") + "";
+                            CDw = coolDown(p, "CDw") + "";
+                            CDe = coolDown(p, "CDe") + "";
+                            CDr = coolDown(p, "CDr") + "";
+                            level_num = checkLevel(p) + "";
+                            exp = checkExp(p) + "";
+                            max_exp = ((Integer.parseInt(level_num) - 1) * 5 + 100) + "";
+                            mp = getPlayerMagicPoint(p) + "";
+                            max_hp = format.format(getPlayerMaxHealth(p)) + "";
+                            max_mp = getPlayerMaxMagicPoint(p) + "";
+                            occupation = checkJob(p);
+                            isWizard = isWizard(p);
+                        }
                     }
 
                     // 创建一个计分板管理对象
@@ -186,8 +187,8 @@ public class runTask extends BukkitRunnable {
                         Score bank = information.getScore(ChatColor.WHITE + "存款： " + ChatColor.GOLD + deposit);
                         bank.setScore(96);
                     }
-                    if (configM.getInt("count") > 0) {
-                        Score mail = information.getScore(ChatColor.WHITE + "新邮件： " + ChatColor.GOLD + configM.getInt("count") + "封");
+                    if (getUnReadEmailNum(p) > 0) {
+                        Score mail = information.getScore(ChatColor.WHITE + "新邮件： " + ChatColor.GOLD + getUnReadEmailNum(p) + "封");
                         mail.setScore(92);
                     }
                     if (level_num != null && !level_num.equals("")) {
@@ -198,19 +199,19 @@ public class runTask extends BukkitRunnable {
                         Score level = information.getScore(ChatColor.WHITE + "经验值： " + ChatColor.YELLOW + exp + ChatColor.BOLD + " / " + ChatColor.GOLD + max_exp);
                         level.setScore(94);
                     }
-                    if (CDq != null && Integer.parseInt(CDq) > 0 && !CDq.equals("")) {
+                    if (CDq != null  && !CDq.equals("")&& Integer.parseInt(CDq) > 0) {
                         Score CD = information.getScore(ChatColor.WHITE + "Q技能CD还剩 " + ChatColor.GOLD + CDq + "秒");
                         CD.setScore(89);
                     }
-                    if (CDw != null && Integer.parseInt(CDw) > 0 && !CDw.equals("")) {
+                    if (CDw != null && !CDw.equals("") && Integer.parseInt(CDw) > 0) {
                         Score CD = information.getScore(ChatColor.WHITE + "W技能CD还剩 " + ChatColor.GOLD + CDw + "秒");
                         CD.setScore(88);
                     }
-                    if (CDe != null && Integer.parseInt(CDe) > 0 && !CDe.equals("")) {
+                    if (CDe != null && !CDe.equals("") && Integer.parseInt(CDe) > 0) {
                         Score CD = information.getScore(ChatColor.WHITE + "E技能CD还剩 " + ChatColor.GOLD + CDe + "秒");
                         CD.setScore(87);
                     }
-                    if (CDr != null && Integer.parseInt(CDr) > 0 && !CDr.equals("")) {
+                    if (CDr != null && !CDr.equals("") && Integer.parseInt(CDr) > 0) {
                         Score CD = information.getScore(ChatColor.WHITE + "R技能CD还剩 " + ChatColor.GOLD + CDr + "秒");
                         CD.setScore(86);
                     }
@@ -302,5 +303,18 @@ public class runTask extends BukkitRunnable {
                 }
             }
 
+    }
+
+    public static Integer getUnReadEmailNum(Player player){
+        EmailManager emailManager = new EmailManager(player);
+        Map<String, EmailContentManager> emailContentManagerMap = emailManager.getEmails();
+        int i = 0;
+        for (String each : emailContentManagerMap.keySet()){
+            EmailContentManager emailContentManager = emailContentManagerMap.get(each);
+            if (!emailContentManager.getRead()){
+                i++;
+            }
+        }
+        return i;
     }
 }

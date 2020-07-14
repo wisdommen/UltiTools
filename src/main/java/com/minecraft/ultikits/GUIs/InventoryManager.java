@@ -32,7 +32,7 @@ public class InventoryManager {
         }
     }
 
-    private void forceSetItem(int position, ItemStack item) {
+    public void forceSetItem(int position, ItemStack item) {
         inventory.setItem(position, item);
         contains = inventory.getContents();
     }
