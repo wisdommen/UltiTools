@@ -10,8 +10,8 @@ description: This is a plugin inclouds some basic plugins fuctions for a server
 
 commands:
   email:
-    description: 读邮件
-    usage: /email read
+    description: 邮件帮助
+    usage: /email help
   home:
     description: 回家
     usage: /home 家的名字（不设置则为默认）

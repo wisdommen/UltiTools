@@ -40,6 +40,15 @@ public class Email implements CommandExecutor {
                             player.sendMessage(ChatColor.RED + "你还没有收到过任何邮件！");
                         }
                         return true;
+                    }else if ("help".equalsIgnoreCase(strings[0])){
+                        player.sendMessage(ChatColor.YELLOW+"-------------邮件系统帮助------------");
+                        player.sendMessage(ChatColor.GREEN+"/email read " + ChatColor.GRAY+"打开收件箱");
+                        player.sendMessage(ChatColor.GREEN+"/email delhistory " + ChatColor.GRAY+"删除所有邮件");
+                        player.sendMessage(ChatColor.GREEN+"/email send [玩家名] [文本内容] " + ChatColor.GRAY+"给某人发送只包含文本的邮件");
+                        player.sendMessage(ChatColor.GREEN+"/email senditem [玩家名] [文本内容] " + ChatColor.GRAY+"手持需要发送的物品，发送一个带有附件的文本邮件");
+                        if (player.isOp()){
+                            player.sendMessage(ChatColor.GREEN+"/email sendall [文本内容] " + ChatColor.GRAY+"给所有人发邮件，如果空手则不包含附件，手持物品发送带有物品的邮件，不会扣除你的物品！");
+                        }
                     }
                 }else if (strings.length == 2){
                     if ("sendall".equalsIgnoreCase(strings[0])){
