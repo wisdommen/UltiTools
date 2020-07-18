@@ -171,6 +171,7 @@ public class multiWorlds implements TabExecutor {
                                 return false;
                             }
                         }
+                        player.sendMessage(ChatColor.RED+"处理中...请耐心等待");
                         WorldCreator worldCreator = new WorldCreator(strings[1]);
                         worldCreator.environment(World.Environment.NORMAL);
                         worldCreator.type(WorldType.NORMAL);
@@ -182,6 +183,7 @@ public class multiWorlds implements TabExecutor {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        player.sendMessage(ChatColor.RED+"世界已成功生成！");
                         return true;
                     case "load":
                         for (World world : UltiTools.getInstance().getServer().getWorlds()) {
@@ -196,6 +198,7 @@ public class multiWorlds implements TabExecutor {
                                 return false;
                             }
                         }
+                        player.sendMessage(ChatColor.RED+"处理中...请耐心等待");
                         UltiTools.getInstance().getServer().createWorld(new WorldCreator(strings[1]));
                         player.sendMessage(ChatColor.RED+"加载成功！");
                         worlds.add(strings[1]);
