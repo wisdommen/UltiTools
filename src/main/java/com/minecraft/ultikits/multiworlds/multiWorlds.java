@@ -1,16 +1,15 @@
 package com.minecraft.ultikits.multiworlds;
 
+import com.minecraft.ultikits.prefix.Chat;
 import com.minecraft.ultikits.ultitools.UltiTools;
-import org.bukkit.ChatColor;
-import org.bukkit.World;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
+import org.bukkit.*;
+import org.bukkit.command.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.minecraft.ultikits.utils.Messages.info;
@@ -18,7 +17,7 @@ import static com.minecraft.ultikits.utils.Messages.warning;
 import static com.minecraft.ultikits.utils.Utils.getConfigFile;
 
 
-public class multiWorlds implements CommandExecutor {
+public class multiWorlds implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
@@ -107,19 +106,23 @@ public class multiWorlds implements CommandExecutor {
                     }
                 }
             }else if (command.getName().equalsIgnoreCase("mw") && strings.length == 2 && player.isOp()){
+                File world_file = new File(UltiTools.getInstance().getDataFolder(), "worlds.yml");
+                YamlConfiguration worlds_config = YamlConfiguration.loadConfiguration(world_file);
+                List<String> worlds = worlds_config.getStringList("worlds");
+
                 switch (strings[0]){
                     case "block":
                         for (World world : UltiTools.getInstance().getServer().getWorlds()){
                             if (strings[1].equals(world.getName())){
                                 File file = getConfigFile();
                                 YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-                                List<String> worlds = config.getStringList("blocked_worlds");
-                                if (worlds.contains(strings[1])){
+                                List<String> blocked_worlds = config.getStringList("blocked_worlds");
+                                if (blocked_worlds.contains(strings[1])){
                                     player.sendMessage(ChatColor.RED + "此世界已经被禁止进入!");
                                     return true;
                                 }
-                                worlds.add(world.getName());
-                                config.set("blocked_worlds", worlds);
+                                blocked_worlds.add(world.getName());
+                                config.set("blocked_worlds", blocked_worlds);
                                 try {
                                     config.save(file);
                                 } catch (IOException e) {
@@ -136,10 +139,10 @@ public class multiWorlds implements CommandExecutor {
                             if (strings[1].equals(world.getName())){
                                 File file = getConfigFile();
                                 YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-                                List<String> worlds = config.getStringList("blocked_worlds");
-                                if (worlds.contains(strings[1])){
-                                    worlds.remove(world.getName());
-                                    config.set("blocked_worlds", worlds);
+                                List<String> blocked_worlds = config.getStringList("blocked_worlds");
+                                if (blocked_worlds.contains(strings[1])){
+                                    blocked_worlds.remove(world.getName());
+                                    config.set("blocked_worlds", blocked_worlds);
                                     try {
                                         config.save(file);
                                     } catch (IOException e) {
@@ -153,6 +156,71 @@ public class multiWorlds implements CommandExecutor {
                             }
                         }
                         player.sendMessage(ChatColor.RED+"没有找到这个世界！");
+                        return true;
+                    case "create":
+                        for (World world : UltiTools.getInstance().getServer().getWorlds()) {
+                            if (strings[1].equals(world.getName())) {
+                                player.sendMessage(ChatColor.RED+"此世界已存在！");
+                                return false;
+                            }
+                        }
+
+                        for (String each : worlds){
+                            if (each.equals(strings[1])){
+                                player.sendMessage(ChatColor.RED+"此世界已存在！");
+                                return false;
+                            }
+                        }
+                        WorldCreator worldCreator = new WorldCreator(strings[1]);
+                        worldCreator.environment(World.Environment.NORMAL);
+                        worldCreator.type(WorldType.NORMAL);
+                        worldCreator.createWorld();
+                        worlds.add(strings[1]);
+                        worlds_config.set("worlds", worlds);
+                        try {
+                            worlds_config.save(world_file);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        return true;
+                    case "load":
+                        for (World world : UltiTools.getInstance().getServer().getWorlds()) {
+                            if (strings[1].equals(world.getName())) {
+                                player.sendMessage(ChatColor.RED+"此世界已存在！");
+                                return false;
+                            }
+                        }
+                        for (String each : worlds){
+                            if (each.equals(strings[1])){
+                                player.sendMessage(ChatColor.RED+"此世界已存在！");
+                                return false;
+                            }
+                        }
+                        UltiTools.getInstance().getServer().createWorld(new WorldCreator(strings[1]));
+                        player.sendMessage(ChatColor.RED+"加载成功！");
+                        worlds.add(strings[1]);
+                        worlds_config.set("worlds", worlds);
+                        try {
+                            worlds_config.save(world_file);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        return true;
+                    case "delete":
+                        for (World world : UltiTools.getInstance().getServer().getWorlds()) {
+                            if (strings[1].equals(world.getName())) {
+                                worlds.remove(strings[1]);
+                                worlds_config.set("worlds", worlds);
+                                try {
+                                    worlds_config.save(world_file);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                player.sendMessage(ChatColor.RED+"此世界已被删除，请重启服务器以生效！");
+                                return true;
+                            }
+                        }
+                        player.sendMessage(ChatColor.RED+"未找到这个世界！");
                         return true;
                 }
             }
@@ -168,6 +236,34 @@ public class multiWorlds implements CommandExecutor {
         if (player.isOp()) {
             player.sendMessage(ChatColor.GOLD + "/mw block [世界名]" + ChatColor.GRAY + "  禁止玩家进入某个世界");
             player.sendMessage(ChatColor.GOLD + "/mw unblock [世界名]" + ChatColor.GRAY + "  取消禁止玩家进入某个世界");
+            player.sendMessage(ChatColor.GOLD + "/mw create [世界名]" + ChatColor.GRAY + "  生成一个新的世界");
+            player.sendMessage(ChatColor.GOLD + "/mw load [世界名]" + ChatColor.GRAY + "  加载世界");
+            player.sendMessage(ChatColor.GOLD + "/mw delete [世界名]" + ChatColor.GRAY + "  删除世界");
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (sender instanceof Player){
+            Player player = (Player) sender;
+            if (args.length == 1){
+                List<String> tabCommands = new ArrayList<>();
+                tabCommands.add("help");
+                tabCommands.add("[世界名]");
+                tabCommands.add("list");
+                if (player.isOp()){
+                    tabCommands.add("block");
+                    tabCommands.add("unblock");
+                    tabCommands.add("create");
+                    tabCommands.add("delete");
+                }
+                return tabCommands;
+            }else if (args.length==2 && player.isOp()){
+                List<String> tabCommands = new ArrayList<>();
+                tabCommands.add("[世界名]");
+                return tabCommands;
+            }
+        }
+        return null;
     }
 }

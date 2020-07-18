@@ -1,5 +1,5 @@
 name: UltiTools
-version: 1.7.1
+version: 1.8.0
 main: com.minecraft.ultikits.ultitools.UltiTools
 api-version: 1.13
 prefix: UltiTools

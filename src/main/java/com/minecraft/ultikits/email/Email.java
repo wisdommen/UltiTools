@@ -10,13 +10,16 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
-public class Email implements CommandExecutor {
+public class Email implements TabExecutor {
 
     public static Map<String, EmailContentManager> emailContentManagerMap;
 
@@ -111,5 +114,34 @@ public class Email implements CommandExecutor {
             }
         }
         return false;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (sender instanceof Player){
+            Player player = (Player) sender;
+            if (args.length == 1){
+                List<String> tabCommands = new ArrayList<>();
+                tabCommands.add("read");
+                tabCommands.add("delhistory");
+                tabCommands.add("send");
+                tabCommands.add("senditem");
+                if (player.isOp()){
+                    tabCommands.add("sendall");
+                }
+                return tabCommands;
+            }else if (args.length==2){
+                List<String> tabCommands = new ArrayList<>();
+                for (OfflinePlayer offlinePlayer : UltiTools.getInstance().getServer().getOfflinePlayers()){
+                    tabCommands.add(offlinePlayer.getName());
+                }
+                return tabCommands;
+            } else if (args.length==3){
+                List<String> tabCommands = new ArrayList<>();
+                tabCommands.add("[邮件内容]");
+                return tabCommands;
+            }
+        }
+        return null;
     }
 }

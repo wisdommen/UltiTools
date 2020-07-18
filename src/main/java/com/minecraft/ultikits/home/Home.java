@@ -1,21 +1,21 @@
 package com.minecraft.ultikits.home;
 
 import com.minecraft.ultikits.ultitools.UltiTools;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-public class Home implements CommandExecutor {
+public class Home implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -79,7 +79,7 @@ public class Home implements CommandExecutor {
                 if (enableHome) {
                     if (file.exists()) {
                         try {
-                            if (args.length == 0) {
+                            if (args.length == 0 || (args.length == 1 && args[0].equals("默认"))) {
                                 World world = Bukkit.getServer().getWorld(Objects.requireNonNull(config.getString(player.getName() + ".Def.world")));
                                 int x = config.getInt(player.getName() + ".Def.x");
                                 int y = config.getInt(player.getName() + ".Def.y");
@@ -109,7 +109,10 @@ public class Home implements CommandExecutor {
                 return true;
             } else if ("homelist".equalsIgnoreCase(cmd.getName())) {
                 if (enableHome) {
-                    player.sendMessage(ChatColor.GREEN + "你的家：" + config.getString(player.getName() + ".homelist"));
+                    player.sendMessage(ChatColor.GREEN + "-----你的家-----");
+                    for (String each : getHomeList(player)){
+                        player.sendMessage(ChatColor.YELLOW+each);
+                    }
                 }else {
                     player.sendMessage(ChatColor.RED + "[家插件]此功能已被屏蔽！");
                 }
@@ -117,9 +120,11 @@ public class Home implements CommandExecutor {
             } else if ("delhome".equalsIgnoreCase(cmd.getName())) {
                 if (enableHome) {
                     if (file.exists() && args.length == 1) {
+                        List<String> homeList = getHomeList(player);
+                        homeList.remove(args[0]);
                         if (config.get(player.getName() + "." + args[0]) != null) {
                             config.set(player.getName() + "." + args[0], "");
-                            config.set(player.getName() + ".homelist", config.getString(player.getName() + ".homelist").replace(args[0], ""));
+                            config.set(player.getName() + ".homelist", homeList);
                             player.sendMessage(ChatColor.RED + "[家插件]" + args[0] + "已被删除！");
                             try {
                                 config.save(file);
@@ -143,5 +148,55 @@ public class Home implements CommandExecutor {
             sender.sendMessage(ChatColor.RED + "[错误]这个命令只能在游戏内调用！");
             return true;
         }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (sender instanceof Player && command.getName().equalsIgnoreCase("home")){
+            Player player = (Player) sender;
+            if (args.length == 1){
+                return getHomeList(player);
+            }
+        }
+        return null;
+    }
+
+    private List<String> getHomeList(Player player){
+        List<String> homeList = new ArrayList<>();
+        File file = new File(UltiTools.getInstance().getDataFolder()+"/playerData", player.getName()+".yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        if (file.exists() && config.get(player.getName()+".homelist")!=null){
+            if (config.get(player.getName()+".homelist") instanceof String){
+                String homelist = config.getString(player.getName()+".homelist");
+                if (homelist.contains(" ")) {
+                    String[] list = config.getString(player.getName()+".homelist").split(" ");
+                    for (String each : list){
+                        if (each.contains(" ")){
+                            each.replaceAll(" ", "");
+                        }
+                        homeList.add(each);
+                    }
+                    homeList.removeIf(each -> each.equals(""));
+                    config.set(player.getName()+".homelist", homeList);
+                    try {
+                        config.save(file);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }else {
+                homeList = config.getStringList(player.getName()+".homelist");
+                homeList.removeIf(each -> each.equals(""));
+                config.set(player.getName()+".homelist", homeList);
+                try {
+                    config.save(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return homeList;
+            }
+        }
+        return homeList;
     }
 }

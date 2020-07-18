@@ -24,11 +24,14 @@ import com.minecraft.ultikits.whiteList.whitelist_listener;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.WorldCreator;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
+import java.util.List;
 import java.util.Objects;
 
 public final class UltiTools extends JavaPlugin {
@@ -126,6 +129,18 @@ public final class UltiTools extends JavaPlugin {
             getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件已接入数据库！");
         }
 
+        //加载世界
+        if (this.getConfig().getBoolean("enable_multiworlds")) {
+            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "正在加载世界中...");
+            File worldFile = new File(getDataFolder(), "worlds.yml");
+            YamlConfiguration worldConfig = YamlConfiguration.loadConfiguration(worldFile);
+            List<String> worlds = worldConfig.getStringList("worlds");
+            for (String eachWorld : worlds){
+                getServer().createWorld(new WorldCreator(eachWorld));
+            }
+            getServer().getConsoleSender().sendMessage(ChatColor.GREEN+"世界加载成功！");
+        }
+
         //注册命令
         if (this.getConfig().getBoolean("enable_email")) {
             Objects.requireNonNull(this.getCommand("email")).setExecutor(new Email());
@@ -140,8 +155,8 @@ public final class UltiTools extends JavaPlugin {
             if (isUltiEconomyInstalled) {
                 Objects.requireNonNull(this.getCommand("wl")).setExecutor(new whitelist_commands());
             } else {
-                getLogger().info(ChatColor.RED + "未找到UltiEconomy插件，关闭白名单功能");
-                getLogger().info(ChatColor.RED + "白名单功能需要配合UltiEconomy使用");
+                getServer().getConsoleSender().sendMessage(ChatColor.RED + "未找到UltiEconomy插件，关闭白名单功能");
+                getServer().getConsoleSender().sendMessage(ChatColor.RED + "白名单功能需要配合UltiEconomy使用");
             }
         }
         if (this.getConfig().getBoolean("enable_scoreboard")) {
