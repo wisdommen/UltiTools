@@ -9,6 +9,7 @@ import com.minecraft.ultikits.UpdateChecker.ConfigFileChecker;
 import com.minecraft.ultikits.UpdateChecker.VersionChecker;
 import com.minecraft.ultikits.chestLock.ChestLock;
 import com.minecraft.ultikits.chestLock.ChestLockCMD;
+import com.minecraft.ultikits.commands.ToolsCommands;
 import com.minecraft.ultikits.email.Email;
 import com.minecraft.ultikits.email.EmailPage;
 import com.minecraft.ultikits.home.Home;
@@ -142,6 +143,7 @@ public final class UltiTools extends JavaPlugin {
         }
 
         //注册命令
+        Objects.requireNonNull(this.getCommand("ultitools")).setExecutor(new ToolsCommands());
         if (this.getConfig().getBoolean("enable_email")) {
             Objects.requireNonNull(this.getCommand("email")).setExecutor(new Email());
         }

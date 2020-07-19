@@ -1,12 +1,12 @@
 name: UltiTools
-version: 1.8.1
+version: 1.8.2
 main: com.minecraft.ultikits.ultitools.UltiTools
 api-version: 1.13
 prefix: UltiTools
 depend: [Economy]
 softdepend: [PlaceholderAPI, Level]
 authors: [wisdomme]
-description: This is a plugin inclouds some basic plugins fuctions for a server
+description: This is a plugin inclouds some basic plugin fuctions for a server
 
 commands:
   email:
@@ -48,3 +48,6 @@ commands:
   mw:
     description: 多世界管理
     usage: /mw help
+  ultitools:
+    description: 插件管理
+    usage: /ultitools reload
