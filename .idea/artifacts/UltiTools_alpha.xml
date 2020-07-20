@@ -5,6 +5,7 @@
       <element id="module-output" name="UltiTools" />
       <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/plugin.yml" />
       <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/config.yml" />
+      <element id="library" level="project" name="Maven: com.zaxxer:HikariCP:2.7.1" />
     </root>
   </artifact>
 </component>

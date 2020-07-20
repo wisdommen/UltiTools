@@ -3,8 +3,8 @@ version: ${project.version}
 main: com.minecraft.ultikits.ultitools.UltiTools
 api-version: 1.13
 prefix: UltiTools
-depend: [Economy]
-softdepend: [PlaceholderAPI, Level]
+depend: []
+softdepend: [Economy, PlaceholderAPI, Level]
 authors: [wisdomme]
 description: This is a plugin inclouds some basic plugin fuctions for a server
 

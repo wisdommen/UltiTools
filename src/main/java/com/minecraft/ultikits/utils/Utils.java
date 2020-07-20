@@ -1,6 +1,7 @@
 package com.minecraft.ultikits.utils;
 
 import com.minecraft.ultikits.ultitools.UltiTools;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -47,5 +48,9 @@ public class Utils {
             return Arrays.asList(Objects.requireNonNull(folder.listFiles()));
         }
         return null;
+    }
+
+    public static FileConfiguration getToolsConfig(){
+        return UltiTools.getInstance().getConfig();
     }
 }

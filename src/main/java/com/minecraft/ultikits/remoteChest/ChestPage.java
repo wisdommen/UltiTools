@@ -1,7 +1,9 @@
 package com.minecraft.ultikits.remoteChest;
 
+import com.minecraft.economy.apis.UltiEconomy;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import com.minecraft.ultikits.utils.Utils;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -85,13 +87,25 @@ public class ChestPage implements Listener {
                     String chestName = ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
                     loadBag(chestName, player);
                 } else if ("创建背包".equals(ChatColor.stripColor(clicked.getItemMeta().getDisplayName()))) {
-                    if (UltiTools.getIsVaultInstalled()) {
-                        if (UltiTools.getEcon().has(Bukkit.getOfflinePlayer(player.getUniqueId()), config.getInt("price_of_create_a_remote_chest"))) {
-                            UltiTools.getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(player.getUniqueId()), config.getInt("price_of_create_a_remote_chest"));
-                            loadBag((chestConfig.getKeys(false).size() + 1) + "号背包", player);
-                        } else {
-                            player.sendMessage(not_enough_money);
+                    int price = config.getInt("price_of_create_a_remote_chest");
+                    if (UltiTools.getIsVaultInstalled() || UltiTools.isUltiEconomyInstalled) {
+                        if (UltiTools.getIsVaultInstalled()) {
+                            if (UltiTools.getEcon().has(Bukkit.getOfflinePlayer(player.getUniqueId()), price)) {
+                                UltiTools.getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(player.getUniqueId()), config.getInt("price_of_create_a_remote_chest"));
+                                loadBag((chestConfig.getKeys(false).size() + 1) + "号背包", player);
+                            } else {
+                                player.sendMessage(not_enough_money);
+                            }
+                        }else {
+                            UltiEconomy economy = UltiTools.getEconomy();
+                            if (economy.checkMoney(player.getName())>= price){
+                                economy.takeFrom(player.getName(), price);
+                            }else {
+                                player.sendMessage(not_enough_money);
+                            }
                         }
+                    }else {
+                        player.sendMessage(ChatColor.RED+"未找到经济前置！");
                     }
                 }
             }

@@ -2,8 +2,6 @@ package com.minecraft.ultikits.ultitools;
 
 
 import com.minecraft.economy.apis.UltiEconomy;
-import com.minecraft.economy.database.DataBase;
-import com.minecraft.economy.database.LinkedDataBase;
 import com.minecraft.ultikits.GUIs.GUISetup;
 import com.minecraft.ultikits.UpdateChecker.ConfigFileChecker;
 import com.minecraft.ultikits.UpdateChecker.VersionChecker;
@@ -20,6 +18,7 @@ import com.minecraft.ultikits.remoteChest.ChestPage;
 import com.minecraft.ultikits.remoteChest.RemoteBagCMD;
 import com.minecraft.ultikits.scoreBoard.runTask;
 import com.minecraft.ultikits.scoreBoard.sb_commands;
+import com.minecraft.ultikits.utils.DatabaseUtils;
 import com.minecraft.ultikits.whiteList.whitelist_commands;
 import com.minecraft.ultikits.whiteList.whitelist_listener;
 import net.milkbowl.vault.economy.Economy;
@@ -43,7 +42,7 @@ public final class UltiTools extends JavaPlugin {
     public static boolean isUltiEconomyInstalled;
     private static Economy econ = null;
     private static Boolean isVaultInstalled;
-    public static DataBase dataBase;
+    public static boolean isDatabaseEnabled;
 
     private boolean setupVault() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
@@ -85,11 +84,13 @@ public final class UltiTools extends JavaPlugin {
         isUltiEconomyInstalled = setupEconomy();
         isVaultInstalled = setupVault();
 
+        isDatabaseEnabled = getConfig().getBoolean("enableDataBase");
+
         isPAPILoaded = getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
 
         if (!isPAPILoaded) {
             getLogger().warning("UltiTools插件未找到PAPI前置插件，查找其他可行依赖中...");
-            if (!isUltiEconomyInstalled) {
+            if (!isUltiEconomyInstalled && !isVaultInstalled) {
                 getLogger().warning("UltiTools插件未找到经济前置插件，关闭中...");
                 getLogger().warning("UltiTools插件至少需要Vault或者UltiEconomy, 或者安装PAPI才能运行");
                 getServer().getPluginManager().disablePlugin(this);
@@ -111,23 +112,17 @@ public final class UltiTools extends JavaPlugin {
         }
         ConfigFileChecker.reviewConfigFile();
 
-        if (getConfig().getBoolean("enableDataBase")) {
-            String username = getConfig().getString("username");
-            String password = getConfig().getString("password");
-            String host = getConfig().getString("host");
-            String database = getConfig().getString("database");
-            int port = getConfig().getInt("port");
+        if (isDatabaseEnabled) {
             String table = "userinfo";
-
-            dataBase = new LinkedDataBase(new String[]{"username", "password", "email", "token", "active", "token_exptime", "regtime", "ban"});
-
-            dataBase.login(host, String.valueOf(port), username, password, database, table);
-            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件正在接入数据库...");
-            dataBase.connect();
             getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件正在初始化数据库...");
-            dataBase.createTable();
-            dataBase.close();
-            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件已接入数据库！");
+            if(DatabaseUtils.createTable(table, new String[]{"username", "password", "whitelisted", "banned"})){
+                getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件接入数据库成功！");
+            }else {
+                getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件接入数据库失败！");
+                getConfig().set("enableDataBase", false);
+                saveConfig();
+                reloadConfig();
+            }
         }
 
         //加载世界
@@ -154,12 +149,7 @@ public final class UltiTools extends JavaPlugin {
             Objects.requireNonNull(this.getCommand("homelist")).setExecutor(new Home());
         }
         if (this.getConfig().getBoolean("enable_white_list")) {
-            if (isUltiEconomyInstalled) {
                 Objects.requireNonNull(this.getCommand("wl")).setExecutor(new whitelist_commands());
-            } else {
-                getServer().getConsoleSender().sendMessage(ChatColor.RED + "未找到UltiEconomy插件，关闭白名单功能");
-                getServer().getConsoleSender().sendMessage(ChatColor.RED + "白名单功能需要配合UltiEconomy使用");
-            }
         }
         if (this.getConfig().getBoolean("enable_scoreboard")) {
             Objects.requireNonNull(this.getCommand("sb")).setExecutor(new sb_commands());

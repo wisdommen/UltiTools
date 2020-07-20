@@ -44,7 +44,7 @@ public class ToolsCommands implements TabExecutor {
             Player player = (Player) sender;
             if (args.length == 1){
                 List<String> tabCommands = new ArrayList<>();
-                if (player.isOp()|| player.hasPermission("ultitools.tools.commands")){
+                if (player.isOp()|| player.hasPermission("ultikits.tools.commands")){
                     tabCommands.add("reload");
                 }
                 return tabCommands;
