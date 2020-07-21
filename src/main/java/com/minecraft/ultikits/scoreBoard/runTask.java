@@ -125,7 +125,7 @@ public class runTask extends BukkitRunnable {
                             money = economy.checkMoney(p.getName()) + "";
                             deposit = economy.checkBank(p.getName()) + "";
                         }
-                        if (Bukkit.getPluginManager().getPlugin("Level")!=null) {
+                        if (Bukkit.getPluginManager().getPlugin("UltiLevel")!=null) {
                             DecimalFormat format = new DecimalFormat("0.0");
                             CDq = coolDown(p, "CDq") + "";
                             CDw = coolDown(p, "CDw") + "";

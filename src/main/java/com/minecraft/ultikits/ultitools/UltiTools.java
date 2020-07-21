@@ -69,7 +69,7 @@ public final class UltiTools extends JavaPlugin {
     }
 
     private Boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("Economy") != null) {
+        if (getServer().getPluginManager().getPlugin("UltiEconomy") != null) {
             economy = new UltiEconomy();
             return true;
         } else {
@@ -90,13 +90,12 @@ public final class UltiTools extends JavaPlugin {
 
         if (!isPAPILoaded) {
             getLogger().warning("UltiTools插件未找到PAPI前置插件，查找其他可行依赖中...");
-            if (!isUltiEconomyInstalled && !isVaultInstalled) {
+            if (!(isUltiEconomyInstalled || isVaultInstalled)) {
                 getLogger().warning("UltiTools插件未找到经济前置插件，关闭中...");
                 getLogger().warning("UltiTools插件至少需要Vault或者UltiEconomy, 或者安装PAPI才能运行");
                 getServer().getPluginManager().disablePlugin(this);
             }
-
-            if (getServer().getPluginManager().getPlugin("Level") == null) {
+            if (getServer().getPluginManager().getPlugin("UltiLevel") == null) {
                 getLogger().warning("UltiTools插件未找到UltiLevel等级插件，关闭计分板等级相关显示！");
             }
         }

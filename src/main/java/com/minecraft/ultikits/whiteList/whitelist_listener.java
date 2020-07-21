@@ -1,15 +1,12 @@
 package com.minecraft.ultikits.whiteList;
 
-import com.minecraft.economy.database.DataBase;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import com.minecraft.ultikits.utils.DatabasePlayerTools;
-import com.minecraft.ultikits.utils.DatabaseUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 
 import java.io.File;
