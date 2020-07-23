@@ -58,6 +58,10 @@ enable_white_list: false
 '注释11请勿修改': '（侧边栏）在安装PlaceholderAPI的情况下生效。空出（""）则为不显示'
 '注释12请勿修改': '（侧边栏）开启PAPI变量'
 enable_PAPI: false
+'注释30请勿修改': '（侧边栏）玩家名字变量'
+name: "%player_name%"
+'注释40请勿修改': '（侧边栏）在线玩家数变量'
+online_player: "%server_online%"
 '注释17请勿修改': '（侧边栏）技能冷却值变量'
 CDq: "%ul_q_cd%"
 CDw: "%ul_w_cd%"

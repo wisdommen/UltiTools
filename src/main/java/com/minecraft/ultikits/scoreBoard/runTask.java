@@ -38,6 +38,8 @@ public class runTask extends BukkitRunnable {
                     File fileM = new File(UltiTools.getInstance().getDataFolder() + "/playerData", p.getName() + ".yml");
                     YamlConfiguration configM = YamlConfiguration.loadConfiguration(fileM);
 
+                    String name = "";
+                    String onLinePlayers = "";
                     String CDq = "";
                     String CDw = "";
                     String CDe = "";
@@ -54,6 +56,16 @@ public class runTask extends BukkitRunnable {
                     String occupation  = "";
 
                     if (isPAPILoaded && tool_config.getBoolean("enable_PAPI")) {
+                        try {
+                            name = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("name")));
+                        } catch (Exception e) {
+                            name = null;
+                        }
+                        try {
+                            onLinePlayers = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("online_player")));
+                        } catch (Exception e) {
+                            onLinePlayers = null;
+                        }
                         try {
                             CDq = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(p, tool_config.getString("CDq")));
                         } catch (Exception e) {
@@ -121,6 +133,8 @@ public class runTask extends BukkitRunnable {
                         }
                         isWizard = true;
                     } else {
+                        name = p.getName();
+                        onLinePlayers = Bukkit.getOnlinePlayers().size() + "";
                         if (UltiTools.isUltiEconomyInstalled) {
                             money = economy.checkMoney(p.getName()) + "";
                             deposit = economy.checkBank(p.getName()) + "";
@@ -223,15 +237,19 @@ public class runTask extends BukkitRunnable {
                         Score magic = information.getScore(ChatColor.WHITE + "魔力值：" + ChatColor.YELLOW + mp + ChatColor.BOLD + "/" + ChatColor.GOLD + max_mp);
                         magic.setScore(90);
                     }
-                    Score name = information.getScore(ChatColor.WHITE + "名字： " + ChatColor.GOLD + p.getName());
-                    name.setScore(99);
+                    if (name != null && !name.equals("")) {
+                        Score name_place = information.getScore(ChatColor.WHITE + "名字： " + ChatColor.GOLD + name);
+                        name_place.setScore(99);
+                    }
+                    if (onLinePlayers != null && !onLinePlayers.equals("")) {
+                        Score onlineplayer = information.getScore(ChatColor.WHITE + "在线人数： " + ChatColor.GOLD + onLinePlayers);
+                        onlineplayer.setScore(0);
+                    }
                     DecimalFormat format1 = new DecimalFormat("0.0");
                     if (max_hp != null && !"".equals(max_hp)) {
                         Score health = information.getScore(ChatColor.WHITE + "生命值： " + ChatColor.YELLOW + format1.format(p.getHealth()) + ChatColor.BOLD + " / " + ChatColor.GOLD + max_hp);
                         health.setScore(93);
                     }
-                    Score onlineplayer = information.getScore(ChatColor.WHITE + "在线人数： " + ChatColor.GOLD + Bukkit.getOnlinePlayers().size());
-                    onlineplayer.setScore(0);
 
                     if (UltiTools.getInstance().getConfig().getBoolean("enable_armor_check")) {
                         ArmorsManager armorsManager = new ArmorsManager(p);

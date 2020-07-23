@@ -1,6 +1,9 @@
 package com.minecraft.ultikits.GUIs;
 
+import com.google.common.collect.Multimap;
 import org.bukkit.ChatColor;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -17,6 +20,7 @@ public class ItemStackManager {
     private String displayName;
     private int position;
     private Inventory page;
+    private AttributeModifier modifier;
     private List<String> in;
     private List<String> commands;
     Map<String, Integer> enchants = new HashMap<>();
@@ -136,5 +140,18 @@ public class ItemStackManager {
         if (item.getItemMeta() != null && !item.getItemMeta().isUnbreakable()) {
             ((Damageable) item.getItemMeta()).setDamage(durability);
         }
+    }
+
+
+    public Multimap<Attribute, AttributeModifier> getModifier() {
+        if (item.getItemMeta() != null) {
+            ItemMeta itemMeta= item.getItemMeta();
+            return itemMeta.getAttributeModifiers();
+        }
+        return null;
+    }
+
+    public void setModifier(AttributeModifier modifier) {
+        this.modifier = modifier;
     }
 }
