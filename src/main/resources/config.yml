@@ -53,7 +53,10 @@ enable_multiworlds: true
 enable_chat: true
 
 '注释9请勿修改': '（白名单）开启白名单'
-enable_white_list: false
+enable_white_list: true
+
+'注释43请勿修改': '（白名单）开启头顶名称前缀后缀显示'
+enable_name_prefix: true
 
 '注释11请勿修改': '（侧边栏）在安装PlaceholderAPI的情况下生效。空出（""）则为不显示'
 '注释12请勿修改': '（侧边栏）开启PAPI变量'
@@ -80,9 +83,11 @@ max_exp: "%ul_max_exp%"
 '注释18请勿修改': '（侧边栏）玩家魔力值变量'
 mp: "%ul_mp%"
 '注释20请勿修改': '（侧边栏）玩家最大魔力值变量'
-max_mp: ""
+max_mp: "%ul_max_mp%"
+'注释45请勿修改': '（侧边栏）玩家当前生命值变量'
+hp: "%ul_health%"
 '注释23请勿修改': '（侧边栏）玩家最大生命值变量'
-max_hp: ""
+max_hp: "%ul_max_health%"
 '注释19请勿修改': '（侧边栏）玩家职业变量'
 occupation: "%ul_job%"
 '注释28请勿修改': '（侧边栏）自定义内容'
@@ -105,3 +110,9 @@ blocked_worlds: []
 
 '注释41请勿修改': '(chat) 自定义聊天前缀'
 chat_prefix: '§e[§a%player_world%§e][§c%ul_job%§dLv.%ul_level%§e][§b%player_name%§e]'
+
+'注释42请勿修改': '(头衔) 自定义头顶显示前缀'
+name_prefix: '§e[§c%ul_job%§dLv.%ul_level%§e]'
+
+'注释44请勿修改': '(头衔) 自定义头顶显示后缀'
+name_suffix: '§e[§c%player_health_rounded%§e/§c%ul_max_health%§e]'

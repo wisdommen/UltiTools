@@ -16,7 +16,8 @@ import com.minecraft.ultikits.multiworlds.multiWorlds;
 import com.minecraft.ultikits.prefix.Chat;
 import com.minecraft.ultikits.remoteChest.ChestPage;
 import com.minecraft.ultikits.remoteChest.RemoteBagCMD;
-import com.minecraft.ultikits.scoreBoard.runTask;
+import com.minecraft.ultikits.scoreBoard.NamePrefixSuffix;
+import com.minecraft.ultikits.scoreBoard.SideBar;
 import com.minecraft.ultikits.scoreBoard.sb_commands;
 import com.minecraft.ultikits.utils.DatabaseUtils;
 import com.minecraft.ultikits.whiteList.whitelist_commands;
@@ -186,7 +187,10 @@ public final class UltiTools extends JavaPlugin {
 
         //注册任务
         if (this.getConfig().getBoolean("enable_scoreboard")) {
-            BukkitTask t1 = new runTask().runTaskTimer(this, 0, 20L);
+            BukkitTask t1 = new SideBar().runTaskTimer(this, 0, 20L);
+        }
+        if (this.getConfig().getBoolean("enable_name_prefix")) {
+            BukkitTask t2 = new NamePrefixSuffix().runTaskTimer(this, 0, 20L);
         }
 
         //初始化GUI
