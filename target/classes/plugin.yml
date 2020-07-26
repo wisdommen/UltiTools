@@ -1,8 +1,9 @@
 name: UltiTools
-version: 2.1.0
+version: 2.1.1
 main: com.minecraft.ultikits.ultitools.UltiTools
 api-version: 1.13
 prefix: UltiTools
+load: STARTUP
 depend: [PlaceholderAPI]
 softdepend: [UltiEconomy, UltiLevel]
 authors: [wisdomme]

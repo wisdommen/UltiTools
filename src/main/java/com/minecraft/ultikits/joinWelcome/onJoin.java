@@ -65,7 +65,7 @@ public class onJoin implements Listener {
                 new BukkitRunnable(){
                     @Override
                     public void run() {
-                        player.sendMessage(ChatColor.AQUA+"UltiTools有新的更新！下载地址：https://www.mcbbs.net/thread-1060351-1-1.html");
+                        player.sendMessage(ChatColor.AQUA+"[UltiTools]有新的更新！下载地址：https://www.mcbbs.net/thread-1062730-1-1.html");
                     }
                 }.runTaskLater(UltiTools.getInstance(), 4);
             }

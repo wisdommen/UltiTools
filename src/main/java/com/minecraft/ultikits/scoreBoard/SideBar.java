@@ -87,7 +87,7 @@ public class SideBar extends BukkitRunnable {
             max_exp = setPlaceholderString(player, "max_exp");
             mp = setPlaceholderString(player, "mp");
             hp = setPlaceholderString(player, "hp");
-            max_hp = String.format("%.1f", Double.parseDouble(setPlaceholderString(player, "max_hp")));
+            max_hp = setPlaceholderString(player, "max_hp");
             max_mp = setPlaceholderString(player, "max_mp");
             occupation = setPlaceholderString(player, "occupation");
             isWizard = true;

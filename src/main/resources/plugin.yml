@@ -3,6 +3,7 @@ version: ${project.version}
 main: com.minecraft.ultikits.ultitools.UltiTools
 api-version: 1.13
 prefix: UltiTools
+load: STARTUP
 depend: [PlaceholderAPI]
 softdepend: [UltiEconomy, UltiLevel]
 authors: [wisdomme]
