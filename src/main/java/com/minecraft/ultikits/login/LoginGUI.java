@@ -1,5 +1,6 @@
 package com.minecraft.ultikits.login;
 
+import com.minecraft.ultikits.GUIs.LoginRegisterEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -28,7 +29,7 @@ public class LoginGUI implements Listener {
         File file = new File(UltiTools.getInstance().getDataFolder() + "/loginData", player.getName() + ".yml");
 
         ItemStack clicked = event.getCurrentItem();
-        if (event.getView().getTitle().contains("登陆界面")) {
+        if (event.getView().getTitle().contains("登录界面")) {
             if (clicked != null) {
                 event.setCancelled(true);
                 if (clicked.getItemMeta().getDisplayName().contains("点按输入数字")) {
@@ -113,15 +114,16 @@ public class LoginGUI implements Listener {
 
     @EventHandler
     public void onPlayerClose(InventoryCloseEvent event) {
-        if (event.getView().getTitle().contains("登陆界面") && !getIsLogin((Player) event.getPlayer())) {
+        if (!getIsLogin((Player) event.getPlayer())) {
             Player player = (Player) event.getPlayer();
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (getIsLogin(player)) {
-                        this.cancel();
+                    if (event.getView().getTitle().contains("登录界面")) {
+                        player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.LOGIN).getInventory());
+                    }else if (event.getView().getTitle().contains("注册界面")){
+                        player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.REGISTER).getInventory());
                     }
-                    player.openInventory(inventoryMap.get(player.getName() + "登陆界面").getInventory());
                 }
             }.runTaskLater(UltiTools.getInstance(), 0L);
         }

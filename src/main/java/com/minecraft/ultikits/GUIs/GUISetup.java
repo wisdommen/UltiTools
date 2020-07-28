@@ -77,7 +77,6 @@ public class GUISetup {
     }
 
     public static void setupLoginRegisterLayout(Player player, LoginRegisterEnum title){
-        player.sendMessage(title.toString());
         InventoryManager inventoryManager = new InventoryManager(player, 54, title.toString());
         inventoryManager.create();
         inventoryMap.put(player.getName()+title.toString(), inventoryManager);
