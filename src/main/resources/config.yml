@@ -58,6 +58,9 @@ enable_white_list: true
 '注释43请勿修改': '（白名单）开启头顶名称前缀后缀显示'
 enable_name_prefix: true
 
+'注释46请勿修改': '（登录）是否开启登录功能  (感谢vang_z大佬的意见！)'
+enable_login: true
+
 '注释11请勿修改': '（侧边栏）在安装PlaceholderAPI的情况下生效。空出（""）则为不显示'
 '注释12请勿修改': '（侧边栏）开启PAPI变量'
 enable_PAPI: false
@@ -115,4 +118,4 @@ chat_prefix: '§e[§a%player_world%§e][§c%ul_job%§dLv.%ul_level%§e][§b%play
 name_prefix: '§e[§c%ul_job%§dLv.%ul_level%§e]'
 
 '注释44请勿修改': '(头衔) 自定义头顶显示后缀'
-name_suffix: '§e[§c%player_health_rounded%§e/§c%ul_max_health%§e]'
+name_suffix: '§e[§c%ul_health%§e/§c%ul_max_health%§e]'

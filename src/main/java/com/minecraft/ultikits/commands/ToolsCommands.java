@@ -2,7 +2,6 @@ package com.minecraft.ultikits.commands;
 
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;

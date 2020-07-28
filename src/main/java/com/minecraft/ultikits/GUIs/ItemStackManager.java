@@ -96,6 +96,16 @@ public class ItemStackManager {
         return item;
     }
 
+    public ItemStack getItem(int amount) {
+        ItemStack newItem = item;
+        newItem.setAmount(amount);
+        return newItem;
+    }
+
+    public void setAmount(int number) {
+        item.setAmount(number);
+    }
+
     public void setPage(List<String> page) {
         this.in = page;
     }

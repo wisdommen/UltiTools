@@ -12,6 +12,8 @@ import com.minecraft.ultikits.email.Email;
 import com.minecraft.ultikits.email.EmailPage;
 import com.minecraft.ultikits.home.Home;
 import com.minecraft.ultikits.joinWelcome.onJoin;
+import com.minecraft.ultikits.login.LoginGUI;
+import com.minecraft.ultikits.login.LoginListener;
 import com.minecraft.ultikits.multiworlds.multiWorlds;
 import com.minecraft.ultikits.prefix.Chat;
 import com.minecraft.ultikits.remoteChest.ChestPage;
@@ -183,6 +185,10 @@ public final class UltiTools extends JavaPlugin {
         }
         if (getConfig().getBoolean("enable_chat")) {
             getServer().getPluginManager().registerEvents(new Chat(), this);
+        }
+        if (getConfig().getBoolean("enable_login")) {
+            getServer().getPluginManager().registerEvents(new LoginListener(), this);
+            getServer().getPluginManager().registerEvents(new LoginGUI(), this);
         }
 
         //注册任务

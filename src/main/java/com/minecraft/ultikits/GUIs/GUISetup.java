@@ -76,6 +76,38 @@ public class GUISetup {
         return emailContentManagers;
     }
 
+    public static void setupLoginRegisterLayout(Player player, LoginRegisterEnum title){
+        player.sendMessage(title.toString());
+        InventoryManager inventoryManager = new InventoryManager(player, 54, title.toString());
+        inventoryManager.create();
+        inventoryMap.put(player.getName()+title.toString(), inventoryManager);
+
+        ItemStackManager itemStackManager = new ItemStackManager(new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1), "点按输入数字");
+        itemStackManager.setUpItem();
+        //数字键盘
+        inventoryManager.setItem(21, itemStackManager.getItem(1));
+        inventoryManager.setItem(22, itemStackManager.getItem(2));
+        inventoryManager.setItem(23, itemStackManager.getItem(3));
+        inventoryManager.setItem(30, itemStackManager.getItem(4));
+        inventoryManager.setItem(31, itemStackManager.getItem(5));
+        inventoryManager.setItem(32, itemStackManager.getItem(6));
+        inventoryManager.setItem(39, itemStackManager.getItem(7));
+        inventoryManager.setItem(40, itemStackManager.getItem(8));
+        inventoryManager.setItem(41, itemStackManager.getItem(9));
+        inventoryManager.setItem(49, itemStackManager.getItem(10));
+
+        //其他功能键
+        ItemStackManager itemStackManager2 = new ItemStackManager(new ItemStack(Material.RED_STAINED_GLASS_PANE), "清空");
+        itemStackManager2.setUpItem();
+        inventoryManager.setItem(48, itemStackManager2.getItem());
+        ItemStackManager itemStackManager3 = new ItemStackManager(new ItemStack(Material.GREEN_STAINED_GLASS_PANE), "确认");
+        itemStackManager3.setUpItem();
+        inventoryManager.setItem(50, itemStackManager3.getItem());
+        ItemStackManager itemStackManager4 = new ItemStackManager(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), "退出");
+        itemStackManager4.setUpItem();
+        inventoryManager.setItem(53, itemStackManager4.getItem());
+    }
+
     public static List<String> getLoreList(EmailContentManager emailContentManager, String inputString, int length) {
         List<String> list = new ArrayList<>();
         list.add(ChatColor.GOLD+"------邮件内容------");

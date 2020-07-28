@@ -1,0 +1,154 @@
+package com.minecraft.ultikits.login;
+
+import com.minecraft.ultikits.ultitools.UltiTools;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.io.File;
+
+import static com.minecraft.ultikits.GUIs.GUISetup.inventoryMap;
+import static com.minecraft.ultikits.login.LoginListener.gameMode;
+import static com.minecraft.ultikits.utils.DatabasePlayerTools.*;
+import static com.minecraft.ultikits.utils.Messages.warning;
+
+public class LoginGUI implements Listener {
+
+    @EventHandler
+    public void onPlayerClick(InventoryClickEvent event) {
+        Inventory currentInventory = event.getClickedInventory();
+        Player player = (Player) event.getWhoClicked();
+        File file = new File(UltiTools.getInstance().getDataFolder() + "/loginData", player.getName() + ".yml");
+
+        ItemStack clicked = event.getCurrentItem();
+        if (event.getView().getTitle().contains("登陆界面")) {
+            if (clicked != null) {
+                event.setCancelled(true);
+                if (clicked.getItemMeta().getDisplayName().contains("点按输入数字")) {
+                    int slot = currentInventory.firstEmpty();
+                    if (slot < 9) {
+                        currentInventory.setItem(slot, clicked);
+                    } else {
+                        player.sendMessage(warning("不可以超过9个数字！"));
+                    }
+                } else if (clicked.getItemMeta().getDisplayName().contains("确认")) {
+                    String password = "null";
+                    try {
+                        password = getThePassword(currentInventory);
+                    }catch (Exception ignored){
+                    }
+                    if (!password.equals(getPlayerPassword(player))) {
+                        player.sendMessage(warning("密码错误！"));
+                    } else {
+                        setIsLogin(player, true);
+                        player.sendMessage(ChatColor.LIGHT_PURPLE + "登录成功！");
+                        player.setGameMode(gameMode);
+                        if (player.isFlying()){
+                            player.setFlying(false);
+                        }
+                        player.closeInventory();
+                    }
+                } else if (clicked.getItemMeta().getDisplayName().contains("清空")) {
+                    clearTheFirstLine(currentInventory);
+                } else if (clicked.getItemMeta().getDisplayName().contains("退出")) {
+                    player.kickPlayer(ChatColor.AQUA + "下次再见！");
+                }
+            }
+        } else if (event.getView().getTitle().contains("注册界面")) {
+            if (clicked != null) {
+                event.setCancelled(true);
+                if (clicked.getItemMeta().getDisplayName().contains("点按输入数字")) {
+                    int slot = currentInventory.firstEmpty();
+                    if (slot < 9) {
+                        currentInventory.setItem(slot, clicked);
+                    } else {
+                        player.sendMessage(warning("不可以超过9个数字！"));
+                    }
+                } else if (clicked.getItemMeta().getDisplayName().contains("确认")) {
+                    String password = "null";
+                    try {
+                        password = getThePassword(currentInventory);
+                    }catch (Exception ignored){
+                    }
+                    if (getPlayerPassword(player) == null || getPlayerPassword(player).equals("")) {
+                        setPlayerPassword(player, password);
+                        clearTheFirstLine(currentInventory);
+                        player.sendMessage(ChatColor.LIGHT_PURPLE + "请再次输入密码！");
+                    } else {
+                        if (!password.equals(getPlayerPassword(player))) {
+                            player.sendMessage(warning("两次输入的密码不同！请重试！"));
+                            clearTheFirstLine(currentInventory);
+                            file.delete();
+                        } else {
+                            setIsLogin(player, true);
+                            player.sendMessage(ChatColor.LIGHT_PURPLE + "注册成功！");
+                            player.setGameMode(gameMode);
+                            if (player.isFlying()){
+                                player.setFlying(false);
+                            }
+                            player.closeInventory();
+                        }
+                    }
+                } else if (clicked.getItemMeta().getDisplayName().contains("清空")) {
+                    clearTheFirstLine(currentInventory);
+                } else if (clicked.getItemMeta().getDisplayName().contains("退出")) {
+                    player.kickPlayer(ChatColor.AQUA + "下次再见！");
+                    if (!getThePassword(currentInventory).equals("")){
+                        setPlayerPassword(player, "");
+                    }
+                    if (file.exists()){
+                        file.delete();
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerClose(InventoryCloseEvent event) {
+        if (event.getView().getTitle().contains("登陆界面") && !getIsLogin((Player) event.getPlayer())) {
+            Player player = (Player) event.getPlayer();
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (getIsLogin(player)) {
+                        this.cancel();
+                    }
+                    player.openInventory(inventoryMap.get(player.getName() + "登陆界面").getInventory());
+                }
+            }.runTaskLater(UltiTools.getInstance(), 0L);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        if (getIsLogin(player)) {
+            setIsLogin(player, false);
+        }
+    }
+
+    public void clearTheFirstLine(Inventory inventory) {
+        for (int i = 0; i < 10; i++) {
+            inventory.setItem(i, null);
+        }
+    }
+
+    public String getThePassword(Inventory inventory) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < 10; i++) {
+            ItemStack itemStack = inventory.getItem(i);
+            if (itemStack!=null) {
+                stringBuilder.append(itemStack.getAmount());
+            }
+        }
+        return stringBuilder.toString();
+    }
+}

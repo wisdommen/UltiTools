@@ -19,9 +19,14 @@ public class NamePrefixSuffix extends BukkitRunnable {
             String prefix;
             String suffix;
             if (isPAPILoaded && tool_config.getBoolean("enable_PAPI") ){
-                prefix = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, tool_config.getString("name_prefix")));
-                suffix = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, tool_config.getString("name_suffix")));
-            }else {
+                try {
+                    prefix = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, tool_config.getString("name_prefix")));
+                    suffix = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, tool_config.getString("name_suffix")));
+                }catch (Exception e){
+                    prefix = "";
+                    suffix = "";
+                }
+            } else {
                 prefix = "";
                 suffix = "";
             }
