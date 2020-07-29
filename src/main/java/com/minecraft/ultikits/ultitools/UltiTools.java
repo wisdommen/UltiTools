@@ -12,6 +12,7 @@ import com.minecraft.ultikits.email.Email;
 import com.minecraft.ultikits.email.EmailPage;
 import com.minecraft.ultikits.home.Home;
 import com.minecraft.ultikits.joinWelcome.onJoin;
+import com.minecraft.ultikits.login.CheckGUIOpenTask;
 import com.minecraft.ultikits.login.LoginGUI;
 import com.minecraft.ultikits.login.LoginListener;
 import com.minecraft.ultikits.multiworlds.multiWorlds;
@@ -36,6 +37,8 @@ import org.bukkit.scheduler.BukkitTask;
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
+
+import static com.minecraft.ultikits.login.LoginListener.savePlayerLoginStatus;
 
 public final class UltiTools extends JavaPlugin {
 
@@ -198,6 +201,9 @@ public final class UltiTools extends JavaPlugin {
         if (this.getConfig().getBoolean("enable_name_prefix")) {
             BukkitTask t2 = new NamePrefixSuffix().runTaskTimer(this, 0, 20L);
         }
+        if (getConfig().getBoolean("enable_login")) {
+            BukkitTask checkGUIOpenTask = new CheckGUIOpenTask().runTaskTimer(this, 0, 1L);
+        }
 
         //初始化GUI
         if (this.getConfig().getBoolean("enable_remote_chest")) {
@@ -215,6 +221,7 @@ public final class UltiTools extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        savePlayerLoginStatus();
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件已卸载！");
     }
 

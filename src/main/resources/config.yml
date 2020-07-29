@@ -53,9 +53,9 @@ enable_multiworlds: true
 enable_chat: true
 
 '注释9请勿修改': '（白名单）开启白名单'
-enable_white_list: true
+enable_white_list: false
 
-'注释43请勿修改': '（白名单）开启头顶名称前缀后缀显示'
+'注释43请勿修改': '（头衔）开启头顶名称前缀后缀显示'
 enable_name_prefix: true
 
 '注释46请勿修改': '（登录）是否开启登录功能  (感谢vang_z大佬的意见！)'

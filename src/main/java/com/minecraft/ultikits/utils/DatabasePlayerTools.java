@@ -33,27 +33,6 @@ public class DatabasePlayerTools {
         return DatabaseUtils.insertData(table, dataMap);
     }
 
-    public static boolean getIsLogin(Player player){
-        File folder = new File(UltiTools.getInstance().getDataFolder() + "/loginData");
-        if (!folder.exists()){
-            folder.mkdirs();
-        }
-        File file = new File(folder, player.getName() + ".yml");
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        return config.getBoolean("isLogin");
-    }
-
-    public static void setIsLogin(Player player, boolean isLogin){
-        File file = new File(UltiTools.getInstance().getDataFolder() + "/loginData", player.getName() + ".yml");
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        config.set("isLogin", isLogin);
-        try {
-            config.save(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static boolean login(Player player, int password){
 
         return false;

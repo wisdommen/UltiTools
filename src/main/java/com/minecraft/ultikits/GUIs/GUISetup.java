@@ -81,7 +81,7 @@ public class GUISetup {
         inventoryManager.create();
         inventoryMap.put(player.getName()+title.toString(), inventoryManager);
 
-        ItemStackManager itemStackManager = new ItemStackManager(new ItemStack(Material.BLACK_STAINED_GLASS_PANE, 1), "点按输入数字");
+        ItemStackManager itemStackManager = new ItemStackManager(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), "点按输入数字");
         itemStackManager.setUpItem();
         //数字键盘
         inventoryManager.setItem(21, itemStackManager.getItem(1));
@@ -105,6 +105,13 @@ public class GUISetup {
         ItemStackManager itemStackManager4 = new ItemStackManager(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), "退出");
         itemStackManager4.setUpItem();
         inventoryManager.setItem(53, itemStackManager4.getItem());
+        ItemStackManager itemStackManager5 = new ItemStackManager(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), "");
+        itemStackManager5.setUpItem();
+        for (int i = 9; i < 54; i++){
+            if (inventoryManager.getInventory().getItem(i) == null){
+                inventoryManager.setItem(i, itemStackManager5.getItem());
+            }
+        }
     }
 
     public static List<String> getLoreList(EmailContentManager emailContentManager, String inputString, int length) {

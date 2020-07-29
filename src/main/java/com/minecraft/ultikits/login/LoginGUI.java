@@ -3,11 +3,14 @@ package com.minecraft.ultikits.login;
 import com.minecraft.ultikits.GUIs.LoginRegisterEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -16,7 +19,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.io.File;
 
 import static com.minecraft.ultikits.GUIs.GUISetup.inventoryMap;
-import static com.minecraft.ultikits.login.LoginListener.gameMode;
+import static com.minecraft.ultikits.login.LoginListener.playerLoginStatus;
 import static com.minecraft.ultikits.utils.DatabasePlayerTools.*;
 import static com.minecraft.ultikits.utils.Messages.warning;
 
@@ -34,7 +37,7 @@ public class LoginGUI implements Listener {
                 event.setCancelled(true);
                 if (clicked.getItemMeta().getDisplayName().contains("点按输入数字")) {
                     int slot = currentInventory.firstEmpty();
-                    if (slot < 9) {
+                    if (slot >= 0 && slot < 9) {
                         currentInventory.setItem(slot, clicked);
                     } else {
                         player.sendMessage(warning("不可以超过9个数字！"));
@@ -50,7 +53,7 @@ public class LoginGUI implements Listener {
                     } else {
                         setIsLogin(player, true);
                         player.sendMessage(ChatColor.LIGHT_PURPLE + "登录成功！");
-                        player.setGameMode(gameMode);
+                        player.setGameMode(GameMode.SURVIVAL);
                         if (player.isFlying()){
                             player.setFlying(false);
                         }
@@ -90,7 +93,7 @@ public class LoginGUI implements Listener {
                         } else {
                             setIsLogin(player, true);
                             player.sendMessage(ChatColor.LIGHT_PURPLE + "注册成功！");
-                            player.setGameMode(gameMode);
+                            player.setGameMode(GameMode.SURVIVAL);
                             if (player.isFlying()){
                                 player.setFlying(false);
                             }
@@ -137,20 +140,44 @@ public class LoginGUI implements Listener {
         }
     }
 
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event){
+        if (!getIsLogin(event.getPlayer())){
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event){
+        if (!getIsLogin(event.getPlayer())){
+            event.setCancelled(true);
+        }
+    }
+
     public void clearTheFirstLine(Inventory inventory) {
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 9; i++) {
             inventory.setItem(i, null);
         }
     }
 
     public String getThePassword(Inventory inventory) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 9; i++) {
             ItemStack itemStack = inventory.getItem(i);
             if (itemStack!=null) {
                 stringBuilder.append(itemStack.getAmount());
             }
         }
         return stringBuilder.toString();
+    }
+
+    public static boolean getIsLogin(Player player){
+        return playerLoginStatus.get(player.getName());
+    }
+
+
+    public static void setIsLogin(Player player, boolean isLogin){
+        playerLoginStatus.put(player.getName(), isLogin);
     }
 }
