@@ -15,6 +15,7 @@ import com.minecraft.ultikits.joinWelcome.onJoin;
 import com.minecraft.ultikits.login.CheckGUIOpenTask;
 import com.minecraft.ultikits.login.LoginGUI;
 import com.minecraft.ultikits.login.LoginListener;
+import com.minecraft.ultikits.login.UpdatePlayerInventory;
 import com.minecraft.ultikits.multiworlds.multiWorlds;
 import com.minecraft.ultikits.prefix.Chat;
 import com.minecraft.ultikits.remoteChest.ChestPage;
@@ -203,6 +204,7 @@ public final class UltiTools extends JavaPlugin {
         }
         if (getConfig().getBoolean("enable_login")) {
             BukkitTask checkGUIOpenTask = new CheckGUIOpenTask().runTaskTimer(this, 0, 1L);
+            BukkitTask updatePlayerInventory = new UpdatePlayerInventory().runTaskTimer(this, 0, 1L);
         }
 
         //初始化GUI
