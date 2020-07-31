@@ -36,6 +36,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -108,14 +109,16 @@ public final class UltiTools extends JavaPlugin {
         }
 
         File folder = new File(String.valueOf(getDataFolder()));
-        File playerDataFolder = new File(getDataFolder() + "/playerData");
+        List<File> folders = new ArrayList<>();
+        folders.add(new File(getDataFolder() + "/playerData"));
+        folders.add(new File(getDataFolder() + "/chestData"));
+        folders.add(new File(getDataFolder() + "/loginData"));
+        folders.add(new File(getDataFolder() + "/emailData"));
         File config_file = new File(getDataFolder(), "config.yml");
         if (!folder.exists() || !config_file.exists()) {
             saveDefaultConfig();
         }
-        if (!playerDataFolder.exists()) {
-            playerDataFolder.mkdirs();
-        }
+        makedirs(folders);
         ConfigFileChecker.reviewConfigFile();
 
         if (isDatabaseEnabled) {
@@ -229,5 +232,13 @@ public final class UltiTools extends JavaPlugin {
 
     public static UltiTools getInstance() {
         return plugin;
+    }
+
+    private void makedirs(List<File> folders){
+        for (File eachFolder : folders){
+            if (!eachFolder.exists()) {
+                eachFolder.mkdirs();
+            }
+        }
     }
 }

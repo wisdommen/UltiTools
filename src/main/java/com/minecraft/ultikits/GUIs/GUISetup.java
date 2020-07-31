@@ -49,7 +49,8 @@ public class GUISetup {
     }
 
     public static Map<String, EmailContentManager> setUpEmailInBox(Player player) {
-        EmailManager emailManager = new EmailManager(player);
+        File file = new File(UltiTools.getInstance().getDataFolder()+"/emailData", player.getName()+".yml");
+        EmailManager emailManager = new EmailManager(file);
         Map<String, EmailContentManager> emailContentManagers = emailManager.getEmails();
         InventoryManager inventoryManager = new InventoryManager(player, 36, "收件箱");
         inventoryManager.create();

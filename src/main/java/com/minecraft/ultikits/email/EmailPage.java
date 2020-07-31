@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -54,8 +55,8 @@ public class EmailPage implements Listener {
                                     if (itemMeta != null) {
                                         itemMeta.setDisplayName(itemStackManager.getDisplayName());
                                         itemMeta.setLore(itemStackManager.getLore());
-                                        if (itemStackManager.getDurability() >= 0) {
-                                            ((Damageable) itemMeta).setDamage((int) itemStackManager.getDurability());
+                                        if (config.getDouble(uuid+".item.durability") > 0) {
+                                            ((Damageable) itemMeta).setDamage((int) config.getDouble(uuid+".item.durability"));
                                         }
                                         itemStack.setItemMeta(itemMeta);
                                     }
@@ -88,6 +89,23 @@ public class EmailPage implements Listener {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event){
+        Player player = event.getPlayer();
+        File folder = new File(UltiTools.getInstance().getDataFolder() + "/emailData");
+        File file = new File(folder, player.getName() + ".yml");
+        if (!folder.exists()){
+            folder.mkdirs();
+        }
+        if (!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

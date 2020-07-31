@@ -13,7 +13,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +29,8 @@ public class Email implements TabExecutor {
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] strings) {
         if (commandSender instanceof Player) {
             Player player = (Player) commandSender;
-            EmailManager emailManager = new EmailManager(player);
+            File senderFile = new File(UltiTools.getInstance().getDataFolder() + "/emailData", player.getName() + ".yml");
+            EmailManager emailManager = new EmailManager(senderFile);
 
             if ("email".equalsIgnoreCase(command.getName())) {
                 if (strings.length == 1) {
@@ -58,14 +61,20 @@ public class Email implements TabExecutor {
                         if (player.isOp()){
                             if (player.getInventory().getItemInMainHand().getType()!= Material.AIR) {
                                 ItemStack itemStack = player.getInventory().getItemInMainHand();
+                                ItemMeta itemMeta = itemStack.getItemMeta();
                                 ItemStackManager itemStackManager = new ItemStackManager(itemStack);
                                 itemStackManager.setUpItem();
                                 for (OfflinePlayer player1 : UltiTools.getInstance().getServer().getOfflinePlayers()){
-                                    emailManager.sendTo(player1, strings[1], itemStackManager);
+                                    File file = new File(UltiTools.getInstance().getDataFolder() + "/emailData", player1.getName() + ".yml");
+                                    emailManager.sendTo(file, strings[1], itemStackManager);
                                 }
+                                ItemStack newItem = new ItemStack(itemStack.getType());
+                                newItem.setItemMeta(itemMeta);
+                                player.getInventory().setItemInMainHand(newItem);
                             }else {
                                 for (OfflinePlayer player2 : UltiTools.getInstance().getServer().getOfflinePlayers()){
-                                    emailManager.sendTo(player2, strings[1]);
+                                    File file = new File(UltiTools.getInstance().getDataFolder() + "/emailData", player2.getName() + ".yml");
+                                    emailManager.sendTo(file, strings[1]);
                                 }
                             }
                             player.sendMessage(ChatColor.GOLD + "正在发送全体邮件...");
@@ -74,9 +83,11 @@ public class Email implements TabExecutor {
                         return true;
                     }
                 }else if (strings.length == 3) {
+                    File file = new File(UltiTools.getInstance().getDataFolder() + "/emailData", strings[1] + ".yml");
+
                     if ("send".equalsIgnoreCase(strings[0])) {
-                        if (Bukkit.getOfflinePlayer(strings[1]) != null) {
-                            if (emailManager.sendTo(Bukkit.getOfflinePlayer(strings[1]), strings[2])) {
+                        if (file.exists()) {
+                            if (emailManager.sendTo(file, strings[2])) {
                                 player.sendMessage(ChatColor.GOLD + "正在发送邮件...");
                                 player.sendMessage(ChatColor.GOLD + "发送成功！");
                             } else {
@@ -87,12 +98,12 @@ public class Email implements TabExecutor {
                         }
                         return true;
                     }else if ("senditem".equalsIgnoreCase(strings[0])){
-                        if (Bukkit.getOfflinePlayer(strings[1]) != null) {
+                        if (file.exists()) {
                             if (player.getInventory().getItemInMainHand().getType()!= Material.AIR){
                                 ItemStack itemStack = player.getInventory().getItemInMainHand();
                                 ItemStackManager itemStackManager = new ItemStackManager(itemStack);
                                 itemStackManager.setUpItem();
-                                if (emailManager.sendTo(Bukkit.getOfflinePlayer(strings[1]), strings[2], itemStackManager)) {
+                                if (emailManager.sendTo(file, strings[2], itemStackManager)) {
                                     player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
                                     player.sendMessage(ChatColor.RED + "发送成功！");
                                 } else {

@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.*;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
@@ -173,7 +174,8 @@ public class SideBar extends BukkitRunnable {
     }
 
     public static Integer getUnReadEmailNum(Player player) {
-        EmailManager emailManager = new EmailManager(player);
+        File file = new File(UltiTools.getInstance().getDataFolder() + "/emailData", player.getName() + ".yml");
+        EmailManager emailManager = new EmailManager(file);
         Map<String, EmailContentManager> emailContentManagerMap = emailManager.getEmails();
         int i = 0;
         for (String each : emailContentManagerMap.keySet()) {

@@ -35,39 +35,38 @@ public class ChestPage implements Listener {
         YamlConfiguration chest_config = YamlConfiguration.loadConfiguration(chest_file);
 
         String name = ChatColor.stripColor(chest_name.split("号")[0]);
-        if (chest_config.getString(name)!=null) {
-            if (!chest_config.getString(name).equals("")) {
-                for (Object item : Objects.requireNonNull(chest_config.getConfigurationSection(name)).getKeys(false)) {
-                    if (item != null) {
-                        int item_quantity = chest_config.getInt(name + "." + item + ".quantity");
-                        Material item_material = Material.valueOf(chest_config.getString(name + "." + item + ".type"));
-                        int item_position = chest_config.getInt(name + "." + item + ".position");
-                        ItemStack contained_item = new ItemStack(item_material, item_quantity);
-                        List<String> item_lore = chest_config.getStringList(name + "." + item + ".lore");
-                        String item_name = chest_config.getString(name + "." + item + ".name");
-                        ItemMeta itemMeta = contained_item.getItemMeta();
-                        if (itemMeta != null) {
-                            itemMeta.setLore(item_lore);
-                            itemMeta.setDisplayName(item_name);
-                            if (chest_config.getInt(name + "." + item + ".durability") > 0) {
-                                ((Damageable) itemMeta).setDamage(chest_config.getInt(name + "." + item + ".durability"));
-                            }
-                            contained_item.setItemMeta(itemMeta);
+        if (chest_config.getString(name) != null && !chest_config.getString(name).equals("")) {
+            for (Object item : Objects.requireNonNull(chest_config.getConfigurationSection(name)).getKeys(false)) {
+                if (item != null) {
+                    int item_quantity = chest_config.getInt(name + "." + item + ".quantity");
+                    Material item_material = Material.valueOf(chest_config.getString(name + "." + item + ".type"));
+                    int item_position = chest_config.getInt(name + "." + item + ".position");
+                    ItemStack contained_item = new ItemStack(item_material, item_quantity);
+                    List<String> item_lore = chest_config.getStringList(name + "." + item + ".lore");
+                    String item_name = chest_config.getString(name + "." + item + ".name");
+                    ItemMeta itemMeta = contained_item.getItemMeta();
+                    if (itemMeta != null) {
+                        itemMeta.setLore(item_lore);
+                        itemMeta.setDisplayName(item_name);
+                        if (chest_config.getInt(name + "." + item + ".durability") > 0) {
+                            ((Damageable) itemMeta).setDamage(chest_config.getInt(name + "." + item + ".durability"));
                         }
-                        int i = 0;
-                        while (chest_config.get(name + "." + item + ".enchant." + i) != null) {
-                            if (!Objects.equals(chest_config.getString(name + "." + item + ".enchant." + i + ".name"), "")) {
-                                int enchantment_level = chest_config.getInt(name + "." + item + ".enchant." + i + ".level");
-                                String enchantment_name = chest_config.getString(name + "." + item + ".enchant." + i + ".name");
-                                contained_item.addUnsafeEnchantment(Objects.requireNonNull(getEnchantment(enchantment_name)), enchantment_level);
-                                i++;
-                            }
-                        }
-                        remote_chest.setItem(item_position, contained_item);
+                        contained_item.setItemMeta(itemMeta);
                     }
+                    int i = 0;
+                    while (chest_config.get(name + "." + item + ".enchant." + i) != null) {
+                        if (!Objects.equals(chest_config.getString(name + "." + item + ".enchant." + i + ".name"), "")) {
+                            int enchantment_level = chest_config.getInt(name + "." + item + ".enchant." + i + ".level");
+                            String enchantment_name = chest_config.getString(name + "." + item + ".enchant." + i + ".name");
+                            contained_item.addUnsafeEnchantment(Objects.requireNonNull(getEnchantment(enchantment_name)), enchantment_level);
+                            i++;
+                        }
+                    }
+                    remote_chest.setItem(item_position, contained_item);
                 }
             }
         }
+        player.closeInventory();
         player.openInventory(remote_chest);
     }
 
@@ -81,31 +80,30 @@ public class ChestPage implements Listener {
         YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
 
         if ("远程背包".equals(event.getView().getTitle())) {
-            if (clicked != null && clicked.getItemMeta()!=null) {
+            if (clicked != null && clicked.getItemMeta() != null) {
                 event.setCancelled(true);
                 if (clicked.getItemMeta().getDisplayName().contains("号背包")) {
                     String chestName = ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
                     loadBag(chestName, player);
                 } else if ("创建背包".equals(ChatColor.stripColor(clicked.getItemMeta().getDisplayName()))) {
                     int price = config.getInt("price_of_create_a_remote_chest");
-                    if (UltiTools.getIsVaultInstalled() || UltiTools.isUltiEconomyInstalled) {
-                        if (UltiTools.getIsVaultInstalled()) {
-                            if (UltiTools.getEcon().has(Bukkit.getOfflinePlayer(player.getUniqueId()), price)) {
-                                UltiTools.getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(player.getUniqueId()), config.getInt("price_of_create_a_remote_chest"));
-                                loadBag((chestConfig.getKeys(false).size() + 1) + "号背包", player);
-                            } else {
-                                player.sendMessage(not_enough_money);
-                            }
-                        }else {
-                            UltiEconomy economy = UltiTools.getEconomy();
-                            if (economy.checkMoney(player.getName())>= price){
-                                economy.takeFrom(player.getName(), price);
-                            }else {
-                                player.sendMessage(not_enough_money);
-                            }
+                    if (UltiTools.getIsVaultInstalled()) {
+                        if (UltiTools.getEcon().has(Bukkit.getOfflinePlayer(player.getUniqueId()), price)) {
+                            UltiTools.getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(player.getUniqueId()), config.getInt("price_of_create_a_remote_chest"));
+                            loadBag((chestConfig.getKeys(false).size() + 1) + "号背包", player);
+                        } else {
+                            player.sendMessage(not_enough_money);
                         }
-                    }else {
-                        player.sendMessage(ChatColor.RED+"未找到经济前置！");
+                    } else if (UltiTools.isUltiEconomyInstalled) {
+                        UltiEconomy economy = UltiTools.getEconomy();
+                        if (economy.checkMoney(player.getName()) >= price) {
+                            economy.takeFrom(player.getName(), price);
+                            loadBag((chestConfig.getKeys(false).size() + 1) + "号背包", player);
+                        } else {
+                            player.sendMessage(not_enough_money);
+                        }
+                    } else {
+                        player.sendMessage(ChatColor.RED + "未找到经济前置！");
                     }
                 }
             }
@@ -126,7 +124,7 @@ public class ChestPage implements Listener {
             int l = 0;
             for (ItemStack item : chestContents) {
                 if (item != null) {
-                    if (item.getItemMeta()!=null) {
+                    if (item.getItemMeta() != null) {
                         chestConfig.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]) + "." + l + ".name", item.getItemMeta().getDisplayName());
                     }
                     chestConfig.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]) + "." + l + ".type", item.getType().name());

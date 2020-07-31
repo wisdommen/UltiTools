@@ -21,28 +21,14 @@ import static com.minecraft.ultikits.utils.Enchants.getEnchantment;
 
 public class EmailManager {
 
-    private final File folder;
     private final File file;
     private final YamlConfiguration config;
-    private final OfflinePlayer player;
+    private final String playerName;
 
-    public EmailManager(OfflinePlayer player) {
-        folder = new File(UltiTools.getInstance().getDataFolder() + "/emailData");
-        file = new File(folder, player.getName() + ".yml");
-
-        this.player = player;
-
-        if (!file.exists()) {
-            folder.mkdirs();
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            config = new YamlConfiguration();
-        } else {
-            config = YamlConfiguration.loadConfiguration(file);
-        }
+    public EmailManager(File playerFile) {
+        file = playerFile;
+        playerName = playerFile.getName().replace(".yml", "");
+        config = YamlConfiguration.loadConfiguration(file);
     }
 
     public File getFile() {
@@ -56,8 +42,8 @@ public class EmailManager {
     public Map<String, EmailContentManager> getEmails() {
         Map<String, EmailContentManager> emails = new HashMap<>();
 
-        for (String uuid : config.getKeys(false)){
-            if (config.getConfigurationSection(uuid).getKeys(false).contains("item")){
+        for (String uuid : config.getKeys(false)) {
+            if (config.getConfigurationSection(uuid).getKeys(false).contains("item")) {
                 int item_quantity = config.getInt(uuid + ".item.amount");
                 Material item_material = Material.valueOf(config.getString(uuid + ".item.type"));
                 ItemStack contained_item = new ItemStack(item_material, item_quantity);
@@ -77,9 +63,9 @@ public class EmailManager {
                 ItemStackManager itemStackManager = new ItemStackManager(contained_item, (ArrayList<String>) item_lore, item_name);
                 itemStackManager.setUpItem();
                 itemStackManager.setDurability(durability);
-                emails.put(uuid, new EmailContentManager(uuid, config.getString(uuid+".sender"), config.getString(uuid+".message"), itemStackManager, config.getBoolean(uuid+".isRead"), config.getBoolean(uuid+".isClaimed")));
-            }else {
-                emails.put(uuid, new EmailContentManager(uuid, config.getString(uuid+".sender"), config.getString(uuid+".message"), config.getBoolean(uuid+".isRead")));
+                emails.put(uuid, new EmailContentManager(uuid, config.getString(uuid + ".sender"), config.getString(uuid + ".message"), itemStackManager, config.getBoolean(uuid + ".isRead"), config.getBoolean(uuid + ".isClaimed")));
+            } else {
+                emails.put(uuid, new EmailContentManager(uuid, config.getString(uuid + ".sender"), config.getString(uuid + ".message"), config.getBoolean(uuid + ".isRead")));
             }
         }
         return emails;
@@ -87,45 +73,35 @@ public class EmailManager {
 
 
     /**
-     * @param receiver 发送给某个人
-     * @param message 所要发送的消息
+     * @param receiverFile     发送给某个人
+     * @param message          所要发送的消息
      * @param itemStackManager 发送包含的物品
      * @return 是否发送成功
      */
-    public Boolean sendTo(OfflinePlayer receiver, String message, ItemStackManager itemStackManager){
-        List<File> files = Utils.getFile(folder.getPath());
-        if (files!=null) {
-            for (File file : files) {
-                if (!file.getName().contains(receiver.getName())) {
-                    EmailManager emailManager = new EmailManager(receiver);
-                    EmailContentManager emailContentManager = new EmailContentManager(generateUUID(), player.getName(), message, itemStackManager, false, false);
-                    emailManager.saveEmail(emailContentManager.getUuid(), emailContentManager.getSender(), emailContentManager.getMessage(), emailContentManager.getItemStackManager());
-                    return true;
-                }
-            }
+    public Boolean sendTo(File receiverFile, String message, ItemStackManager itemStackManager) {
+        if (receiverFile.exists()) {
+            EmailManager emailManager = new EmailManager(receiverFile);
+            EmailContentManager emailContentManager = new EmailContentManager(generateUUID(), playerName, message, itemStackManager, false, false);
+            emailManager.saveEmail(emailContentManager.getUuid(), emailContentManager.getSender(), emailContentManager.getMessage(), emailContentManager.getItemStackManager());
+            return true;
         }
         return false;
     }
 
-    public Boolean sendTo(OfflinePlayer receiver, String message){
-        List<File> files = Utils.getFile(folder.getPath());
-        if (files!=null) {
-            for (File file : files) {
-                if (file.getName().contains(receiver.getName())) {
-                    EmailManager emailManager = new EmailManager(receiver);
-                    EmailContentManager emailContentManager = new EmailContentManager(generateUUID(), player.getName(), message, false);
-                    emailManager.saveEmail(emailContentManager.getUuid(), emailContentManager.getSender(), emailContentManager.getMessage());
-                    return true;
-                }
-            }
+    public Boolean sendTo(File receiverFile, String message) {
+        if (receiverFile.exists()) {
+            EmailManager emailManager = new EmailManager(receiverFile);
+            EmailContentManager emailContentManager = new EmailContentManager(generateUUID(), playerName, message, false);
+            emailManager.saveEmail(emailContentManager.getUuid(), emailContentManager.getSender(), emailContentManager.getMessage());
+            return true;
         }
         return false;
     }
 
-    private void saveEmail(String uuid, String sender, String message){
-        config.set(uuid+".sender", sender);
-        config.set(uuid+".message", message);
-        config.set(uuid+".isRead", false);
+    private void saveEmail(String uuid, String sender, String message) {
+        config.set(uuid + ".sender", sender);
+        config.set(uuid + ".message", message);
+        config.set(uuid + ".isRead", false);
         try {
             config.save(file);
         } catch (IOException e) {
@@ -133,25 +109,25 @@ public class EmailManager {
         }
     }
 
-    private void saveEmail(String uuid, String sender, String message, ItemStackManager itemStackManager){
-        config.set(uuid+".sender", sender);
-        config.set(uuid+".message", message);
-        config.set(uuid+".isRead", false);
-        config.set(uuid+".isClaimed", false);
-        config.set(uuid+".item.type", itemStackManager.getItem().getType().name());
-        config.set(uuid+".item.amount", itemStackManager.getAmount());
-        config.set(uuid+".item.lore", itemStackManager.getLore());
+    private void saveEmail(String uuid, String sender, String message, ItemStackManager itemStackManager) {
+        config.set(uuid + ".sender", sender);
+        config.set(uuid + ".message", message);
+        config.set(uuid + ".isRead", false);
+        config.set(uuid + ".isClaimed", false);
+        config.set(uuid + ".item.type", itemStackManager.getItem().getType().name());
+        config.set(uuid + ".item.amount", itemStackManager.getAmount());
+        config.set(uuid + ".item.lore", itemStackManager.getLore());
         if (ChatColor.stripColor(itemStackManager.getItem().getItemMeta().getDisplayName()).equals("")) {
             config.set(uuid + ".item.name", ChatColor.stripColor(itemStackManager.getItem().getItemMeta().getDisplayName()));
-        }else {
+        } else {
             config.set(uuid + ".item.name", itemStackManager.getItem().getItemMeta().getDisplayName());
         }
-        config.set(uuid+".item.durability", itemStackManager.getDurability());
-        if (itemStackManager.getEnchantment().keySet().size()>0) {
+        config.set(uuid + ".item.durability", itemStackManager.getDurability());
+        if (itemStackManager.getEnchantment().keySet().size() > 0) {
             int i = 1;
             for (String name : itemStackManager.getEnchantment().keySet()) {
-                config.set(uuid + ".item.enchant."+i+".name", name);
-                config.set(uuid + ".item.enchant."+i+".level", itemStackManager.getEnchantment().get(name));
+                config.set(uuid + ".item.enchant." + i + ".name", name);
+                config.set(uuid + ".item.enchant." + i + ".level", itemStackManager.getEnchantment().get(name));
                 i++;
             }
         }
@@ -169,11 +145,11 @@ public class EmailManager {
         return false;
     }
 
-    public void sendTeamInvitation(){
+    public void sendTeamInvitation() {
 
     }
 
-    public static String generateUUID(){
+    public static String generateUUID() {
         Date date = new Date();
         return String.valueOf(date.getTime());
     }
