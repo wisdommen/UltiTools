@@ -66,7 +66,6 @@ public class ChestPage implements Listener {
                 }
             }
         }
-        player.closeInventory();
         player.openInventory(remote_chest);
     }
 

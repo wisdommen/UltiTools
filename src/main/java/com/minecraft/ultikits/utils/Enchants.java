@@ -7,32 +7,37 @@ import java.util.Map;
 
 public class Enchants {
 
+    private Enchants(){}
+
     public static Enchantment getEnchantment(String enchantment) {
         enchantment = enchantment.toLowerCase().replaceAll("[ _-]", "");
 
-        Map<String, String> diff_namings = new HashMap<>();
-        diff_namings.put("sharpness", "damageall");
-        diff_namings.put("smite", "damageundead");
-        diff_namings.put("punch", "arrowknockback");
-        diff_namings.put("looting", "lootbonusmobs");
-        diff_namings.put("fortune", "lootbonusblocks");
-        diff_namings.put("baneofarthropods", "damageundead");
-        diff_namings.put("power", "arrowdamage");
-        diff_namings.put("flame", "arrowfire");
-        diff_namings.put("infinity", "arrowinfinite");
-        diff_namings.put("unbreaking", "durability");
-        diff_namings.put("efficiency", "digspeed");
-        diff_namings.put("respiration", "oxygen");
-        diff_namings.put("protection", "protectionenvironmental");
-        diff_namings.put("blastprotection", "protectionexplosions");
-        diff_namings.put("mobloot", "lootbonusmobs");
-        diff_namings.put("projectileprotection", "protectionprojectile");
-        diff_namings.put("fallprot", "protectionfall");
-        diff_namings.put("infarrows", "arrowinfinite");
-
-        String change = diff_namings.get(enchantment);
-        if (change != null) {
-            enchantment = change;
+//        Map<String, String> diff_namings = new HashMap<>();
+//        diff_namings.put("sharpness", "damageall");
+//        diff_namings.put("smite", "damageundead");
+//        diff_namings.put("punch", "arrowknockback");
+//        diff_namings.put("looting", "lootbonusmobs");
+//        diff_namings.put("fortune", "lootbonusblocks");
+//        diff_namings.put("baneofarthropods", "damageundead");
+//        diff_namings.put("power", "arrowdamage");
+//        diff_namings.put("flame", "arrowfire");
+//        //diff_namings.put("infinity", "arrowinfinite");
+//        diff_namings.put("unbreaking", "durability");
+//        //diff_namings.put("efficiency", "digspeed");
+//        diff_namings.put("respiration", "oxygen");
+//        diff_namings.put("protection", "protectionenvironmental");
+//        diff_namings.put("blastprotection", "protectionexplosions");
+//        diff_namings.put("mobloot", "lootbonusmobs");
+//        diff_namings.put("projectileprotection", "protectionprojectile");
+//        diff_namings.put("fallprot", "protectionfall");
+//        diff_namings.put("infarrows", "arrowinfinite");
+//
+//        String change = diff_namings.get(enchantment);
+//        if (change != null) {
+//            enchantment = change;
+//        }
+        if (enchantment.equals("protection")){
+            return Enchantment.PROTECTION_ENVIRONMENTAL;
         }
         for (Enchantment value : Enchantment.values()) {
             if (value.getKey().toString().replaceAll("[ _-]", "").contains(enchantment)) {

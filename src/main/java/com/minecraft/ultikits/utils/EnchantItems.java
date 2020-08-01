@@ -13,6 +13,9 @@ import java.util.Map;
 import static com.minecraft.ultikits.utils.Utils.getRandomNumber;
 
 public class EnchantItems {
+
+    private EnchantItems(){}
+
     public static Enchantment getRandomEnchant() {
         int i = 0;
         Map<Integer, Enchantment> enchant = new HashMap<>();

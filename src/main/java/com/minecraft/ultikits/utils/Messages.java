@@ -4,6 +4,8 @@ import org.bukkit.ChatColor;
 
 public class Messages {
 
+    private Messages(){}
+
     public static String info(String message) {
         return ChatColor.YELLOW + message;
     }

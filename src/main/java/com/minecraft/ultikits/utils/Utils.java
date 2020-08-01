@@ -13,6 +13,8 @@ import java.util.Random;
 
 public class Utils {
 
+    private Utils(){}
+
     public static File getConfigFile(){
         return new File(UltiTools.getInstance().getDataFolder(), "config.yml");
     }

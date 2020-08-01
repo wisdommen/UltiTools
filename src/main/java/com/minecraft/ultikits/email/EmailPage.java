@@ -40,7 +40,7 @@ public class EmailPage implements Listener {
                 event.setCancelled(true);
                 if (Objects.requireNonNull(clicked.getItemMeta()).getDisplayName().contains("来自：")) {
                     for (String lore : Objects.requireNonNull(clicked.getItemMeta().getLore())) {
-                        if (lore.contains("ID")) {
+                        if (lore.contains("ID:")) {
                             String uuid = lore.split(":")[1];
                             if (config.getBoolean(uuid + ".isRead")) {
                                 return;
