@@ -7,6 +7,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -66,6 +67,7 @@ public class ChestPage implements Listener {
                 }
             }
         }
+        player.playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, 10, 1);
         player.openInventory(remote_chest);
     }
 
@@ -151,6 +153,7 @@ public class ChestPage implements Listener {
             if (a == 0) {
                 chestConfig.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]), "");
             }
+            player.playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 10, 1);
             chestConfig.save(chestFile);
         }
     }

@@ -1,17 +1,11 @@
 package com.minecraft.ultikits.email;
 
 import com.minecraft.ultikits.GUIs.ItemStackManager;
-import com.minecraft.ultikits.ultitools.UltiTools;
-import com.minecraft.ultikits.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
-import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +19,7 @@ public class EmailManager {
     private final YamlConfiguration config;
     private final String playerName;
 
-    public EmailManager(File playerFile) {
+    public EmailManager(@NotNull File playerFile) {
         file = playerFile;
         playerName = playerFile.getName().replace(".yml", "");
         config = YamlConfiguration.loadConfiguration(file);
@@ -44,25 +38,7 @@ public class EmailManager {
 
         for (String uuid : config.getKeys(false)) {
             if (config.getConfigurationSection(uuid).getKeys(false).contains("item")) {
-                int item_quantity = config.getInt(uuid + ".item.amount");
-                Material item_material = Material.valueOf(config.getString(uuid + ".item.type"));
-                ItemStack contained_item = new ItemStack(item_material, item_quantity);
-                List<String> item_lore = config.getStringList(uuid + ".item.lore");
-                String item_name = config.getString(uuid + ".item.name");
-                int durability = config.getInt(uuid + ".item.durability");
-
-                int i = 0;
-                while (config.get(uuid + ".item.enchant." + i) != null) {
-                    if (!Objects.equals(config.getString(uuid + ".item.enchant." + i + ".name"), "")) {
-                        int enchantment_level = config.getInt(uuid + ".item.enchant.level");
-                        String enchantment_name = config.getString(uuid + ".item.enchant.name");
-                        contained_item.addUnsafeEnchantment(Objects.requireNonNull(getEnchantment(enchantment_name)), enchantment_level);
-                        i++;
-                    }
-                }
-                ItemStackManager itemStackManager = new ItemStackManager(contained_item, (ArrayList<String>) item_lore, item_name);
-                itemStackManager.setUpItem();
-                itemStackManager.setDurability(durability);
+                ItemStackManager itemStackManager = setupItemStackManager(uuid);
                 emails.put(uuid, new EmailContentManager(uuid, config.getString(uuid + ".sender"), config.getString(uuid + ".message"), itemStackManager, config.getBoolean(uuid + ".isRead"), config.getBoolean(uuid + ".isClaimed")));
             } else {
                 emails.put(uuid, new EmailContentManager(uuid, config.getString(uuid + ".sender"), config.getString(uuid + ".message"), config.getBoolean(uuid + ".isRead")));
@@ -78,7 +54,7 @@ public class EmailManager {
      * @param itemStackManager 发送包含的物品
      * @return 是否发送成功
      */
-    public Boolean sendTo(File receiverFile, String message, ItemStackManager itemStackManager) {
+    public Boolean sendTo(@NotNull File receiverFile, String message, ItemStackManager itemStackManager) {
         if (receiverFile.exists()) {
             EmailManager emailManager = new EmailManager(receiverFile);
             EmailContentManager emailContentManager = new EmailContentManager(generateUUID(), playerName, message, itemStackManager, false, false);
@@ -88,7 +64,7 @@ public class EmailManager {
         return false;
     }
 
-    public Boolean sendTo(File receiverFile, String message) {
+    public Boolean sendTo(@NotNull File receiverFile, String message) {
         if (receiverFile.exists()) {
             EmailManager emailManager = new EmailManager(receiverFile);
             EmailContentManager emailContentManager = new EmailContentManager(generateUUID(), playerName, message, false);
@@ -109,7 +85,7 @@ public class EmailManager {
         }
     }
 
-    private void saveEmail(String uuid, String sender, String message, ItemStackManager itemStackManager) {
+    private void saveEmail(String uuid, String sender, String message, @NotNull ItemStackManager itemStackManager) {
         config.set(uuid + ".sender", sender);
         config.set(uuid + ".message", message);
         config.set(uuid + ".isRead", false);
@@ -138,6 +114,30 @@ public class EmailManager {
         }
     }
 
+    @NotNull
+    private ItemStackManager setupItemStackManager(String uuid){
+        int item_quantity = config.getInt(uuid + ".item.amount");
+        Material item_material = Material.valueOf(config.getString(uuid + ".item.type"));
+        ItemStack contained_item = new ItemStack(item_material, item_quantity);
+        List<String> item_lore = config.getStringList(uuid + ".item.lore");
+        String item_name = config.getString(uuid + ".item.name");
+        int durability = config.getInt(uuid + ".item.durability");
+
+        int i = 0;
+        while (config.get(uuid + ".item.enchant." + i) != null) {
+            if (!Objects.equals(config.getString(uuid + ".item.enchant." + i + ".name"), "")) {
+                int enchantment_level = config.getInt(uuid + ".item.enchant.level");
+                String enchantment_name = config.getString(uuid + ".item.enchant.name");
+                contained_item.addUnsafeEnchantment(Objects.requireNonNull(getEnchantment(enchantment_name)), enchantment_level);
+                i++;
+            }
+        }
+        ItemStackManager itemStackManager = new ItemStackManager(contained_item, (ArrayList<String>) item_lore, item_name);
+        itemStackManager.setUpItem();
+        itemStackManager.setDurability(durability);
+        return itemStackManager;
+    }
+
     public Boolean deleteHistoryEmails() {
         if (config.getKeys(false).size() != 0) {
             return file.delete();
@@ -149,9 +149,8 @@ public class EmailManager {
 
     }
 
-    public static String generateUUID() {
+    public static @NotNull String generateUUID() {
         Date date = new Date();
         return String.valueOf(date.getTime());
     }
-
 }

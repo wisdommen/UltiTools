@@ -6,6 +6,7 @@ import org.bukkit.*;
 import org.bukkit.command.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,7 +83,7 @@ public class multiWorlds implements TabExecutor {
                                 if (!config.getStringList("blocked_worlds").contains("world")) {
                                     player.teleport(UltiTools.getInstance().getServer().getWorld("world").getSpawnLocation());
                                 }else {
-                                    player.sendMessage(ChatColor.RED+"此世界已经被禁止进入！");
+                                    player.sendMessage(warning("此世界已经被禁止进入！"));
                                 }
                             } else {
                                 player.sendMessage(warning("你就在这个世界！"));
@@ -102,6 +103,7 @@ public class multiWorlds implements TabExecutor {
                             }
                         }
                         player.sendMessage(info("传送成功！"));
+                        player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 0);
                         return true;
                     }
                 }
@@ -132,7 +134,7 @@ public class multiWorlds implements TabExecutor {
                                 return true;
                             }
                         }
-                        player.sendMessage(ChatColor.RED+"没有找到这个世界！");
+                        player.sendMessage(warning("没有找到这个世界！"));
                         return true;
                     case "unblock":
                         for (World world : UltiTools.getInstance().getServer().getWorlds()){
@@ -155,23 +157,23 @@ public class multiWorlds implements TabExecutor {
                                 return true;
                             }
                         }
-                        player.sendMessage(ChatColor.RED+"没有找到这个世界！");
+                        player.sendMessage(warning("没有找到这个世界！"));
                         return true;
                     case "create":
                         for (World world : UltiTools.getInstance().getServer().getWorlds()) {
                             if (strings[1].equals(world.getName())) {
-                                player.sendMessage(ChatColor.RED+"此世界已存在！");
+                                player.sendMessage(warning("此世界已存在！"));
                                 return false;
                             }
                         }
 
                         for (String each : worlds){
                             if (each.equals(strings[1])){
-                                player.sendMessage(ChatColor.RED+"此世界已存在！");
+                                player.sendMessage(warning("此世界已存在！"));
                                 return false;
                             }
                         }
-                        player.sendMessage(ChatColor.RED+"处理中...请耐心等待");
+                        player.sendMessage(warning("处理中...请耐心等待"));
                         WorldCreator worldCreator = new WorldCreator(strings[1]);
                         worldCreator.environment(World.Environment.NORMAL);
                         worldCreator.type(WorldType.NORMAL);
@@ -183,31 +185,23 @@ public class multiWorlds implements TabExecutor {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        player.sendMessage(ChatColor.RED+"世界已成功生成！");
+                        player.sendMessage(warning("世界已成功生成！"));
                         return true;
                     case "load":
                         for (World world : UltiTools.getInstance().getServer().getWorlds()) {
                             if (strings[1].equals(world.getName())) {
-                                player.sendMessage(ChatColor.RED+"此世界已存在！");
+                                player.sendMessage(warning("此世界已存在！"));
                                 return false;
                             }
                         }
                         for (String each : worlds){
                             if (each.equals(strings[1])){
-                                player.sendMessage(ChatColor.RED+"此世界已存在！");
+                                player.sendMessage(warning("此世界已存在！"));
                                 return false;
                             }
                         }
-                        player.sendMessage(ChatColor.RED+"处理中...请耐心等待");
-                        UltiTools.getInstance().getServer().createWorld(new WorldCreator(strings[1]));
-                        player.sendMessage(ChatColor.RED+"加载成功！");
-                        worlds.add(strings[1]);
-                        worlds_config.set("worlds", worlds);
-                        try {
-                            worlds_config.save(world_file);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        player.sendMessage(warning("处理中...请耐心等待"));
+                        createWorld(worlds_config, world_file, worlds, strings[1], player);
                         return true;
                     case "delete":
                         for (World world : UltiTools.getInstance().getServer().getWorlds()) {
@@ -219,11 +213,11 @@ public class multiWorlds implements TabExecutor {
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-                                player.sendMessage(ChatColor.RED+"此世界已被删除，请重启服务器以生效！");
+                                player.sendMessage(warning("此世界已被删除，请重启服务器以生效！"));
                                 return true;
                             }
                         }
-                        player.sendMessage(ChatColor.RED+"未找到这个世界！");
+                        player.sendMessage(warning("未找到这个世界！"));
                         return true;
                 }
             }
@@ -268,5 +262,26 @@ public class multiWorlds implements TabExecutor {
             }
         }
         return null;
+    }
+    
+    public void createWorld(YamlConfiguration worlds_config, File world_file, List<String> worlds, String worldName, Player player){
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                WorldCreator worldCreator = new WorldCreator(worldName);
+                worldCreator.environment(World.Environment.NORMAL);
+                worldCreator.type(WorldType.NORMAL);
+                worldCreator.createWorld();
+                worlds.add(worldName);
+                worlds_config.set("worlds", worlds);
+                try {
+                    worlds_config.save(world_file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    player.sendMessage(warning("世界生成失败！"));
+                }
+                player.sendMessage(warning("世界生成成功！"));
+            }
+        }.runTask(UltiTools.getInstance());
     }
 }

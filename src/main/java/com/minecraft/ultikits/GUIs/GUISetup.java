@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.*;
@@ -27,7 +28,7 @@ public class GUISetup {
         inventoryMap.put("chest", chest);
     }
 
-    public static void setPlayerRemoteChest(Player player) {
+    public static void setPlayerRemoteChest(@NotNull Player player) {
         YamlConfiguration config = Utils.getConfig(Utils.getConfigFile());
         File chestFile = new File(UltiTools.getInstance().getDataFolder() + "/chestData", player.getName() + ".yml");
         YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
@@ -48,7 +49,7 @@ public class GUISetup {
         inventoryMap.get("chest").setItem(35, item2);
     }
 
-    public static Map<String, EmailContentManager> setUpEmailInBox(Player player) {
+    public static Map<String, EmailContentManager> setUpEmailInBox(@NotNull Player player) {
         File file = new File(UltiTools.getInstance().getDataFolder()+"/emailData", player.getName()+".yml");
         EmailManager emailManager = new EmailManager(file);
         Map<String, EmailContentManager> emailContentManagers = emailManager.getEmails();
@@ -77,7 +78,7 @@ public class GUISetup {
         return emailContentManagers;
     }
 
-    public static void setupLoginRegisterLayout(Player player, LoginRegisterEnum title){
+    public static void setupLoginRegisterLayout(Player player, @NotNull LoginRegisterEnum title){
         InventoryManager inventoryManager = new InventoryManager(player, 54, title.toString());
         inventoryManager.create();
         inventoryMap.put(player.getName()+title.toString(), inventoryManager);
@@ -115,7 +116,7 @@ public class GUISetup {
         }
     }
 
-    public static List<String> getLoreList(EmailContentManager emailContentManager, String inputString, int length) {
+    public static @NotNull List<String> getLoreList(EmailContentManager emailContentManager, @NotNull String inputString, int length) {
         List<String> list = new ArrayList<>();
         list.add(ChatColor.GOLD+"------邮件内容------");
         int strLen = inputString.length();

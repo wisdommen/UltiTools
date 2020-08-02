@@ -78,6 +78,7 @@ public class Home implements TabExecutor {
                             int y = config.getInt(player.getName() + ".Def.y");
                             int z = config.getInt(player.getName() + ".Def.z");
                             player.teleport(new Location(world, x, y, z));
+                            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 0);
                             player.sendMessage(ChatColor.GREEN + "[家插件]欢迎回家！");
                         } else if (args.length == 1) {
                             World world = Bukkit.getServer().getWorld(Objects.requireNonNull(config.getString(player.getName() + "." + args[0] + ".world")));
@@ -85,6 +86,7 @@ public class Home implements TabExecutor {
                             int y = config.getInt(player.getName() + "." + args[0] + ".y");
                             int z = config.getInt(player.getName() + "." + args[0] + ".z");
                             player.teleport(new Location(world, x, y, z));
+                            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 0);
                             player.sendMessage(ChatColor.GREEN + "[家插件]欢迎回家！");
                         } else {
                             player.sendMessage(ChatColor.RED + "[家插件]用法：/home [家的名字（不设置则为默认）]");

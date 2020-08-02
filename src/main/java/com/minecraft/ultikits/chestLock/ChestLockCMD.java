@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 
+import static com.minecraft.ultikits.utils.Messages.warning;
+
 /**
  * @author wisdomme
  */
@@ -51,7 +53,7 @@ public class ChestLockCMD implements CommandExecutor {
             }
             return false;
         }
-        sender.sendMessage(ChatColor.RED+"此指令只可以在游戏内使用！");
+        sender.sendMessage(warning("此指令只可以在游戏内使用！"));
         return true;
     }
 }

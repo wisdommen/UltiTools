@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +30,7 @@ import static com.minecraft.ultikits.utils.Enchants.getEnchantment;
 public class EmailPage implements Listener {
 
     @EventHandler
-    public void onItemClicked(InventoryClickEvent event) {
+    public void onItemClicked(@NotNull InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         ItemStack clicked = event.getCurrentItem();
         File file = new File(UltiTools.getInstance().getDataFolder() + "/emailData", player.getName() + ".yml");
@@ -94,7 +95,7 @@ public class EmailPage implements Listener {
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event){
+    public void onPlayerJoin(@NotNull PlayerJoinEvent event){
         Player player = event.getPlayer();
         File folder = new File(UltiTools.getInstance().getDataFolder() + "/emailData");
         File file = new File(folder, player.getName() + ".yml");

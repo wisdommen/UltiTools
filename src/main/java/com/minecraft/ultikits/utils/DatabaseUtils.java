@@ -2,6 +2,8 @@ package com.minecraft.ultikits.utils;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -97,7 +99,7 @@ public class DatabaseUtils {
      * @param fieldName 列名称
      * @return 获取的数据，若未找到数据则返回null
      */
-    public static String getData(String primaryIDField, String id, String tableName, String fieldName) {
+    public static @Nullable String getData(String primaryIDField, String id, String tableName, String fieldName) {
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement("select " + fieldName + " from " + tableName + " where " + primaryIDField + "=?")) {
                 ps.setString(1, id);
@@ -121,7 +123,7 @@ public class DatabaseUtils {
      * @param fieldName 需要获取的列
      * @return 含有数据的列表
      */
-    public static List<String> getKeys(String tableName, String fieldName){
+    public static @NotNull List<String> getKeys(String tableName, String fieldName){
         List<String> keys = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement("select " + fieldName + " from " + tableName)) {
@@ -156,7 +158,7 @@ public class DatabaseUtils {
      * @param autoCommit 开关自动提交机制
      * @return 是否成功
      */
-    public static boolean insertData(String tableName, Map<String, String> dataMap, boolean autoCommit) {
+    public static boolean insertData(String tableName, @NotNull Map<String, String> dataMap, boolean autoCommit) {
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(autoCommit);
             String[] keys = dataMap.keySet().toArray(new String[0]);
@@ -245,7 +247,7 @@ public class DatabaseUtils {
      * @param value          更新值
      * @return 是否成功
      */
-    public static PreparedStatement updateDataWait(String tableName, String fieldName, String primaryIDField, String id, String value) {
+    public static @Nullable PreparedStatement updateDataWait(String tableName, String fieldName, String primaryIDField, String id, String value) {
         try (Connection connection = dataSource.getConnection()) {
             connection.setAutoCommit(false);
             try (PreparedStatement ps = connection.prepareStatement("update " + tableName + " set " + fieldName + "=? " + " where " + primaryIDField + "=?")) {
@@ -335,7 +337,7 @@ public class DatabaseUtils {
      * @param value          增加的量
      * @return 一条未执行的预处理statement
      */
-    public static PreparedStatement increaseDataStandby(String tableName, String fieldName, String primaryIDField, String id, String value) {
+    public static @Nullable PreparedStatement increaseDataStandby(String tableName, String fieldName, String primaryIDField, String id, String value) {
         String dataStringBefore = getData(primaryIDField, id, tableName, fieldName);
         try {
             assert dataStringBefore != null;
@@ -401,7 +403,7 @@ public class DatabaseUtils {
      * @param value          减少的量
      * @return 一条未执行的预处理statement
      */
-    public static PreparedStatement decreaseDataStandby(String tableName, String fieldName, String primaryIDField, String id, String value) {
+    public static @Nullable PreparedStatement decreaseDataStandby(String tableName, String fieldName, String primaryIDField, String id, String value) {
         String dataStringBefore = getData(primaryIDField, id, tableName, fieldName);
         try {
             assert dataStringBefore != null;
@@ -422,7 +424,7 @@ public class DatabaseUtils {
      * @param fields 需要转换的fields
      * @return 一个MySQL语句
      */
-    private static String getFields(String[] fields) {
+    private static @NotNull String getFields(String @NotNull [] fields) {
         StringBuilder builder = new StringBuilder();
         int i = 0;
         for (String arg : fields) {
@@ -438,7 +440,7 @@ public class DatabaseUtils {
      * @param fields 需要转换的fields
      * @return 一个MySQL语句
      */
-    private static String insertFields(String[] fields) {
+    private static @NotNull String insertFields(String @NotNull [] fields) {
         StringBuilder builder = new StringBuilder();
         int i = 0;
         for (String arg : fields) {
@@ -454,7 +456,7 @@ public class DatabaseUtils {
      * @param values 需要转换的fields
      * @return 一个MySQL语句
      */
-    private static String insertValues(String[] values) {
+    private static @NotNull String insertValues(String @NotNull [] values) {
         StringBuilder builder = new StringBuilder();
         int i = 0;
         for (String arg : values) {

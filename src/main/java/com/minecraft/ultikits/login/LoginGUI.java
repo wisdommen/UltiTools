@@ -4,6 +4,7 @@ import com.minecraft.ultikits.GUIs.LoginRegisterEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,6 +40,7 @@ public class LoginGUI implements Listener {
                     int slot = currentInventory.firstEmpty();
                     if (slot >= 0 && slot < 9) {
                         currentInventory.setItem(slot, clicked);
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 10, 1);
                     } else {
                         player.sendMessage(warning("不可以超过9个数字！"));
                     }
@@ -53,6 +55,8 @@ public class LoginGUI implements Listener {
                     } else {
                         setIsLogin(player, true);
                         player.sendMessage(ChatColor.LIGHT_PURPLE + "登录成功！");
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 10, 1);
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 10, 1);
                         player.setGameMode(GameMode.SURVIVAL);
                         if (player.isFlying()){
                             player.setFlying(false);
@@ -72,6 +76,7 @@ public class LoginGUI implements Listener {
                     int slot = currentInventory.firstEmpty();
                     if (slot < 9) {
                         currentInventory.setItem(slot, clicked);
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 10, 1);
                     } else {
                         player.sendMessage(warning("不可以超过9个数字！"));
                     }
@@ -93,6 +98,8 @@ public class LoginGUI implements Listener {
                         } else {
                             setIsLogin(player, true);
                             player.sendMessage(ChatColor.LIGHT_PURPLE + "注册成功！");
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 10, 1);
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 10, 1);
                             player.setGameMode(GameMode.SURVIVAL);
                             if (player.isFlying()){
                                 player.setFlying(false);

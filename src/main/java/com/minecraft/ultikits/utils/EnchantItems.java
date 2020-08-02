@@ -5,6 +5,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class EnchantItems {
         return enchant.get(getRandomNumber(enchant.size()));
     }
 
-    public static ItemStack getRandomEnchantBook() {
+    public static @NotNull ItemStack getRandomEnchantBook() {
         ItemStack book = new ItemStack(Material.ENCHANTED_BOOK, 1);
         ItemMeta meta = book.getItemMeta();
         if (meta != null) {

@@ -1,10 +1,7 @@
 package com.minecraft.ultikits.chestLock;
 
 import com.minecraft.ultikits.ultitools.UltiTools;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +10,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +23,7 @@ import java.util.Objects;
 public class ChestLock implements Listener {
 
     @EventHandler
-    public void onPlayerOpenChest(PlayerInteractEvent event) {
+    public void onPlayerOpenChest(@NotNull PlayerInteractEvent event) {
         if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.CHEST) {
             Player player = event.getPlayer();
             Location chestLocation = event.getClickedBlock().getLocation();
@@ -72,6 +70,7 @@ public class ChestLock implements Listener {
                 player.sendMessage(ChatColor.GREEN + "上锁成功！");
                 player.sendMessage(ChatColor.RED + "如果是大箱子，请将另一半也锁上");
                 player.sendMessage(ChatColor.RED + "或者你可以让另一个人锁，即为共享箱子");
+                player.playSound(player.getLocation(), Sound.BLOCK_CHEST_LOCKED, 10, 1);
                 return;
             } else if (playerData.getBoolean("unlock")) {
                 event.setCancelled(true);
@@ -94,6 +93,7 @@ public class ChestLock implements Listener {
                     player.sendMessage(ChatColor.GREEN + "解锁成功！");
                     player.sendMessage(ChatColor.RED + "如果是大箱子，请将另一半也解锁");
                     player.sendMessage(ChatColor.RED + "如果是共享箱子，请也告知你的同伴");
+                    player.playSound(player.getLocation(), Sound.BLOCK_CHEST_LOCKED, 10, 1);
                     return;
                 } else {
                     for (String each : chests) {
@@ -123,7 +123,7 @@ public class ChestLock implements Listener {
     }
 
     @EventHandler
-    public void onPlayerDestroyChest(BlockBreakEvent event) {
+    public void onPlayerDestroyChest(@NotNull BlockBreakEvent event) {
         if (event.getBlock().getType() == Material.CHEST) {
             Location chestLocation = event.getBlock().getLocation();
             Player player = event.getPlayer();
@@ -156,7 +156,7 @@ public class ChestLock implements Listener {
     }
 
     @EventHandler
-    public void onItemRemovedByHopper(InventoryMoveItemEvent event){
+    public void onItemRemovedByHopper(@NotNull InventoryMoveItemEvent event){
         Location chestLocation = event.getSource().getLocation();
         File chestFile = new File(UltiTools.getInstance().getDataFolder(), "chestData.yml");
         YamlConfiguration chestData = YamlConfiguration.loadConfiguration(chestFile);

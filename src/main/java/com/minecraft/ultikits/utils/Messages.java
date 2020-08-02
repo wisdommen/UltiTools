@@ -1,20 +1,25 @@
 package com.minecraft.ultikits.utils;
 
 import org.bukkit.ChatColor;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 public class Messages {
 
     private Messages(){}
 
-    public static String info(String message) {
+    @Contract(pure = true)
+    public static @NotNull String info(String message) {
         return ChatColor.YELLOW + message;
     }
 
-    public static String warning(String message) {
+    @Contract(pure = true)
+    public static @NotNull String warning(String message) {
         return ChatColor.RED + message;
     }
 
-    public static String unimportant(String message) {
+    @Contract(pure = true)
+    public static @NotNull String unimportant(String message) {
         return ChatColor.GRAY + message;
     }
 
