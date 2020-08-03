@@ -18,6 +18,7 @@ import java.util.Map;
 
 import static com.minecraft.ultikits.GUIs.GUISetup.inventoryMap;
 import static com.minecraft.ultikits.GUIs.GUISetup.setupLoginRegisterLayout;
+import static com.minecraft.ultikits.utils.DatabasePlayerTools.getIsLogin;
 import static com.minecraft.ultikits.utils.DatabasePlayerTools.isPlayerAccountExist;
 
 public class LoginListener implements Listener {
@@ -48,16 +49,18 @@ public class LoginListener implements Listener {
     public void onPlayerLogin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         gameMode = player.getGameMode();
-        playerLoginStatus.put(player.getName(), false);
+        if (!getIsLogin(player)) {
+            playerLoginStatus.put(player.getName(), false);
 
-        if (isPlayerAccountExist(player)) {
-            setupLoginRegisterLayout(player, LoginRegisterEnum.LOGIN);
-            player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.LOGIN.toString()).getInventory());
-        } else {
-            setupLoginRegisterLayout(player, LoginRegisterEnum.REGISTER);
-            player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.REGISTER.toString()).getInventory());
+            if (isPlayerAccountExist(player)) {
+                setupLoginRegisterLayout(player, LoginRegisterEnum.LOGIN);
+                player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.LOGIN.toString()).getInventory());
+            } else {
+                setupLoginRegisterLayout(player, LoginRegisterEnum.REGISTER);
+                player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.REGISTER.toString()).getInventory());
+            }
+            player.setGameMode(GameMode.SPECTATOR);
         }
-        player.setGameMode(GameMode.SPECTATOR);
     }
 
     public static void savePlayerLoginStatus(){

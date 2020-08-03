@@ -20,7 +20,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.io.File;
 
 import static com.minecraft.ultikits.GUIs.GUISetup.inventoryMap;
-import static com.minecraft.ultikits.login.LoginListener.playerLoginStatus;
 import static com.minecraft.ultikits.utils.DatabasePlayerTools.*;
 import static com.minecraft.ultikits.utils.Messages.warning;
 
@@ -177,14 +176,5 @@ public class LoginGUI implements Listener {
             }
         }
         return stringBuilder.toString();
-    }
-
-    public static boolean getIsLogin(Player player){
-        return playerLoginStatus.get(player.getName());
-    }
-
-
-    public static void setIsLogin(Player player, boolean isLogin){
-        playerLoginStatus.put(player.getName(), isLogin);
     }
 }

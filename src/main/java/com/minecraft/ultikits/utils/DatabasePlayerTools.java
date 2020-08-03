@@ -1,13 +1,17 @@
 package com.minecraft.ultikits.utils;
 
 import com.minecraft.ultikits.ultitools.UltiTools;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+import static com.minecraft.ultikits.login.LoginListener.playerLoginStatus;
 import static com.minecraft.ultikits.ultitools.UltiTools.isDatabaseEnabled;
 
 public class DatabasePlayerTools {
@@ -33,16 +37,21 @@ public class DatabasePlayerTools {
         return DatabaseUtils.insertData(table, dataMap);
     }
 
-    public static boolean login(Player player, int password){
-
-        return false;
-    }
-
     public static String getPlayerPassword(Player player){
         if (isDatabaseEnabled){
             return getPlayerData(player.getName(), "password");
         }else {
             File file = new File(UltiTools.getInstance().getDataFolder() + "/loginData", player.getName() + ".yml");
+            YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+            return config.getString("password");
+        }
+    }
+
+    public static String getPlayerPassword(String playerName){
+        if (isDatabaseEnabled){
+            return getPlayerData(playerName, "password");
+        }else {
+            File file = new File(UltiTools.getInstance().getDataFolder() + "/loginData", playerName + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             return config.getString("password");
         }
@@ -63,6 +72,21 @@ public class DatabasePlayerTools {
         }
     }
 
+    public static void setPlayerPassword(String playerName, String password){
+        if (isDatabaseEnabled){
+            updatePlayerData(playerName, "password", password);
+        }else {
+            File file = new File(UltiTools.getInstance().getDataFolder() + "/loginData", playerName + ".yml");
+            YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+            config.set("password", password);
+            try {
+                config.save(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static boolean isPlayerAccountExist(Player player){
         if (isDatabaseEnabled){
             return !DatabaseUtils.getData(primaryID, player.getName(), table, "password").equals("");
@@ -70,5 +94,31 @@ public class DatabasePlayerTools {
             File file = new File(UltiTools.getInstance().getDataFolder() + "/loginData", player.getName() + ".yml");
             return file.exists();
         }
+    }
+
+    public static boolean isPlayerAccountExist(String playerName){
+        if (isDatabaseEnabled){
+            return !DatabaseUtils.getData(primaryID, playerName, table, "password").equals("");
+        }else {
+            File file = new File(UltiTools.getInstance().getDataFolder() + "/loginData", playerName + ".yml");
+            return file.exists();
+        }
+    }
+
+    public static boolean getIsLogin(Player player){
+        return playerLoginStatus.get(player.getName()) != null ? playerLoginStatus.get(player.getName()) : false;
+    }
+
+    public static boolean getIsLogin(String playerName){
+        return playerLoginStatus.get(playerName) != null ? playerLoginStatus.get(playerName) : false;
+    }
+
+
+    public static void setIsLogin(Player player, boolean isLogin){
+        playerLoginStatus.put(player.getName(), isLogin);
+    }
+
+    public static void setIsLogin(String playerName, boolean isLogin){
+        playerLoginStatus.put(playerName, isLogin);
     }
 }

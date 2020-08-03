@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import static com.minecraft.ultikits.GUIs.GUISetup.inventoryMap;
-import static com.minecraft.ultikits.login.LoginGUI.getIsLogin;
+import static com.minecraft.ultikits.utils.DatabasePlayerTools.getIsLogin;
 import static com.minecraft.ultikits.utils.DatabasePlayerTools.isPlayerAccountExist;
 
 public class CheckGUIOpenTask extends BukkitRunnable {
