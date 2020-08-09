@@ -15,28 +15,25 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.*;
 
-import static com.minecraft.ultikits.utils.Messages.info;
-import static com.minecraft.ultikits.utils.Messages.unimportant;
+import static com.minecraft.ultikits.utils.Messages.*;
 
 public class GUISetup {
 
     public static Map<String, InventoryManager> inventoryMap = new HashMap<>();
 
-    public static void setUpGUIs(){
-        InventoryManager chest = new InventoryManager(null, 36, "远程背包");
-        chest.create();
-        inventoryMap.put("chest", chest);
-    }
-
     public static void setPlayerRemoteChest(@NotNull Player player) {
         YamlConfiguration config = Utils.getConfig(Utils.getConfigFile());
         File chestFile = new File(UltiTools.getInstance().getDataFolder() + "/chestData", player.getName() + ".yml");
         YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
+        InventoryManager chest = new InventoryManager(null, 36, "远程背包");
+        chest.create();
+        inventoryMap.put(player.getName() + ".chest", chest);
+
         if (!chestConfig.getKeys(false).isEmpty()) {
             for (int i = 1; i <= chestConfig.getKeys(false).size(); i++) {
                 ItemStackManager itemStackManager = new ItemStackManager(new ItemStack(Material.CHEST), new ArrayList<>(), info(i + "号背包"));
                 itemStackManager.setUpItem();
-                inventoryMap.get("chest").setItem(i - 1, itemStackManager.getItem());
+                inventoryMap.get(player.getName() + ".chest").setItem(i - 1, itemStackManager.getItem());
             }
         }
         ArrayList<String> lore = new ArrayList<>();
@@ -46,21 +43,21 @@ public class GUISetup {
         Objects.requireNonNull(stickmeta).setLore(lore);
         stickmeta.setDisplayName(ChatColor.AQUA + "创建背包");
         item2.setItemMeta(stickmeta);
-        inventoryMap.get("chest").setItem(35, item2);
+        inventoryMap.get(player.getName() + ".chest").setItem(35, item2);
     }
 
     public static Map<String, EmailContentManager> setUpEmailInBox(@NotNull Player player) {
-        File file = new File(UltiTools.getInstance().getDataFolder()+"/emailData", player.getName()+".yml");
+        File file = new File(UltiTools.getInstance().getDataFolder() + "/emailData", player.getName() + ".yml");
         EmailManager emailManager = new EmailManager(file);
         Map<String, EmailContentManager> emailContentManagers = emailManager.getEmails();
         InventoryManager inventoryManager = new InventoryManager(player, 36, "收件箱");
         inventoryManager.create();
-        inventoryMap.put(player.getName()+".inbox", inventoryManager);
+        inventoryMap.put(player.getName() + ".inbox", inventoryManager);
 
         int s = 0;
         for (String each : emailContentManagers.keySet()) {
             if (s > 36) {
-                s-=37;
+                s -= 37;
             }
             String sender = emailContentManagers.get(each).getSender();
             String message = emailContentManagers.get(each).getMessage();
@@ -78,10 +75,10 @@ public class GUISetup {
         return emailContentManagers;
     }
 
-    public static void setupLoginRegisterLayout(Player player, @NotNull LoginRegisterEnum title){
+    public static void setupLoginRegisterLayout(Player player, @NotNull LoginRegisterEnum title) {
         InventoryManager inventoryManager = new InventoryManager(player, 54, title.toString());
         inventoryManager.create();
-        inventoryMap.put(player.getName()+title.toString(), inventoryManager);
+        inventoryMap.put(player.getName() + title.toString(), inventoryManager);
 
         ItemStackManager itemStackManager = new ItemStackManager(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), "点按输入数字");
         itemStackManager.setUpItem();
@@ -109,8 +106,8 @@ public class GUISetup {
         inventoryManager.setItem(53, itemStackManager4.getItem());
         ItemStackManager itemStackManager5 = new ItemStackManager(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), "");
         itemStackManager5.setUpItem();
-        for (int i = 9; i < 54; i++){
-            if (inventoryManager.getInventory().getItem(i) == null){
+        for (int i = 9; i < 54; i++) {
+            if (inventoryManager.getInventory().getItem(i) == null) {
                 inventoryManager.setItem(i, itemStackManager5.getItem());
             }
         }
@@ -118,7 +115,7 @@ public class GUISetup {
 
     public static @NotNull List<String> getLoreList(EmailContentManager emailContentManager, @NotNull String inputString, int length) {
         List<String> list = new ArrayList<>();
-        list.add(ChatColor.GOLD+"------邮件内容------");
+        list.add(ChatColor.GOLD + "------邮件内容------");
         int strLen = inputString.length();
         int start = 0;
         int num = length;
@@ -133,28 +130,63 @@ public class GUISetup {
             } catch (Exception e) {
                 break;
             }
-            list.add(ChatColor.WHITE+temp);
+            list.add(ChatColor.WHITE + temp);
             start = num;
             num = num + length;
         }
         if (emailContentManager.getItemStackManager() != null) {
-            list.add(ChatColor.GOLD+"------附件内容------");
+            list.add(ChatColor.GOLD + "------附件内容------");
             if (emailContentManager.getItemStackManager().getDisplayName().equals("")) {
                 list.add(ChatColor.LIGHT_PURPLE + emailContentManager.getItemStackManager().getItem().getType().name() + " * " + emailContentManager.getItemStackManager().getAmount() + "个");
-            }else {
+            } else {
                 list.add(ChatColor.LIGHT_PURPLE + emailContentManager.getItemStackManager().getDisplayName() + " * " + emailContentManager.getItemStackManager().getAmount() + "个");
             }
         }
         if (!emailContentManager.getRead()) {
-            if (emailContentManager.getItemStackManager() != null){
+            if (emailContentManager.getItemStackManager() != null) {
                 list.add(ChatColor.RED + "点击领取附件！");
-            }else {
+            } else {
                 list.add(ChatColor.RED + "点击来标记为已读！");
             }
-        }else {
+        } else {
             list.add(ChatColor.AQUA + "已读！");
         }
-        list.add(ChatColor.DARK_GRAY+"ID:"+emailContentManager.getUuid());
+        list.add(ChatColor.DARK_GRAY + "ID:" + emailContentManager.getUuid());
         return list;
+    }
+
+    public static void setKit(Player player) {
+        File kitFile = new File(UltiTools.getInstance().getDataFolder() + "/kitData", "kit.yml");
+        File kits = new File(UltiTools.getInstance().getDataFolder() + "/kits.yml");
+        YamlConfiguration claimState = YamlConfiguration.loadConfiguration(kitFile);
+        YamlConfiguration kitsConfig = YamlConfiguration.loadConfiguration(kits);
+        InventoryManager chest = new InventoryManager(null, 36, "物品包/礼包中心");
+        chest.create();
+        inventoryMap.put(player.getName() + ".kits", chest);
+
+        int s = 0;
+        for (String kitItem : Objects.requireNonNull(kitsConfig.getConfigurationSection("kit")).getKeys(false)) {
+            String path = "kit." + kitItem;
+            ArrayList<String> lore = new ArrayList<>();
+            ItemStack item = new ItemStack(Material.valueOf(kitsConfig.getString(path + ".item")));
+            ItemMeta itemMeta = item.getItemMeta();
+            lore.add(unimportant(kitsConfig.getString(path + ".description")));
+            lore.add(ChatColor.AQUA + "等级要求：    " + ChatColor.GOLD + kitsConfig.getInt(path + ".level"));
+            lore.add(ChatColor.AQUA + "可领取职业： " + ChatColor.GOLD + kitsConfig.getString(path + ".job"));
+            lore.add(ChatColor.AQUA + "价格：        " + ChatColor.GOLD + kitsConfig.getInt(path + ".price") + ChatColor.AQUA + " 枚金币");
+            lore.add(ChatColor.DARK_GRAY + "内含物：");
+            for (String i : Objects.requireNonNull(kitsConfig.getConfigurationSection(path + ".contain").getKeys(false))) {
+                lore.add(unimportant(i) + " x " + unimportant(String.valueOf(kitsConfig.getInt(path + ".contain." + i + ".quantity"))) + "个");
+            }
+            String kitName = kitsConfig.getString(path + ".name");
+            if (Objects.requireNonNull(claimState.getStringList(Objects.requireNonNull(kitName))).contains(player.getName())) {
+                lore.add(warning("已领取！"));
+            }
+            Objects.requireNonNull(itemMeta).setLore(lore);
+            itemMeta.setDisplayName(ChatColor.LIGHT_PURPLE + kitsConfig.getString(path + ".name"));
+            item.setItemMeta(itemMeta);
+            inventoryMap.get(player.getName() + ".kits").setItem(s, item);
+            s = s + 1;
+        }
     }
 }

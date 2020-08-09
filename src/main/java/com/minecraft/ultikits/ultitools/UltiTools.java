@@ -12,6 +12,8 @@ import com.minecraft.ultikits.email.Email;
 import com.minecraft.ultikits.email.EmailPage;
 import com.minecraft.ultikits.home.Home;
 import com.minecraft.ultikits.joinWelcome.onJoin;
+import com.minecraft.ultikits.kits.KitsCommands;
+import com.minecraft.ultikits.kits.KitsPage;
 import com.minecraft.ultikits.login.CheckGUIOpenTask;
 import com.minecraft.ultikits.login.LoginGUI;
 import com.minecraft.ultikits.login.LoginListener;
@@ -173,6 +175,9 @@ public final class UltiTools extends JavaPlugin {
         if (this.getConfig().getBoolean("enable_multiworlds")) {
             Objects.requireNonNull(this.getCommand("mw")).setExecutor(new multiWorlds());
         }
+        if (this.getConfig().getBoolean("enable_kits")) {
+            Objects.requireNonNull(this.getCommand("kits")).setExecutor(new KitsCommands());
+        }
 
         //注册监听器
         if (this.getConfig().getBoolean("enable_email")) {
@@ -197,6 +202,9 @@ public final class UltiTools extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new LoginListener(), this);
             getServer().getPluginManager().registerEvents(new LoginGUI(), this);
         }
+        if (this.getConfig().getBoolean("enable_kits")) {
+            getServer().getPluginManager().registerEvents(new KitsPage(), this);
+        }
 
         //注册任务
         if (this.getConfig().getBoolean("enable_scoreboard")) {
@@ -208,11 +216,6 @@ public final class UltiTools extends JavaPlugin {
         if (getConfig().getBoolean("enable_login")) {
             BukkitTask checkGUIOpenTask = new CheckGUIOpenTask().runTaskTimer(this, 0, 1L);
             BukkitTask updatePlayerInventory = new UpdatePlayerInventory().runTaskTimer(this, 0, 1L);
-        }
-
-        //初始化GUI
-        if (this.getConfig().getBoolean("enable_remote_chest")) {
-            GUISetup.setUpGUIs();
         }
 
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件已加载！");
