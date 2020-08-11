@@ -1,29 +1,29 @@
 package com.minecraft.ultikits.email;
 
-import com.minecraft.ultikits.GUIs.ItemStackManager;
+import org.bukkit.inventory.ItemStack;
 
 public class EmailContentManager {
     private String message;
     private String uuid;
     private String sender;
-    private ItemStackManager itemStackManager;
+    private ItemStack itemStack;
     private Boolean isItemClaimed;
     private Boolean isRead;
 
-    public EmailContentManager(String uuid, String sender, String message, ItemStackManager itemStackManager, Boolean isRead, Boolean isItemClaimed){
+    public EmailContentManager(String uuid, String sender, String message, ItemStack itemStack, Boolean isRead, Boolean isItemClaimed) {
         this.message = message;
         this.uuid = uuid;
         this.sender = sender;
-        this.itemStackManager = itemStackManager;
+        this.itemStack = itemStack;
         this.isItemClaimed = isItemClaimed;
         this.isRead = isRead;
     }
 
-    public EmailContentManager(String uuid, String sender, String message, Boolean isRead){
+    public EmailContentManager(String uuid, String sender, String message, Boolean isRead) {
         this.message = message;
         this.uuid = uuid;
         this.sender = sender;
-        this.itemStackManager = null;
+        this.itemStack = null;
         this.isRead = isRead;
     }
 
@@ -51,12 +51,12 @@ public class EmailContentManager {
         this.sender = sender;
     }
 
-    public ItemStackManager getItemStackManager() {
-        return itemStackManager;
+    public ItemStack getItemStack() {
+        return itemStack;
     }
 
-    public void setItemStackManager(ItemStackManager itemStackManager) {
-        this.itemStackManager = itemStackManager;
+    public void setItemStack(ItemStack itemStack) {
+        this.itemStack = itemStack;
     }
 
     public Boolean getItemClaimed() {

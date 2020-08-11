@@ -4,6 +4,7 @@ import com.minecraft.ultikits.GUIs.GUISetup;
 import com.minecraft.ultikits.GUIs.ItemStackManager;
 import com.minecraft.ultikits.config.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
+import com.minecraft.ultikits.utils.SerializationUtils;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.minecraft.ultikits.utils.Messages.info;
 import static com.minecraft.ultikits.utils.Messages.warning;
@@ -133,17 +135,11 @@ public class Email implements TabExecutor {
         player.sendMessage(ChatColor.GOLD + "正在发送全体邮件...");
         if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
             ItemStack itemStack = player.getInventory().getItemInMainHand();
-            ItemMeta itemMeta = itemStack.getItemMeta();
-            ItemStackManager itemStackManager = new ItemStackManager(itemStack);
-            itemStackManager.setUpItem();
             for (OfflinePlayer player1 : UltiTools.getInstance().getServer().getOfflinePlayers()) {
                 File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player1.getName() + ".yml");
-                emailManager.sendTo(file, receiver, itemStackManager);
+                emailManager.sendTo(file, receiver, itemStack);
                 pushToReceiver(player1.getName());
             }
-            ItemStack newItem = new ItemStack(itemStack.getType());
-            newItem.setItemMeta(itemMeta);
-            player.getInventory().setItemInMainHand(newItem);
             return;
         }
         for (OfflinePlayer player2 : UltiTools.getInstance().getServer().getOfflinePlayers()) {
@@ -189,11 +185,11 @@ public class Email implements TabExecutor {
     private void sendItem(File file, EmailManager emailManager, @NotNull Player player, String receiver) {
         if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
             ItemStack itemStack = player.getInventory().getItemInMainHand();
-            ItemStackManager itemStackManager = new ItemStackManager(itemStack);
-            itemStackManager.setUpItem();
+//            ItemStackManager itemStackManager = new ItemStackManager(itemStack);
+//            itemStackManager.setUpItem();
             player.sendMessage(ChatColor.GOLD + "正在发送邮件...");
-            if (emailManager.sendTo(file, receiver, itemStackManager)) {
-                player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+            if (emailManager.sendTo(file, receiver, itemStack)) {
+                player.getInventory().setItemInMainHand(null);
                 player.sendMessage(ChatColor.GOLD + "发送成功！");
                 player.playSound(player.getLocation(), Sound.UI_TOAST_OUT, 15, 1);
                 pushToReceiver(receiver);

@@ -135,16 +135,16 @@ public class GUISetup {
             start = num;
             num = num + length;
         }
-        if (emailContentManager.getItemStackManager() != null) {
+        if (emailContentManager.getItemStack() != null) {
             list.add(ChatColor.GOLD + "------附件内容------");
-            if (emailContentManager.getItemStackManager().getDisplayName().equals("")) {
-                list.add(ChatColor.LIGHT_PURPLE + emailContentManager.getItemStackManager().getItem().getType().name() + " * " + emailContentManager.getItemStackManager().getAmount() + "个");
+            if (emailContentManager.getItemStack().getItemMeta().getDisplayName().equals("")) {
+                list.add(ChatColor.LIGHT_PURPLE + emailContentManager.getItemStack().getType().name() + " * " + emailContentManager.getItemStack().getAmount() + "个");
             } else {
-                list.add(ChatColor.LIGHT_PURPLE + emailContentManager.getItemStackManager().getDisplayName() + " * " + emailContentManager.getItemStackManager().getAmount() + "个");
+                list.add(ChatColor.LIGHT_PURPLE + emailContentManager.getItemStack().getItemMeta().getDisplayName() + " * " + emailContentManager.getItemStack().getAmount() + "个");
             }
         }
         if (!emailContentManager.getRead()) {
-            if (emailContentManager.getItemStackManager() != null) {
+            if (emailContentManager.getItemStack() != null) {
                 list.add(ChatColor.RED + "点击领取附件！");
             } else {
                 list.add(ChatColor.RED + "点击来标记为已读！");

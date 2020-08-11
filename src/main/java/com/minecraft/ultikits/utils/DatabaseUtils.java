@@ -29,14 +29,18 @@ public class DatabaseUtils {
 
     //初始化连接池
     static {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://" + ip + ":" + port + "/" + database + "?useUnicode=true&characterEncoding=utf-8&useSSL=false");
-        config.setUsername(username);
-        config.setPassword(password);
-        config.addDataSourceProperty("connectionTimeout", "2000"); // 连接超时：1秒
-        config.addDataSourceProperty("idleTimeout", "60000"); // 空闲超时：60秒
-        config.addDataSourceProperty("maximumPoolSize", "10"); // 最大连接数：10
-        dataSource = new HikariDataSource(config);
+        if (getToolsConfig().getBoolean("enableDataBase")) {
+            HikariConfig config = new HikariConfig();
+            config.setJdbcUrl("jdbc:mysql://" + ip + ":" + port + "/" + database + "?useUnicode=true&characterEncoding=utf-8&useSSL=false");
+            config.setUsername(username);
+            config.setPassword(password);
+            config.addDataSourceProperty("connectionTimeout", "2000"); // 连接超时：1秒
+            config.addDataSourceProperty("idleTimeout", "60000"); // 空闲超时：60秒
+            config.addDataSourceProperty("maximumPoolSize", "10"); // 最大连接数：10
+            dataSource = new HikariDataSource(config);
+        } else {
+            dataSource = null;
+        }
     }
 
 
@@ -123,7 +127,7 @@ public class DatabaseUtils {
      * @param fieldName 需要获取的列
      * @return 含有数据的列表
      */
-    public static @NotNull List<String> getKeys(String tableName, String fieldName){
+    public static @NotNull List<String> getKeys(String tableName, String fieldName) {
         List<String> keys = new ArrayList<>();
         try (Connection connection = dataSource.getConnection()) {
             try (PreparedStatement ps = connection.prepareStatement("select " + fieldName + " from " + tableName)) {

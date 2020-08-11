@@ -1,8 +1,6 @@
 package com.minecraft.ultikits.email;
 
-import com.minecraft.ultikits.GUIs.ItemStackManager;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
+import com.minecraft.ultikits.utils.SerializationUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -10,8 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-
-import static com.minecraft.ultikits.utils.Enchants.getEnchantment;
 
 public class EmailManager {
 
@@ -38,8 +34,8 @@ public class EmailManager {
 
         for (String uuid : config.getKeys(false)) {
             if (config.getConfigurationSection(uuid).getKeys(false).contains("item")) {
-                ItemStackManager itemStackManager = setupItemStackManager(uuid);
-                emails.put(uuid, new EmailContentManager(uuid, config.getString(uuid + ".sender"), config.getString(uuid + ".message"), itemStackManager, config.getBoolean(uuid + ".isRead"), config.getBoolean(uuid + ".isClaimed")));
+                ItemStack itemStack = setupItemStack(uuid);
+                emails.put(uuid, new EmailContentManager(uuid, config.getString(uuid + ".sender"), config.getString(uuid + ".message"), itemStack, config.getBoolean(uuid + ".isRead"), config.getBoolean(uuid + ".isClaimed")));
             } else {
                 emails.put(uuid, new EmailContentManager(uuid, config.getString(uuid + ".sender"), config.getString(uuid + ".message"), config.getBoolean(uuid + ".isRead")));
             }
@@ -49,16 +45,16 @@ public class EmailManager {
 
 
     /**
-     * @param receiverFile     发送给某个人
-     * @param message          所要发送的消息
-     * @param itemStackManager 发送包含的物品
+     * @param receiverFile 发送给某个人
+     * @param message      所要发送的消息
+     * @param itemStack    发送包含的物品
      * @return 是否发送成功
      */
-    public Boolean sendTo(@NotNull File receiverFile, String message, ItemStackManager itemStackManager) {
+    public Boolean sendTo(@NotNull File receiverFile, String message, ItemStack itemStack) {
         if (receiverFile.exists()) {
             EmailManager emailManager = new EmailManager(receiverFile);
-            EmailContentManager emailContentManager = new EmailContentManager(generateUUID(), playerName, message, itemStackManager, false, false);
-            emailManager.saveEmail(emailContentManager.getUuid(), emailContentManager.getSender(), emailContentManager.getMessage(), emailContentManager.getItemStackManager());
+            EmailContentManager emailContentManager = new EmailContentManager(generateUUID(), playerName, message, itemStack, false, false);
+            emailManager.saveEmail(emailContentManager.getUuid(), emailContentManager.getSender(), emailContentManager.getMessage(), emailContentManager.getItemStack());
             return true;
         }
         return false;
@@ -85,28 +81,12 @@ public class EmailManager {
         }
     }
 
-    private void saveEmail(String uuid, String sender, String message, @NotNull ItemStackManager itemStackManager) {
+    private void saveEmail(String uuid, String sender, String message, @NotNull ItemStack itemStack) {
         config.set(uuid + ".sender", sender);
         config.set(uuid + ".message", message);
         config.set(uuid + ".isRead", false);
         config.set(uuid + ".isClaimed", false);
-        config.set(uuid + ".item.type", itemStackManager.getItem().getType().name());
-        config.set(uuid + ".item.amount", itemStackManager.getAmount());
-        config.set(uuid + ".item.lore", itemStackManager.getLore());
-        if (ChatColor.stripColor(itemStackManager.getItem().getItemMeta().getDisplayName()).equals("")) {
-            config.set(uuid + ".item.name", ChatColor.stripColor(itemStackManager.getItem().getItemMeta().getDisplayName()));
-        } else {
-            config.set(uuid + ".item.name", itemStackManager.getItem().getItemMeta().getDisplayName());
-        }
-        config.set(uuid + ".item.durability", itemStackManager.getDurability());
-        if (itemStackManager.getEnchantment().keySet().size() > 0) {
-            int i = 1;
-            for (String name : itemStackManager.getEnchantment().keySet()) {
-                config.set(uuid + ".item.enchant." + i + ".name", name);
-                config.set(uuid + ".item.enchant." + i + ".level", itemStackManager.getEnchantment().get(name));
-                i++;
-            }
-        }
+        config.set(uuid + ".item", SerializationUtils.serialize(itemStack));
         try {
             config.save(file);
         } catch (IOException e) {
@@ -115,27 +95,9 @@ public class EmailManager {
     }
 
     @NotNull
-    private ItemStackManager setupItemStackManager(String uuid){
-        int item_quantity = config.getInt(uuid + ".item.amount");
-        Material item_material = Material.valueOf(config.getString(uuid + ".item.type"));
-        ItemStack contained_item = new ItemStack(item_material, item_quantity);
-        List<String> item_lore = config.getStringList(uuid + ".item.lore");
-        String item_name = config.getString(uuid + ".item.name");
-        int durability = config.getInt(uuid + ".item.durability");
-
-        int i = 0;
-        while (config.get(uuid + ".item.enchant." + i) != null) {
-            if (!Objects.equals(config.getString(uuid + ".item.enchant." + i + ".name"), "")) {
-                int enchantment_level = config.getInt(uuid + ".item.enchant.level");
-                String enchantment_name = config.getString(uuid + ".item.enchant.name");
-                contained_item.addUnsafeEnchantment(Objects.requireNonNull(getEnchantment(enchantment_name)), enchantment_level);
-                i++;
-            }
-        }
-        ItemStackManager itemStackManager = new ItemStackManager(contained_item, (ArrayList<String>) item_lore, item_name);
-        itemStackManager.setUpItem();
-        itemStackManager.setDurability(durability);
-        return itemStackManager;
+    private ItemStack setupItemStack(String uuid) {
+        String itemStackSerialized = config.getString(uuid + ".item");
+        return Objects.requireNonNull(SerializationUtils.encodeToItem(itemStackSerialized));
     }
 
     public Boolean deleteHistoryEmails() {
