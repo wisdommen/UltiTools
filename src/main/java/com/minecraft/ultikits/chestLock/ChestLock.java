@@ -1,5 +1,7 @@
 package com.minecraft.ultikits.chestLock;
 
+import com.minecraft.ultikits.config.Configs;
+import com.minecraft.ultikits.config.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -27,8 +29,8 @@ public class ChestLock implements Listener {
         if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.CHEST) {
             Player player = event.getPlayer();
             Location chestLocation = event.getClickedBlock().getLocation();
-            File chestFile = new File(UltiTools.getInstance().getDataFolder(), "chestData.yml");
-            File playerFile = new File(UltiTools.getInstance().getDataFolder() + "/playerData", player.getName() + ".yml");
+            File chestFile = new File(ConfigsEnum.CHEST.toString());
+            File playerFile = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
             YamlConfiguration chestData = YamlConfiguration.loadConfiguration(chestFile);
             YamlConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
             List<String> chests = chestData.getStringList("locked");
@@ -127,7 +129,7 @@ public class ChestLock implements Listener {
         if (event.getBlock().getType() == Material.CHEST) {
             Location chestLocation = event.getBlock().getLocation();
             Player player = event.getPlayer();
-            File chestFile = new File(UltiTools.getInstance().getDataFolder(), "chestData.yml");
+            File chestFile = new File(ConfigsEnum.CHEST.toString());
             YamlConfiguration chestData = YamlConfiguration.loadConfiguration(chestFile);
             List<String> chests = chestData.getStringList("locked");
             int sizeBefore = chests.size();
@@ -158,7 +160,7 @@ public class ChestLock implements Listener {
     @EventHandler
     public void onItemRemovedByHopper(@NotNull InventoryMoveItemEvent event){
         Location chestLocation = event.getSource().getLocation();
-        File chestFile = new File(UltiTools.getInstance().getDataFolder(), "chestData.yml");
+        File chestFile = new File(ConfigsEnum.CHEST.toString());
         YamlConfiguration chestData = YamlConfiguration.loadConfiguration(chestFile);
         List<String> chests = chestData.getStringList("locked");
 

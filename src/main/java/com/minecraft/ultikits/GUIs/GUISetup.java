@@ -1,5 +1,6 @@
 package com.minecraft.ultikits.GUIs;
 
+import com.minecraft.ultikits.config.ConfigsEnum;
 import com.minecraft.ultikits.email.EmailContentManager;
 import com.minecraft.ultikits.email.EmailManager;
 import com.minecraft.ultikits.ultitools.UltiTools;
@@ -23,7 +24,7 @@ public class GUISetup {
 
     public static void setPlayerRemoteChest(@NotNull Player player) {
         YamlConfiguration config = Utils.getConfig(Utils.getConfigFile());
-        File chestFile = new File(UltiTools.getInstance().getDataFolder() + "/chestData", player.getName() + ".yml");
+        File chestFile = new File(ConfigsEnum.PLAYER_CHEST.toString(), player.getName() + ".yml");
         YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
         InventoryManager chest = new InventoryManager(null, 36, "远程背包");
         chest.create();
@@ -47,7 +48,7 @@ public class GUISetup {
     }
 
     public static Map<String, EmailContentManager> setUpEmailInBox(@NotNull Player player) {
-        File file = new File(UltiTools.getInstance().getDataFolder() + "/emailData", player.getName() + ".yml");
+        File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player.getName() + ".yml");
         EmailManager emailManager = new EmailManager(file);
         Map<String, EmailContentManager> emailContentManagers = emailManager.getEmails();
         InventoryManager inventoryManager = new InventoryManager(player, 36, "收件箱");
@@ -156,34 +157,33 @@ public class GUISetup {
     }
 
     public static void setKit(Player player) {
-        File kitFile = new File(UltiTools.getInstance().getDataFolder() + "/kitData", "kit.yml");
-        File kits = new File(UltiTools.getInstance().getDataFolder() + "/kits.yml");
+        File kitFile = new File(ConfigsEnum.DATA_KIT.toString());
+        File kits = new File(ConfigsEnum.KIT.toString());
         YamlConfiguration claimState = YamlConfiguration.loadConfiguration(kitFile);
         YamlConfiguration kitsConfig = YamlConfiguration.loadConfiguration(kits);
-        InventoryManager chest = new InventoryManager(null, 36, "物品包/礼包中心");
+        InventoryManager chest = new InventoryManager(null, 54, "物品包/礼包中心");
         chest.create();
         inventoryMap.put(player.getName() + ".kits", chest);
 
         int s = 0;
-        for (String kitItem : Objects.requireNonNull(kitsConfig.getConfigurationSection("kit")).getKeys(false)) {
-            String path = "kit." + kitItem;
+        for (String kitItem : kitsConfig.getKeys(false)) {
             ArrayList<String> lore = new ArrayList<>();
-            ItemStack item = new ItemStack(Material.valueOf(kitsConfig.getString(path + ".item")));
+            ItemStack item = new ItemStack(Material.valueOf(kitsConfig.getString(kitItem + ".item")));
             ItemMeta itemMeta = item.getItemMeta();
-            lore.add(unimportant(kitsConfig.getString(path + ".description")));
-            lore.add(ChatColor.AQUA + "等级要求：    " + ChatColor.GOLD + kitsConfig.getInt(path + ".level"));
-            lore.add(ChatColor.AQUA + "可领取职业： " + ChatColor.GOLD + kitsConfig.getString(path + ".job"));
-            lore.add(ChatColor.AQUA + "价格：        " + ChatColor.GOLD + kitsConfig.getInt(path + ".price") + ChatColor.AQUA + " 枚金币");
+            lore.add(unimportant(kitsConfig.getString(kitItem + ".description")));
+            lore.add(ChatColor.AQUA + "等级要求：    " + ChatColor.GOLD + kitsConfig.getInt(kitItem + ".level"));
+            lore.add(ChatColor.AQUA + "可领取职业： " + ChatColor.GOLD + kitsConfig.getString(kitItem + ".job"));
+            lore.add(ChatColor.AQUA + "价格：        " + ChatColor.GOLD + kitsConfig.getInt(kitItem + ".price") + ChatColor.AQUA + " 枚金币");
             lore.add(ChatColor.DARK_GRAY + "内含物：");
-            for (String i : Objects.requireNonNull(kitsConfig.getConfigurationSection(path + ".contain").getKeys(false))) {
-                lore.add(unimportant(i) + " x " + unimportant(String.valueOf(kitsConfig.getInt(path + ".contain." + i + ".quantity"))) + "个");
+            for (String i : Objects.requireNonNull(kitsConfig.getConfigurationSection(kitItem + ".contain").getKeys(false))) {
+                lore.add(unimportant(i) + " x " + unimportant(String.valueOf(kitsConfig.getInt(kitItem + ".contain." + i + ".quantity"))) + "个");
             }
-            String kitName = kitsConfig.getString(path + ".name");
+            String kitName = kitsConfig.getString(kitItem + ".name");
             if (Objects.requireNonNull(claimState.getStringList(Objects.requireNonNull(kitName))).contains(player.getName())) {
                 lore.add(warning("已领取！"));
             }
             Objects.requireNonNull(itemMeta).setLore(lore);
-            itemMeta.setDisplayName(ChatColor.LIGHT_PURPLE + kitsConfig.getString(path + ".name"));
+            itemMeta.setDisplayName(ChatColor.LIGHT_PURPLE + kitsConfig.getString(kitItem + ".name"));
             item.setItemMeta(itemMeta);
             inventoryMap.get(player.getName() + ".kits").setItem(s, item);
             s = s + 1;

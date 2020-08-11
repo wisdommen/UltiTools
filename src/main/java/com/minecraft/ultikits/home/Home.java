@@ -1,5 +1,6 @@
 package com.minecraft.ultikits.home;
 
+import com.minecraft.ultikits.config.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -8,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,10 +20,10 @@ import java.util.Objects;
 public class Home implements TabExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            File file = new File(UltiTools.getInstance().getDataFolder() + "/playerData", player.getName() + ".yml");
+            File file = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
             if ("sethome".equalsIgnoreCase(cmd.getName())) {

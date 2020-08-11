@@ -2,7 +2,6 @@ package com.minecraft.ultikits.ultitools;
 
 
 import com.minecraft.economy.apis.UltiEconomy;
-import com.minecraft.ultikits.GUIs.GUISetup;
 import com.minecraft.ultikits.UpdateChecker.ConfigFileChecker;
 import com.minecraft.ultikits.UpdateChecker.VersionChecker;
 import com.minecraft.ultikits.chestLock.ChestLock;
@@ -14,10 +13,8 @@ import com.minecraft.ultikits.home.Home;
 import com.minecraft.ultikits.joinWelcome.onJoin;
 import com.minecraft.ultikits.kits.KitsCommands;
 import com.minecraft.ultikits.kits.KitsPage;
-import com.minecraft.ultikits.login.CheckGUIOpenTask;
 import com.minecraft.ultikits.login.LoginGUI;
 import com.minecraft.ultikits.login.LoginListener;
-import com.minecraft.ultikits.login.UpdatePlayerInventory;
 import com.minecraft.ultikits.multiworlds.multiWorlds;
 import com.minecraft.ultikits.prefix.Chat;
 import com.minecraft.ultikits.remoteChest.ChestPage;
@@ -33,6 +30,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.WorldCreator;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
@@ -42,7 +40,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.minecraft.ultikits.login.LoginListener.playerLoginStatus;
 import static com.minecraft.ultikits.login.LoginListener.savePlayerLoginStatus;
+import static com.minecraft.ultikits.utils.DatabasePlayerTools.getIsLogin;
 
 public final class UltiTools extends JavaPlugin {
 
@@ -213,10 +213,6 @@ public final class UltiTools extends JavaPlugin {
         if (this.getConfig().getBoolean("enable_name_prefix")) {
             BukkitTask t2 = new NamePrefixSuffix().runTaskTimer(this, 0, 20L);
         }
-        if (getConfig().getBoolean("enable_login")) {
-            BukkitTask checkGUIOpenTask = new CheckGUIOpenTask().runTaskTimer(this, 0, 1L);
-            BukkitTask updatePlayerInventory = new UpdatePlayerInventory().runTaskTimer(this, 0, 1L);
-        }
 
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件已加载！");
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "作者：wisdomme");
@@ -229,6 +225,15 @@ public final class UltiTools extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        for (String player : playerLoginStatus.keySet()){
+            if (Bukkit.getPlayerExact(player)!=null){
+                Player player1 = Bukkit.getPlayerExact(player);
+                assert player1 != null;
+                if (!getIsLogin(player1)){
+                    player1.kickPlayer(ChatColor.AQUA+"腐竹重载/关闭了插件，请重新登录！");
+                }
+            }
+        }
         savePlayerLoginStatus();
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件已卸载！");
     }

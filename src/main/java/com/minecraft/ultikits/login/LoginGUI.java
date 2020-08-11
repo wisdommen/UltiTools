@@ -1,6 +1,7 @@
 package com.minecraft.ultikits.login;
 
 import com.minecraft.ultikits.GUIs.LoginRegisterEnum;
+import com.minecraft.ultikits.config.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -29,7 +30,7 @@ public class LoginGUI implements Listener {
     public void onPlayerClick(InventoryClickEvent event) {
         Inventory currentInventory = event.getClickedInventory();
         Player player = (Player) event.getWhoClicked();
-        File file = new File(UltiTools.getInstance().getDataFolder() + "/loginData", player.getName() + ".yml");
+        File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), player.getName() + ".yml");
 
         ItemStack clicked = event.getCurrentItem();
         if (event.getView().getTitle().contains("登录界面")) {

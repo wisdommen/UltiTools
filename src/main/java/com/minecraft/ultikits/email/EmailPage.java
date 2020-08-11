@@ -3,6 +3,7 @@ package com.minecraft.ultikits.email;
 import com.minecraft.ultikits.GUIs.GUISetup;
 import com.minecraft.ultikits.GUIs.InventoryManager;
 import com.minecraft.ultikits.GUIs.ItemStackManager;
+import com.minecraft.ultikits.config.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import com.minecraft.ultikits.utils.Enchants;
 import org.bukkit.ChatColor;
@@ -33,7 +34,7 @@ public class EmailPage implements Listener {
     public void onItemClicked(@NotNull InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         ItemStack clicked = event.getCurrentItem();
-        File file = new File(UltiTools.getInstance().getDataFolder() + "/emailData", player.getName() + ".yml");
+        File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player.getName() + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
         if (event.getView().getTitle().equals("收件箱")) {
@@ -97,7 +98,7 @@ public class EmailPage implements Listener {
     @EventHandler
     public void onPlayerJoin(@NotNull PlayerJoinEvent event){
         Player player = event.getPlayer();
-        File folder = new File(UltiTools.getInstance().getDataFolder() + "/emailData");
+        File folder = new File(ConfigsEnum.PLAYER_EMAIL.toString());
         File file = new File(folder, player.getName() + ".yml");
         if (!folder.exists()){
             folder.mkdirs();

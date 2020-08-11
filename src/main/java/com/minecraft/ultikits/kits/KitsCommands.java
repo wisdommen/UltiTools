@@ -1,6 +1,7 @@
 package com.minecraft.ultikits.kits;
 
 import com.minecraft.ultikits.abstractClass.AbstractPlayerCommandExecutor;
+import com.minecraft.ultikits.config.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.command.Command;
@@ -32,7 +33,7 @@ public class KitsCommands extends AbstractPlayerCommandExecutor {
     }
 
     public void initFile(){
-        File file = new File(UltiTools.getInstance().getDataFolder()+"/kits.yml");
+        File file = new File(ConfigsEnum.KIT.toString());
         if (file.exists()) {
             return;
         }
@@ -42,21 +43,21 @@ public class KitsCommands extends AbstractPlayerCommandExecutor {
             e.printStackTrace();
         }
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        config.set("kit.xinshou.item", "OAK_PLANKS");
-        config.set("kit.xinshou.reBuyable", false);
-        config.set("kit.xinshou.name", "新手礼包");
-        config.set("kit.xinshou.level", 1);
-        config.set("kit.xinshou.job", "全部");
-        config.set("kit.xinshou.description", "虽然是木头的，但是却很实用");
-        config.set("kit.xinshou.price", 0);
+        config.set("xinshou.item", "OAK_PLANKS");
+        config.set("xinshou.reBuyable", false);
+        config.set("xinshou.name", "新手礼包");
+        config.set("xinshou.level", 1);
+        config.set("xinshou.job", "全部");
+        config.set("xinshou.description", "虽然是木头的，但是却很实用");
+        config.set("xinshou.price", 0);
         List<String> list = Arrays.asList("WOODEN_PICKAXE", "WOODEN_AXE", "WOODEN_SHOVEL", "WOODEN_SWORD", "WOODEN_HOE");
         for (String item : list){
-            config.set("kit.xinshou.contain."+item+".quantity", 1);
+            config.set("xinshou.contain."+item+".quantity", 1);
         }
         List<String> playerCommands = new ArrayList<>();
-        config.set("kit.xinshou.playerCommands",playerCommands);
+        config.set("xinshou.playerCommands",playerCommands);
         List<String> console = Arrays.asList("say {PLAYER} 领取了新手礼包", "givemoney {PLAYER} 100");
-        config.set("kit.xinshou.consoleCommands", console);
+        config.set("xinshou.consoleCommands", console);
 
         try {
             config.save(file);

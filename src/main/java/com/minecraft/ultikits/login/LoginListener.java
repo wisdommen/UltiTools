@@ -1,15 +1,19 @@
 package com.minecraft.ultikits.login;
 
 import com.minecraft.ultikits.GUIs.LoginRegisterEnum;
+import com.minecraft.ultikits.config.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +31,7 @@ public class LoginListener implements Listener {
     public static Map<String, Boolean> playerLoginStatus = new HashMap<>();
 
     static {
-        File file = new File(UltiTools.getInstance().getDataFolder()+"/loginData", "loginState.yml");
+        File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), "loginState.yml");
         if (!file.exists()){
             try {
                 file.createNewFile();
@@ -51,20 +55,26 @@ public class LoginListener implements Listener {
         gameMode = player.getGameMode();
         if (!getIsLogin(player)) {
             playerLoginStatus.put(player.getName(), false);
+            player.setGameMode(GameMode.CREATIVE);
 
-            if (isPlayerAccountExist(player)) {
-                setupLoginRegisterLayout(player, LoginRegisterEnum.LOGIN);
-                player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.LOGIN.toString()).getInventory());
-            } else {
-                setupLoginRegisterLayout(player, LoginRegisterEnum.REGISTER);
-                player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.REGISTER.toString()).getInventory());
-            }
-            player.setGameMode(GameMode.SPECTATOR);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    player.sendMessage(ChatColor.RED+"请输入你的登录信息！");
+                    if (isPlayerAccountExist(player)) {
+                        setupLoginRegisterLayout(player, LoginRegisterEnum.LOGIN);
+                        player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.LOGIN.toString()).getInventory());
+                    } else {
+                        setupLoginRegisterLayout(player, LoginRegisterEnum.REGISTER);
+                        player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.REGISTER.toString()).getInventory());
+                    }
+                }
+            }.runTaskLater(UltiTools.getInstance(), 30L);
         }
     }
 
     public static void savePlayerLoginStatus(){
-        File file = new File(UltiTools.getInstance().getDataFolder()+"/loginData", "loginState.yml");
+        File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), "loginState.yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         for (String each : playerLoginStatus.keySet()){
             config.set(each, playerLoginStatus.get(each));

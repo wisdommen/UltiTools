@@ -1,6 +1,7 @@
 package com.minecraft.ultikits.remoteChest;
 
 import com.minecraft.economy.apis.UltiEconomy;
+import com.minecraft.ultikits.config.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import com.minecraft.ultikits.utils.Utils;
 import net.milkbowl.vault.economy.Economy;
@@ -32,7 +33,7 @@ public class ChestPage implements Listener {
 
     private void loadBag(String chest_name, Player player) {
         Inventory remote_chest = Bukkit.createInventory(player, 36, chest_name);
-        File chest_file = new File(UltiTools.getInstance().getDataFolder() + "/chestData", player.getName() + ".yml");
+        File chest_file = new File(ConfigsEnum.PLAYER_CHEST.toString(), player.getName() + ".yml");
         YamlConfiguration chest_config = YamlConfiguration.loadConfiguration(chest_file);
 
         String name = ChatColor.stripColor(chest_name.split("号")[0]);
@@ -77,7 +78,7 @@ public class ChestPage implements Listener {
         Player player = (Player) event.getWhoClicked();
         ItemStack clicked = event.getCurrentItem();
         YamlConfiguration config = Utils.getConfig(Utils.getConfigFile());
-        File chestFile = new File(UltiTools.getInstance().getDataFolder() + "/chestData", player.getName() + ".yml");
+        File chestFile = new File(ConfigsEnum.PLAYER_CHEST.toString(), player.getName() + ".yml");
         YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
 
         if ("远程背包".equals(event.getView().getTitle())) {
@@ -116,7 +117,7 @@ public class ChestPage implements Listener {
         Player player = (Player) event.getPlayer();
         Inventory inventory = event.getInventory();
         if (event.getView().getTitle().contains("号背包")) {
-            File chestFile = new File(UltiTools.getInstance().getDataFolder() + "/chestData", player.getName() + ".yml");
+            File chestFile = new File(ConfigsEnum.PLAYER_CHEST.toString(), player.getName() + ".yml");
             YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
 
             chestConfig.set(ChatColor.stripColor(event.getView().getTitle().split("号")[0]), "");

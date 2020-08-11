@@ -25,8 +25,6 @@ public class KitsPage implements Listener {
 
     private static final File kits = new File(UltiTools.getInstance().getDataFolder() + "/kits.yml");
     private static final YamlConfiguration kitsConfig = YamlConfiguration.loadConfiguration(kits);
-    private static final File kit_file = new File(UltiTools.getInstance().getDataFolder() + "/kitData", "kit.yml");
-    private static final YamlConfiguration kit_config = YamlConfiguration.loadConfiguration(kit_file);
     private static final Economy economy = UltiTools.getEcon();
     
     @EventHandler
@@ -34,27 +32,28 @@ public class KitsPage implements Listener {
         Player player = (Player) event.getWhoClicked();
         ItemStack clicked = event.getCurrentItem();
 
+        File kit_file = new File(UltiTools.getInstance().getDataFolder() + "/kitData", "kit.yml");
+        YamlConfiguration kit_config = YamlConfiguration.loadConfiguration(kit_file);
+
         if (!(event.getView().getTitle().equals("物品包/礼包中心") && clicked != null)) return;
         event.setCancelled(true);
-        Material clicked_item = clicked.getType();
-        for (String item : Objects.requireNonNull(kitsConfig.getConfigurationSection("kit")).getKeys(false)) {
-            String path = "kit." + item;
-            Material material = Material.valueOf(kitsConfig.getString(path + ".item"));
-            String kit_name = kitsConfig.getString(path + ".name");
-            if (clicked_item != material) continue;
+        String clickedItem = ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
+        for (String item : kitsConfig.getKeys(false)) {
+            String kitName = kitsConfig.getString(item + ".name");
+            if (!clickedItem.equals(kitName)) continue;
             if (!isPlayerCanBuy(player, item)) return;
-            if (!Objects.requireNonNull(kitsConfig.getConfigurationSection(path + ".contain").getKeys(false)).isEmpty()) {
-                for (String i : Objects.requireNonNull(kitsConfig.getConfigurationSection(path + ".contain").getKeys(false))) {
-                    player.getInventory().addItem(new ItemStack(Material.valueOf(i), kitsConfig.getInt(path + ".contain." + i + ".quantity")));
+            if (!Objects.requireNonNull(kitsConfig.getConfigurationSection(item + ".contain").getKeys(false)).isEmpty()) {
+                for (String i : Objects.requireNonNull(kitsConfig.getConfigurationSection(item + ".contain").getKeys(false))) {
+                    player.getInventory().addItem(new ItemStack(Material.valueOf(i), kitsConfig.getInt(item + ".contain." + i + ".quantity")));
                 }
             }
-            if (!kitsConfig.getStringList(path + ".playerCommands").isEmpty()) {
-                for (String playerCommand : kitsConfig.getStringList(path + ".playerCommands")) {
+            if (!kitsConfig.getStringList(item + ".playerCommands").isEmpty()) {
+                for (String playerCommand : kitsConfig.getStringList(item + ".playerCommands")) {
                     player.performCommand(playerCommand);
                 }
             }
-            if (!kitsConfig.getStringList(path + ".consoleCommands").isEmpty()) {
-                for (String consoleCommand : kitsConfig.getStringList(path + ".consoleCommands")) {
+            if (!kitsConfig.getStringList(item + ".consoleCommands").isEmpty()) {
+                for (String consoleCommand : kitsConfig.getStringList(item + ".consoleCommands")) {
                     while (consoleCommand.contains("{PLAYER}")) {
                         consoleCommand = consoleCommand.replace("{PLAYER}", player.getName());
                     }
@@ -62,21 +61,23 @@ public class KitsPage implements Listener {
                 }
             }
             player.closeInventory();
-            player.sendMessage(Messages.bought + ChatColor.RED + kit_name);
-            if (!kitsConfig.getBoolean(path + ".reBuyable")) {
-                List<String> a = kit_config.getStringList(Objects.requireNonNull(kit_name));
+            player.sendMessage(Messages.bought + ChatColor.RED + kitName);
+            if (!kitsConfig.getBoolean(item + ".reBuyable")) {
+                List<String> a = kit_config.getStringList(Objects.requireNonNull(kitName));
                 a.add(player.getName());
-                kit_config.set(kit_name, a);
+                kit_config.set(kitName, a);
                 kit_config.save(kit_file);
             }
-            int price = kitsConfig.getInt(path + ".price");
+            int price = kitsConfig.getInt(item + ".price");
             if (price > 0) economy.withdrawPlayer(player, price);
         }
     }
 
     private boolean isPlayerCanBuy(Player player, String item){
-        String path = "kit." + item;
-        String kit_name = kitsConfig.getString(path + ".name");
+        File kit_file = new File(UltiTools.getInstance().getDataFolder() + "/kitData", "kit.yml");
+        YamlConfiguration kit_config = YamlConfiguration.loadConfiguration(kit_file);
+
+        String kit_name = kitsConfig.getString(item + ".name");
         if (Objects.requireNonNull(kit_config.getStringList(Objects.requireNonNull(kit_name))).contains(player.getName())) {
             player.sendMessage(Messages.kit_already_claimed);
             return false;
@@ -87,8 +88,8 @@ public class KitsPage implements Listener {
                 empty_slots++;
             }
         }
-        int contain_size = Objects.requireNonNull(kitsConfig.getStringList(path + ".contain")).size();
-        int price = kitsConfig.getInt(path + ".price");
+        int contain_size = Objects.requireNonNull(kitsConfig.getStringList(item + ".contain")).size();
+        int price = kitsConfig.getInt(item + ".price");
         if (empty_slots < contain_size) {
             player.closeInventory();
             player.sendMessage(Messages.player_inventory_full);
@@ -99,9 +100,9 @@ public class KitsPage implements Listener {
             return false;
         }
         if (Bukkit.getServer().getPluginManager().getPlugin("UltiLevel") != null) {
-            int level = kitsConfig.getInt(path + ".level");
+            int level = kitsConfig.getInt(item + ".level");
             if (checkLevel(player) < level) return false;
-            String job = kitsConfig.getString(path + ".job");
+            String job = kitsConfig.getString(item + ".job");
             return job.equals("全部") || checkJob(player).equals(job);
         }
         return true;

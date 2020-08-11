@@ -112,3 +112,15 @@ target/generated-sources/
 target/maven-archiver/
 target/maven-status/
 target/test-classes/
+.idea/artifacts/
+.idea/compiler.xml
+.idea/encodings.xml
+.idea/inspectionProfiles/
+.idea/intellij-javadocs-4.0.1.xml
+.idea/jarRepositories.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/smartfox_info.xml
+.idea/vcs.xml
+target/classes/config.yml
+target/classes/plugin.yml

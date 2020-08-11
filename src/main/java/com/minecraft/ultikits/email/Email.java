@@ -2,6 +2,7 @@ package com.minecraft.ultikits.email;
 
 import com.minecraft.ultikits.GUIs.GUISetup;
 import com.minecraft.ultikits.GUIs.ItemStackManager;
+import com.minecraft.ultikits.config.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -26,10 +27,10 @@ public class Email implements TabExecutor {
     public static Map<String, EmailContentManager> emailContentManagerMap;
 
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] strings) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, String[] strings) {
         if (commandSender instanceof Player) {
             Player player = (Player) commandSender;
-            File senderFile = new File(UltiTools.getInstance().getDataFolder() + "/emailData", player.getName() + ".yml");
+            File senderFile = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player.getName() + ".yml");
             EmailManager emailManager = new EmailManager(senderFile);
 
             if ("email".equalsIgnoreCase(command.getName())) {
@@ -48,7 +49,7 @@ public class Email implements TabExecutor {
                     sendAllMessage(player, emailManager, strings[1]);
                     return true;
                 } else if (strings.length == 3) {
-                    File file = new File(UltiTools.getInstance().getDataFolder() + "/emailData", strings[1] + ".yml");
+                    File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), strings[1] + ".yml");
                     boolean hasContent;
 
                     if ("send".equalsIgnoreCase(strings[0])) {
@@ -69,7 +70,7 @@ public class Email implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         if (!(sender instanceof Player)) {
             return null;
         }
@@ -136,7 +137,7 @@ public class Email implements TabExecutor {
             ItemStackManager itemStackManager = new ItemStackManager(itemStack);
             itemStackManager.setUpItem();
             for (OfflinePlayer player1 : UltiTools.getInstance().getServer().getOfflinePlayers()) {
-                File file = new File(UltiTools.getInstance().getDataFolder() + "/emailData", player1.getName() + ".yml");
+                File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player1.getName() + ".yml");
                 emailManager.sendTo(file, receiver, itemStackManager);
                 pushToReceiver(player1.getName());
             }
@@ -146,7 +147,7 @@ public class Email implements TabExecutor {
             return;
         }
         for (OfflinePlayer player2 : UltiTools.getInstance().getServer().getOfflinePlayers()) {
-            File file = new File(UltiTools.getInstance().getDataFolder() + "/emailData", player2.getName() + ".yml");
+            File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player2.getName() + ".yml");
             emailManager.sendTo(file, receiver);
             pushToReceiver(player2.getName());
         }

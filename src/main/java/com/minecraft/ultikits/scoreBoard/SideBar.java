@@ -174,6 +174,9 @@ public class SideBar extends BukkitRunnable {
     }
 
     public static Integer getUnReadEmailNum(Player player) {
+        if (!UltiTools.getInstance().getConfig().getBoolean("enable_email")){
+            return 0;
+        }
         File file = new File(UltiTools.getInstance().getDataFolder() + "/emailData", player.getName() + ".yml");
         EmailManager emailManager = new EmailManager(file);
         Map<String, EmailContentManager> emailContentManagerMap = emailManager.getEmails();

@@ -1,5 +1,6 @@
 package com.minecraft.ultikits.whiteList;
 
+import com.minecraft.ultikits.config.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import com.minecraft.ultikits.utils.DatabasePlayerTools;
 import org.bukkit.ChatColor;
@@ -18,7 +19,7 @@ public class whitelist_listener implements Listener {
 
     @EventHandler
     public void onPlayerLogin(PlayerLoginEvent event) {
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(UltiTools.getInstance().getDataFolder(), "whitelist.yml"));
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(ConfigsEnum.WHITELIST.toString()));
         Player player = event.getPlayer();
         List<String> whitelist = config.getStringList("whitelist");
 

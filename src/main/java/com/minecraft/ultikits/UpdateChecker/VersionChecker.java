@@ -75,9 +75,6 @@ public class VersionChecker {
                     input.close();
                     connection.disconnect();
                     this.interrupt();
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                    this.interrupt();
                 } catch (IOException e) {
                     e.printStackTrace();
                     this.interrupt();

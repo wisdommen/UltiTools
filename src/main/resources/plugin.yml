@@ -3,7 +3,7 @@ version: ${project.version}
 main: com.minecraft.ultikits.ultitools.UltiTools
 api-version: 1.13
 prefix: UltiTools
-depend: [PlaceholderAPI]
+depend: [PlaceholderAPI, Vault]
 softdepend: [UltiEconomy, UltiLevel]
 authors: [wisdomme]
 description: This is a plugin inclouds some basic plugin fuctions for a server
@@ -51,3 +51,6 @@ commands:
   ultitools:
     description: 插件管理
     usage: /ultitools reload
+  kits:
+    description: 礼包系统
+    usage: /kits

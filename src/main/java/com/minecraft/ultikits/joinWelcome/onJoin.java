@@ -1,7 +1,7 @@
 package com.minecraft.ultikits.joinWelcome;
 
-//import com.minecraft.ultikits.reflection.ReflectionUtils;
 import com.minecraft.ultikits.UpdateChecker.VersionChecker;
+import com.minecraft.ultikits.config.ConfigsEnum;
 import com.minecraft.ultikits.scoreBoard.SideBar;
 import com.minecraft.ultikits.ultitools.UltiTools;
 //import net.minecraft.server.v1_15_R1.IChatBaseComponent;
@@ -19,34 +19,40 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
-
-//import static com.minecraft.ultikits.reflection.ReflectionUtils.*;
+import java.lang.reflect.Method;
 
 
 public class onJoin implements Listener {
 
-//    private static final ReflectionUtils.RefClass classPacket = getRefClass("{nms}.Packet");
-//    private static final ReflectionUtils.RefClass classPlayOutChat = getRefClass("{nms}.PacketPlayOutChat");
-//    private static final ReflectionUtils.RefClass classIChatBaseComponent = getRefClass("{nms}.IChatBaseComponent");
-//    private static final ReflectionUtils.RefClass classChatSerializer = classIChatBaseComponent.
-//    private static final ReflectionUtils.RefClass classCraftPlayer = getRefClass("{cb}.entity.CraftPlayer");
-//    private static final ReflectionUtils.RefMethod methodGetHandle = classCraftPlayer.getMethod("getHandle");
-//    private static final ReflectionUtils.RefClass classEntityPlayer = getRefClass("{nms}.EntityPlayer");
-//    private static final ReflectionUtils.RefField fieldPlayerConnection = classEntityPlayer.getField("playerConnection");
-//    private static final ReflectionUtils.RefClass classPlayerConnection = getRefClass("{nms}.PlayerConnection");
-//    private static final ReflectionUtils.RefMethod methodSendPacket = classPlayerConnection.findMethod(classPacket);
-//    private static final RefConstructor playOutConstructor = classPlayOutChat.getConstructor(classIChatBaseComponent, byte.class);
-
-
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        File folder = new File(UltiTools.getInstance().getDataFolder() + "/playerData");
-        File file = new File(folder, event.getPlayer().getName() + ".yml");
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-
         Player player = event.getPlayer();
 
+        File file = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+
         String website = UltiTools.getInstance().getConfig().getString("joinWebsite");
+
+//        Class PlayerConnectionClass;
+//        Class IChatBaseComponentClass;
+//        Class PacketPlayOutChatClass;
+//        Class CraftPlayerClass = null;
+//
+//        try {
+//            PlayerConnectionClass = Class.forName("net.minecraft.server.v1_16_R1.PlayerConnection");
+//            IChatBaseComponentClass = Class.forName("net.minecraft.server.v1_16_R1.IChatBaseComponent");
+//            PacketPlayOutChatClass = Class.forName("net.minecraft.server.v1_16_R1.PacketPlayOutChat");
+//            CraftPlayerClass = Class.forName("org.bukkit.craftbukkit.v1_16_R1.entity.CraftPlayer");
+//
+//            Method CraftPlayerMethod = CraftPlayerClass.getMethod("getHandle");
+//
+//            Object craftPlayer = CraftPlayerClass.newInstance();
+//
+//            Object object = CraftPlayerMethod.invoke(craftPlayer);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
 
 //        Object handle = methodGetHandle.of(player).call();
 //        Object connection = fieldPlayerConnection.of(handle).get();
