@@ -26,13 +26,12 @@ public class KitsCommands extends AbstractPlayerCommandExecutor {
         if (!"kits".equalsIgnoreCase(command.getName())){
             return false;
         }
-        initFile();
         setKit(player);
         player.openInventory(inventoryMap.get(player.getName()+".kits").getInventory());
         return true;
     }
 
-    public void initFile(){
+    public static void initFile(){
         File file = new File(ConfigsEnum.KIT.toString());
         if (file.exists()) {
             return;

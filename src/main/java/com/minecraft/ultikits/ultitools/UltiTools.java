@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.minecraft.ultikits.kits.KitsCommands.initFile;
 import static com.minecraft.ultikits.login.LoginListener.playerLoginStatus;
 import static com.minecraft.ultikits.login.LoginListener.savePlayerLoginStatus;
 import static com.minecraft.ultikits.utils.DatabasePlayerTools.getIsLogin;
@@ -120,6 +121,7 @@ public final class UltiTools extends JavaPlugin {
         if (!folder.exists() || !config_file.exists()) {
             saveDefaultConfig();
         }
+        initFile();
         makedirs(folders);
         ConfigFileChecker.reviewConfigFile();
 

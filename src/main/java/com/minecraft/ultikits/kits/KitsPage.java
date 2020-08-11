@@ -1,5 +1,6 @@
 package com.minecraft.ultikits.kits;
 
+import com.minecraft.ultikits.config.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import com.minecraft.ultikits.utils.Messages;
 import net.milkbowl.vault.economy.Economy;
@@ -23,7 +24,7 @@ import static com.minecraft.Ultilevel.utils.checkLevel.checkLevel;
 
 public class KitsPage implements Listener {
 
-    private static final File kits = new File(UltiTools.getInstance().getDataFolder() + "/kits.yml");
+    private static final File kits = new File(ConfigsEnum.KIT.toString());
     private static final YamlConfiguration kitsConfig = YamlConfiguration.loadConfiguration(kits);
     private static final Economy economy = UltiTools.getEcon();
     
@@ -32,7 +33,7 @@ public class KitsPage implements Listener {
         Player player = (Player) event.getWhoClicked();
         ItemStack clicked = event.getCurrentItem();
 
-        File kit_file = new File(UltiTools.getInstance().getDataFolder() + "/kitData", "kit.yml");
+        File kit_file = new File(ConfigsEnum.DATA_KIT.toString());
         YamlConfiguration kit_config = YamlConfiguration.loadConfiguration(kit_file);
 
         if (!(event.getView().getTitle().equals("物品包/礼包中心") && clicked != null)) return;
