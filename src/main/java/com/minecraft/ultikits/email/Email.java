@@ -1,24 +1,20 @@
 package com.minecraft.ultikits.email;
 
 import com.minecraft.ultikits.GUIs.GUISetup;
-import com.minecraft.ultikits.GUIs.ItemStackManager;
 import com.minecraft.ultikits.config.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
-import com.minecraft.ultikits.utils.SerializationUtils;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static com.minecraft.ultikits.utils.Messages.info;
 import static com.minecraft.ultikits.utils.Messages.warning;
@@ -61,7 +57,7 @@ public class Email implements TabExecutor {
                     } else {
                         return false;
                     }
-                    sendMessage(file, emailManager, player, strings[1], hasContent);
+                    sendMessage(file, emailManager, player, strings[2], hasContent);
                     return true;
                 } else {
                     player.sendMessage(ChatColor.RED + "格式错误！");
@@ -185,8 +181,6 @@ public class Email implements TabExecutor {
     private void sendItem(File file, EmailManager emailManager, @NotNull Player player, String receiver) {
         if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
             ItemStack itemStack = player.getInventory().getItemInMainHand();
-//            ItemStackManager itemStackManager = new ItemStackManager(itemStack);
-//            itemStackManager.setUpItem();
             player.sendMessage(ChatColor.GOLD + "正在发送邮件...");
             if (emailManager.sendTo(file, receiver, itemStack)) {
                 player.getInventory().setItemInMainHand(null);

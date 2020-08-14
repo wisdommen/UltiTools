@@ -89,7 +89,8 @@ public final class UltiTools extends JavaPlugin {
     }
 
     @Override
-    public void onEnable() {
+    public void onLoad() {
+        super.onLoad();
         plugin = this;
 
         isUltiEconomyInstalled = setupEconomy();
@@ -149,7 +150,10 @@ public final class UltiTools extends JavaPlugin {
             }
             getServer().getConsoleSender().sendMessage(ChatColor.GREEN+"世界加载成功！");
         }
+    }
 
+    @Override
+    public void onEnable() {
         //注册命令
         Objects.requireNonNull(this.getCommand("ultitools")).setExecutor(new ToolsCommands());
         if (this.getConfig().getBoolean("enable_email")) {

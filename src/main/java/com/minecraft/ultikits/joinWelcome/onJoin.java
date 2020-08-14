@@ -33,26 +33,6 @@ public class onJoin implements Listener {
 
         String website = UltiTools.getInstance().getConfig().getString("joinWebsite");
 
-//        Class PlayerConnectionClass;
-//        Class IChatBaseComponentClass;
-//        Class PacketPlayOutChatClass;
-//        Class CraftPlayerClass = null;
-//
-//        try {
-//            PlayerConnectionClass = Class.forName("net.minecraft.server.v1_16_R1.PlayerConnection");
-//            IChatBaseComponentClass = Class.forName("net.minecraft.server.v1_16_R1.IChatBaseComponent");
-//            PacketPlayOutChatClass = Class.forName("net.minecraft.server.v1_16_R1.PacketPlayOutChat");
-//            CraftPlayerClass = Class.forName("org.bukkit.craftbukkit.v1_16_R1.entity.CraftPlayer");
-//
-//            Method CraftPlayerMethod = CraftPlayerClass.getMethod("getHandle");
-//
-//            Object craftPlayer = CraftPlayerClass.newInstance();
-//
-//            Object object = CraftPlayerMethod.invoke(craftPlayer);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
 
 //        Object handle = methodGetHandle.of(player).call();
 //        Object connection = fieldPlayerConnection.of(handle).get();

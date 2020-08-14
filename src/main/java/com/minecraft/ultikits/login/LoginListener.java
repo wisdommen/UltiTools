@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -56,6 +55,8 @@ public class LoginListener implements Listener {
         if (!getIsLogin(player)) {
             playerLoginStatus.put(player.getName(), false);
             player.setGameMode(GameMode.CREATIVE);
+            long delay = 1L;
+            if (Bukkit.getPluginManager().getPlugin("SkinsRestorer") != null) delay = 60L;
 
             new BukkitRunnable() {
                 @Override
@@ -69,7 +70,7 @@ public class LoginListener implements Listener {
                         player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.REGISTER.toString()).getInventory());
                     }
                 }
-            }.runTaskLater(UltiTools.getInstance(), 30L);
+            }.runTaskLater(UltiTools.getInstance(), delay);
         }
     }
 

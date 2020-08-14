@@ -11,9 +11,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.inventory.InventoryInteractEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -158,6 +157,49 @@ public class LoginGUI implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event){
         if (!getIsLogin(event.getPlayer())){
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDropItem(PlayerDropItemEvent event){
+        if (!getIsLogin(event.getPlayer())){
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerChat(AsyncPlayerChatEvent event){
+        if (!getIsLogin(event.getPlayer())){
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerCommand(PlayerCommandPreprocessEvent event){
+        if (!getIsLogin(event.getPlayer())){
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerOpenInventory(InventoryClickEvent event){
+        if (!(event.getWhoClicked() instanceof Player)){
+            return;
+        }
+        Player player = (Player) event.getWhoClicked();
+        if (!getIsLogin(player)){
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerInteractInventory(InventoryInteractEvent event){
+        if (!(event.getWhoClicked() instanceof Player)){
+            return;
+        }
+        Player player = (Player) event.getWhoClicked();
+        if (!getIsLogin(player)){
             event.setCancelled(true);
         }
     }
