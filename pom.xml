@@ -6,7 +6,7 @@
 
     <groupId>com.minecraft.UltiKits</groupId>
     <artifactId>UltiTools</artifactId>
-    <version>2.4.1</version>
+    <version>2.4.2</version>
     <packaging>jar</packaging>
 
     <name>UltiTools</name>
@@ -132,12 +132,6 @@
             <artifactId>annotations</artifactId>
             <version>18.0.0</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>

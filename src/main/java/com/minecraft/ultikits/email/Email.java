@@ -57,7 +57,7 @@ public class Email implements TabExecutor {
                     } else {
                         return false;
                     }
-                    sendMessage(file, emailManager, player, strings[2], hasContent);
+                    sendMessage(file, emailManager, player, strings[1], hasContent);
                     return true;
                 } else {
                     player.sendMessage(ChatColor.RED + "格式错误！");
@@ -116,7 +116,7 @@ public class Email implements TabExecutor {
     }
 
     private void pushToReceiver(String receiver) {
-        if (!(Bukkit.getPlayer(receiver) != null && Bukkit.getPlayer(receiver).isOnline())) {
+        if (Bukkit.getPlayer(receiver) == null) {
             return;
         }
         Player receiverPlayer = Bukkit.getPlayer(receiver);
