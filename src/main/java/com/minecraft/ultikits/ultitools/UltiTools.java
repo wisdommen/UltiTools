@@ -138,7 +138,10 @@ public final class UltiTools extends JavaPlugin {
                 reloadConfig();
             }
         }
+    }
 
+    @Override
+    public void onEnable() {
         //加载世界
         if (this.getConfig().getBoolean("enable_multiworlds")) {
             getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "正在加载世界中...");
@@ -150,10 +153,7 @@ public final class UltiTools extends JavaPlugin {
             }
             getServer().getConsoleSender().sendMessage(ChatColor.GREEN+"世界加载成功！");
         }
-    }
 
-    @Override
-    public void onEnable() {
         //注册命令
         Objects.requireNonNull(this.getCommand("ultitools")).setExecutor(new ToolsCommands());
         if (this.getConfig().getBoolean("enable_email")) {
