@@ -5,6 +5,7 @@ import com.minecraft.economy.apis.UltiEconomy;
 import com.minecraft.ultikits.email.EmailContentManager;
 import com.minecraft.ultikits.email.EmailManager;
 import com.minecraft.ultikits.ultitools.UltiTools;
+import com.minecraft.ultikits.utils.Economy;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,8 +23,6 @@ import java.util.Objects;
 import static com.minecraft.Ultilevel.utils.checkLevel.*;
 
 public class SideBar extends BukkitRunnable {
-
-    UltiEconomy economy = UltiTools.getEconomy();
 
     boolean isPAPILoaded = UltiTools.isPAPILoaded;
 
@@ -95,9 +94,9 @@ public class SideBar extends BukkitRunnable {
         } else {
             name = player.getName();
             onLinePlayers = Bukkit.getOnlinePlayers().size() + "";
-            if (UltiTools.isUltiEconomyInstalled) {
-                money = economy.checkMoney(player.getName()) + "";
-                deposit = economy.checkBank(player.getName()) + "";
+            if (UltiTools.getIsUltiEconomyInstalled()) {
+                money = Economy.checkMoney(player) + "";
+                deposit = Economy.checkBank(player) + "";
             }
             if (Bukkit.getPluginManager().getPlugin("UltiLevel") != null) {
                 DecimalFormat format = new DecimalFormat("0.0");

@@ -2,8 +2,6 @@ package com.minecraft.ultikits.config;
 
 import com.minecraft.ultikits.ultitools.UltiTools;
 
-import java.io.File;
-
 public enum ConfigsEnum {
     PLAYER_EMAIL( UltiTools.getInstance().getDataFolder()+"/emailData"),
     PLAYER_CHEST(UltiTools.getInstance().getDataFolder()+"/chestData"),

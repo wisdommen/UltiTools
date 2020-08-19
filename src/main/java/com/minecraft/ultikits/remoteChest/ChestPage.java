@@ -1,6 +1,5 @@
 package com.minecraft.ultikits.remoteChest;
 
-import com.minecraft.economy.apis.UltiEconomy;
 import com.minecraft.ultikits.config.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import com.minecraft.ultikits.utils.SerializationUtils;
@@ -21,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.minecraft.ultikits.utils.Economy.withdraw;
 import static com.minecraft.ultikits.utils.Messages.not_enough_money;
 
 public class ChestPage implements Listener {
@@ -68,10 +68,8 @@ public class ChestPage implements Listener {
                         } else {
                             player.sendMessage(not_enough_money);
                         }
-                    } else if (UltiTools.isUltiEconomyInstalled) {
-                        UltiEconomy economy = UltiTools.getEconomy();
-                        if (economy.checkMoney(player.getName()) >= price) {
-                            economy.takeFrom(player.getName(), price);
+                    } else if (UltiTools.getIsUltiEconomyInstalled()) {
+                        if (withdraw(player, price)) {
                             loadBag((chestConfig.getKeys(false).size() + 1) + "号背包", player);
                         } else {
                             player.sendMessage(not_enough_money);

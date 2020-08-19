@@ -1,7 +1,5 @@
 package com.minecraft.ultikits.ultitools;
 
-
-import com.minecraft.economy.apis.UltiEconomy;
 import com.minecraft.ultikits.UpdateChecker.ConfigFileChecker;
 import com.minecraft.ultikits.UpdateChecker.VersionChecker;
 import com.minecraft.ultikits.chestLock.ChestLock;
@@ -48,9 +46,7 @@ import static com.minecraft.ultikits.utils.DatabasePlayerTools.getIsLogin;
 public final class UltiTools extends JavaPlugin {
 
     private static UltiTools plugin;
-    private static UltiEconomy economy;
     public static boolean isPAPILoaded;
-    public static boolean isUltiEconomyInstalled;
     private static Economy econ = null;
     private static Boolean isVaultInstalled;
     public static boolean isDatabaseEnabled;
@@ -75,56 +71,13 @@ public final class UltiTools extends JavaPlugin {
         return isVaultInstalled;
     }
 
-    public static UltiEconomy getEconomy() {
-        return economy;
-    }
-
-    private Boolean setupEconomy() {
-        if (getServer().getPluginManager().getPlugin("UltiEconomy") != null) {
-            economy = new UltiEconomy();
-            return true;
-        } else {
-            return false;
-        }
+    public static Boolean getIsUltiEconomyInstalled() {
+        return UltiTools.getInstance().getServer().getPluginManager().getPlugin("UltiEconomy") != null;
     }
 
     @Override
     public void onLoad() {
         super.onLoad();
-        plugin = this;
-
-        isUltiEconomyInstalled = setupEconomy();
-        isVaultInstalled = setupVault();
-
-        isDatabaseEnabled = getConfig().getBoolean("enableDataBase");
-
-        isPAPILoaded = getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
-
-        if (!isPAPILoaded) {
-            getLogger().warning("UltiTools插件未找到PAPI前置插件，查找其他可行依赖中...");
-            if (!(isUltiEconomyInstalled || isVaultInstalled)) {
-                getLogger().warning("UltiTools插件未找到经济前置插件，关闭中...");
-                getLogger().warning("UltiTools插件至少需要Vault或者UltiEconomy, 或者安装PAPI才能运行");
-                getServer().getPluginManager().disablePlugin(this);
-            }
-            if (getServer().getPluginManager().getPlugin("UltiLevel") == null) {
-                getLogger().warning("UltiTools插件未找到UltiLevel等级插件，关闭计分板等级相关显示！");
-            }
-        }
-
-        File folder = new File(String.valueOf(getDataFolder()));
-        List<File> folders = new ArrayList<>();
-        folders.add(new File(getDataFolder() + "/playerData"));
-        folders.add(new File(getDataFolder() + "/chestData"));
-        folders.add(new File(getDataFolder() + "/loginData"));
-        folders.add(new File(getDataFolder() + "/emailData"));
-        File config_file = new File(getDataFolder(), "config.yml");
-        if (!folder.exists() || !config_file.exists()) {
-            saveDefaultConfig();
-        }
-        initFile();
-        makedirs(folders);
-        ConfigFileChecker.reviewConfigFile();
 
         if (isDatabaseEnabled) {
             String table = "userinfo";
@@ -142,6 +95,41 @@ public final class UltiTools extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        plugin = this;
+
+        File folder = new File(String.valueOf(getDataFolder()));
+        List<File> folders = new ArrayList<>();
+        folders.add(new File(getDataFolder() + "/playerData"));
+        folders.add(new File(getDataFolder() + "/chestData"));
+        folders.add(new File(getDataFolder() + "/loginData"));
+        folders.add(new File(getDataFolder() + "/emailData"));
+        File config_file = new File(getDataFolder(), "config.yml");
+        if (!folder.exists() || !config_file.exists()) {
+            saveDefaultConfig();
+        }
+
+        initFile();
+        makedirs(folders);
+        ConfigFileChecker.reviewConfigFile();
+
+        isVaultInstalled = setupVault();
+
+        isDatabaseEnabled = getConfig().getBoolean("enableDataBase");
+
+        isPAPILoaded = getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
+
+        if (!isPAPILoaded) {
+            getLogger().warning("UltiTools插件未找到PAPI前置插件，查找其他可行依赖中...");
+            if (!(getIsUltiEconomyInstalled() && isVaultInstalled)) {
+                getLogger().warning("UltiTools插件未找到经济前置插件，关闭中...");
+                getLogger().warning("UltiTools插件至少需要Vault或者UltiEconomy, 或者安装PAPI才能运行");
+                getServer().getPluginManager().disablePlugin(this);
+            }
+            if (getServer().getPluginManager().getPlugin("UltiLevel") == null) {
+                getLogger().warning("UltiTools插件未找到UltiLevel等级插件，关闭计分板等级相关显示！");
+            }
+        }
+
         //加载世界
         if (this.getConfig().getBoolean("enable_multiworlds")) {
             getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "正在加载世界中...");
