@@ -20,26 +20,13 @@ import static com.minecraft.ultikits.utils.Messages.warning;
 /**
  * @author wisdomme
  */
-public class ChestLockCMD extends AbstractPlayerCommandExecutor {
+public class Unlock extends AbstractPlayerCommandExecutor {
     @Override
-    public boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player, @NotNull Economy economy) {
+    public boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
         File playerFile = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
         YamlConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
 
-        if ("lock".equalsIgnoreCase(command.getName())) {
-            playerData.set("lock", true);
-            if (playerData.getBoolean("unlock")) {
-                playerData.set("unlock", false);
-            }
-            try {
-                playerData.save(playerFile);
-            } catch (IOException e) {
-                player.sendMessage(ChatColor.RED + "文件保存失败，上锁失败！重新输入/lock指令。");
-                return true;
-            }
-            player.sendMessage(ChatColor.GREEN + "请点击箱子来上锁！");
-            return true;
-        } else if ("unlock".equalsIgnoreCase(command.getName())) {
+        if ("unlock".equalsIgnoreCase(command.getName())) {
             playerData.set("unlock", true);
             if (playerData.getBoolean("lock")) {
                 playerData.set("lock", false);

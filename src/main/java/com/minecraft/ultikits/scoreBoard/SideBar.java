@@ -1,7 +1,6 @@
 package com.minecraft.ultikits.scoreBoard;
 
 import com.google.common.collect.Lists;
-import com.minecraft.economy.apis.UltiEconomy;
 import com.minecraft.ultikits.email.EmailContentManager;
 import com.minecraft.ultikits.email.EmailManager;
 import com.minecraft.ultikits.ultitools.UltiTools;

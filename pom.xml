@@ -6,7 +6,7 @@
 
     <groupId>com.minecraft.UltiKits</groupId>
     <artifactId>UltiTools</artifactId>
-    <version>2.4.4</version>
+    <version>2.4.5</version>
     <packaging>jar</packaging>
 
     <name>UltiTools</name>
@@ -111,14 +111,6 @@
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.minecraft.plugins.UltiKits</groupId>
-            <artifactId>UltiEconomy</artifactId>
-            <version>2.0.0-Release</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/UltiEconomy-2.0.0-RELEASE.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.minecraft.plugins.UltiKits</groupId>

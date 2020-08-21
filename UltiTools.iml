@@ -80,15 +80,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: junit:junit:4.10" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
     <orderEntry type="module-library">
-      <library name="Maven: com.minecraft.plugins.UltiKits:UltiEconomy:2.0.0-Release">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/UltiEconomy-2.0.0-RELEASE.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
       <library name="Maven: com.minecraft.plugins.UltiKits:Ultilevel:2.0.0-Release">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/UltiLevel-2.0.0-RELEASE.jar!/" />

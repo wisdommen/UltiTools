@@ -9,10 +9,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.io.IOException;
+import java.util.*;
 
 public class Utils {
 
@@ -58,5 +56,44 @@ public class Utils {
 
     public static @NotNull FileConfiguration getToolsConfig(){
         return UltiTools.getInstance().getConfig();
+    }
+
+    public static List<String> getHomeList(Player player) {
+        List<String> homeList = new ArrayList<>();
+        File file = new File(UltiTools.getInstance().getDataFolder() + "/playerData", player.getName() + ".yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        if (file.exists() && config.get(player.getName() + ".homelist") != null) {
+            if (config.get(player.getName() + ".homelist") instanceof String) {
+                String homelist = config.getString(player.getName() + ".homelist");
+                if (homelist.contains(" ")) {
+                    String[] list = config.getString(player.getName() + ".homelist").split(" ");
+                    for (String each : list) {
+                        if (each.contains(" ")) {
+                            each.replaceAll(" ", "");
+                        }
+                        homeList.add(each);
+                    }
+                    homeList.removeIf(each -> each.equals(""));
+                    config.set(player.getName() + ".homelist", homeList);
+                    try {
+                        config.save(file);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else {
+                homeList = config.getStringList(player.getName() + ".homelist");
+                homeList.removeIf(each -> each.equals(""));
+                config.set(player.getName() + ".homelist", homeList);
+                try {
+                    config.save(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return homeList;
+            }
+        }
+        return homeList;
     }
 }

@@ -74,11 +74,17 @@ public class LoginListener implements Listener {
         }
     }
 
+    public static void checkPlayerAlreadyLogin(){
+        for (Player player : Bukkit.getOnlinePlayers()){
+            playerLoginStatus.put(player.getName(), true);
+        }
+    }
+
     public static void savePlayerLoginStatus(){
         File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), "loginState.yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         for (String each : playerLoginStatus.keySet()){
-            config.set(each, playerLoginStatus.get(each));
+            config.set(each, false);
         }
         try {
             config.save(file);

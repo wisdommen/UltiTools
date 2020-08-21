@@ -53,7 +53,7 @@ public class onJoin implements Listener {
                     public void run() {
                         player.sendMessage(ChatColor.AQUA+"[UltiTools]有新的更新！下载地址：https://www.mcbbs.net/thread-1062730-1-1.html");
                     }
-                }.runTaskLater(UltiTools.getInstance(), 4);
+                }.runTaskLater(UltiTools.getInstance(), 80L);
             }
             Bukkit.broadcastMessage(ChatColor.RED + "[管理员]" + ChatColor.YELLOW + event.getPlayer().getName() + ChatColor.RED + "已上线！");
             Bukkit.broadcastMessage(ChatColor.RED + "有问题请询问他！");

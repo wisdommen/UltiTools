@@ -3,11 +3,16 @@ package com.minecraft.ultikits.ultitools;
 import com.minecraft.ultikits.UpdateChecker.ConfigFileChecker;
 import com.minecraft.ultikits.UpdateChecker.VersionChecker;
 import com.minecraft.ultikits.chestLock.ChestLock;
-import com.minecraft.ultikits.chestLock.ChestLockCMD;
+import com.minecraft.ultikits.chestLock.Lock;
+import com.minecraft.ultikits.chestLock.Unlock;
+import com.minecraft.ultikits.commands.CommandRegister;
 import com.minecraft.ultikits.commands.ToolsCommands;
 import com.minecraft.ultikits.email.Email;
 import com.minecraft.ultikits.email.EmailPage;
+import com.minecraft.ultikits.home.DeleteHome;
 import com.minecraft.ultikits.home.Home;
+import com.minecraft.ultikits.home.HomeList;
+import com.minecraft.ultikits.home.SetHome;
 import com.minecraft.ultikits.joinWelcome.onJoin;
 import com.minecraft.ultikits.kits.KitsCommands;
 import com.minecraft.ultikits.kits.KitsPage;
@@ -39,8 +44,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.minecraft.ultikits.kits.KitsCommands.initFile;
-import static com.minecraft.ultikits.login.LoginListener.playerLoginStatus;
-import static com.minecraft.ultikits.login.LoginListener.savePlayerLoginStatus;
+import static com.minecraft.ultikits.login.LoginListener.*;
 import static com.minecraft.ultikits.utils.DatabasePlayerTools.getIsLogin;
 
 public final class UltiTools extends JavaPlugin {
@@ -82,9 +86,9 @@ public final class UltiTools extends JavaPlugin {
         if (isDatabaseEnabled) {
             String table = "userinfo";
             getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件正在初始化数据库...");
-            if(DatabaseUtils.createTable(table, new String[]{"username", "password", "whitelisted", "banned"})){
+            if (DatabaseUtils.createTable(table, new String[]{"username", "password", "whitelisted", "banned"})) {
                 getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件接入数据库成功！");
-            }else {
+            } else {
                 getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件接入数据库失败！");
                 getConfig().set("enableDataBase", false);
                 saveConfig();
@@ -136,41 +140,41 @@ public final class UltiTools extends JavaPlugin {
             File worldFile = new File(getDataFolder(), "worlds.yml");
             YamlConfiguration worldConfig = YamlConfiguration.loadConfiguration(worldFile);
             List<String> worlds = worldConfig.getStringList("worlds");
-            for (String eachWorld : worlds){
+            for (String eachWorld : worlds) {
                 getServer().createWorld(new WorldCreator(eachWorld));
             }
-            getServer().getConsoleSender().sendMessage(ChatColor.GREEN+"世界加载成功！");
+            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "世界加载成功！");
         }
 
         //注册命令
         Objects.requireNonNull(this.getCommand("ultitools")).setExecutor(new ToolsCommands());
         if (this.getConfig().getBoolean("enable_email")) {
-            Objects.requireNonNull(this.getCommand("email")).setExecutor(new Email());
+            CommandRegister.registerCommand(plugin, new Email(), "ultikits.tools.email","邮件系统","email");
         }
         if (this.getConfig().getBoolean("enable_home")) {
-            Objects.requireNonNull(this.getCommand("home")).setExecutor(new Home());
-            Objects.requireNonNull(this.getCommand("sethome")).setExecutor(new Home());
-            Objects.requireNonNull(this.getCommand("delhome")).setExecutor(new Home());
-            Objects.requireNonNull(this.getCommand("homelist")).setExecutor(new Home());
+            CommandRegister.registerCommand(plugin, new Home(), "ultikits.tools.home","回到某个家","home");
+            CommandRegister.registerCommand(plugin, new SetHome(),"ultikits.tools.sethome","设置家", "sethome");
+            CommandRegister.registerCommand(plugin, new DeleteHome(), "ultikits.tools.delhome","删除家","delhome");
+            CommandRegister.registerCommand(plugin, new HomeList(), "ultikits.tools.homelist","查看家列表","homelist");
         }
         if (this.getConfig().getBoolean("enable_white_list")) {
-                Objects.requireNonNull(this.getCommand("wl")).setExecutor(new whitelist_commands());
+            CommandRegister.registerCommand(plugin, new whitelist_commands(), "ultikits.tools.whitelist","白名单命令","wl");
         }
         if (this.getConfig().getBoolean("enable_scoreboard")) {
-            Objects.requireNonNull(this.getCommand("sb")).setExecutor(new sb_commands());
+            CommandRegister.registerCommand(plugin, new sb_commands(), "ultikits.tools.scoreboard","侧边栏开关","sb");
         }
         if (this.getConfig().getBoolean("enable_lock")) {
-            Objects.requireNonNull(this.getCommand("lock")).setExecutor(new ChestLockCMD());
-            Objects.requireNonNull(this.getCommand("unlock")).setExecutor(new ChestLockCMD());
+            CommandRegister.registerCommand(plugin, new Unlock(), "ultikits.tools.lock","上锁箱子","unlock");
+            CommandRegister.registerCommand(plugin, new Lock(), "ultikits.tools.unlock","解锁箱子","lock");
         }
         if (this.getConfig().getBoolean("enable_remote_chest")) {
-            Objects.requireNonNull(this.getCommand("bag")).setExecutor(new RemoteBagCMD());
+            CommandRegister.registerCommand(plugin, new RemoteBagCMD(), "ultikits.tools.bag","远程背包","bag");
         }
         if (this.getConfig().getBoolean("enable_multiworlds")) {
-            Objects.requireNonNull(this.getCommand("mw")).setExecutor(new multiWorlds());
+            CommandRegister.registerCommand(plugin, new multiWorlds(), "ultikits.tools.mw","多世界系统","mw");
         }
         if (this.getConfig().getBoolean("enable_kits")) {
-            Objects.requireNonNull(this.getCommand("kits")).setExecutor(new KitsCommands());
+            CommandRegister.registerCommand(plugin, new KitsCommands(), "ultikits.tools.kits","礼包系统","kits");
         }
 
         //注册监听器
@@ -208,6 +212,10 @@ public final class UltiTools extends JavaPlugin {
             BukkitTask t2 = new NamePrefixSuffix().runTaskTimer(this, 0, 20L);
         }
 
+        if (getConfig().getBoolean("enable_login")) {
+            checkPlayerAlreadyLogin();
+        }
+
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件已加载！");
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "作者：wisdomme");
 
@@ -219,12 +227,12 @@ public final class UltiTools extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        for (String player : playerLoginStatus.keySet()){
-            if (Bukkit.getPlayerExact(player)!=null){
+        for (String player : playerLoginStatus.keySet()) {
+            if (Bukkit.getPlayerExact(player) != null) {
                 Player player1 = Bukkit.getPlayerExact(player);
                 assert player1 != null;
-                if (!getIsLogin(player1)){
-                    player1.kickPlayer(ChatColor.AQUA+"腐竹重载/关闭了插件，请重新登录！");
+                if (!getIsLogin(player1)) {
+                    player1.kickPlayer(ChatColor.AQUA + "腐竹重载/关闭了插件，请重新登录！");
                 }
             }
         }
@@ -236,8 +244,8 @@ public final class UltiTools extends JavaPlugin {
         return plugin;
     }
 
-    private void makedirs(List<File> folders){
-        for (File eachFolder : folders){
+    private void makedirs(List<File> folders) {
+        for (File eachFolder : folders) {
             if (!eachFolder.exists()) {
                 eachFolder.mkdirs();
             }

@@ -2,7 +2,6 @@ package com.minecraft.ultikits.kits;
 
 import com.minecraft.ultikits.abstractClass.AbstractPlayerCommandExecutor;
 import com.minecraft.ultikits.config.ConfigsEnum;
-import com.minecraft.ultikits.ultitools.UltiTools;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -22,7 +21,7 @@ import static com.minecraft.ultikits.GUIs.GUISetup.setKit;
 public class KitsCommands extends AbstractPlayerCommandExecutor {
 
     @Override
-    protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player, @NotNull Economy economy) {
+    protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
         if (!"kits".equalsIgnoreCase(command.getName())){
             return false;
         }

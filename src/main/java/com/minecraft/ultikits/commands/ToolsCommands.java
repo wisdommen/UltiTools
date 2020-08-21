@@ -1,7 +1,6 @@
 package com.minecraft.ultikits.commands;
 
 import com.minecraft.ultikits.ultitools.UltiTools;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -29,6 +28,7 @@ public class ToolsCommands implements TabExecutor {
         if (!(args.length == 1 && args[0].equalsIgnoreCase("reload"))) {
             return false;
         }
+        UltiTools.getInstance().saveConfig();
         UltiTools.getInstance().reloadConfig();
         sender.sendMessage(warning("配置文件已重载！"));
         return true;

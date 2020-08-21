@@ -57,7 +57,7 @@ public class Email implements TabExecutor {
                     } else {
                         return false;
                     }
-                    sendMessage(file, emailManager, player, strings[1], hasContent);
+                    sendMessage(file, emailManager, player, strings[1], strings[2], hasContent);
                     return true;
                 } else {
                     player.sendMessage(ChatColor.RED + "格式错误！");
@@ -109,7 +109,7 @@ public class Email implements TabExecutor {
         player.sendMessage(ChatColor.GREEN + "/email delhistory " + ChatColor.GRAY + "删除所有邮件");
         player.sendMessage(ChatColor.GREEN + "/email send [玩家名] [文本内容] " + ChatColor.GRAY + "给某人发送只包含文本的邮件");
         player.sendMessage(ChatColor.GREEN + "/email senditem [玩家名] [文本内容] " + ChatColor.GRAY + "手持需要发送的物品，发送一个带有附件的文本邮件");
-        if (player.isOp()) {
+        if (!player.isOp()) {
             return;
         }
         player.sendMessage(ChatColor.GREEN + "/email sendall [文本内容] " + ChatColor.GRAY + "给所有人发邮件，如果空手则不包含附件，手持物品发送带有物品的邮件，不会扣除你的物品！");
@@ -156,20 +156,20 @@ public class Email implements TabExecutor {
         player.playSound(player.getLocation(), Sound.BLOCK_WET_GRASS_BREAK, 10, 1);
     }
 
-    public void sendMessage(@NotNull File file, EmailManager emailManager, Player player, String receiver, boolean hasContent) {
+    public void sendMessage(@NotNull File file, EmailManager emailManager, Player player, String receiver, String message, boolean hasContent) {
         if (!file.exists()) {
             player.sendMessage(warning("未找到指定的收件人！"));
         }
         if (hasContent) {
-            sendItem(file, emailManager, player, receiver);
+            sendItem(file, emailManager, player, receiver, message);
         } else {
-            sendText(file, emailManager, player, receiver);
+            sendText(file, emailManager, player, receiver, message);
         }
     }
 
-    private void sendText(File file, @NotNull EmailManager emailManager, @NotNull Player player, String receiver) {
+    private void sendText(File file, @NotNull EmailManager emailManager, @NotNull Player player, String receiver, String message) {
         player.sendMessage(ChatColor.GOLD + "正在发送邮件...");
-        if (emailManager.sendTo(file, receiver)) {
+        if (emailManager.sendTo(file, message)) {
             player.sendMessage(ChatColor.GOLD + "发送成功！");
             player.playSound(player.getLocation(), Sound.UI_TOAST_OUT, 15, 1);
             pushToReceiver(receiver);
@@ -178,11 +178,11 @@ public class Email implements TabExecutor {
         }
     }
 
-    private void sendItem(File file, EmailManager emailManager, @NotNull Player player, String receiver) {
+    private void sendItem(File file, EmailManager emailManager, @NotNull Player player, String receiver, String message) {
         if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
             ItemStack itemStack = player.getInventory().getItemInMainHand();
             player.sendMessage(ChatColor.GOLD + "正在发送邮件...");
-            if (emailManager.sendTo(file, receiver, itemStack)) {
+            if (emailManager.sendTo(file, message, itemStack)) {
                 player.getInventory().setItemInMainHand(null);
                 player.sendMessage(ChatColor.GOLD + "发送成功！");
                 player.playSound(player.getLocation(), Sound.UI_TOAST_OUT, 15, 1);

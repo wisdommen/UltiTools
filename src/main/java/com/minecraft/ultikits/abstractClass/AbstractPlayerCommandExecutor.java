@@ -1,7 +1,5 @@
 package com.minecraft.ultikits.abstractClass;
 
-import com.minecraft.economy.economyMain.UltiEconomyMain;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,9 +15,8 @@ public abstract class AbstractPlayerCommandExecutor implements CommandExecutor {
             return false;
         }
         Player player = (Player) commandSender;
-        Economy economy = UltiEconomyMain.getEcon();
-        return onPlayerCommand(command, strings, player, economy);
+        return onPlayerCommand(command, strings, player);
     }
 
-    protected abstract boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player, @NotNull Economy economy);
+    protected abstract boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player);
 }
