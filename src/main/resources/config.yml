@@ -122,3 +122,15 @@ name_prefix: '§e[§c%ul_job%§dLv.%ul_level%§e]'
 
 '注释44请勿修改': '(头衔) 自定义头顶显示后缀'
 name_suffix: '§e[§c%ul_health%§e/§c%ul_max_health%§e]'
+
+'注释48请勿修改': '(家) 普通玩家可设置的家上限，0为无限'
+home_normal: 3
+
+'注释49请勿修改': '(家) 进阶玩家可设置的家上限，0为无限，权限：ultikits.tools.level1'
+home_pro: 5
+
+'注释50请勿修改': '(家) 高级玩家可设置的家上限，0为无限，权限：ultikits.tools.level2'
+home_ultimate: 10
+
+'注释51请勿修改': '(家) 家插件传送前等待时间(秒)'
+home_tpwait: 3

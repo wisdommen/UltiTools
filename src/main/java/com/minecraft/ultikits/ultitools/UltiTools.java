@@ -203,6 +203,9 @@ public final class UltiTools extends JavaPlugin {
         if (this.getConfig().getBoolean("enable_kits")) {
             getServer().getPluginManager().registerEvents(new KitsPage(), this);
         }
+        if (this.getConfig().getBoolean("enable_home")) {
+            getServer().getPluginManager().registerEvents(new Home(), this);
+        }
 
         //注册任务
         if (this.getConfig().getBoolean("enable_scoreboard")) {
