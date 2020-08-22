@@ -10,5 +10,5 @@ description: This is a plugin inclouds some basic plugin fuctions for a server
 
 commands:
   ultitools:
-    description: 插件管理
+    description: 插件重载
     usage: /ultitools reload

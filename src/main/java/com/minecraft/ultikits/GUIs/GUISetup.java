@@ -17,6 +17,7 @@ import java.io.File;
 import java.util.*;
 
 import static com.minecraft.ultikits.utils.Messages.*;
+import static com.minecraft.ultikits.utils.Utils.convertMillisecondsToRegularTime;
 
 public class GUISetup {
 
@@ -51,14 +52,16 @@ public class GUISetup {
         File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player.getName() + ".yml");
         EmailManager emailManager = new EmailManager(file);
         Map<String, EmailContentManager> emailContentManagers = emailManager.getEmails();
-        InventoryManager inventoryManager = new InventoryManager(player, 36, "收件箱");
+        InventoryManager inventoryManager = new InventoryManager(player, 54, "收件箱");
         inventoryManager.create();
         inventoryMap.put(player.getName() + ".inbox", inventoryManager);
 
+        List<String> list = sortSet(emailContentManagers.keySet());
+
         int s = 0;
-        for (String each : emailContentManagers.keySet()) {
-            if (s > 36) {
-                s -= 37;
+        for (String each : list) {
+            if (s > 53) {
+                break;
             }
             String sender = emailContentManagers.get(each).getSender();
             String message = emailContentManagers.get(each).getMessage();
@@ -116,6 +119,7 @@ public class GUISetup {
 
     public static @NotNull List<String> getLoreList(EmailContentManager emailContentManager, @NotNull String inputString, int length) {
         List<String> list = new ArrayList<>();
+        list.add(ChatColor.GRAY + convertMillisecondsToRegularTime(Long.valueOf(emailContentManager.getUuid())));
         list.add(ChatColor.GOLD + "------邮件内容------");
         int strLen = inputString.length();
         int start = 0;
@@ -188,5 +192,12 @@ public class GUISetup {
             inventoryMap.get(player.getName() + ".kits").setItem(s, item);
             s = s + 1;
         }
+    }
+
+    private static List<String> sortSet(Set<String> set) {
+        List<String> stringList = new ArrayList<>(set);
+        Collections.sort(stringList);
+        Collections.reverse(stringList);
+        return stringList;
     }
 }

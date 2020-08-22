@@ -29,14 +29,16 @@ public class Utils {
         return getConfig(new File(UltiTools.getInstance().getDataFolder()+"/playerData", player.getName()+".yml")).getInt("online_time");
     }
 
-    public static String convertMinutesToRegularTime(Integer minutes){
-        if (minutes>60) {
-            int hours = minutes / 60;
-            int minute = minutes % 60;
-            return String.format("%02d小时 %02d分钟", hours, minute);
-        }else {
-            return String.format("0小时 %02d分钟", minutes);
-        }
+    public static String convertMillisecondsToRegularTime(Long milliseconds){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliseconds);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        int second = calendar.get(Calendar.SECOND);
+        return (month + 1) + "月" + day + "日 "
+                + hour + ":" + minute + ":" + second;
     }
 
     public static @NotNull Integer getRandomNumber(int range){

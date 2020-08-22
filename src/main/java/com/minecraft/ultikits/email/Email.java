@@ -1,15 +1,15 @@
 package com.minecraft.ultikits.email;
 
 import com.minecraft.ultikits.GUIs.GUISetup;
+import com.minecraft.ultikits.abstractClass.AbstractTabExecutor;
 import com.minecraft.ultikits.config.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.*;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,63 +20,81 @@ import static com.minecraft.ultikits.utils.Messages.info;
 import static com.minecraft.ultikits.utils.Messages.warning;
 
 
-public class Email implements TabExecutor {
+public class Email extends AbstractTabExecutor {
 
     public static Map<String, EmailContentManager> emailContentManagerMap;
 
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String label, String[] strings) {
-        if (commandSender instanceof Player) {
-            Player player = (Player) commandSender;
-            File senderFile = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player.getName() + ".yml");
-            EmailManager emailManager = new EmailManager(senderFile);
+    protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
+        File senderFile = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player.getName() + ".yml");
+        EmailManager emailManager = new EmailManager(senderFile);
 
-            if ("email".equalsIgnoreCase(command.getName())) {
-                if (strings.length == 1) {
-                    if ("read".equalsIgnoreCase(strings[0])) {
-                        readEmails(player);
-                        return true;
-                    } else if ("delhistory".equalsIgnoreCase(strings[0])) {
-                        deleteHistoryEmail(emailManager, player);
-                        return true;
-                    } else if ("help".equalsIgnoreCase(strings[0])) {
-                        sendHelpMessage(player);
-                        return true;
+        if ("email".equalsIgnoreCase(command.getName())) {
+            switch (strings.length) {
+                case 1:
+                    switch (strings[0].toLowerCase()) {
+                        case "read":
+                            readEmails(player);
+                            return true;
+                        case "delhistory":
+                            deleteHistoryEmail(emailManager, player);
+                            return true;
+                        case "help":
+                            sendHelpMessage(player);
+                            return true;
+                        default:
+                            player.sendMessage(ChatColor.RED + "格式错误！");
+                            return false;
                     }
-                } else if (strings.length == 2 && "sendall".equalsIgnoreCase(strings[0])) {
-                    sendAllMessage(player, emailManager, strings[1]);
-                    return true;
-                } else if (strings.length == 3) {
+                case 2:
                     File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), strings[1] + ".yml");
+
+                    switch (strings[0].toLowerCase()) {
+                        case "sendall":
+                            if (player.isOp()) {
+                                sendAllMessage(player, emailManager, strings[1]);
+                                return true;
+                            }
+                            return false;
+                        case "senditem":
+                            sendMessage(file, emailManager, player, strings[1]);
+                            return true;
+                        default:
+                            player.sendMessage(ChatColor.RED + "格式错误！");
+                            return false;
+                    }
+                case 3:
+                    File file2 = new File(ConfigsEnum.PLAYER_EMAIL.toString(), strings[1] + ".yml");
                     boolean hasContent;
 
-                    if ("send".equalsIgnoreCase(strings[0])) {
-                        hasContent = false;
-                    } else if ("senditem".equalsIgnoreCase(strings[0])) {
-                        hasContent = true;
-                    } else {
-                        return false;
+                    switch (strings[0].toLowerCase()) {
+                        case "send":
+                            hasContent = false;
+                            break;
+                        case "senditem":
+                            hasContent = true;
+                            break;
+                        default:
+                            player.sendMessage(ChatColor.RED + "格式错误！");
+                            return false;
                     }
-                    sendMessage(file, emailManager, player, strings[1], strings[2], hasContent);
+                    sendMessage(file2, emailManager, player, strings[1], strings[2], hasContent);
                     return true;
-                } else {
+                default:
                     player.sendMessage(ChatColor.RED + "格式错误！");
-                }
+                    return false;
             }
         }
         return false;
     }
 
     @Override
-    public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
-        if (!(sender instanceof Player)) {
-            return null;
-        }
-        Player player = (Player) sender;
+    protected @Nullable List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] args, @NotNull Player player) {
         List<String> tabCommands = new ArrayList<>();
 
         switch (args.length) {
             case 1:
+                tabCommands.add("help");
                 tabCommands.add("read");
                 tabCommands.add("delhistory");
                 tabCommands.add("send");
@@ -108,6 +126,7 @@ public class Email implements TabExecutor {
         player.sendMessage(ChatColor.GREEN + "/email read " + ChatColor.GRAY + "打开收件箱");
         player.sendMessage(ChatColor.GREEN + "/email delhistory " + ChatColor.GRAY + "删除所有邮件");
         player.sendMessage(ChatColor.GREEN + "/email send [玩家名] [文本内容] " + ChatColor.GRAY + "给某人发送只包含文本的邮件");
+        player.sendMessage(ChatColor.GREEN + "/email senditem [玩家名] " + ChatColor.GRAY + "手持需要发送的物品，发送一个带有附件的邮件");
         player.sendMessage(ChatColor.GREEN + "/email senditem [玩家名] [文本内容] " + ChatColor.GRAY + "手持需要发送的物品，发送一个带有附件的文本邮件");
         if (!player.isOp()) {
             return;
@@ -156,6 +175,13 @@ public class Email implements TabExecutor {
         player.playSound(player.getLocation(), Sound.BLOCK_WET_GRASS_BREAK, 10, 1);
     }
 
+    public void sendMessage(@NotNull File file, EmailManager emailManager, Player player, String receiver) {
+        if (!file.exists()) {
+            player.sendMessage(warning("未找到指定的收件人！"));
+        }
+        sendItem(file, emailManager, player, receiver);
+    }
+
     public void sendMessage(@NotNull File file, EmailManager emailManager, Player player, String receiver, String message, boolean hasContent) {
         if (!file.exists()) {
             player.sendMessage(warning("未找到指定的收件人！"));
@@ -183,6 +209,23 @@ public class Email implements TabExecutor {
             ItemStack itemStack = player.getInventory().getItemInMainHand();
             player.sendMessage(ChatColor.GOLD + "正在发送邮件...");
             if (emailManager.sendTo(file, message, itemStack)) {
+                player.getInventory().setItemInMainHand(null);
+                player.sendMessage(ChatColor.GOLD + "发送成功！");
+                player.playSound(player.getLocation(), Sound.UI_TOAST_OUT, 15, 1);
+                pushToReceiver(receiver);
+            } else {
+                player.sendMessage(warning("发送失败！"));
+            }
+        } else {
+            player.sendMessage(warning("请手持需要发送的物品！"));
+        }
+    }
+
+    private void sendItem(File file, EmailManager emailManager, @NotNull Player player, String receiver) {
+        if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
+            ItemStack itemStack = player.getInventory().getItemInMainHand();
+            player.sendMessage(ChatColor.GOLD + "正在发送邮件...");
+            if (emailManager.sendTo(file, "对方没有留言哦!", itemStack)) {
                 player.getInventory().setItemInMainHand(null);
                 player.sendMessage(ChatColor.GOLD + "发送成功！");
                 player.playSound(player.getLocation(), Sound.UI_TOAST_OUT, 15, 1);
