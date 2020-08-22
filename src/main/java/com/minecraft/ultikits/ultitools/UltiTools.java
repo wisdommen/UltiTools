@@ -1,33 +1,33 @@
 package com.minecraft.ultikits.ultitools;
 
-import com.minecraft.ultikits.UpdateChecker.ConfigFileChecker;
-import com.minecraft.ultikits.UpdateChecker.VersionChecker;
-import com.minecraft.ultikits.chestLock.ChestLock;
-import com.minecraft.ultikits.chestLock.Lock;
-import com.minecraft.ultikits.chestLock.Unlock;
+import com.minecraft.ultikits.checker.updatechecker.ConfigFileChecker;
+import com.minecraft.ultikits.checker.updatechecker.VersionChecker;
+import com.minecraft.ultikits.listener.ChestLockListener;
+import com.minecraft.ultikits.commands.LockCommands;
+import com.minecraft.ultikits.commands.UnlockCommands;
 import com.minecraft.ultikits.commands.CommandRegister;
 import com.minecraft.ultikits.commands.ToolsCommands;
-import com.minecraft.ultikits.email.Email;
-import com.minecraft.ultikits.email.EmailPage;
-import com.minecraft.ultikits.home.DeleteHome;
-import com.minecraft.ultikits.home.Home;
-import com.minecraft.ultikits.home.HomeList;
-import com.minecraft.ultikits.home.SetHome;
-import com.minecraft.ultikits.joinWelcome.onJoin;
-import com.minecraft.ultikits.kits.KitsCommands;
-import com.minecraft.ultikits.kits.KitsPage;
-import com.minecraft.ultikits.login.LoginGUI;
-import com.minecraft.ultikits.login.LoginListener;
-import com.minecraft.ultikits.multiworlds.multiWorlds;
-import com.minecraft.ultikits.prefix.Chat;
-import com.minecraft.ultikits.remoteChest.ChestPage;
-import com.minecraft.ultikits.remoteChest.RemoteBagCMD;
-import com.minecraft.ultikits.scoreBoard.NamePrefixSuffix;
-import com.minecraft.ultikits.scoreBoard.SideBar;
-import com.minecraft.ultikits.scoreBoard.sb_commands;
+import com.minecraft.ultikits.commands.EmailCommands;
+import com.minecraft.ultikits.listener.EmailPageListener;
+import com.minecraft.ultikits.commands.DeleteHomeCommands;
+import com.minecraft.ultikits.commands.HomeCommands;
+import com.minecraft.ultikits.commands.HomeListCommands;
+import com.minecraft.ultikits.commands.SetHomeCommands;
+import com.minecraft.ultikits.listener.JoinListener;
+import com.minecraft.ultikits.commands.KitsCommands;
+import com.minecraft.ultikits.listener.KitsPageListener;
+import com.minecraft.ultikits.listener.LoginGUIListener;
+import com.minecraft.ultikits.listener.LoginListener;
+import com.minecraft.ultikits.commands.MultiWorldsCommands;
+import com.minecraft.ultikits.listener.ChatListener;
+import com.minecraft.ultikits.listener.ChestPageListener;
+import com.minecraft.ultikits.commands.RemoteBagCommands;
+import com.minecraft.ultikits.tasks.NamePrefixSuffix;
+import com.minecraft.ultikits.tasks.SideBar;
+import com.minecraft.ultikits.commands.SbCommands;
 import com.minecraft.ultikits.utils.DatabaseUtils;
-import com.minecraft.ultikits.whiteList.whitelist_commands;
-import com.minecraft.ultikits.whiteList.whitelist_listener;
+import com.minecraft.ultikits.commands.WhitelistCommands;
+import com.minecraft.ultikits.listener.WhitelistListener;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -43,8 +43,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.minecraft.ultikits.kits.KitsCommands.initFile;
-import static com.minecraft.ultikits.login.LoginListener.*;
+import static com.minecraft.ultikits.commands.KitsCommands.initFile;
+import static com.minecraft.ultikits.listener.LoginListener.*;
 import static com.minecraft.ultikits.utils.DatabasePlayerTools.getIsLogin;
 
 public final class UltiTools extends JavaPlugin {
@@ -149,29 +149,29 @@ public final class UltiTools extends JavaPlugin {
         //注册命令
         Objects.requireNonNull(this.getCommand("ultitools")).setExecutor(new ToolsCommands());
         if (this.getConfig().getBoolean("enable_email")) {
-            CommandRegister.registerCommand(plugin, new Email(), "ultikits.tools.email","邮件系统","email");
+            CommandRegister.registerCommand(plugin, new EmailCommands(), "ultikits.tools.email","邮件系统","email");
         }
         if (this.getConfig().getBoolean("enable_home")) {
-            CommandRegister.registerCommand(plugin, new Home(), "ultikits.tools.home","回到某个家","home");
-            CommandRegister.registerCommand(plugin, new SetHome(),"ultikits.tools.sethome","设置家", "sethome");
-            CommandRegister.registerCommand(plugin, new DeleteHome(), "ultikits.tools.delhome","删除家","delhome");
-            CommandRegister.registerCommand(plugin, new HomeList(), "ultikits.tools.homelist","查看家列表","homelist");
+            CommandRegister.registerCommand(plugin, new HomeCommands(), "ultikits.tools.home","回到某个家","home");
+            CommandRegister.registerCommand(plugin, new SetHomeCommands(),"ultikits.tools.sethome","设置家", "sethome");
+            CommandRegister.registerCommand(plugin, new DeleteHomeCommands(), "ultikits.tools.delhome","删除家","delhome");
+            CommandRegister.registerCommand(plugin, new HomeListCommands(), "ultikits.tools.homelist","查看家列表","homelist");
         }
         if (this.getConfig().getBoolean("enable_white_list")) {
-            CommandRegister.registerCommand(plugin, new whitelist_commands(), "ultikits.tools.whitelist","白名单命令","wl");
+            CommandRegister.registerCommand(plugin, new WhitelistCommands(), "ultikits.tools.whitelist","白名单命令","wl");
         }
         if (this.getConfig().getBoolean("enable_scoreboard")) {
-            CommandRegister.registerCommand(plugin, new sb_commands(), "ultikits.tools.scoreboard","侧边栏开关","sb");
+            CommandRegister.registerCommand(plugin, new SbCommands(), "ultikits.tools.scoreboard","侧边栏开关","sb");
         }
         if (this.getConfig().getBoolean("enable_lock")) {
-            CommandRegister.registerCommand(plugin, new Unlock(), "ultikits.tools.lock","上锁箱子","unlock");
-            CommandRegister.registerCommand(plugin, new Lock(), "ultikits.tools.unlock","解锁箱子","lock");
+            CommandRegister.registerCommand(plugin, new UnlockCommands(), "ultikits.tools.lock","上锁箱子","unlock");
+            CommandRegister.registerCommand(plugin, new LockCommands(), "ultikits.tools.unlock","解锁箱子","lock");
         }
         if (this.getConfig().getBoolean("enable_remote_chest")) {
-            CommandRegister.registerCommand(plugin, new RemoteBagCMD(), "ultikits.tools.bag","远程背包","bag");
+            CommandRegister.registerCommand(plugin, new RemoteBagCommands(), "ultikits.tools.bag","远程背包","bag");
         }
         if (this.getConfig().getBoolean("enable_multiworlds")) {
-            CommandRegister.registerCommand(plugin, new multiWorlds(), "ultikits.tools.mw","多世界系统","mw");
+            CommandRegister.registerCommand(plugin, new MultiWorldsCommands(), "ultikits.tools.mw","多世界系统","mw");
         }
         if (this.getConfig().getBoolean("enable_kits")) {
             CommandRegister.registerCommand(plugin, new KitsCommands(), "ultikits.tools.kits","礼包系统","kits");
@@ -179,32 +179,32 @@ public final class UltiTools extends JavaPlugin {
 
         //注册监听器
         if (this.getConfig().getBoolean("enable_email")) {
-            Bukkit.getPluginManager().registerEvents(new EmailPage(), this);
+            Bukkit.getPluginManager().registerEvents(new EmailPageListener(), this);
         }
         if (getConfig().getBoolean("enable_onjoin")) {
-            Bukkit.getPluginManager().registerEvents(new onJoin(), this);
+            Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
         }
         if (getConfig().getBoolean("enable_white_list")) {
-            Bukkit.getPluginManager().registerEvents(new whitelist_listener(), this);
+            Bukkit.getPluginManager().registerEvents(new WhitelistListener(), this);
         }
         if (this.getConfig().getBoolean("enable_lock")) {
-            Bukkit.getPluginManager().registerEvents(new ChestLock(), this);
+            Bukkit.getPluginManager().registerEvents(new ChestLockListener(), this);
         }
         if (this.getConfig().getBoolean("enable_remote_chest")) {
-            Bukkit.getPluginManager().registerEvents(new ChestPage(), this);
+            Bukkit.getPluginManager().registerEvents(new ChestPageListener(), this);
         }
         if (getConfig().getBoolean("enable_chat")) {
-            getServer().getPluginManager().registerEvents(new Chat(), this);
+            getServer().getPluginManager().registerEvents(new ChatListener(), this);
         }
         if (getConfig().getBoolean("enable_login")) {
             getServer().getPluginManager().registerEvents(new LoginListener(), this);
-            getServer().getPluginManager().registerEvents(new LoginGUI(), this);
+            getServer().getPluginManager().registerEvents(new LoginGUIListener(), this);
         }
         if (this.getConfig().getBoolean("enable_kits")) {
-            getServer().getPluginManager().registerEvents(new KitsPage(), this);
+            getServer().getPluginManager().registerEvents(new KitsPageListener(), this);
         }
         if (this.getConfig().getBoolean("enable_home")) {
-            getServer().getPluginManager().registerEvents(new Home(), this);
+            getServer().getPluginManager().registerEvents(new HomeCommands(), this);
         }
 
         //注册任务

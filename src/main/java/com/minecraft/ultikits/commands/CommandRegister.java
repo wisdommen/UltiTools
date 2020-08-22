@@ -1,7 +1,5 @@
 package com.minecraft.ultikits.commands;
 
-import com.minecraft.ultikits.ultitools.UltiTools;
-import com.minecraft.ultikits.whiteList.whitelist_commands;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;
@@ -9,9 +7,7 @@ import org.bukkit.plugin.SimplePluginManager;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class CommandRegister {
 

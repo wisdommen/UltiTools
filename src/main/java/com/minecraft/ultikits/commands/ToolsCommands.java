@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.minecraft.ultikits.utils.Messages.warning;
+import static com.minecraft.ultikits.utils.MessagesUtils.warning;
 
 public class ToolsCommands implements TabExecutor {
     @Override

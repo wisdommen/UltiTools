@@ -1,17 +1,14 @@
 package com.minecraft.ultikits.utils;
 
 import com.minecraft.ultikits.ultitools.UltiTools;
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-import static com.minecraft.ultikits.login.LoginListener.playerLoginStatus;
+import static com.minecraft.ultikits.listener.LoginListener.playerLoginStatus;
 import static com.minecraft.ultikits.ultitools.UltiTools.isDatabaseEnabled;
 
 public class DatabasePlayerTools {
