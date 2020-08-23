@@ -1,6 +1,6 @@
 package com.minecraft.ultikits.commands;
 
-import com.minecraft.ultikits.commands.abstractExecutors.AbstractTabExecutor;
+import com.minecraft.ultikits.commands.abstracts.AbstractTabExecutor;
 import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.*;

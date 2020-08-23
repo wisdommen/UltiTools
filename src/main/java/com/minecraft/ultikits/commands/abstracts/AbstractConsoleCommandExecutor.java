@@ -1,4 +1,4 @@
-package com.minecraft.ultikits.commands.abstractExecutors;
+package com.minecraft.ultikits.commands.abstracts;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

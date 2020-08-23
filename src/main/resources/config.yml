@@ -1,6 +1,15 @@
 # 进服提示延迟时间 此处单位为秒
 sendMessageDelay: 3
 
+'注释52请勿修改': '是否开启PRO版本'
+enable_pro: false
+
+'注释53请勿修改': 'PRO版本注册账号名称'
+pro_name: xxxxxxxxxxxxxx
+
+'注释54请勿修改': 'PRO版本密钥'
+pro_key: xxxxxxxxxxxxxx
+
 '注释1请勿修改': '设置true为使用mysql数据库，设置false为使用yml储存数据'
 enableDataBase: false
 

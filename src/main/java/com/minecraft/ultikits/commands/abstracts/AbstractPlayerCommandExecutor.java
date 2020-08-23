@@ -1,16 +1,13 @@
-package com.minecraft.ultikits.commands.abstractExecutors;
+package com.minecraft.ultikits.commands.abstracts;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-public abstract class AbstractTabExecutor implements TabExecutor {
+public abstract class AbstractPlayerCommandExecutor implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (!(commandSender instanceof Player)) {
@@ -21,16 +18,5 @@ public abstract class AbstractTabExecutor implements TabExecutor {
         return onPlayerCommand(command, strings, player);
     }
 
-    @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings){
-        if (!(commandSender instanceof Player)) {
-            return null;
-        }
-        Player player = (Player) commandSender;
-        return onPlayerTabComplete(command, strings, player);
-    }
-
     protected abstract boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player);
-
-    protected abstract @Nullable List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] strings, @NotNull Player player);
 }

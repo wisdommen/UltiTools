@@ -1,6 +1,6 @@
 package com.minecraft.ultikits.commands;
 
-import com.minecraft.ultikits.commands.abstractExecutors.AbstractPlayerCommandExecutor;
+import com.minecraft.ultikits.commands.abstracts.AbstractPlayerCommandExecutor;
 import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.ChatColor;

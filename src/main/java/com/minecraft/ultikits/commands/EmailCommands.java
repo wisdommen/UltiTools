@@ -1,7 +1,7 @@
 package com.minecraft.ultikits.commands;
 
 import com.minecraft.ultikits.utils.GUIUtils;
-import com.minecraft.ultikits.commands.abstractExecutors.AbstractTabExecutor;
+import com.minecraft.ultikits.commands.abstracts.AbstractTabExecutor;
 import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.beans.EmailContentBean;
 import com.minecraft.ultikits.manager.EmailManager;

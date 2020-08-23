@@ -1,5 +1,6 @@
 package com.minecraft.ultikits.ultitools;
 
+import com.minecraft.ultikits.checker.prochecker.ProChecker;
 import com.minecraft.ultikits.checker.updatechecker.ConfigFileChecker;
 import com.minecraft.ultikits.checker.updatechecker.VersionChecker;
 import com.minecraft.ultikits.listener.ChestLockListener;
@@ -39,6 +40,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -54,6 +56,7 @@ public final class UltiTools extends JavaPlugin {
     private static Economy econ = null;
     private static Boolean isVaultInstalled;
     public static boolean isDatabaseEnabled;
+    public static boolean isProVersion;
 
     private boolean setupVault() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
@@ -85,11 +88,11 @@ public final class UltiTools extends JavaPlugin {
 
         if (isDatabaseEnabled) {
             String table = "userinfo";
-            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件正在初始化数据库...");
+            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 正在初始化数据库...");
             if (DatabaseUtils.createTable(table, new String[]{"username", "password", "whitelisted", "banned"})) {
-                getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件接入数据库成功！");
+                getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 接入数据库成功！");
             } else {
-                getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件接入数据库失败！");
+                getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 接入数据库失败！");
                 getConfig().set("enableDataBase", false);
                 saveConfig();
                 reloadConfig();
@@ -100,6 +103,20 @@ public final class UltiTools extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+
+        if (getConfig().getBoolean("enable_pro")) {
+            try {
+                isProVersion = ProChecker.run();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if (isProVersion){
+            getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools] Pro版验证成功！");
+        } else {
+            getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] Pro版验证失败, 启用免费版！");
+        }
 
         File folder = new File(String.valueOf(getDataFolder()));
         List<File> folders = new ArrayList<>();
@@ -123,27 +140,27 @@ public final class UltiTools extends JavaPlugin {
         isPAPILoaded = getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
 
         if (!isPAPILoaded) {
-            getLogger().warning("UltiTools插件未找到PAPI前置插件，查找其他可行依赖中...");
+            getLogger().warning("[UltiTools] 未找到PAPI前置插件，查找其他可行依赖中...");
             if (!(getIsUltiEconomyInstalled() && isVaultInstalled)) {
-                getLogger().warning("UltiTools插件未找到经济前置插件，关闭中...");
-                getLogger().warning("UltiTools插件至少需要Vault或者UltiEconomy, 或者安装PAPI才能运行");
+                getLogger().warning("[UltiTools] 未找到经济前置插件，关闭中...");
+                getLogger().warning("[UltiTools] 至少需要Vault或者UltiEconomy, 或者安装PAPI才能运行");
                 getServer().getPluginManager().disablePlugin(this);
             }
             if (getServer().getPluginManager().getPlugin("UltiLevel") == null) {
-                getLogger().warning("UltiTools插件未找到UltiLevel等级插件，关闭计分板等级相关显示！");
+                getLogger().warning("[UltiTools] 未找到UltiLevel等级插件，关闭计分板等级相关显示！");
             }
         }
 
         //加载世界
         if (this.getConfig().getBoolean("enable_multiworlds")) {
-            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "正在加载世界中...");
+            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 正在加载世界中...");
             File worldFile = new File(getDataFolder(), "worlds.yml");
             YamlConfiguration worldConfig = YamlConfiguration.loadConfiguration(worldFile);
             List<String> worlds = worldConfig.getStringList("worlds");
             for (String eachWorld : worlds) {
                 getServer().createWorld(new WorldCreator(eachWorld));
             }
-            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "世界加载成功！");
+            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 世界加载成功！");
         }
 
         //注册命令
@@ -219,8 +236,8 @@ public final class UltiTools extends JavaPlugin {
             checkPlayerAlreadyLogin();
         }
 
-        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件已加载！");
-        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "作者：wisdomme");
+        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 基础插件已加载！");
+        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 作者：wisdomme");
 
         //检查更新
         if (getConfig().getBoolean("enable_version_check")) {
@@ -235,12 +252,12 @@ public final class UltiTools extends JavaPlugin {
                 Player player1 = Bukkit.getPlayerExact(player);
                 assert player1 != null;
                 if (!getIsLogin(player1)) {
-                    player1.kickPlayer(ChatColor.AQUA + "腐竹重载/关闭了插件，请重新登录！");
+                    player1.kickPlayer(ChatColor.AQUA + "[UltiTools Login] 腐竹重载/关闭了插件，请重新登录！");
                 }
             }
         }
         savePlayerLoginStatus();
-        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "基础插件已卸载！");
+        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 基础插件已卸载！");
     }
 
     public static UltiTools getInstance() {

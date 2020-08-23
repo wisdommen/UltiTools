@@ -1,6 +1,6 @@
 package com.minecraft.ultikits.commands;
 
-import com.minecraft.ultikits.commands.abstractExecutors.AbstractPlayerCommandExecutor;
+import com.minecraft.ultikits.commands.abstracts.AbstractPlayerCommandExecutor;
 import com.minecraft.ultikits.enums.ConfigsEnum;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.file.YamlConfiguration;
