@@ -1,7 +1,7 @@
 package com.minecraft.ultikits.commands;
 
 import com.minecraft.ultikits.ultitools.UltiTools;
-import com.minecraft.ultikits.utils.DatabasePlayerTools;
+import com.minecraft.ultikits.utils.database.DatabasePlayerTools;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

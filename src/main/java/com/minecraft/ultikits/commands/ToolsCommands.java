@@ -28,7 +28,6 @@ public class ToolsCommands implements TabExecutor {
         if (!(args.length == 1 && args[0].equalsIgnoreCase("reload"))) {
             return false;
         }
-        UltiTools.getInstance().saveConfig();
         UltiTools.getInstance().reloadConfig();
         sender.sendMessage(warning("配置文件已重载！"));
         return true;

@@ -279,6 +279,6 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                 }
                 player.sendMessage(warning("世界生成成功！"));
             }
-        }.runTask(UltiTools.getInstance());
+        }.runTaskAsynchronously(UltiTools.getInstance());
     }
 }

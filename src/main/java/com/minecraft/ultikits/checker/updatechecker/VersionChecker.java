@@ -2,6 +2,7 @@ package com.minecraft.ultikits.checker.updatechecker;
 
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.ChatColor;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,16 +11,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.List;
 
 public class VersionChecker {
 
     public static boolean isOutDate = false;
 
 
-    public static void setupThread() {
-        Thread checkVersionThread = new Thread() {
+    public static void runTask() {
+        new BukkitRunnable() {
             @Override
             public void run() {
                 try {
@@ -27,7 +26,6 @@ public class VersionChecker {
                     HttpURLConnection connection = (HttpURLConnection) new URL("https://wisdommen.github.io").openConnection();
                     connection.setDoInput(true);
                     connection.setRequestMethod("GET");
-                    //伪装
                     connection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
                     //获取输入流
                     InputStream input = connection.getInputStream();
@@ -44,22 +42,13 @@ public class VersionChecker {
                             //获取版本
                             String version = target.split("version: ")[1].split("<")[0];
                             String current_version = UltiTools.getInstance().getDescription().getVersion();
-                            List<String> current_version_list = Arrays.asList(current_version.split("\\."));
-                            List<String> online_version_list = Arrays.asList(version.split("\\."));
+                            int currentVersion = getVersion(current_version);
+                            int onlineVersion = getVersion(version);
                             UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 正在检查更新...");
-                            for (int i = 0; i < 3; i++) {
-                                String a = current_version_list.get(i);
-                                String b = online_version_list.get(i);
-                                if (Integer.parseInt(a) < Integer.parseInt(b)) {
-                                    if (i <= 1) {
-                                        UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] 工具插件有 重要 更新，请下载最新版本！");
-                                    } else {
-                                        UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] 工具插件有更新，请下载最新版本！");
-                                    }
-                                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] 下载地址：https://www.mcbbs.net/thread-1062730-1-1.html");
-                                    isOutDate = true;
-                                    break;
-                                }
+                            if (currentVersion < onlineVersion) {
+                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + String.format("[UltiTools] 工具插件最新版为%d，你的版本是%d！请下载最新版本！", onlineVersion, currentVersion));
+                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] 下载地址：https://www.mcbbs.net/thread-1062730-1-1.html");
+                                isOutDate = true;
                             }
                             if (!isOutDate) {
                                 UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools]太棒了！你的插件是最新的！保持最新的版本可以为你带来最好的体验！");
@@ -73,13 +62,17 @@ public class VersionChecker {
                     streamReader.close();
                     input.close();
                     connection.disconnect();
-                    this.interrupt();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    this.interrupt();
                 }
             }
-        };
-        checkVersionThread.start();
+        }.runTaskAsynchronously(UltiTools.getInstance());
+    }
+
+    private static int getVersion(String version){
+        while (version.contains(".")){
+            version = version.replace(".", "");
+        }
+        return Integer.parseInt(version);
     }
 }

@@ -73,6 +73,9 @@ enable_login: true
 '注释47请勿修改': '（礼包）是否开启礼包功能  (感谢 哈德良凯撒 大佬的意见！)'
 enable_kits: true
 
+'注释55请勿修改': '（清理）是否开启清理功能  (感谢 绝尘 大佬的意见！)'
+enable_cleaner: true
+
 '注释11请勿修改': '（侧边栏）在安装PlaceholderAPI的情况下生效。空出（""）则为不显示'
 '注释12请勿修改': '（侧边栏）开启PAPI变量'
 enable_PAPI: false

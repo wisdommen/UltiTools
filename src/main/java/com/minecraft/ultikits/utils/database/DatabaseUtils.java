@@ -1,4 +1,4 @@
-package com.minecraft.ultikits.utils;
+package com.minecraft.ultikits.utils.database;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

@@ -1,6 +1,7 @@
-package com.minecraft.ultikits.utils;
+package com.minecraft.ultikits.utils.database;
 
 import com.minecraft.ultikits.ultitools.UltiTools;
+import com.minecraft.ultikits.utils.database.DatabaseUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 

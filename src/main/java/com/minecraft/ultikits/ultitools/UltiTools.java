@@ -3,31 +3,20 @@ package com.minecraft.ultikits.ultitools;
 import com.minecraft.ultikits.checker.prochecker.ProChecker;
 import com.minecraft.ultikits.checker.updatechecker.ConfigFileChecker;
 import com.minecraft.ultikits.checker.updatechecker.VersionChecker;
+import com.minecraft.ultikits.commands.*;
+import com.minecraft.ultikits.config.ConfigController;
+import com.minecraft.ultikits.enums.ConfigsEnum;
+import com.minecraft.ultikits.enums.ErrorType;
 import com.minecraft.ultikits.listener.ChestLockListener;
-import com.minecraft.ultikits.commands.LockCommands;
-import com.minecraft.ultikits.commands.UnlockCommands;
-import com.minecraft.ultikits.commands.CommandRegister;
-import com.minecraft.ultikits.commands.ToolsCommands;
-import com.minecraft.ultikits.commands.EmailCommands;
 import com.minecraft.ultikits.listener.EmailPageListener;
-import com.minecraft.ultikits.commands.DeleteHomeCommands;
-import com.minecraft.ultikits.commands.HomeCommands;
-import com.minecraft.ultikits.commands.HomeListCommands;
-import com.minecraft.ultikits.commands.SetHomeCommands;
 import com.minecraft.ultikits.listener.JoinListener;
-import com.minecraft.ultikits.commands.KitsCommands;
 import com.minecraft.ultikits.listener.KitsPageListener;
 import com.minecraft.ultikits.listener.LoginGUIListener;
 import com.minecraft.ultikits.listener.LoginListener;
-import com.minecraft.ultikits.commands.MultiWorldsCommands;
 import com.minecraft.ultikits.listener.ChatListener;
 import com.minecraft.ultikits.listener.ChestPageListener;
-import com.minecraft.ultikits.commands.RemoteBagCommands;
-import com.minecraft.ultikits.tasks.NamePrefixSuffix;
-import com.minecraft.ultikits.tasks.SideBar;
-import com.minecraft.ultikits.commands.SbCommands;
-import com.minecraft.ultikits.utils.DatabaseUtils;
-import com.minecraft.ultikits.commands.WhitelistCommands;
+import com.minecraft.ultikits.tasks.*;
+import com.minecraft.ultikits.utils.database.DatabaseUtils;
 import com.minecraft.ultikits.listener.WhitelistListener;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -37,7 +26,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,9 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.minecraft.ultikits.commands.KitsCommands.initFile;
 import static com.minecraft.ultikits.listener.LoginListener.*;
-import static com.minecraft.ultikits.utils.DatabasePlayerTools.getIsLogin;
+import static com.minecraft.ultikits.utils.database.DatabasePlayerTools.getIsLogin;
 
 public final class UltiTools extends JavaPlugin {
 
@@ -103,21 +91,27 @@ public final class UltiTools extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
-
         if (getConfig().getBoolean("enable_pro")) {
-            try {
-                isProVersion = ProChecker.run();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            new BukkitRunnable(){
+                @Override
+                public void run() {
+                    if (UltiTools.getInstance().getConfig().getBoolean("enable_pro")) {
+                        try {
+                            int res = ProChecker.run();
+                            if (res==200) {
+                                UltiTools.isProVersion = true;
+                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools] Pro版验证成功！");
+                            }else {
+                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] Pro版验证失败, 启用免费版！");
+                            }
+                            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED +"[UltiTools] "+ ErrorType.getNameByCode(res));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }.runTaskAsynchronously(plugin);
         }
-
-        if (isProVersion){
-            getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools] Pro版验证成功！");
-        } else {
-            getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] Pro版验证失败, 启用免费版！");
-        }
-
         File folder = new File(String.valueOf(getDataFolder()));
         List<File> folders = new ArrayList<>();
         folders.add(new File(getDataFolder() + "/playerData"));
@@ -129,7 +123,7 @@ public final class UltiTools extends JavaPlugin {
             saveDefaultConfig();
         }
 
-        initFile();
+        ConfigController.initFiles();
         makedirs(folders);
         ConfigFileChecker.reviewConfigFile();
 
@@ -193,6 +187,10 @@ public final class UltiTools extends JavaPlugin {
         if (this.getConfig().getBoolean("enable_kits")) {
             CommandRegister.registerCommand(plugin, new KitsCommands(), "ultikits.tools.kits","礼包系统","kits");
         }
+        if (this.getConfig().getBoolean("enable_cleaner")) {
+            CommandRegister.registerCommand(UltiTools.getInstance(), new CleanerCommands(), "ultikits.tools.clean", "清理系统", "clean");
+        }
+
 
         //注册监听器
         if (this.getConfig().getBoolean("enable_email")) {
@@ -226,10 +224,16 @@ public final class UltiTools extends JavaPlugin {
 
         //注册任务
         if (this.getConfig().getBoolean("enable_scoreboard")) {
-            BukkitTask t1 = new SideBar().runTaskTimer(this, 0, 20L);
+            new SideBarTask().runTaskTimer(this, 0, 20L);
         }
         if (this.getConfig().getBoolean("enable_name_prefix")) {
-            BukkitTask t2 = new NamePrefixSuffix().runTaskTimer(this, 0, 20L);
+            new NamePrefixSuffixTask().runTaskTimerAsynchronously(this, 0, 20L);
+        }
+        if (this.getConfig().getBoolean("enable_cleaner")){
+            new CleanerTask().runTaskTimerAsynchronously(this, 10*20L, 10*20L);
+        }
+        if (getConfig().getBoolean("enable_pro")) {
+            new ProCheckerTask().runTaskTimerAsynchronously(this, 12000L, 12000L);
         }
 
         if (getConfig().getBoolean("enable_login")) {
@@ -241,7 +245,7 @@ public final class UltiTools extends JavaPlugin {
 
         //检查更新
         if (getConfig().getBoolean("enable_version_check")) {
-            VersionChecker.setupThread();
+            VersionChecker.runTask();
         }
     }
 

@@ -20,7 +20,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.io.File;
 
 import static com.minecraft.ultikits.utils.GUIUtils.inventoryMap;
-import static com.minecraft.ultikits.utils.DatabasePlayerTools.*;
+import static com.minecraft.ultikits.utils.database.DatabasePlayerTools.*;
 import static com.minecraft.ultikits.utils.MessagesUtils.warning;
 
 public class LoginGUIListener implements Listener {

@@ -8,10 +8,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Objects;
 
-import static com.minecraft.ultikits.tasks.SideBar.tool_config;
+import static com.minecraft.ultikits.tasks.SideBarTask.tool_config;
 import static com.minecraft.ultikits.ultitools.UltiTools.isPAPILoaded;
 
-public class NamePrefixSuffix extends BukkitRunnable {
+public class NamePrefixSuffixTask extends BukkitRunnable {
 
     @Override
     public void run() {

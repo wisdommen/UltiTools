@@ -2,7 +2,7 @@ package com.minecraft.ultikits.listener;
 
 import com.minecraft.ultikits.checker.updatechecker.VersionChecker;
 import com.minecraft.ultikits.enums.ConfigsEnum;
-import com.minecraft.ultikits.tasks.SideBar;
+import com.minecraft.ultikits.tasks.SideBarTask;
 import com.minecraft.ultikits.ultitools.UltiTools;
 //import net.minecraft.server.v1_15_R1.IChatBaseComponent;
 //import net.minecraft.server.v1_15_R1.PacketPlayOutChat;
@@ -73,7 +73,7 @@ public class JoinListener implements Listener {
 //                    methodSendPacket.of(connection).call(packet);
 //                    connection.sendPacket(packet);
                     player.sendMessage(ChatColor.AQUA + "当前在线人数：" + ChatColor.YELLOW + UltiTools.getInstance().getServer().getOnlinePlayers().size() + ChatColor.AQUA + " ，快和他们打个招呼吧！");
-                    player.sendMessage(ChatColor.AQUA + "你有 " + ChatColor.YELLOW + SideBar.getUnReadEmailNum(player) + ChatColor.AQUA + " 封未读邮件！");
+                    player.sendMessage(ChatColor.AQUA + "你有 " + ChatColor.YELLOW + SideBarTask.getUnReadEmailNum(player) + ChatColor.AQUA + " 封未读邮件！");
                     if (!"none".equalsIgnoreCase(website)) {
                         player.sendMessage(ChatColor.AQUA + "服务器网址：" + ChatColor.YELLOW + website);
                     }

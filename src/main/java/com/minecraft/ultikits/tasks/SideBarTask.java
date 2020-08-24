@@ -22,7 +22,7 @@ import java.util.Objects;
 
 import static com.minecraft.Ultilevel.utils.checkLevel.*;
 
-public class SideBar extends BukkitRunnable {
+public class SideBarTask extends BukkitRunnable {
 
     boolean isPAPILoaded = UltiTools.isPAPILoaded;
 

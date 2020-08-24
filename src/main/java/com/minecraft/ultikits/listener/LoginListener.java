@@ -21,8 +21,8 @@ import java.util.Map;
 
 import static com.minecraft.ultikits.utils.GUIUtils.inventoryMap;
 import static com.minecraft.ultikits.utils.GUIUtils.setupLoginRegisterLayout;
-import static com.minecraft.ultikits.utils.DatabasePlayerTools.getIsLogin;
-import static com.minecraft.ultikits.utils.DatabasePlayerTools.isPlayerAccountExist;
+import static com.minecraft.ultikits.utils.database.DatabasePlayerTools.getIsLogin;
+import static com.minecraft.ultikits.utils.database.DatabasePlayerTools.isPlayerAccountExist;
 
 public class LoginListener implements Listener {
 

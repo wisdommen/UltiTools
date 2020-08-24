@@ -2,7 +2,7 @@ package com.minecraft.ultikits.listener;
 
 import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
-import com.minecraft.ultikits.utils.DatabasePlayerTools;
+import com.minecraft.ultikits.utils.database.DatabasePlayerTools;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
