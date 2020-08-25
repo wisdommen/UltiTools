@@ -25,8 +25,6 @@ public class ProChecker {
     }
 
     private static int handle(InputStream input, OutputStream output) {
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8));
-        BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
         int resp = 500;
 
         if (name == null || key == null || name.equals("") || key.equals("")) return 400;
@@ -52,12 +50,18 @@ public class ProChecker {
             } catch (IOException e) {
                 data = "0.0.0.0";
             }
+            connection.disconnect();
+
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(input, StandardCharsets.UTF_8));
             String preSending = data + "!@" + name + "!@" + key;
             writer.write(preSending);
             writer.newLine();
             writer.flush();
             resp = Integer.parseInt(reader.readLine());
-            connection.disconnect();
+            writer.write("100");
+            writer.newLine();
+            writer.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }

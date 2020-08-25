@@ -53,7 +53,6 @@ public class CleanerTask extends BukkitRunnable {
         if (UltiTools.isProVersion) {
             time += 10;
             if (enableSmartClean) {
-                System.out.println(CleanerUtils.checkMobs(worlds)+"/"+maxMob);
                 if (CleanerUtils.checkMobs(worlds) > maxMob && !mobCleaning) {
                     notice("生物");
                     mobCleaning = true;
