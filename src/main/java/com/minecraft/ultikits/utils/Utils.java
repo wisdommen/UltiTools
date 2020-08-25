@@ -48,7 +48,7 @@ public class Utils {
         return random.nextInt(range);
     }
 
-    public static @Nullable List<File> getFile(String path) {
+    public static @Nullable List<File> getFiles(String path) {
         File folder = new File(path);
         if (folder.listFiles() != null) {
             return Arrays.asList(Objects.requireNonNull(folder.listFiles()));

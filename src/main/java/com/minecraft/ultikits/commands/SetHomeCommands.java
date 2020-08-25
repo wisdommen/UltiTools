@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import static com.minecraft.ultikits.utils.MessagesUtils.warning;
 import static com.minecraft.ultikits.utils.Utils.getHomeList;
 
 public class SetHomeCommands extends AbstractPlayerCommandExecutor {
@@ -24,9 +25,17 @@ public class SetHomeCommands extends AbstractPlayerCommandExecutor {
             return true;
         }
         if (args.length == 0) {
+            if (getHomeList(player).contains("默认")) {
+                player.sendMessage(warning("你已经有叫这个名字的家了！"));
+                return true;
+            }
             setHome(player, "Def");
             return true;
         } else if (args.length == 1) {
+            if (getHomeList(player).contains(args[0])) {
+                player.sendMessage(warning("你已经有叫这个名字的家了！"));
+                return true;
+            }
             setHome(player, args[0]);
             return true;
         } else {

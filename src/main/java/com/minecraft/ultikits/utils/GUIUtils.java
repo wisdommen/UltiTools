@@ -8,6 +8,7 @@ import com.minecraft.ultikits.beans.EmailContentBean;
 import com.minecraft.ultikits.manager.EmailManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -27,18 +28,22 @@ public class GUIUtils {
     private GUIUtils(){}
 
     public static void setPlayerRemoteChest(@NotNull Player player) {
+        setPlayerRemoteChest(player.getName());
+    }
+
+    public static void setPlayerRemoteChest(@NotNull String playerName) {
         YamlConfiguration config = Utils.getConfig(Utils.getConfigFile());
-        File chestFile = new File(ConfigsEnum.PLAYER_CHEST.toString(), player.getName() + ".yml");
+        File chestFile = new File(ConfigsEnum.PLAYER_CHEST.toString(), playerName + ".yml");
         YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
         InventoryManager chest = new InventoryManager(null, 36, "远程背包");
         chest.create();
-        inventoryMap.put(player.getName() + ".chest", chest);
+        inventoryMap.put(playerName + ".chest", chest);
 
         if (!chestConfig.getKeys(false).isEmpty()) {
             for (int i = 1; i <= chestConfig.getKeys(false).size(); i++) {
                 ItemStackBean itemStackManager = new ItemStackBean(new ItemStack(Material.CHEST), new ArrayList<>(), info(i + "号背包"));
                 itemStackManager.setUpItem();
-                inventoryMap.get(player.getName() + ".chest").setItem(i - 1, itemStackManager.getItem());
+                inventoryMap.get(playerName + ".chest").setItem(i - 1, itemStackManager.getItem());
             }
         }
         ArrayList<String> lore = new ArrayList<>();
@@ -48,7 +53,7 @@ public class GUIUtils {
         Objects.requireNonNull(stickmeta).setLore(lore);
         stickmeta.setDisplayName(ChatColor.AQUA + "创建背包");
         item2.setItemMeta(stickmeta);
-        inventoryMap.get(player.getName() + ".chest").setItem(35, item2);
+        inventoryMap.get(playerName + ".chest").setItem(35, item2);
     }
 
     public static Map<String, EmailContentBean> setUpEmailInBox(@NotNull Player player) {

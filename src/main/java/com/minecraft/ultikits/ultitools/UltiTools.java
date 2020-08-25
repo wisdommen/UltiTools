@@ -1,5 +1,6 @@
 package com.minecraft.ultikits.ultitools;
 
+import com.minecraft.ultikits.checker.Metrics;
 import com.minecraft.ultikits.checker.prochecker.ProChecker;
 import com.minecraft.ultikits.checker.updatechecker.ConfigFileChecker;
 import com.minecraft.ultikits.checker.updatechecker.VersionChecker;
@@ -91,6 +92,7 @@ public final class UltiTools extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+        startBStates();
         if (getConfig().getBoolean("enable_pro")) {
             new BukkitRunnable(){
                 @Override
@@ -274,5 +276,12 @@ public final class UltiTools extends JavaPlugin {
                 eachFolder.mkdirs();
             }
         }
+    }
+
+    private static void startBStates(){
+        // All you have to do is adding the following two lines in your onEnable method.
+        // You can find the plugin ids of your plugins on the page https://bstats.org/what-is-my-plugin-id
+        int pluginId = 8652; // <-- Replace with the id of your plugin!
+        Metrics metrics = new Metrics(UltiTools.getInstance(), pluginId);
     }
 }
