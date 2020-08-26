@@ -4,9 +4,7 @@ import com.minecraft.ultikits.enums.CleanTypeEnum;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 
 import java.util.List;
 
@@ -55,8 +53,10 @@ public class CleanerUtils {
             for (Entity entity : world.getEntities()) {
                 if (entity instanceof LivingEntity) {
                     if (!(entity instanceof Player)) {
-                        entity.remove();
-                        count++;
+                        if (canMobBeClean((LivingEntity) entity)) {
+                            entity.remove();
+                            count++;
+                        }
                     }
                 }
             }
@@ -65,24 +65,11 @@ public class CleanerUtils {
     }
 
     public static int cleanEntities(List<World> worlds) {
-        int count = 0;
-        for (World world : worlds) {
-            for (Entity entity : world.getEntities()) {
-                if (!(entity instanceof Player)) {
-                    entity.remove();
-                    count++;
-                }
-            }
-        }
-        return count;
+        return cleanMobs(worlds)+cleanDroppedItem(worlds);
     }
 
     public static int checkEntities(List<World> worlds){
-        int count = 0;
-        for (World world : worlds) {
-            count+=world.getEntities().size();
-        }
-        return count;
+        return checkItems(worlds)+checkMobs(worlds);
     }
 
     public static int checkItems(List<World> worlds) {
@@ -102,11 +89,24 @@ public class CleanerUtils {
         for (World world : worlds) {
             for (Entity entity : world.getEntities()) {
                 if ((entity instanceof LivingEntity) && !(entity instanceof Player)) {
-                    count++;
+                    if (canMobBeClean((LivingEntity) entity)) {
+                        count++;
+                    }
                 }
             }
         }
         return count;
+    }
+
+    private static boolean canMobBeClean(LivingEntity entity){
+        if (!entity.hasGravity()) return false;
+        if (entity.getCustomName()!=null) return false;
+        if (entity instanceof Tameable){
+            if (((Tameable) entity).isTamed()) {
+                return false;
+            }
+        }
+        return !entity.isCustomNameVisible();
     }
 
     public static String sendMessage(CleanTypeEnum cleanType, String name, int cleanCount) {

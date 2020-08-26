@@ -20,6 +20,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 
+import static com.minecraft.ultikits.checker.updatechecker.VersionChecker.currentVersion;
+import static com.minecraft.ultikits.checker.updatechecker.VersionChecker.onlineVersion;
+
 
 public class JoinListener implements Listener {
 
@@ -50,9 +53,9 @@ public class JoinListener implements Listener {
                 new BukkitRunnable(){
                     @Override
                     public void run() {
-                        player.sendMessage(ChatColor.AQUA+"[UltiTools]有新的更新！下载地址：https://www.mcbbs.net/thread-1062730-1-1.html");
+                        player.sendMessage(ChatColor.RED + String.format("[UltiTools] 工具插件最新版为%d，你的版本是%d！请下载最新版本！", onlineVersion, currentVersion));
                     }
-                }.runTaskLater(UltiTools.getInstance(), 80L);
+                }.runTaskLaterAsynchronously(UltiTools.getInstance(), 80L);
             }
             Bukkit.broadcastMessage(ChatColor.RED + "[管理员]" + ChatColor.YELLOW + event.getPlayer().getName() + ChatColor.RED + "已上线！");
             Bukkit.broadcastMessage(ChatColor.RED + "有问题请询问他！");

@@ -229,7 +229,7 @@ public final class UltiTools extends JavaPlugin {
             new SideBarTask().runTaskTimer(this, 0, 20L);
         }
         if (this.getConfig().getBoolean("enable_name_prefix")) {
-            new NamePrefixSuffixTask().runTaskTimerAsynchronously(this, 0, 20L);
+            new NamePrefixSuffixTask().runTaskTimer(this, 0, 20L);
         }
         if (this.getConfig().getBoolean("enable_cleaner")){
             new CleanerTask().runTaskTimerAsynchronously(this, 10*20L, 10*20L);

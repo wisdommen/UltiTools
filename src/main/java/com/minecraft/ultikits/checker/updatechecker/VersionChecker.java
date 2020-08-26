@@ -15,6 +15,8 @@ import java.nio.charset.StandardCharsets;
 public class VersionChecker {
 
     public static boolean isOutDate = false;
+    public static int currentVersion;
+    public static int onlineVersion;
 
 
     public static void runTask() {
@@ -42,8 +44,8 @@ public class VersionChecker {
                             //获取版本
                             String version = target.split("version: ")[1].split("<")[0];
                             String current_version = UltiTools.getInstance().getDescription().getVersion();
-                            int currentVersion = getVersion(current_version);
-                            int onlineVersion = getVersion(version);
+                            currentVersion = getVersion(current_version);
+                            onlineVersion = getVersion(version);
                             UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 正在检查更新...");
                             if (currentVersion < onlineVersion) {
                                 UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + String.format("[UltiTools] 工具插件最新版为%d，你的版本是%d！请下载最新版本！", onlineVersion, currentVersion));
