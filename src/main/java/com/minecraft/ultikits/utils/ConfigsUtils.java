@@ -3,9 +3,9 @@ package com.minecraft.ultikits.utils;
 import com.minecraft.ultikits.enums.ConfigsEnum;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.yaml.snakeyaml.Yaml;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,5 +53,25 @@ public class ConfigsUtils {
         configuration = YamlConfiguration.loadConfiguration(file);
         configs.get(configPath).put(player, configuration);
         files.get(configPath).put(player, file);
+    }
+
+    public static <T> T loadYaml(String path, Class<T> clazz){
+        Yaml yaml = new Yaml();
+        try{
+            return yaml.loadAs(new FileInputStream(new File(path)), clazz);
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void dumpYaml(String path, Object data){
+        Yaml yaml = new Yaml();
+        try {
+            FileWriter fileWriter = new FileWriter(new File(path));
+            yaml.dump(data, fileWriter);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

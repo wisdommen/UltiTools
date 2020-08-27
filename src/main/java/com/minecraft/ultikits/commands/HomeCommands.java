@@ -76,6 +76,11 @@ public class HomeCommands extends AbstractTabExecutor implements Listener {
     }
 
     private static void teleportPlayer(Player player, Location location) {
+        boolean isChunkLoaded = location.getChunk().isLoaded();
+
+        if (!isChunkLoaded){
+            location.getChunk().load();
+        }
 
         new BukkitRunnable() {
             float time = UltiTools.getInstance().getConfig().getInt("home_tpwait");

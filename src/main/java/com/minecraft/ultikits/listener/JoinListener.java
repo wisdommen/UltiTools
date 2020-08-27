@@ -20,8 +20,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 
-import static com.minecraft.ultikits.checker.updatechecker.VersionChecker.currentVersion;
-import static com.minecraft.ultikits.checker.updatechecker.VersionChecker.onlineVersion;
+import static com.minecraft.ultikits.checker.updatechecker.VersionChecker.*;
 
 
 public class JoinListener implements Listener {
@@ -53,7 +52,8 @@ public class JoinListener implements Listener {
                 new BukkitRunnable(){
                     @Override
                     public void run() {
-                        player.sendMessage(ChatColor.RED + String.format("[UltiTools] 工具插件最新版为%d，你的版本是%d！请下载最新版本！", onlineVersion, currentVersion));
+                        player.sendMessage(ChatColor.RED + String.format("[UltiTools] 工具插件最新版为%s，你的版本是%s！请下载最新版本！", version, current_version));
+                        player.sendMessage(ChatColor.RED + "[UltiTools] 你知道吗？现在UltiTools可以自动更新啦！在配置文件中打开自动更新，更新再也不用麻烦！");
                     }
                 }.runTaskLaterAsynchronously(UltiTools.getInstance(), 80L);
             }

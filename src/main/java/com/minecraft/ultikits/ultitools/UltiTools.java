@@ -6,7 +6,6 @@ import com.minecraft.ultikits.checker.updatechecker.ConfigFileChecker;
 import com.minecraft.ultikits.checker.updatechecker.VersionChecker;
 import com.minecraft.ultikits.commands.*;
 import com.minecraft.ultikits.config.ConfigController;
-import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.enums.ErrorType;
 import com.minecraft.ultikits.listener.ChestLockListener;
 import com.minecraft.ultikits.listener.EmailPageListener;
@@ -127,7 +126,7 @@ public final class UltiTools extends JavaPlugin {
 
         ConfigController.initFiles();
         makedirs(folders);
-        ConfigFileChecker.reviewConfigFile();
+        ConfigFileChecker.reviewMainConfigFile();
 
         isVaultInstalled = setupVault();
 
