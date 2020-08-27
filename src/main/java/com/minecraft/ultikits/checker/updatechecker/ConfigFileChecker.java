@@ -80,12 +80,12 @@ public class ConfigFileChecker {
             public void run() {
                 UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 正在下载更新...");
                 if (download()){
-                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 下载完成, 重载/reload插件以应用更新！");
+                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 下载完成, 重启服务器以应用更新！");
                     this.cancel();
+                    return;
                 }
                 UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + String.format("[UltiTools] 下载失败，请前往 %s 手动下载！", "https://www.mcbbs.net/thread-1062730-1-1.html"));
             }
-
 
         }.runTaskAsynchronously(UltiTools.getInstance());
     }
