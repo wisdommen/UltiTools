@@ -98,7 +98,7 @@ public class ConfigFileChecker {
                 fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
                 fos.close();
                 return true;
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 return false;
             }

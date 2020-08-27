@@ -5,6 +5,7 @@ import com.minecraft.ultikits.ultitools.UltiTools;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
@@ -62,7 +63,8 @@ public class ProChecker {
             writer.write("100");
             writer.newLine();
             writer.flush();
-        } catch (Exception e) {
+        } catch (SocketException ignored) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return resp;
