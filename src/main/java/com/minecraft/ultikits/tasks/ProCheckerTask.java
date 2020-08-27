@@ -5,6 +5,7 @@ import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.IOException;
+import java.net.ConnectException;
 
 public class ProCheckerTask extends BukkitRunnable {
     @Override
@@ -15,8 +16,7 @@ public class ProCheckerTask extends BukkitRunnable {
                 if (res==200) {
                     UltiTools.isProVersion = true;
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            }catch (Exception ignored){
             }
         }
     }

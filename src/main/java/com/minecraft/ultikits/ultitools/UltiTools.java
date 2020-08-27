@@ -106,8 +106,8 @@ public final class UltiTools extends JavaPlugin {
                                 UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] Pro版验证失败, 启用免费版！");
                             }
                             UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED +"[UltiTools] "+ ErrorType.getNameByCode(res));
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        } catch (Exception e) {
+                            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] Pro版验证失败, 启用免费版！");
                         }
                     }
                 }
