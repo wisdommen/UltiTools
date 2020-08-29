@@ -1,4 +1,4 @@
-package com.minecraft.ultikits.beans;
+package com.minecraft.ultikits.manager;
 
 import com.google.common.collect.Multimap;
 import org.bukkit.ChatColor;
@@ -12,7 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
-public class ItemStackBean {
+public class ItemStackManager {
 
     private ArrayList<String> lore = new ArrayList<>();
 
@@ -25,28 +25,28 @@ public class ItemStackBean {
     private List<String> commands;
     Map<String, Integer> enchants = new HashMap<>();
 
-    public ItemStackBean(ItemStack item) {
+    public ItemStackManager(ItemStack item) {
         this.item = item;
         this.displayName = item.getItemMeta().getDisplayName();
     }
 
-    public ItemStackBean(ItemStack item, String displayName) {
+    public ItemStackManager(ItemStack item, String displayName) {
         this.item = item;
         this.displayName = displayName;
     }
 
-    public ItemStackBean(ItemStack item, ArrayList<String> lore) {
+    public ItemStackManager(ItemStack item, ArrayList<String> lore) {
         this.item = item;
         this.lore = lore;
     }
 
-    public ItemStackBean(ItemStack item, ArrayList<String> lore, String displayName) {
+    public ItemStackManager(ItemStack item, ArrayList<String> lore, String displayName) {
         this.item = item;
         this.lore = lore;
         this.displayName = displayName;
     }
 
-    public ItemStackBean(ItemStack item, ArrayList<String> lore, String displayName, int position, List<String> commands) {
+    public ItemStackManager(ItemStack item, ArrayList<String> lore, String displayName, int position, List<String> commands) {
         this.item = item;
         this.lore = lore;
         this.displayName = displayName;
@@ -54,7 +54,7 @@ public class ItemStackBean {
         this.commands = commands;
     }
 
-    public ItemStackBean(ItemStack item, ArrayList<String> lore, String displayName, int position, Inventory page, List<String> commands) {
+    public ItemStackManager(ItemStack item, ArrayList<String> lore, String displayName, int position, Inventory page, List<String> commands) {
         this.item = item;
         this.lore = lore;
         this.displayName = displayName;

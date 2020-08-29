@@ -1,14 +1,13 @@
 package com.minecraft.ultikits.utils;
 
 import com.minecraft.ultikits.manager.InventoryManager;
-import com.minecraft.ultikits.beans.ItemStackBean;
+import com.minecraft.ultikits.manager.ItemStackManager;
 import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.enums.LoginRegisterEnum;
 import com.minecraft.ultikits.beans.EmailContentBean;
 import com.minecraft.ultikits.manager.EmailManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -41,7 +40,7 @@ public class GUIUtils {
 
         if (!chestConfig.getKeys(false).isEmpty()) {
             for (int i = 1; i <= chestConfig.getKeys(false).size(); i++) {
-                ItemStackBean itemStackManager = new ItemStackBean(new ItemStack(Material.CHEST), new ArrayList<>(), info(i + "号背包"));
+                ItemStackManager itemStackManager = new ItemStackManager(new ItemStack(Material.CHEST), new ArrayList<>(), info(i + "号背包"));
                 itemStackManager.setUpItem();
                 inventoryMap.get(playerName + ".chest").setItem(i - 1, itemStackManager.getItem());
             }
@@ -74,11 +73,11 @@ public class GUIUtils {
             String sender = emailContentManagers.get(each).getSender();
             String message = emailContentManagers.get(each).getMessage();
             ArrayList<String> lore = (ArrayList<String>) getLoreList(emailContentManagers.get(each), message, 18);
-            ItemStackBean mail;
+            ItemStackManager mail;
             if (!emailContentManagers.get(each).getRead()) {
-                mail = new ItemStackBean(new ItemStack(Material.PAPER, 1), lore, "来自：" + sender);
+                mail = new ItemStackManager(new ItemStack(Material.PAPER, 1), lore, "来自：" + sender);
             } else {
-                mail = new ItemStackBean(new ItemStack(Material.FILLED_MAP, 1), lore, "来自：" + sender);
+                mail = new ItemStackManager(new ItemStack(Material.FILLED_MAP, 1), lore, "来自：" + sender);
             }
             mail.setUpItem();
             inventoryManager.forceSetItem(s, mail.getItem());
@@ -92,7 +91,7 @@ public class GUIUtils {
         inventoryManager.create();
         inventoryMap.put(player.getName() + title.toString(), inventoryManager);
 
-        ItemStackBean itemStackManager = new ItemStackBean(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), "点按输入数字");
+        ItemStackManager itemStackManager = new ItemStackManager(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), "点按输入数字");
         itemStackManager.setUpItem();
         //数字键盘
         inventoryManager.setItem(21, itemStackManager.getItem(1));
@@ -107,16 +106,16 @@ public class GUIUtils {
         inventoryManager.setItem(49, itemStackManager.getItem(10));
 
         //其他功能键
-        ItemStackBean itemStackManager2 = new ItemStackBean(new ItemStack(Material.RED_STAINED_GLASS_PANE), "清空");
+        ItemStackManager itemStackManager2 = new ItemStackManager(new ItemStack(Material.RED_STAINED_GLASS_PANE), "清空");
         itemStackManager2.setUpItem();
         inventoryManager.setItem(48, itemStackManager2.getItem());
-        ItemStackBean itemStackManager3 = new ItemStackBean(new ItemStack(Material.GREEN_STAINED_GLASS_PANE), "确认");
+        ItemStackManager itemStackManager3 = new ItemStackManager(new ItemStack(Material.GREEN_STAINED_GLASS_PANE), "确认");
         itemStackManager3.setUpItem();
         inventoryManager.setItem(50, itemStackManager3.getItem());
-        ItemStackBean itemStackManager4 = new ItemStackBean(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), "退出");
+        ItemStackManager itemStackManager4 = new ItemStackManager(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), "退出");
         itemStackManager4.setUpItem();
         inventoryManager.setItem(53, itemStackManager4.getItem());
-        ItemStackBean itemStackManager5 = new ItemStackBean(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), "");
+        ItemStackManager itemStackManager5 = new ItemStackManager(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), "");
         itemStackManager5.setUpItem();
         for (int i = 9; i < 54; i++) {
             if (inventoryManager.getInventory().getItem(i) == null) {

@@ -20,24 +20,21 @@ public class DeleteHomeCommands extends AbstractTabExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] args, @NotNull Player player) {
         File file = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        if (file.exists() && args.length == 1) {
-            List<String> homeList = getHomeList(player);
-            homeList.remove(args[0]);
-            if (config.get(player.getName() + "." + args[0]) != null) {
-                config.set(player.getName() + "." + args[0], "");
-                config.set(player.getName() + ".homelist", homeList);
-                player.sendMessage(ChatColor.RED + "[家插件]" + args[0] + "已被删除！");
-                try {
-                    config.save(file);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                player.sendMessage(ChatColor.RED + "[家插件]你没有这个家！");
+
+        if (file.exists()) {
+            String homeName;
+            if (args.length ==0){
+                homeName = "默认";
+                return deleteHome(homeName, player, file);
+            }else if (args.length == 1){
+                homeName = args[0];
+                return deleteHome(homeName, player, file);
+            }else {
+                return false;
             }
+
         } else {
-            player.sendMessage(ChatColor.RED + "[家插件]你还没有设置家哦！");
+            player.sendMessage(ChatColor.RED + "[家插件] 你还没有设置家哦！");
         }
         return true;
     }
@@ -45,5 +42,32 @@ public class DeleteHomeCommands extends AbstractTabExecutor {
     @Override
     protected @Nullable List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
         return getHomeList(player);
+    }
+
+    private boolean deleteHome(String homeName, Player player, File file){
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        List<String> homeList = getHomeList(player);
+        if (!homeList.contains(homeName)) {
+            player.sendMessage(ChatColor.RED + "[家插件] 你没有这个家！");
+            return true;
+        }
+        homeList.remove(homeName);
+        String homeNameNew = homeName;
+        if (homeName.equals("默认")) {
+            homeNameNew = "Def";
+        }
+        if (config.get(player.getName() + "." + homeNameNew) != null) {
+            config.set(player.getName() + "." + homeNameNew, "");
+            config.set(player.getName() + ".homelist", homeList);
+            player.sendMessage(ChatColor.RED + "[家插件] " + homeName + " 已被删除！");
+            try {
+                config.save(file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            player.sendMessage(ChatColor.RED + "[家插件] 你没有这个家！");
+        }
+        return false;
     }
 }

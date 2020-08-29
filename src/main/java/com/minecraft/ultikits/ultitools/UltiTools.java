@@ -191,6 +191,7 @@ public final class UltiTools extends JavaPlugin {
         if (this.getConfig().getBoolean("enable_cleaner")) {
             CommandRegister.registerCommand(UltiTools.getInstance(), new CleanerCommands(), "ultikits.tools.clean", "清理系统", "clean");
         }
+        //CommandRegister.registerCommand(UltiTools.getInstance(), new PermissionCommands(), "ultikits.tools.permission", "权限系统", "pers");
 
 
         //注册监听器

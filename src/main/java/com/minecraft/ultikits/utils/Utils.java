@@ -68,7 +68,7 @@ public class Utils {
             if (config.get(player.getName() + ".homelist") instanceof String) {
                 String homelist = config.getString(player.getName() + ".homelist");
                 if (homelist.contains(" ")) {
-                    String[] list = config.getString(player.getName() + ".homelist").split(" ");
+                    String[] list = homelist.split(" ");
                     for (String each : list) {
                         if (each.contains(" ")) {
                             each.replaceAll(" ", "");

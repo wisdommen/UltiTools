@@ -25,10 +25,6 @@ public class SetHomeCommands extends AbstractPlayerCommandExecutor {
             return true;
         }
         if (args.length == 0) {
-            if (getHomeList(player).contains("默认")) {
-                player.sendMessage(warning("你已经有叫这个名字的家了！"));
-                return true;
-            }
             setHome(player, "Def");
             return true;
         } else if (args.length == 1) {
