@@ -16,14 +16,15 @@ public class PageRegister {
     }
 
     public void register(InventoryManager inventoryManager, PagesListener listener) {
-        if (inventoryListenerMap.get(inventoryManager.getTitle())!=null){
+        if (inventoryListenerMap.get(inventoryManager.getGroupTitle())!=null){
             return;
         }
         Bukkit.getServer().getPluginManager().registerEvents(listener, plugin);
-        inventoryListenerMap.put(inventoryManager.getTitle(), listener);
+        inventoryListenerMap.put(inventoryManager.getGroupTitle(), listener);
     }
 
-    public static PagesListener getPagesListenerByName(String name){
+    public static PagesListener getPagesListenerByGroupName(String name){
         return inventoryListenerMap.get(name);
+
     }
 }

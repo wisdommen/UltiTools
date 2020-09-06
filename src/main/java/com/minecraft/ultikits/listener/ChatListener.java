@@ -16,6 +16,7 @@ public class ChatListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         String prefixes_str = UltiTools.getInstance().getConfig().getString("chat_prefix");
+        //UnknownFormatConversionException: Conversion = '%'
         event.setFormat(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, prefixes_str))+ ChatColor.WHITE+event.getMessage());
     }
 }

@@ -6,10 +6,13 @@ import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.beans.EmailContentBean;
 import com.minecraft.ultikits.manager.EmailManager;
 import com.minecraft.ultikits.ultitools.UltiTools;
+import com.minecraft.ultikits.views.EmailView;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,7 +42,12 @@ public class EmailCommands extends AbstractTabExecutor {
                             readEmails(player);
                             return true;
                         case "delhistory":
-                            deleteHistoryEmail(emailManager, player);
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    deleteHistoryEmail(emailManager, player);
+                                }
+                            }.runTaskAsynchronously(UltiTools.getInstance());
                             return true;
                         case "help":
                             sendHelpMessage(player);
@@ -118,8 +126,9 @@ public class EmailCommands extends AbstractTabExecutor {
     }
 
     public void readEmails(Player player) {
-        emailContentManagerMap = GUIUtils.setUpEmailInBox(player);
-        player.openInventory(GUIUtils.inventoryMap.get(player.getName() + ".inbox").getInventory());
+        //emailContentManagerMap = GUIUtils.setUpEmailInBox(player);
+        Inventory inventory = EmailView.setUp(player);
+        player.openInventory(inventory);
         player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 10, 1);
     }
 

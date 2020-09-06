@@ -17,7 +17,7 @@ public class ViewManager {
     }
 
     public static void registerView(InventoryManager inventoryManager) {
-        registerView(inventoryManager, PageRegister.getPagesListenerByName(inventoryManager.getTitle()));
+        registerView(inventoryManager, PageRegister.getPagesListenerByGroupName(inventoryManager.getGroupTitle()));
     }
 
     public static void registerView(InventoryManager inventoryManager, PagesListener listener) {
@@ -25,21 +25,16 @@ public class ViewManager {
             return;
         }
         UltiTools.getPageRegister().register(inventoryManager, listener);
-        if (!nameViewsMap.containsKey(inventoryManager.getTitle())) {
-            nameViewsMap.put(inventoryManager.getTitle(), inventoryManager);
-        }
-        if (!inventoryViewsMap.containsKey(inventoryManager.getInventory())) {
-            inventoryViewsMap.put(inventoryManager.getInventory(), inventoryManager);
-        }
+        nameViewsMap.put(inventoryManager.getTitle(), inventoryManager);
+        inventoryViewsMap.put(inventoryManager.getInventory(), inventoryManager);
         String groupName = inventoryManager.getGroupTitle();
-        if (groupName == null){
+        if (groupName == null) {
             return;
         }
         List<InventoryManager> list = groupNameViewsListMap.get(groupName);
         if (list != null) {
-            if (!list.contains(inventoryManager)) {
-                list.add(inventoryManager);
-            }
+            list.remove(inventoryManager);
+            list.add(inventoryManager);
             groupNameViewsListMap.put(inventoryManager.getGroupTitle(), list);
         } else {
             List<InventoryManager> newList = new ArrayList<>();
@@ -56,19 +51,19 @@ public class ViewManager {
         return inventoryViewsMap.get(inventory);
     }
 
-    public static List<InventoryManager> getGroupViewsByGroupName(String groupName){
+    public static List<InventoryManager> getGroupViewsByGroupName(String groupName) {
         return groupNameViewsListMap.get(groupName);
     }
 
-    public static InventoryManager getLastView(InventoryManager inventoryManager){
+    public static InventoryManager getLastView(InventoryManager inventoryManager) {
         return linkedViewsMap.get(inventoryManager);
     }
 
-    public static void linkViews(InventoryManager last, InventoryManager current){
+    public static void linkViews(InventoryManager last, InventoryManager current) {
         linkedViewsMap.put(current, last);
     }
 
-    public static void openInventoryForPlayer(Player player, InventoryManager current, InventoryManager next){
+    public static void openInventoryForPlayer(Player player, InventoryManager current, InventoryManager next) {
         ViewManager.linkViews(current, next);
         player.openInventory(next.getInventory());
     }

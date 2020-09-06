@@ -121,7 +121,9 @@ public class InventoryManager {
             ViewManager.registerView(newPage);
             newPage.addItem(item);
         } else if (nextPage != null) {
-            nextPage.addItem(item);
+            if (!nextPage.getInventory().contains(item)) {
+                nextPage.addItem(item);
+            }
         }
         setBackgroundColor(this.backGroundColor);
     }
@@ -140,6 +142,9 @@ public class InventoryManager {
     }
 
     public String getGroupTitle() {
+        if (groupTitle == null){
+            return title;
+        }
         return groupTitle;
     }
 
@@ -152,6 +157,7 @@ public class InventoryManager {
 
     private void setPageButtons() {
         this.title = groupTitle + String.format(" 第%d页", pageNumber);
+        inventory = Bukkit.createInventory(owner, slots, title);
         fillLastLine();
         try {
             ItemStackManager back = new ItemStackManager(Buttons.PREVIOUS.getItemStack(), Buttons.PREVIOUS.getName());

@@ -1,6 +1,8 @@
 package com.minecraft.ultikits.listener;
 
 import com.minecraft.ultikits.enums.ConfigsEnum;
+import com.minecraft.ultikits.inventoryapi.InventoryManager;
+import com.minecraft.ultikits.inventoryapi.PagesListener;
 import com.minecraft.ultikits.utils.SerializationUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -17,16 +19,32 @@ import java.io.IOException;
 import java.util.Objects;
 
 
-public class EmailPageListener implements Listener {
+public class EmailPageListener extends PagesListener {
 
     @EventHandler
-    public void onItemClicked(@NotNull InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
+    public void onPlayerJoin(@NotNull PlayerJoinEvent event) {
+        Player player = event.getPlayer();
+        File folder = new File(ConfigsEnum.PLAYER_EMAIL.toString());
+        File file = new File(folder, player.getName() + ".yml");
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
         ItemStack clicked = event.getCurrentItem();
         File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player.getName() + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-        if (event.getView().getTitle().equals("收件箱")) {
+        if (event.getView().getTitle().contains(player.getName()+"的收件箱")) {
             if (clicked != null) {
                 event.setCancelled(true);
                 if (Objects.requireNonNull(clicked.getItemMeta()).getDisplayName().contains("来自：")) {
@@ -62,22 +80,4 @@ public class EmailPageListener implements Listener {
             }
         }
     }
-
-    @EventHandler
-    public void onPlayerJoin(@NotNull PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        File folder = new File(ConfigsEnum.PLAYER_EMAIL.toString());
-        File file = new File(folder, player.getName() + ".yml");
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
 }
