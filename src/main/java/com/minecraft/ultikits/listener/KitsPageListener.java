@@ -1,6 +1,8 @@
 package com.minecraft.ultikits.listener;
 
 import com.minecraft.ultikits.enums.ConfigsEnum;
+import com.minecraft.ultikits.inventoryapi.InventoryManager;
+import com.minecraft.ultikits.inventoryapi.PagesListener;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import com.minecraft.ultikits.utils.MessagesUtils;
 import net.milkbowl.vault.economy.Economy;
@@ -9,8 +11,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -22,26 +22,21 @@ import java.util.Objects;
 import static com.minecraft.Ultilevel.utils.checkLevel.checkJob;
 import static com.minecraft.Ultilevel.utils.checkLevel.checkLevel;
 
-public class KitsPageListener implements Listener {
+public class KitsPageListener extends PagesListener {
 
     private static final File kits = new File(ConfigsEnum.KIT.toString());
     private static final YamlConfiguration kitsConfig = YamlConfiguration.loadConfiguration(kits);
     private static final Economy economy = UltiTools.getEcon();
-    
-    @EventHandler
-    public void onItemClicked(InventoryClickEvent event) throws IOException {
-        Player player = (Player) event.getWhoClicked();
-        ItemStack clicked = event.getCurrentItem();
 
+    @Override
+    public void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
         File kit_file = new File(ConfigsEnum.DATA_KIT.toString());
         YamlConfiguration kit_config = YamlConfiguration.loadConfiguration(kit_file);
 
-        if (!(event.getView().getTitle().equals("物品包/礼包中心") && clicked != null)) return;
-        event.setCancelled(true);
-        String clickedItem = ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
+        String clickedItemName = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName());
         for (String item : kitsConfig.getKeys(false)) {
             String kitName = kitsConfig.getString(item + ".name");
-            if (!clickedItem.equals(kitName)) continue;
+            if (!clickedItemName.equals(kitName)) continue;
             if (!isPlayerCanBuy(player, item)) return;
             if (!Objects.requireNonNull(kitsConfig.getConfigurationSection(item + ".contain").getKeys(false)).isEmpty()) {
                 for (String i : Objects.requireNonNull(kitsConfig.getConfigurationSection(item + ".contain").getKeys(false))) {
@@ -67,7 +62,11 @@ public class KitsPageListener implements Listener {
                 List<String> a = kit_config.getStringList(Objects.requireNonNull(kitName));
                 a.add(player.getName());
                 kit_config.set(kitName, a);
-                kit_config.save(kit_file);
+                try {
+                    kit_config.save(kit_file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             int price = kitsConfig.getInt(item + ".price");
             if (price > 0) economy.withdrawPlayer(player, price);

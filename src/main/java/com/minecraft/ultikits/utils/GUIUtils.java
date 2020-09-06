@@ -53,35 +53,6 @@ public class GUIUtils {
         inventoryMap.get(playerName + ".chest").setItem(35, item2);
     }
 
-    public static Map<String, EmailContentBean> setUpEmailInBox(@NotNull Player player) {
-        File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player.getName() + ".yml");
-        EmailManager emailManager = new EmailManager(file);
-        Map<String, EmailContentBean> emailContentManagers = emailManager.getEmails();
-        InventoryManager inventoryManager = new InventoryManager(player, 54, "收件箱");
-        inventoryMap.put(player.getName() + ".inbox", inventoryManager);
-
-        List<String> list = sortSet(emailContentManagers.keySet());
-
-        int s = 0;
-        for (String each : list) {
-            if (s > 53) {
-                break;
-            }
-            String sender = emailContentManagers.get(each).getSender();
-            String message = emailContentManagers.get(each).getMessage();
-            ArrayList<String> lore = (ArrayList<String>) getLoreList(emailContentManagers.get(each), message, 18);
-            ItemStackManager mail;
-            if (!emailContentManagers.get(each).getRead()) {
-                mail = new ItemStackManager(new ItemStack(Material.PAPER, 1), lore, "来自：" + sender);
-            } else {
-                mail = new ItemStackManager(new ItemStack(Material.FILLED_MAP, 1), lore, "来自：" + sender);
-            }
-            inventoryManager.forceSetItem(s, mail.getItem());
-            s++;
-        }
-        return emailContentManagers;
-    }
-
     public static void setupLoginRegisterLayout(Player player, @NotNull LoginRegisterEnum title) {
         InventoryManager inventoryManager = new InventoryManager(player, 54, title.toString());
         inventoryMap.put(player.getName() + title.toString(), inventoryManager);
@@ -112,88 +83,5 @@ public class GUIUtils {
                 inventoryManager.setItem(i, itemStackManager5.getItem());
             }
         }
-    }
-
-    public static @NotNull List<String> getLoreList(EmailContentBean emailContentBean, @NotNull String inputString, int length) {
-        List<String> list = new ArrayList<>();
-        list.add(ChatColor.GRAY + convertMillisecondsToRegularTime(Long.valueOf(emailContentBean.getUuid())));
-        list.add(ChatColor.GOLD + "------邮件内容------");
-        int strLen = inputString.length();
-        int start = 0;
-        int num = length;
-        String temp;
-        while (true) {
-            try {
-                if (num >= strLen) {
-                    temp = inputString.substring(start, strLen);
-                } else {
-                    temp = inputString.substring(start, num);
-                }
-            } catch (Exception e) {
-                break;
-            }
-            list.add(ChatColor.WHITE + temp);
-            start = num;
-            num = num + length;
-        }
-        if (emailContentBean.getItemStack() != null) {
-            list.add(ChatColor.GOLD + "------附件内容------");
-            if (emailContentBean.getItemStack().getItemMeta().getDisplayName().equals("")) {
-                list.add(ChatColor.LIGHT_PURPLE + emailContentBean.getItemStack().getType().name() + " * " + emailContentBean.getItemStack().getAmount() + "个");
-            } else {
-                list.add(ChatColor.LIGHT_PURPLE + emailContentBean.getItemStack().getItemMeta().getDisplayName() + " * " + emailContentBean.getItemStack().getAmount() + "个");
-            }
-        }
-        if (!emailContentBean.getRead()) {
-            if (emailContentBean.getItemStack() != null) {
-                list.add(ChatColor.RED + "点击领取附件！");
-            } else {
-                list.add(ChatColor.RED + "点击来标记为已读！");
-            }
-        } else {
-            list.add(ChatColor.AQUA + "已读！");
-        }
-        list.add(ChatColor.DARK_GRAY + "ID:" + emailContentBean.getUuid());
-        return list;
-    }
-
-    public static void setKit(Player player) {
-        File kitFile = new File(ConfigsEnum.DATA_KIT.toString());
-        File kits = new File(ConfigsEnum.KIT.toString());
-        YamlConfiguration claimState = YamlConfiguration.loadConfiguration(kitFile);
-        YamlConfiguration kitsConfig = YamlConfiguration.loadConfiguration(kits);
-        InventoryManager chest = new InventoryManager(null, 54, "物品包/礼包中心");
-        inventoryMap.put(player.getName() + ".kits", chest);
-
-        int s = 0;
-        for (String kitItem : kitsConfig.getKeys(false)) {
-            ArrayList<String> lore = new ArrayList<>();
-            ItemStack item = new ItemStack(Material.valueOf(kitsConfig.getString(kitItem + ".item")));
-            ItemMeta itemMeta = item.getItemMeta();
-            lore.add(unimportant(kitsConfig.getString(kitItem + ".description")));
-            lore.add(ChatColor.AQUA + "等级要求：    " + ChatColor.GOLD + kitsConfig.getInt(kitItem + ".level"));
-            lore.add(ChatColor.AQUA + "可领取职业： " + ChatColor.GOLD + kitsConfig.getString(kitItem + ".job"));
-            lore.add(ChatColor.AQUA + "价格：        " + ChatColor.GOLD + kitsConfig.getInt(kitItem + ".price") + ChatColor.AQUA + " 枚金币");
-            lore.add(ChatColor.DARK_GRAY + "内含物：");
-            for (String i : Objects.requireNonNull(kitsConfig.getConfigurationSection(kitItem + ".contain").getKeys(false))) {
-                lore.add(unimportant(i) + " x " + unimportant(String.valueOf(kitsConfig.getInt(kitItem + ".contain." + i + ".quantity"))) + "个");
-            }
-            String kitName = kitsConfig.getString(kitItem + ".name");
-            if (Objects.requireNonNull(claimState.getStringList(Objects.requireNonNull(kitName))).contains(player.getName())) {
-                lore.add(warning("已领取！"));
-            }
-            Objects.requireNonNull(itemMeta).setLore(lore);
-            itemMeta.setDisplayName(ChatColor.LIGHT_PURPLE + kitsConfig.getString(kitItem + ".name"));
-            item.setItemMeta(itemMeta);
-            inventoryMap.get(player.getName() + ".kits").setItem(s, item);
-            s = s + 1;
-        }
-    }
-
-    private static List<String> sortSet(Set<String> set) {
-        List<String> stringList = new ArrayList<>(set);
-        Collections.sort(stringList);
-        Collections.reverse(stringList);
-        return stringList;
     }
 }

@@ -2,17 +2,14 @@ package com.minecraft.ultikits.views;
 
 import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.inventoryapi.InventoryManager;
-import com.minecraft.ultikits.inventoryapi.PageRegister;
 import com.minecraft.ultikits.inventoryapi.ViewManager;
 import com.minecraft.ultikits.inventoryapi.ViewType;
 import com.minecraft.ultikits.listener.HomeListPageListener;
 import com.minecraft.ultikits.manager.ItemStackManager;
 import com.minecraft.ultikits.utils.Utils;
-import net.milkbowl.vault.chat.Chat;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;

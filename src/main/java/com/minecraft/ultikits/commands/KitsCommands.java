@@ -1,23 +1,22 @@
 package com.minecraft.ultikits.commands;
 
 import com.minecraft.ultikits.commands.abstracts.AbstractPlayerCommandExecutor;
+import com.minecraft.ultikits.views.KitsView;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
-
-import static com.minecraft.ultikits.utils.GUIUtils.inventoryMap;
-import static com.minecraft.ultikits.utils.GUIUtils.setKit;
 
 
 public class KitsCommands extends AbstractPlayerCommandExecutor {
 
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
-        if (!"kits".equalsIgnoreCase(command.getName())){
+        if(strings.length>0){
             return false;
         }
-        setKit(player);
-        player.openInventory(inventoryMap.get(player.getName()+".kits").getInventory());
+        Inventory inventory = KitsView.setUp(player);
+        player.openInventory(inventory);
         return true;
     }
 }

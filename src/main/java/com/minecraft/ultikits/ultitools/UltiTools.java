@@ -9,9 +9,7 @@ import com.minecraft.ultikits.config.ConfigController;
 import com.minecraft.ultikits.enums.ErrorType;
 import com.minecraft.ultikits.inventoryapi.PageRegister;
 import com.minecraft.ultikits.listener.ChestLockListener;
-import com.minecraft.ultikits.listener.EmailPageListener;
 import com.minecraft.ultikits.listener.JoinListener;
-import com.minecraft.ultikits.listener.KitsPageListener;
 import com.minecraft.ultikits.listener.LoginGUIListener;
 import com.minecraft.ultikits.listener.LoginListener;
 import com.minecraft.ultikits.listener.ChatListener;
@@ -168,7 +166,6 @@ public final class UltiTools extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("ultitools")).setExecutor(new ToolsCommands());
         if (this.getConfig().getBoolean("enable_email")) {
             CommandRegister.registerCommand(plugin, new EmailCommands(), "ultikits.tools.email", "邮件系统", "email");
-            Bukkit.getPluginManager().registerEvents(new EmailPageListener(), this);
         }
         if (this.getConfig().getBoolean("enable_home")) {
             CommandRegister.registerCommand(plugin, new HomeCommands(), "ultikits.tools.home", "回到某个家", "home");
@@ -199,7 +196,6 @@ public final class UltiTools extends JavaPlugin {
         }
         if (this.getConfig().getBoolean("enable_kits")) {
             CommandRegister.registerCommand(plugin, new KitsCommands(), "ultikits.tools.kits", "礼包系统", "kits");
-            getServer().getPluginManager().registerEvents(new KitsPageListener(), this);
         }
         if (this.getConfig().getBoolean("enable_cleaner")) {
             CommandRegister.registerCommand(plugin, new CleanerCommands(), "ultikits.tools.clean", "清理系统", "clean");
