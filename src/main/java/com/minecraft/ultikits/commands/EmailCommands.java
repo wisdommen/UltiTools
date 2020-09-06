@@ -126,7 +126,6 @@ public class EmailCommands extends AbstractTabExecutor {
     }
 
     public void readEmails(Player player) {
-        //emailContentManagerMap = GUIUtils.setUpEmailInBox(player);
         Inventory inventory = EmailView.setUp(player);
         player.openInventory(inventory);
         player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 10, 1);
