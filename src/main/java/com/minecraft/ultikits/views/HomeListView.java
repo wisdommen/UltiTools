@@ -28,7 +28,7 @@ public class HomeListView {
     }
 
     public static Inventory setUp(Player player) {
-        InventoryManager inventoryManager = new InventoryManager(null, 54, player.getName() + "的家列表", true);
+        InventoryManager inventoryManager = new InventoryManager(null, 36, player.getName() + "的家列表", true);
         inventoryManager.presetPage(ViewType.PREVIOUS_QUIT_NEXT);
         inventoryManager.create();
         ViewManager.registerView(inventoryManager, new HomeListPageListener());

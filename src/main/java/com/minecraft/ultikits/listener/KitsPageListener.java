@@ -30,6 +30,9 @@ public class KitsPageListener extends PagesListener {
 
     @Override
     public void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
+        if (!inventoryManager.getTitle().contains("物品包/礼包中心")){
+            return;
+        }
         File kit_file = new File(ConfigsEnum.DATA_KIT.toString());
         YamlConfiguration kit_config = YamlConfiguration.loadConfiguration(kit_file);
 

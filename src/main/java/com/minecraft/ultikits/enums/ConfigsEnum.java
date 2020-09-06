@@ -14,7 +14,8 @@ public enum ConfigsEnum {
     CLEANER(UltiTools.getInstance().getDataFolder() + "/cleaner.yml"),
     PERMISSION_GROUP(UltiTools.getInstance().getDataFolder()+"/permission/groups.yml"),
     PERMISSION_USER(UltiTools.getInstance().getDataFolder()+"/permission/users.yml"),
-    PERMISSION_INHERITED(UltiTools.getInstance().getDataFolder()+"/permission/globalgroups.yml");
+    PERMISSION_INHERITED(UltiTools.getInstance().getDataFolder()+"/permission/globalgroups.yml"),
+    WORLDS(UltiTools.getInstance().getDataFolder() + "/worlds.yml");
 
     private final String path;
 

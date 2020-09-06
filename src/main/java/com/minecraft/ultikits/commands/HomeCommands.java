@@ -24,7 +24,7 @@ import static com.minecraft.ultikits.utils.Utils.getHomeList;
 
 public class HomeCommands extends AbstractTabExecutor implements Listener {
 
-    private final static Map<Player, Boolean> teleportingPlayers = new HashMap<>();
+    public final static Map<Player, Boolean> teleportingPlayers = new HashMap<>();
 
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] args, @NotNull Player player) {
@@ -69,7 +69,7 @@ public class HomeCommands extends AbstractTabExecutor implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event){
         Player player = event.getPlayer();
-        if (teleportingPlayers.get(player)==null) return;
+        if (teleportingPlayers.get(player)==null || !teleportingPlayers.get(player)) return;
         if (teleportingPlayers.get(player)){
             teleportingPlayers.put(player, false);
         }
@@ -96,6 +96,7 @@ public class HomeCommands extends AbstractTabExecutor implements Listener {
                     player.teleport(location);
                     player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 0);
                     player.sendTitle(ChatColor.GREEN + "[家插件]欢迎回家！", "", 10, 50, 20);
+                    teleportingPlayers.put(player, false);
                     this.cancel();
                     return;
                 }
