@@ -28,22 +28,26 @@ public class ItemStackManager {
     public ItemStackManager(ItemStack item) {
         this.item = item;
         this.displayName = item.getItemMeta().getDisplayName();
+        setUpItem();
     }
 
     public ItemStackManager(ItemStack item, String displayName) {
         this.item = item;
         this.displayName = displayName;
+        setUpItem();
     }
 
     public ItemStackManager(ItemStack item, ArrayList<String> lore) {
         this.item = item;
         this.lore = lore;
+        setUpItem();
     }
 
     public ItemStackManager(ItemStack item, ArrayList<String> lore, String displayName) {
         this.item = item;
         this.lore = lore;
         this.displayName = displayName;
+        setUpItem();
     }
 
     public ItemStackManager(ItemStack item, ArrayList<String> lore, String displayName, int position, List<String> commands) {
@@ -52,6 +56,7 @@ public class ItemStackManager {
         this.displayName = displayName;
         this.position = position;
         this.commands = commands;
+        setUpItem();
     }
 
     public ItemStackManager(ItemStack item, ArrayList<String> lore, String displayName, int position, Inventory page, List<String> commands) {
@@ -61,6 +66,7 @@ public class ItemStackManager {
         this.position = position;
         this.page = page;
         this.commands = commands;
+        setUpItem();
     }
 
     public void addLore(String lore) {

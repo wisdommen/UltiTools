@@ -1,4 +1,4 @@
-package com.minecraft.ultikits.commands;
+package com.minecraft.ultikits.register;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;

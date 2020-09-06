@@ -11,7 +11,10 @@ public enum ConfigsEnum {
     KIT(UltiTools.getInstance().getDataFolder() + "/kits.yml"),
     DATA_KIT(UltiTools.getInstance().getDataFolder() + "/kitData/kit.yml"),
     PLAYER(UltiTools.getInstance().getDataFolder() + "/playerData"),
-    CLEANER(UltiTools.getInstance().getDataFolder() + "/cleaner.yml");
+    CLEANER(UltiTools.getInstance().getDataFolder() + "/cleaner.yml"),
+    PERMISSION_GROUP(UltiTools.getInstance().getDataFolder()+"/permission/groups.yml"),
+    PERMISSION_USER(UltiTools.getInstance().getDataFolder()+"/permission/users.yml"),
+    PERMISSION_INHERITED(UltiTools.getInstance().getDataFolder()+"/permission/globalgroups.yml");
 
     private final String path;
 

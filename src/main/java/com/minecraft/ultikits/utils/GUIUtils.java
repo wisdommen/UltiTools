@@ -1,6 +1,6 @@
 package com.minecraft.ultikits.utils;
 
-import com.minecraft.ultikits.manager.InventoryManager;
+import com.minecraft.ultikits.inventoryapi.InventoryManager;
 import com.minecraft.ultikits.manager.ItemStackManager;
 import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.enums.LoginRegisterEnum;
@@ -35,13 +35,11 @@ public class GUIUtils {
         File chestFile = new File(ConfigsEnum.PLAYER_CHEST.toString(), playerName + ".yml");
         YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
         InventoryManager chest = new InventoryManager(null, 36, "远程背包");
-        chest.create();
         inventoryMap.put(playerName + ".chest", chest);
 
         if (!chestConfig.getKeys(false).isEmpty()) {
             for (int i = 1; i <= chestConfig.getKeys(false).size(); i++) {
                 ItemStackManager itemStackManager = new ItemStackManager(new ItemStack(Material.CHEST), new ArrayList<>(), info(i + "号背包"));
-                itemStackManager.setUpItem();
                 inventoryMap.get(playerName + ".chest").setItem(i - 1, itemStackManager.getItem());
             }
         }
@@ -60,7 +58,6 @@ public class GUIUtils {
         EmailManager emailManager = new EmailManager(file);
         Map<String, EmailContentBean> emailContentManagers = emailManager.getEmails();
         InventoryManager inventoryManager = new InventoryManager(player, 54, "收件箱");
-        inventoryManager.create();
         inventoryMap.put(player.getName() + ".inbox", inventoryManager);
 
         List<String> list = sortSet(emailContentManagers.keySet());
@@ -79,7 +76,6 @@ public class GUIUtils {
             } else {
                 mail = new ItemStackManager(new ItemStack(Material.FILLED_MAP, 1), lore, "来自：" + sender);
             }
-            mail.setUpItem();
             inventoryManager.forceSetItem(s, mail.getItem());
             s++;
         }
@@ -88,11 +84,9 @@ public class GUIUtils {
 
     public static void setupLoginRegisterLayout(Player player, @NotNull LoginRegisterEnum title) {
         InventoryManager inventoryManager = new InventoryManager(player, 54, title.toString());
-        inventoryManager.create();
         inventoryMap.put(player.getName() + title.toString(), inventoryManager);
 
         ItemStackManager itemStackManager = new ItemStackManager(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), "点按输入数字");
-        itemStackManager.setUpItem();
         //数字键盘
         inventoryManager.setItem(21, itemStackManager.getItem(1));
         inventoryManager.setItem(22, itemStackManager.getItem(2));
@@ -107,16 +101,12 @@ public class GUIUtils {
 
         //其他功能键
         ItemStackManager itemStackManager2 = new ItemStackManager(new ItemStack(Material.RED_STAINED_GLASS_PANE), "清空");
-        itemStackManager2.setUpItem();
         inventoryManager.setItem(48, itemStackManager2.getItem());
         ItemStackManager itemStackManager3 = new ItemStackManager(new ItemStack(Material.GREEN_STAINED_GLASS_PANE), "确认");
-        itemStackManager3.setUpItem();
         inventoryManager.setItem(50, itemStackManager3.getItem());
         ItemStackManager itemStackManager4 = new ItemStackManager(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), "退出");
-        itemStackManager4.setUpItem();
         inventoryManager.setItem(53, itemStackManager4.getItem());
         ItemStackManager itemStackManager5 = new ItemStackManager(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), "");
-        itemStackManager5.setUpItem();
         for (int i = 9; i < 54; i++) {
             if (inventoryManager.getInventory().getItem(i) == null) {
                 inventoryManager.setItem(i, itemStackManager5.getItem());
@@ -173,7 +163,6 @@ public class GUIUtils {
         YamlConfiguration claimState = YamlConfiguration.loadConfiguration(kitFile);
         YamlConfiguration kitsConfig = YamlConfiguration.loadConfiguration(kits);
         InventoryManager chest = new InventoryManager(null, 54, "物品包/礼包中心");
-        chest.create();
         inventoryMap.put(player.getName() + ".kits", chest);
 
         int s = 0;
