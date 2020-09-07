@@ -63,6 +63,7 @@ public class SetHomeCommands extends AbstractPlayerCommandExecutor {
     }
 
     private static boolean isPlayerCanSetHome(Player player) {
+        if (player.hasPermission("ultikits.tools.admin")) return true;
         if (player.hasPermission("ultikits.tools.level1")) {
             if (UltiTools.getInstance().getConfig().getInt("home_pro") == 0) return true;
             return getHomeList(player).size() < UltiTools.getInstance().getConfig().getInt("home_pro");

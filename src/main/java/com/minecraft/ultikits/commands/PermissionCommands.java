@@ -1,5 +1,6 @@
 package com.minecraft.ultikits.commands;
 
+import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import com.minecraft.ultikits.utils.GroupManagerUtils;
 import com.minecraft.ultikits.views.PermissionMainView;
@@ -14,6 +15,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -160,24 +163,44 @@ public class PermissionCommands implements TabExecutor {
                         return Arrays.asList("player", "group");
                     case "add":
                     case "remove":
-                        return Collections.singletonList("[玩家名]");
+                        List<String> tabs = new ArrayList<>();
+                        tabs.add("[玩家名]");
+                        for (Player player : Bukkit.getOnlinePlayers()){
+                            tabs.add(player.getName());
+                        }
+                        return tabs;
                     case "create":
-                    case "delete":
                         return Collections.singletonList("[权限组名]");
+                    case "delete":
+                        List<String> tab = new ArrayList<>();
+                        tab.add("[权限组名]");
+                        tab.addAll(GroupManagerUtils.getGroups());
+                        return tab;
                     default:
                         return null;
                 }
             }else if (args.length==3){
                 switch (args[1]){
                     case "player":
-                        return Collections.singletonList("[玩家名]");
+                        List<String> tabs = new ArrayList<>();
+                        tabs.add("[玩家名]");
+                        for (Player player : Bukkit.getOnlinePlayers()){
+                            tabs.add(player.getName());
+                        }
+                        return tabs;
                     case "group":
-                        return Collections.singletonList("[权限组名]");
+                        List<String> tab = new ArrayList<>();
+                        tab.add("[权限组名]");
+                        tab.addAll(GroupManagerUtils.getGroups());
+                        return tab;
                     default:
                         switch (args[0]){
                             case "add":
                             case "remove":
-                                return Collections.singletonList("[权限组名]");
+                                List<String> tab1 = new ArrayList<>();
+                                tab1.add("[权限组名]");
+                                tab1.addAll(GroupManagerUtils.getGroups());
+                                return tab1;
                             case "create":
                                 return Collections.singletonList("[继承的权限组]");
                             default:

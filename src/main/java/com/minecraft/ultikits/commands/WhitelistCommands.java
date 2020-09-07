@@ -23,7 +23,7 @@ public class WhitelistCommands implements TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (player.isOp() ||player.hasPermission("ultikits.tools.whitelist")) {
+            if (player.hasPermission("ultikits.tools.admin") || player.hasPermission("ultikits.tools.whitelist")) {
                 return whiteListCommands(sender, command, args);
             } else {
                 player.sendMessage(ChatColor.RED + "你没有权限！");
@@ -36,11 +36,11 @@ public class WhitelistCommands implements TabExecutor {
 
     private void addPlayerToWhitelist(File file, String name) {
         List<String> whitelist = config.getStringList("whitelist");
-        if (UltiTools.isDatabaseEnabled){
-            if (DatabasePlayerTools.isPlayerExist(name) && DatabasePlayerTools.getPlayerData(name, "whitelisted").equals("false")){
+        if (UltiTools.isDatabaseEnabled) {
+            if (DatabasePlayerTools.isPlayerExist(name) && DatabasePlayerTools.getPlayerData(name, "whitelisted").equals("false")) {
                 DatabasePlayerTools.updatePlayerData(name, "whitelisted", "true");
             }
-        }else {
+        } else {
             whitelist.add(name);
             config.set("whitelist", whitelist);
             try {
@@ -54,11 +54,11 @@ public class WhitelistCommands implements TabExecutor {
 
     private void removePlayerFromWhitelist(File file, String name) {
         List<String> whitelist = config.getStringList("whitelist");
-        if (UltiTools.isDatabaseEnabled){
-            if (DatabasePlayerTools.isPlayerExist(name) && DatabasePlayerTools.getPlayerData(name, "whitelisted").equals("true")){
+        if (UltiTools.isDatabaseEnabled) {
+            if (DatabasePlayerTools.isPlayerExist(name) && DatabasePlayerTools.getPlayerData(name, "whitelisted").equals("true")) {
                 DatabasePlayerTools.updatePlayerData(name, "whitelisted", "false");
             }
-        }else {
+        } else {
             if (whitelist.contains(name)) {
                 whitelist.remove(name);
                 config.set("whitelist", whitelist);
@@ -71,7 +71,7 @@ public class WhitelistCommands implements TabExecutor {
         }
     }
 
-    private void sendHelpMessage(CommandSender sender){
+    private void sendHelpMessage(CommandSender sender) {
         sender.sendMessage(ChatColor.YELLOW + "白名单系统帮助：");
         sender.sendMessage(ChatColor.AQUA + "/wl help 帮助");
         sender.sendMessage(ChatColor.AQUA + "/wl list 白名单列表");
@@ -79,7 +79,7 @@ public class WhitelistCommands implements TabExecutor {
         sender.sendMessage(ChatColor.AQUA + "/wl remove [玩家名] 将玩家移出白名单");
     }
 
-    private boolean whiteListCommands(CommandSender sender, Command command, String[] args){
+    private boolean whiteListCommands(CommandSender sender, Command command, String[] args) {
         if ("wl".equalsIgnoreCase(command.getName())) {
             if (args.length == 1) {
                 switch (args[0]) {
@@ -113,7 +113,7 @@ public class WhitelistCommands implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
-        if (sender instanceof Player){
+        if (sender instanceof Player) {
             Player player = (Player) sender;
             if (player.isOp() || player.hasPermission("ultikits.tools.whitelist")) {
                 if (args.length == 1) {
@@ -123,7 +123,7 @@ public class WhitelistCommands implements TabExecutor {
                     tabCommands.add("add");
                     tabCommands.add("remove");
                     return tabCommands;
-                }else if(args.length == 2){
+                } else if (args.length == 2) {
                     List<String> tabCommands = new ArrayList<>();
                     tabCommands.add("[玩家名]");
                     return tabCommands;

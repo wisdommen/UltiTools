@@ -3,12 +3,14 @@ package com.minecraft.ultikits.listener;
 import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
@@ -18,10 +20,21 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+import static com.minecraft.ultikits.utils.MessagesUtils.info;
+
 /**
  * @author wisdomme
  */
 public class ChestLockListener implements Listener {
+
+    @EventHandler
+    public void onPlacePlaceChest(BlockPlaceEvent event){
+        Block placedBlock = event.getBlock();
+        if (placedBlock.getType() == Material.CHEST){
+            Player player = event.getPlayer();
+            player.sendMessage(info("输入/lock后点击这个箱子即可上锁哦！"));
+        }
+    }
 
     @EventHandler
     public void onPlayerOpenChest(@NotNull PlayerInteractEvent event) {

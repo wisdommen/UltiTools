@@ -49,7 +49,17 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                     player.openInventory(inventory);
                     return true;
             }
-            if (worldConfig.getStringList("blocked_worlds").contains(strings[0]) && !player.isOp()) {
+            if (blockedWorlds.contains("world_the_end")) {
+                blockedWorlds.remove("world_the_end");
+                blockedWorlds.add("End");
+            } else if (blockedWorlds.contains("world_the_nether")) {
+                blockedWorlds.remove("world_the_nether");
+                blockedWorlds.add("Nether");
+            } else if (blockedWorlds.contains("world")) {
+                blockedWorlds.remove("world");
+                blockedWorlds.add("World");
+            }
+            if (blockedWorlds.contains(strings[0]) && !player.hasPermission("ultikits.tools.admin")) {
                 player.sendMessage(warning("此世界已经被禁止进入！"));
                 return true;
             }
@@ -263,10 +273,10 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
         }
     }
 
-    private void teleport(Player player, Location location){
+    private void teleport(Player player, Location location) {
         HomeCommands.teleportingPlayers.put(player, true);
         Chunk chunk = location.getChunk();
-        if(!chunk.isLoaded()){
+        if (!chunk.isLoaded()) {
             chunk.load();
         }
         new BukkitRunnable() {
@@ -274,7 +284,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
 
             @Override
             public void run() {
-                if (!HomeCommands.teleportingPlayers.get(player)){
+                if (!HomeCommands.teleportingPlayers.get(player)) {
                     player.sendTitle(ChatColor.RED + "[多世界插件]传送失败", "请勿移动！", 10, 50, 20);
                     this.cancel();
                     return;
@@ -300,9 +310,9 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
             newConfig.set("blocked_worlds", oldConfig.getStringList("blocked_worlds"));
             oldConfig.set("注释38请勿修改", "禁止传送进入的世界(已移动至worlds.yml文件里)");
 
-            for (String world : getWorlds()){
-                newConfig.set("world."+world+".type", "GRASS_BLOCK");
-                newConfig.set("world."+world+".describe", "无");
+            for (String world : getWorlds()) {
+                newConfig.set("world." + world + ".type", "GRASS_BLOCK");
+                newConfig.set("world." + world + ".describe", "无");
             }
             try {
                 oldConfig.save(file);

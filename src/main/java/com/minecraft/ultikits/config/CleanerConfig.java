@@ -11,7 +11,6 @@ public class CleanerConfig extends AbstractConfig{
         config.set("config_version", 1.0);
         config.set("cleaner_name", "服务器清理");
         config.set("clean_entity_task_enable", false);
-        config.set("unload_chunk_task_enable", true);
         config.set("enable_smart_clean", true);
         config.set("clean_period", 3000);
         config.set("clean_type", Collections.singletonList("all"));

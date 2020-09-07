@@ -31,7 +31,7 @@ public class CleanerCommands implements TabExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (command.getName().equalsIgnoreCase("clean") && sender.hasPermission("ultikits.tools.clean")) {
+        if (command.getName().equalsIgnoreCase("clean") && (sender.hasPermission("ultikits.tools.clean")||sender.hasPermission("ultikits.tools.admin"))) {
             if (!UltiTools.isProVersion) {
                 sender.sendMessage(warning("这是一个付费版功能，激活付费版之后就可以使用啦！"));
                 return true;
