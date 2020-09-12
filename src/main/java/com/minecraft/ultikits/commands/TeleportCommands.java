@@ -1,6 +1,5 @@
 package com.minecraft.ultikits.commands;
 
-import com.minecraft.ultikits.commands.abstracts.AbstractPlayerCommandExecutor;
 import com.minecraft.ultikits.commands.abstracts.AbstractTabExecutor;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;

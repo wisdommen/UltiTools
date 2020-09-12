@@ -11,8 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-import static com.minecraft.ultikits.utils.MessagesUtils.warning;
-
 public class GroupManagerUtils {
     private static final YamlConfiguration usersConfig;
     private static final YamlConfiguration groupsConfig;
@@ -47,8 +45,17 @@ public class GroupManagerUtils {
         return usersConfig.getStringList("users." + uuid.toString() + ".subgroups");
     }
 
-    public static List<String> getAllPermissions(UUID uuid) {
+    public static List<String> getAllPlayerPermissions(UUID uuid) {
         return usersConfig.getStringList("users." + uuid.toString() + ".permissions");
+    }
+
+    public static List<String> getAllPermissions(UUID uuid){
+        List<String> permission = getAllPlayerPermissions(uuid);
+        permission.addAll(getGroupPermissions(getGroup(uuid)));
+        for (String subGroup : getSubGroups(uuid)){
+            permission.addAll(getGroupPermissions(subGroup));
+        }
+        return permission;
     }
 
     public static List<String> getGroups() {
@@ -96,7 +103,7 @@ public class GroupManagerUtils {
     public static void addPlayerPermission(Player player, String permission, boolean fromInheritance) {
         UUID playerID = player.getUniqueId();
         if (!fromInheritance) {
-            List<String> permissions = getAllPermissions(playerID);
+            List<String> permissions = getAllPlayerPermissions(playerID);
             if (permissions.contains(permission)) {
                 return;
             }
@@ -129,7 +136,7 @@ public class GroupManagerUtils {
 
     public static void takePlayerPermission(Player player, String permission) {
         UUID playerID = player.getUniqueId();
-        List<String> permissions = getAllPermissions(playerID);
+        List<String> permissions = getAllPlayerPermissions(playerID);
         if (!permissions.contains(permission)) {
             return;
         }

@@ -2,11 +2,14 @@ package com.minecraft.ultikits.commands;
 
 import com.minecraft.ultikits.commands.abstracts.AbstractTabExecutor;
 import com.minecraft.ultikits.enums.ConfigsEnum;
+import com.minecraft.ultikits.ultitools.UltiTools;
 import com.minecraft.ultikits.utils.GUIUtils;
+import com.minecraft.ultikits.views.RemoteBagView;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,11 +28,11 @@ public class RemoteBagCommands extends AbstractTabExecutor {
         if ("bag".equals(command.getName())) {
             switch (strings.length) {
                 case 0:
-                    GUIUtils.setPlayerRemoteChest(player);
-                    player.openInventory(GUIUtils.inventoryMap.get(player.getName() + ".chest").getInventory());
+                    Inventory bag = RemoteBagView.setUp(player.getName());
+                    player.openInventory(bag);
                     return true;
                 case 2:
-                    if (!player.hasPermission("ultitools.tools.admin")) {
+                    if (!(player.hasPermission("ultitools.tools.admin") || player.hasPermission("ultikits.tools.admin"))) {
                         return false;
                     }
                     List<File> fileList = getFiles(ConfigsEnum.PLAYER_CHEST.toString());
@@ -59,6 +62,18 @@ public class RemoteBagCommands extends AbstractTabExecutor {
                     }
                     player.sendMessage(warning("此玩家不存在或未开通远程背包"));
                     return true;
+                case 3:
+                    if (!UltiTools.isProVersion){
+                        return false;
+                    }
+                    switch (strings[1]){
+                        case "share":
+
+                        case "unshare":
+                            return true;
+                        default:
+                            return false;
+                    }
                 default:
                     return false;
             }
@@ -70,7 +85,7 @@ public class RemoteBagCommands extends AbstractTabExecutor {
     @Override
     protected @Nullable List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
         List<String> tabs = new ArrayList<>();
-        if (!player.hasPermission("ultitools.tools.admin")) {
+        if (!(player.hasPermission("ultitools.tools.admin") || player.hasPermission("ultikits.tools.admin"))) {
             return null;
         }
         switch (strings.length) {

@@ -189,7 +189,7 @@ public final class UltiTools extends JavaPlugin {
         }
         if (this.getConfig().getBoolean("enable_remote_chest")) {
             CommandRegister.registerCommand(plugin, new RemoteBagCommands(), "ultikits.tools.bag", "远程背包", "bag");
-            Bukkit.getPluginManager().registerEvents(new ChestPageListener(), this);
+            CommandRegister.registerCommand(plugin, new RemoteBagConsoleCommands(), "ultikits.tools.admin", "远程背包后台命令", "createbag");
         }
         if (this.getConfig().getBoolean("enable_multiworlds")) {
             CommandRegister.registerCommand(plugin, new MultiWorldsCommands(), "ultikits.tools.mw", "多世界系统", "mw");
@@ -216,6 +216,7 @@ public final class UltiTools extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new LoginListener(), this);
             getServer().getPluginManager().registerEvents(new LoginGUIListener(), this);
             checkPlayerAlreadyLogin();
+            //CommandRegister.registerCommand(plugin, new LoginRegisterCommands(), "ultikits.tools.login", "登陆系统", "reg", "regs", "re");
         }
 
         //注册任务

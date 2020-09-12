@@ -1,6 +1,9 @@
 package com.minecraft.ultikits.listener;
 
 import com.minecraft.ultikits.enums.ConfigsEnum;
+import com.minecraft.ultikits.inventoryapi.InventoryManager;
+import com.minecraft.ultikits.inventoryapi.PageRegister;
+import com.minecraft.ultikits.inventoryapi.PagesListener;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import com.minecraft.ultikits.utils.SerializationUtils;
 import com.minecraft.ultikits.utils.Utils;
@@ -27,7 +30,7 @@ import static com.minecraft.ultikits.utils.EconomyUtils.withdraw;
 import static com.minecraft.ultikits.utils.MessagesUtils.not_enough_money;
 import static com.minecraft.ultikits.utils.MessagesUtils.warning;
 
-public class ChestPageListener implements Listener {
+public class ChestPageListener extends PagesListener {
 
     private final static Map<String, Player> inventoryLock = new HashMap<>();
 
@@ -53,44 +56,6 @@ public class ChestPageListener implements Listener {
         player.playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, 10, 1);
         player.openInventory(remote_chest);
         inventoryLock.put(chest_name, player);
-    }
-
-
-    @EventHandler
-    public void onItemClicked(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
-        ItemStack clicked = event.getCurrentItem();
-        YamlConfiguration config = Utils.getConfig(Utils.getConfigFile());
-        File chestFile = new File(ConfigsEnum.PLAYER_CHEST.toString(), player.getName() + ".yml");
-        YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
-
-        if ("远程背包".equals(event.getView().getTitle())) {
-            if (clicked != null && clicked.getItemMeta() != null) {
-                event.setCancelled(true);
-                if (clicked.getItemMeta().getDisplayName().contains("号背包")) {
-                    String chestName = player.getName() + "的" + ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
-                    loadBag(chestName, player, player);
-                } else if ("创建背包".equals(ChatColor.stripColor(clicked.getItemMeta().getDisplayName()))) {
-                    int price = config.getInt("price_of_create_a_remote_chest");
-                    if (UltiTools.getIsVaultInstalled()) {
-                        if (UltiTools.getEcon().has(Bukkit.getOfflinePlayer(player.getUniqueId()), price)) {
-                            UltiTools.getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(player.getUniqueId()), config.getInt("price_of_create_a_remote_chest"));
-                            loadBag(player.getName() + "的" + (chestConfig.getKeys(false).size() + 1) + "号背包", player, player);
-                        } else {
-                            player.sendMessage(not_enough_money);
-                        }
-                    } else if (UltiTools.getIsUltiEconomyInstalled()) {
-                        if (withdraw(player, price)) {
-                            loadBag(player.getName() + "的" + (chestConfig.getKeys(false).size() + 1) + "号背包", player, player);
-                        } else {
-                            player.sendMessage(not_enough_money);
-                        }
-                    } else {
-                        player.sendMessage(ChatColor.RED + "未找到经济前置！");
-                    }
-                }
-            }
-        }
     }
 
     @EventHandler
@@ -120,6 +85,41 @@ public class ChestPageListener implements Listener {
             player.playSound(player.getLocation(), Sound.BLOCK_CHEST_CLOSE, 10, 1);
             chestConfig.save(chestFile);
             inventoryLock.put(ChatColor.stripColor(event.getView().getTitle()), null);
+        }
+    }
+
+    @Override
+    public void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clicked) {
+        if (event.getView().getTitle().contains((player.getName()+"的远程背包"))) {
+            YamlConfiguration config = Utils.getConfig(Utils.getConfigFile());
+            File chestFile = new File(ConfigsEnum.PLAYER_CHEST.toString(), player.getName() + ".yml");
+            YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
+
+            if (clicked != null && clicked.getItemMeta() != null) {
+                event.setCancelled(true);
+                if (clicked.getItemMeta().getDisplayName().contains("号背包")) {
+                    String chestName = player.getName() + "的" + ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
+                    loadBag(chestName, player, player);
+                } else if ("创建背包".equals(ChatColor.stripColor(clicked.getItemMeta().getDisplayName()))) {
+                    int price = config.getInt("price_of_create_a_remote_chest");
+                    if (UltiTools.getIsVaultInstalled()) {
+                        if (UltiTools.getEcon().has(Bukkit.getOfflinePlayer(player.getUniqueId()), price)) {
+                            UltiTools.getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(player.getUniqueId()), config.getInt("price_of_create_a_remote_chest"));
+                            loadBag(player.getName() + "的" + (chestConfig.getKeys(false).size() + 1) + "号背包", player, player);
+                        } else {
+                            player.sendMessage(not_enough_money);
+                        }
+                    } else if (UltiTools.getIsUltiEconomyInstalled()) {
+                        if (withdraw(player, price)) {
+                            loadBag(player.getName() + "的" + (chestConfig.getKeys(false).size() + 1) + "号背包", player, player);
+                        } else {
+                            player.sendMessage(not_enough_money);
+                        }
+                    } else {
+                        player.sendMessage(ChatColor.RED + "未找到经济前置！");
+                    }
+                }
+            }
         }
     }
 }

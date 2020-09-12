@@ -49,7 +49,7 @@ public class PermissionMainView {
 
     private static ArrayList<String> setUpLore(OfflinePlayer player) {
         UUID uuid = player.getUniqueId();
-        List<String> permissions = GroupManagerUtils.getAllPermissions(uuid);
+        List<String> permissions = GroupManagerUtils.getAllPlayerPermissions(uuid);
         String group = GroupManagerUtils.getGroup(uuid);
         List<String> subGroups = GroupManagerUtils.getSubGroups(uuid);
         ArrayList<String> lore = new ArrayList<>();
