@@ -123,6 +123,9 @@ public class JoinListener implements Listener {
 
     @EventHandler
     public void onJoinSaveIP(PlayerLoginEvent event) {
+        if (!UltiTools.isProVersion){
+            return;
+        }
         Player player = event.getPlayer();
         InetAddress ipAddress = event.getAddress();
         String ip = ipAddress.getHostAddress().replaceAll("\\.", "_");
