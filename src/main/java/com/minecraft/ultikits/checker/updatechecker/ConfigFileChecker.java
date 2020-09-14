@@ -94,7 +94,7 @@ public class ConfigFileChecker {
             try {
                 URL url = new URL("https://raw.githubusercontent.com/wisdommen/wisdommen.github.io/master/collections/Ultitools/UltiTools-" + version + ".jar");
                 ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-                FileOutputStream fos = new FileOutputStream(UltiTools.getInstance().getDataFolder().getPath().replace("\\UltiTools", "") + "\\UltiTools-" + version + ".jar");
+                FileOutputStream fos = new FileOutputStream(UltiTools.getInstance().getDataFolder().getPath().replace(java.io.File.separator+"UltiTools", "") + java.io.File.separator+"UltiTools-" + version + ".jar");
                 fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
                 fos.close();
                 return true;
@@ -105,7 +105,7 @@ public class ConfigFileChecker {
         }
 
         public static void deleteOldVersion () {
-            List<File> files = getFiles(UltiTools.getInstance().getDataFolder().getPath().replace("\\UltiTools", ""));
+            List<File> files = getFiles(UltiTools.getInstance().getDataFolder().getPath().replace(java.io.File.separator+"UltiTools", ""));
             for (File file : files) {
                 if (file.getName().contains("UltiTools-") && !file.getName().equals("UltiTools-" + version + ".jar")) {
                     file.delete();

@@ -21,9 +21,9 @@ public class GroupManagerUtils {
 
     static {
         if (UltiTools.isGroupManagerEnabled) {
-            usersFile = new File(UltiTools.getInstance().getDataFolder().getPath().replace("/UltiTools", "/GroupManager/worlds/world/users.yml"));
-            groupsFile = new File(UltiTools.getInstance().getDataFolder().getPath().replace("/UltiTools", "/GroupManager/worlds/world/groups.yml"));
-            inheritedFile = new File(UltiTools.getInstance().getDataFolder().getPath().replace("/UltiTools", "/GroupManager/globalgroups.yml"));
+            usersFile = new File(UltiTools.getInstance().getDataFolder().getPath().replace(java.io.File.separator+"UltiTools", "%SEP%GroupManager%SEP%worlds%SEP%world%SEP%users.yml".replaceAll("%sep%", java.io.File.separator)));
+            groupsFile = new File(UltiTools.getInstance().getDataFolder().getPath().replace(java.io.File.separator+"UltiTools", "%SEP%GroupManager%SEP%worlds%SEP%world%SEP%groups.yml".replaceAll("%sep%", java.io.File.separator)));
+            inheritedFile = new File(UltiTools.getInstance().getDataFolder().getPath().replace(java.io.File.separator+"UltiTools", "%SEP%GroupManager%SEP%globalgroups.yml".replaceAll("%sep%", java.io.File.separator)));
         } else {
             usersFile = new File(ConfigsEnum.PERMISSION_USER.toString());
             groupsFile = new File(ConfigsEnum.PERMISSION_GROUP.toString());
@@ -72,14 +72,6 @@ public class GroupManagerUtils {
 
     private static List<String> getGroupPermissions(String group) {
         return groupsConfig.getStringList("groups." + group + ".permissions");
-    }
-
-    public static YamlConfiguration getUsersConfig() {
-        return usersConfig;
-    }
-
-    public static YamlConfiguration getGroupsConfig() {
-        return groupsConfig;
     }
 
     public static void addGroupPermission(String group, String permission) {
@@ -264,6 +256,27 @@ public class GroupManagerUtils {
         groupsConfig.set("groups." + group, null);
         try {
             groupsConfig.save(groupsFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void initPlayerData(UUID uuid){
+        String path = "users."+uuid.toString();
+        usersConfig.set(path+".subgroup", new ArrayList<>());
+        usersConfig.set(path+".group", "Default");
+        usersConfig.set(path+".permissions", new ArrayList<>());
+        try {
+            usersConfig.save(usersFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void updateLastName(Player player){
+        usersConfig.set("users."+player.getUniqueId().toString()+".lastname", player.getName());
+        try {
+            usersConfig.save(usersFile);
         } catch (IOException e) {
             e.printStackTrace();
         }

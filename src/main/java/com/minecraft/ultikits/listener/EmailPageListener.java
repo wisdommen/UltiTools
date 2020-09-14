@@ -7,12 +7,8 @@ import com.minecraft.ultikits.utils.SerializationUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,23 +16,6 @@ import java.util.Objects;
 
 
 public class EmailPageListener extends PagesListener {
-
-    @EventHandler
-    public void onPlayerJoin(@NotNull PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        File folder = new File(ConfigsEnum.PLAYER_EMAIL.toString());
-        File file = new File(folder, player.getName() + ".yml");
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
     @Override
     public void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {

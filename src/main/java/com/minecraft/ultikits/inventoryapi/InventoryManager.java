@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public class InventoryManager {
+public class InventoryManager implements InventoryManagerAPI {
 
     private Inventory inventory;
     private final InventoryHolder owner;
@@ -53,6 +53,7 @@ public class InventoryManager {
         }
     }
 
+    @Override
     public void create() {
         if (title == null){
             title = groupTitle;
@@ -68,6 +69,7 @@ public class InventoryManager {
         }
     }
 
+    @Override
     public void presetPage(ViewType type){
         this.isLastLineDisabled = type.isLastLineEnabled();
         if (isLastLineDisabled) {
@@ -82,6 +84,7 @@ public class InventoryManager {
         this.backGroundColor = type.getBackGroundColor();
     }
 
+    @Override
     public void setItem(int position, ItemStack item) {
         if (position >= inventory.getSize()) {
             return;
@@ -98,10 +101,12 @@ public class InventoryManager {
         }
     }
 
+    @Override
     public void forceSetItem(int position, ItemStack item) throws IndexOutOfBoundsException {
         inventory.setItem(position, item);
     }
 
+    @Override
     public void addItem(ItemStack item) {
         clearBackGround();
         Map<Integer, ItemStack> items = inventory.addItem(item);
@@ -128,19 +133,23 @@ public class InventoryManager {
         setBackgroundColor(this.backGroundColor);
     }
 
+    @Override
     public void addItem(ItemStackManager itemStackManager) {
         addItem(itemStackManager.getItem());
     }
 
 
+    @Override
     public Inventory getInventory() {
         return inventory;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }
 
+    @Override
     public String getGroupTitle() {
         if (groupTitle == null){
             return title;
@@ -148,6 +157,7 @@ public class InventoryManager {
         return groupTitle;
     }
 
+    @Override
     public int getSize() {
         if (isLastLineDisabled) {
             return inventory.getSize() - 9;
@@ -188,24 +198,29 @@ public class InventoryManager {
         }
     }
 
+    @Override
     public int getPageNumber() {
         return pageNumber;
     }
 
+    @Override
     public boolean isPageButtonEnabled() {
         return isPageButtonEnabled;
     }
 
+    @Override
     public boolean isLastLineDisabled() {
         return isLastLineDisabled;
     }
 
+    @Override
     public void clearView() {
         for (int i = 0; i < getSize(); i++) {
             forceSetItem(i, null);
         }
     }
 
+    @Override
     public void setBackgroundColor(BackGround backgroundColor) {
         ItemStackManager itemStackManager = new ItemStackManager(backgroundColor.getItem(), "");
         while (inventory.firstEmpty() > -1) {
@@ -214,6 +229,7 @@ public class InventoryManager {
         this.backGroundColor = backgroundColor;
     }
 
+    @Override
     public void clearBackGround() {
         for (int i = 0; i < getSize(); i++) {
             if (isBackGround(inventory.getItem(i))) {
@@ -222,15 +238,18 @@ public class InventoryManager {
         }
     }
 
+    @Override
     public boolean isBackGround(@Nullable ItemStack item) {
         if (item == null) return false;
         return item.getType().equals(this.backGroundColor.getItem().getType()) && ChatColor.stripColor(item.getItemMeta().getDisplayName()).equals("");
     }
 
+    @Override
     public void setMiddleButton(Buttons middleButton) {
         this.middleButton = middleButton;
     }
 
+    @Override
     public void setPageButtonEnabled(boolean isPageButtonEnabled){
         this.isPageButtonEnabled = isPageButtonEnabled;
     }

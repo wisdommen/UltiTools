@@ -3,6 +3,7 @@ package com.minecraft.ultikits.listener;
 import com.minecraft.ultikits.enums.LoginRegisterEnum;
 import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
+import com.minecraft.ultikits.utils.MD5Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
@@ -47,21 +48,9 @@ public class LoginGUIListener implements Listener {
                     String password = "null";
                     try {
                         password = getThePassword(currentInventory);
-                    }catch (Exception ignored){
+                    } catch (Exception ignored) {
                     }
-                    if (!password.equals(getPlayerPassword(player))) {
-                        player.sendMessage(warning("密码错误！"));
-                    } else {
-                        setIsLogin(player, true);
-                        player.sendMessage(ChatColor.LIGHT_PURPLE + "登录成功！");
-                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 10, 1);
-                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 10, 1);
-                        player.setGameMode(GameMode.SURVIVAL);
-                        if (player.isFlying()){
-                            player.setFlying(false);
-                        }
-                        player.closeInventory();
-                    }
+                    validateThePassword(player, password);
                 } else if (clicked.getItemMeta().getDisplayName().contains("清空")) {
                     clearTheFirstLine(currentInventory);
                 } else if (clicked.getItemMeta().getDisplayName().contains("退出")) {
@@ -83,14 +72,14 @@ public class LoginGUIListener implements Listener {
                     String password = "null";
                     try {
                         password = getThePassword(currentInventory);
-                    }catch (Exception ignored){
+                    } catch (Exception ignored) {
                     }
                     if (getPlayerPassword(player) == null || getPlayerPassword(player).equals("")) {
                         setPlayerPassword(player, password);
                         clearTheFirstLine(currentInventory);
                         player.sendMessage(ChatColor.LIGHT_PURPLE + "请再次输入密码！");
                     } else {
-                        if (!password.equals(getPlayerPassword(player))) {
+                        if (!(MD5Utils.encrypt(password, player.getName()).equals(getPlayerPassword(player)))) {
                             player.sendMessage(warning("两次输入的密码不同！请重试！"));
                             clearTheFirstLine(currentInventory);
                             file.delete();
@@ -100,7 +89,7 @@ public class LoginGUIListener implements Listener {
                             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 10, 1);
                             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 10, 1);
                             player.setGameMode(GameMode.SURVIVAL);
-                            if (player.isFlying()){
+                            if (player.isFlying()) {
                                 player.setFlying(false);
                             }
                             player.closeInventory();
@@ -110,10 +99,10 @@ public class LoginGUIListener implements Listener {
                     clearTheFirstLine(currentInventory);
                 } else if (clicked.getItemMeta().getDisplayName().contains("退出")) {
                     player.kickPlayer(ChatColor.AQUA + "下次再见！");
-                    if (!getThePassword(currentInventory).equals("")){
+                    if (!getThePassword(currentInventory).equals("")) {
                         setPlayerPassword(player, "");
                     }
-                    if (file.exists()){
+                    if (file.exists()) {
                         file.delete();
                     }
                 }
@@ -130,7 +119,7 @@ public class LoginGUIListener implements Listener {
                 public void run() {
                     if (event.getView().getTitle().contains("登录界面")) {
                         player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.LOGIN).getInventory());
-                    }else if (event.getView().getTitle().contains("注册界面")){
+                    } else if (event.getView().getTitle().contains("注册界面")) {
                         player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.REGISTER).getInventory());
                     }
                 }
@@ -148,76 +137,100 @@ public class LoginGUIListener implements Listener {
 
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event){
-        if (!getIsLogin(event.getPlayer())){
+    public void onPlayerMove(PlayerMoveEvent event) {
+        if (!getIsLogin(event.getPlayer())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event){
-        if (!getIsLogin(event.getPlayer())){
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        if (!getIsLogin(event.getPlayer())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onPlayerDropItem(PlayerDropItemEvent event){
-        if (!getIsLogin(event.getPlayer())){
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
+        if (!getIsLogin(event.getPlayer())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent event){
-        if (!getIsLogin(event.getPlayer())){
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        if (!getIsLogin(event.getPlayer())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onPlayerCommand(PlayerCommandPreprocessEvent event){
-        if (!getIsLogin(event.getPlayer())){
+    public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+        if (!getIsLogin(event.getPlayer())) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onPlayerOpenInventory(InventoryClickEvent event){
-        if (!(event.getWhoClicked() instanceof Player)){
+    public void onPlayerOpenInventory(InventoryClickEvent event) {
+        if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
         Player player = (Player) event.getWhoClicked();
-        if (!getIsLogin(player)){
+        if (!getIsLogin(player)) {
             event.setCancelled(true);
         }
     }
 
     @EventHandler
-    public void onPlayerInteractInventory(InventoryInteractEvent event){
-        if (!(event.getWhoClicked() instanceof Player)){
+    public void onPlayerInteractInventory(InventoryInteractEvent event) {
+        if (!(event.getWhoClicked() instanceof Player)) {
             return;
         }
         Player player = (Player) event.getWhoClicked();
-        if (!getIsLogin(player)){
+        if (!getIsLogin(player)) {
             event.setCancelled(true);
         }
     }
 
-    public void clearTheFirstLine(Inventory inventory) {
+    private void clearTheFirstLine(Inventory inventory) {
         for (int i = 0; i < 9; i++) {
             inventory.setItem(i, null);
         }
     }
 
-    public String getThePassword(Inventory inventory) {
+    private String getThePassword(Inventory inventory) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < 9; i++) {
             ItemStack itemStack = inventory.getItem(i);
-            if (itemStack!=null) {
+            if (itemStack != null) {
                 stringBuilder.append(itemStack.getAmount());
             }
         }
         return stringBuilder.toString();
+    }
+
+    private void encryptExistPassword(Player player, String password) {
+        if (getPlayerPassword(player).split("").length < 10) {
+            setPlayerPassword(player, password);
+        }
+    }
+
+    private void validateThePassword(Player player, String password) {
+        encryptExistPassword(player, getPlayerPassword(player));
+        password = MD5Utils.encrypt(password, player.getName());
+        if (!password.equals(getPlayerPassword(player))) {
+            player.sendMessage(warning("密码错误！"));
+        } else {
+            setIsLogin(player, true);
+            player.sendMessage(ChatColor.LIGHT_PURPLE + "登录成功！");
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 10, 1);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 10, 1);
+            player.setGameMode(GameMode.SURVIVAL);
+            if (player.isFlying()) {
+                player.setFlying(false);
+            }
+            player.closeInventory();
+        }
     }
 }

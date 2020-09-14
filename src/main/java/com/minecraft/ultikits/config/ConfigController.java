@@ -12,5 +12,6 @@ public class ConfigController {
         new GroupPermissionConfig().init(ConfigsEnum.PERMISSION_GROUP.toString());
         new UserPermissionConfig().init(ConfigsEnum.PERMISSION_USER.toString());
         new GlobuleGroupsConfig().init(ConfigsEnum.PERMISSION_INHERITED.toString());
+        new LoginConfig().init(ConfigsEnum.LOGIN.toString());
     }
 }

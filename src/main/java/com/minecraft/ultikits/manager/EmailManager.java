@@ -103,7 +103,13 @@ public class EmailManager {
 
     public Boolean deleteHistoryEmails() {
         if (config.getKeys(false).size() != 0) {
-            return file.delete();
+            if (file.delete()) {
+                try {
+                    return file.createNewFile();
+                }catch (IOException e){
+                    return false;
+                }
+            }
         }
         return false;
     }

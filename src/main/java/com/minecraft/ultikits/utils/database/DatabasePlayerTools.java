@@ -1,6 +1,8 @@
 package com.minecraft.ultikits.utils.database;
 
+import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
+import com.minecraft.ultikits.utils.MD5Utils;
 import com.minecraft.ultikits.utils.database.DatabaseUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -39,7 +41,7 @@ public class DatabasePlayerTools {
         if (isDatabaseEnabled){
             return getPlayerData(player.getName(), "password");
         }else {
-            File file = new File(UltiTools.getInstance().getDataFolder() + "/loginData", player.getName() + ".yml");
+            File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), player.getName() + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             return config.getString("password");
         }
@@ -49,19 +51,20 @@ public class DatabasePlayerTools {
         if (isDatabaseEnabled){
             return getPlayerData(playerName, "password");
         }else {
-            File file = new File(UltiTools.getInstance().getDataFolder() + "/loginData", playerName + ".yml");
+            File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             return config.getString("password");
         }
     }
 
     public static void setPlayerPassword(Player player, String password){
+        String encryptedPassword = MD5Utils.encrypt(password, player.getName());
         if (isDatabaseEnabled){
-            updatePlayerData(player.getName(), "password", password);
+            updatePlayerData(player.getName(), "password", encryptedPassword);
         }else {
-            File file = new File(UltiTools.getInstance().getDataFolder() + "/loginData", player.getName() + ".yml");
+            File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), player.getName() + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-            config.set("password", password);
+            config.set("password", encryptedPassword);
             try {
                 config.save(file);
             } catch (IOException e) {
@@ -71,10 +74,11 @@ public class DatabasePlayerTools {
     }
 
     public static void setPlayerPassword(String playerName, String password){
+        password = MD5Utils.encrypt(password, playerName);
         if (isDatabaseEnabled){
             updatePlayerData(playerName, "password", password);
         }else {
-            File file = new File(UltiTools.getInstance().getDataFolder() + "/loginData", playerName + ".yml");
+            File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             config.set("password", password);
             try {
@@ -89,7 +93,7 @@ public class DatabasePlayerTools {
         if (isDatabaseEnabled){
             return !DatabaseUtils.getData(primaryID, player.getName(), table, "password").equals("");
         }else {
-            File file = new File(UltiTools.getInstance().getDataFolder() + "/loginData", player.getName() + ".yml");
+            File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), player.getName() + ".yml");
             return file.exists();
         }
     }
@@ -98,7 +102,7 @@ public class DatabasePlayerTools {
         if (isDatabaseEnabled){
             return !DatabaseUtils.getData(primaryID, playerName, table, "password").equals("");
         }else {
-            File file = new File(UltiTools.getInstance().getDataFolder() + "/loginData", playerName + ".yml");
+            File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
             return file.exists();
         }
     }

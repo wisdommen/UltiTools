@@ -31,16 +31,16 @@ public class LoginListener implements Listener {
 
     static {
         File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), "loginState.yml");
-        if (!file.exists()){
+        if (!file.exists()) {
             try {
                 file.createNewFile();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            for (Player player : Bukkit.getOnlinePlayers()){
+            for (Player player : Bukkit.getOnlinePlayers()) {
                 playerLoginStatus.put(player.getName(), true);
             }
-        }else {
+        } else {
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             for (String each : config.getKeys(false)) {
                 playerLoginStatus.put(each, config.getBoolean(each));
@@ -48,7 +48,7 @@ public class LoginListener implements Listener {
         }
     }
 
-    @EventHandler(priority= EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerLogin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         gameMode = player.getGameMode();
@@ -61,7 +61,7 @@ public class LoginListener implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    player.sendMessage(ChatColor.RED+"请输入你的登录信息！");
+                    player.sendMessage(ChatColor.RED + "请输入你的登录信息！");
                     if (isPlayerAccountExist(player)) {
                         setupLoginRegisterLayout(player, LoginRegisterEnum.LOGIN);
                         player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.LOGIN.toString()).getInventory());
@@ -74,16 +74,16 @@ public class LoginListener implements Listener {
         }
     }
 
-    public static void checkPlayerAlreadyLogin(){
-        for (Player player : Bukkit.getOnlinePlayers()){
+    public static void checkPlayerAlreadyLogin() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
             playerLoginStatus.put(player.getName(), true);
         }
     }
 
-    public static void savePlayerLoginStatus(){
+    public static void savePlayerLoginStatus() {
         File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), "loginState.yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        for (String each : playerLoginStatus.keySet()){
+        for (String each : playerLoginStatus.keySet()) {
             config.set(each, false);
         }
         try {

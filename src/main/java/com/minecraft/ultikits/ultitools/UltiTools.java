@@ -8,16 +8,10 @@ import com.minecraft.ultikits.commands.*;
 import com.minecraft.ultikits.config.ConfigController;
 import com.minecraft.ultikits.enums.ErrorType;
 import com.minecraft.ultikits.inventoryapi.PageRegister;
-import com.minecraft.ultikits.listener.ChestLockListener;
-import com.minecraft.ultikits.listener.JoinListener;
-import com.minecraft.ultikits.listener.LoginGUIListener;
-import com.minecraft.ultikits.listener.LoginListener;
-import com.minecraft.ultikits.listener.ChatListener;
-import com.minecraft.ultikits.listener.ChestPageListener;
+import com.minecraft.ultikits.listener.*;
 import com.minecraft.ultikits.register.CommandRegister;
 import com.minecraft.ultikits.tasks.*;
 import com.minecraft.ultikits.utils.database.DatabaseUtils;
-import com.minecraft.ultikits.listener.WhitelistListener;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -202,6 +196,7 @@ public final class UltiTools extends JavaPlugin {
         }
         if (this.getConfig().getBoolean("enable_permission")) {
             CommandRegister.registerCommand(plugin, new PermissionCommands(), "ultikits.tools.permission", "权限系统", "pers");
+            getServer().getPluginManager().registerEvents(new PermissionAddOnJoinListener(), this);
         }
 
 

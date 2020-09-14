@@ -7,6 +7,7 @@ public enum ConfigsEnum {
     PLAYER_CHEST(UltiTools.getInstance().getDataFolder() + "/chestData"),
     CHEST(UltiTools.getInstance().getDataFolder() + "/chestData.yml"),
     PLAYER_LOGIN(UltiTools.getInstance().getDataFolder() + "/loginData"),
+    LOGIN(UltiTools.getInstance().getDataFolder() + "/login.yml"),
     WHITELIST(UltiTools.getInstance().getDataFolder() + "/whitelist.yml"),
     KIT(UltiTools.getInstance().getDataFolder() + "/kits.yml"),
     DATA_KIT(UltiTools.getInstance().getDataFolder() + "/kitData/kit.yml"),

@@ -17,9 +17,13 @@ public class PermissionAddOnJoinListener implements Listener {
             @Override
             public void run() {
                 Player player = event.getPlayer();
+                if (GroupManagerUtils.getGroup(player.getUniqueId())==null){
+                    GroupManagerUtils.initPlayerData(player.getUniqueId());
+                }
                 for (String permission : GroupManagerUtils.getAllPermissions(player.getUniqueId())){
                     GroupManagerUtils.addPlayerPermission(player, permission);
                 }
+                GroupManagerUtils.updateLastName(player);
             }
         }.runTaskAsynchronously(UltiTools.getInstance());
     }
