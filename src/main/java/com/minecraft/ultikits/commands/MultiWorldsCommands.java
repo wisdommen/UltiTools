@@ -65,7 +65,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
             }
             if (worldList.contains(strings[0])) {
                 if (strings[0].equalsIgnoreCase("nether")) {
-                    teleportPlayer(player, "world_the_nether");
+                    teleportPlayer(player, "world_nether");
                     return true;
                 } else if (strings[0].equalsIgnoreCase("end")) {
                     teleportPlayer(player, "world_the_end");
@@ -126,6 +126,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                     player.sendMessage(warning("没有找到这个世界！"));
                     return true;
                 case "create":
+                case "load":
                     for (World world : UltiTools.getInstance().getServer().getWorlds()) {
                         if (strings[1].equals(world.getName())) {
                             player.sendMessage(warning("此世界已存在！"));
@@ -140,39 +141,15 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                         }
                     }
                     player.sendMessage(warning("处理中...请耐心等待"));
-                    WorldCreator worldCreator = new WorldCreator(strings[1]);
-                    worldCreator.environment(World.Environment.NORMAL);
-                    worldCreator.type(WorldType.NORMAL);
-                    worldCreator.createWorld();
-                    worlds.add(strings[1]);
-                    worldConfig.set("worlds", worlds);
-                    try {
-                        worldConfig.save(worldsFile);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    player.sendMessage(warning("世界已成功生成！"));
-                    return true;
-                case "load":
-                    for (World world : UltiTools.getInstance().getServer().getWorlds()) {
-                        if (strings[1].equals(world.getName())) {
-                            player.sendMessage(warning("此世界已存在！"));
-                            return false;
-                        }
-                    }
-                    for (String each : worlds) {
-                        if (each.equals(strings[1])) {
-                            player.sendMessage(warning("此世界已存在！"));
-                            return false;
-                        }
-                    }
-                    player.sendMessage(warning("处理中...请耐心等待"));
                     createWorld(worldConfig, worldsFile, worlds, strings[1], player);
                     return true;
                 case "delete":
                     for (World world : UltiTools.getInstance().getServer().getWorlds()) {
                         if (strings[1].equals(world.getName())) {
+                            blockedWorlds.remove(strings[1]);
                             worlds.remove(strings[1]);
+                            worldConfig.set("world."+strings[1], null);
+                            worldConfig.set("blocked_worlds", blockedWorlds);
                             worldConfig.set("worlds", worlds);
                             try {
                                 worldConfig.save(worldsFile);
@@ -231,19 +208,26 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
         new BukkitRunnable() {
             @Override
             public void run() {
-                WorldCreator worldCreator = new WorldCreator(worldName);
-                worldCreator.environment(World.Environment.NORMAL);
-                worldCreator.type(WorldType.NORMAL);
-                worldCreator.createWorld();
-                worlds.add(worldName);
-                worlds_config.set("worlds", worlds);
-                try {
-                    worlds_config.save(world_file);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    player.sendMessage(warning("世界生成失败！"));
+                if (!worlds.contains(worldName)) {
+                    WorldCreator worldCreator = new WorldCreator(worldName);
+                    worldCreator.environment(World.Environment.NORMAL);
+                    worldCreator.type(WorldType.NORMAL);
+                    worldCreator.createWorld();
+
+                    worlds.add(worldName);
+                    worlds_config.set("worlds", worlds);
+                    worlds_config.set("world." + worldName + ".type", "GRASS_BLOCK");
+                    worlds_config.set("world." + worldName + ".describe", "无");
+                    try {
+                        worlds_config.save(world_file);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        player.sendMessage(warning("世界生成失败！"));
+                    }
+                    player.sendMessage(warning("世界生成成功！"));
+                }else {
+                    player.sendMessage(warning("此世界已存在！"));
                 }
-                player.sendMessage(warning("世界生成成功！"));
             }
         }.runTask(UltiTools.getInstance());
     }

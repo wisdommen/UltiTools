@@ -6,23 +6,23 @@
 
     <groupId>com.minecraft.UltiKits</groupId>
     <artifactId>UltiTools</artifactId>
-    <version>3.1.0</version>
+    <version>3.1.1</version>
     <packaging>jar</packaging>
 
     <name>UltiTools</name>
-<!--    <url>https://wisdommen.github.io/</url>-->
-<!--    <licenses>-->
-<!--        <license>-->
-<!--            <name>GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007</name>-->
-<!--            <url>https://github.com/wisdommen/UltiTools/blob/master/LICENSE</url>-->
-<!--        </license>-->
-<!--    </licenses>-->
-<!--    <developers>-->
-<!--        <developer>-->
-<!--            <name>wisdomme</name>-->
-<!--            <email>xia.erich03@gmail.com</email>-->
-<!--        </developer>-->
-<!--    </developers>-->
+    <url>https://wisdommen.github.io/</url>
+    <licenses>
+        <license>
+            <name>GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007</name>
+            <url>https://github.com/wisdommen/UltiTools/blob/master/LICENSE</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>wisdomme</name>
+            <email>xia.erich03@gmail.com</email>
+        </developer>
+    </developers>
 <!--    <scm>-->
 <!--        <connection>scm:git@github.com:wisdommen/ultitools.git</connection>-->
 <!--        <developerConnection>scm:git@github.com:wisdommen/ultitools.git</developerConnection>-->
