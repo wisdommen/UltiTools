@@ -52,10 +52,12 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
             if (blockedWorlds.contains("world_the_end")) {
                 blockedWorlds.remove("world_the_end");
                 blockedWorlds.add("End");
-            } else if (blockedWorlds.contains("world_the_nether")) {
-                blockedWorlds.remove("world_the_nether");
+            }
+            if (blockedWorlds.contains("world_nether")) {
+                blockedWorlds.remove("world_nether");
                 blockedWorlds.add("Nether");
-            } else if (blockedWorlds.contains("world")) {
+            }
+            if (blockedWorlds.contains("world")) {
                 blockedWorlds.remove("world");
                 blockedWorlds.add("World");
             }
@@ -81,8 +83,10 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                         return true;
                     }
                 }
-                return true;
+            }else {
+                player.sendMessage(warning("不存在这个世界！"));
             }
+            return true;
         } else if (strings.length == 2 && player.isOp()) {
             switch (strings[0]) {
                 case "block":

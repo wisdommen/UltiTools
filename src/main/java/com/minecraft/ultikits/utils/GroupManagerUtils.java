@@ -19,11 +19,14 @@ public class GroupManagerUtils {
     private static final File groupsFile;
     private static final File inheritedFile;
 
+    private static final HashMap<UUID, PermissionAttachment> perms = new HashMap<>();
+
     static {
+        String sp = java.io.File.separator;
         if (UltiTools.isGroupManagerEnabled) {
-            usersFile = new File(UltiTools.getInstance().getDataFolder().getPath().replace(java.io.File.separator+"UltiTools", "%SEP%GroupManager%SEP%worlds%SEP%world%SEP%users.yml".replaceAll("%sep%", java.io.File.separator)));
-            groupsFile = new File(UltiTools.getInstance().getDataFolder().getPath().replace(java.io.File.separator+"UltiTools", "%SEP%GroupManager%SEP%worlds%SEP%world%SEP%groups.yml".replaceAll("%sep%", java.io.File.separator)));
-            inheritedFile = new File(UltiTools.getInstance().getDataFolder().getPath().replace(java.io.File.separator+"UltiTools", "%SEP%GroupManager%SEP%globalgroups.yml".replaceAll("%sep%", java.io.File.separator)));
+            usersFile = new File(UltiTools.getInstance().getDataFolder().getPath().replace(sp+"UltiTools", sp+"GroupManager"+sp+"worlds"+sp+"world"+sp+"users.yml"));
+            groupsFile = new File(UltiTools.getInstance().getDataFolder().getPath().replace(sp+"UltiTools", sp+"GroupManager"+sp+"worlds"+sp+"world"+sp+"groups.yml"));
+            inheritedFile = new File(UltiTools.getInstance().getDataFolder().getPath().replace(sp+"UltiTools", sp+"GroupManager"+sp+"globalgroups.yml"));
         } else {
             usersFile = new File(ConfigsEnum.PERMISSION_USER.toString());
             groupsFile = new File(ConfigsEnum.PERMISSION_GROUP.toString());
@@ -108,7 +111,11 @@ public class GroupManagerUtils {
                 e.printStackTrace();
             }
         }
-        PermissionAttachment attachment = player.addAttachment(UltiTools.getInstance());
+        PermissionAttachment attachment= perms.get(playerID);
+        if (attachment == null) {
+            attachment = player.addAttachment(UltiTools.getInstance());
+            perms.put(playerID, attachment);
+        }
         attachment.setPermission(permission, true);
     }
 
@@ -139,7 +146,11 @@ public class GroupManagerUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        PermissionAttachment attachment = player.addAttachment(UltiTools.getInstance());
+        PermissionAttachment attachment= perms.get(playerID);
+        if (attachment == null) {
+            attachment = player.addAttachment(UltiTools.getInstance());
+            perms.put(playerID, attachment);
+        }
         attachment.unsetPermission(permission);
     }
 

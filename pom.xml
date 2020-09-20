@@ -6,7 +6,7 @@
 
     <groupId>com.minecraft.UltiKits</groupId>
     <artifactId>UltiTools</artifactId>
-    <version>3.1.1</version>
+    <version>3.1.2</version>
     <packaging>jar</packaging>
 
     <name>UltiTools</name>
@@ -148,6 +148,11 @@
             <artifactId>spigot</artifactId>
             <version>1.16.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.70</version>
         </dependency>
     </dependencies>
 </project>

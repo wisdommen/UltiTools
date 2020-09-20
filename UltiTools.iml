@@ -90,5 +90,6 @@
     </orderEntry>
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:18.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot:1.16.1-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.70" level="project" />
   </component>
 </module>

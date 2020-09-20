@@ -56,15 +56,16 @@ public class WorldsListView {
         if (blockedWorlds.contains("world_the_end")){
             blockedWorlds.remove("world_the_end");
             blockedWorlds.add("End");
-        }else if (blockedWorlds.contains("world_the_nether")){
-            blockedWorlds.remove("world_the_nether");
+        }
+        if (blockedWorlds.contains("world_nether")){
+            blockedWorlds.remove("world_nether");
             blockedWorlds.add("Nether");
-        }else if (blockedWorlds.contains("world")){
+        }
+        if (blockedWorlds.contains("world")){
             blockedWorlds.remove("world");
             blockedWorlds.add("World");
         }
         for (String world : worlds){
-
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.YELLOW+config.getString("world."+world+".describe"));
             if (blockedWorlds.contains(world)){

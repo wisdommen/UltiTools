@@ -1,5 +1,6 @@
 package com.minecraft.ultikits.tasks;
 
+import com.minecraft.ultikits.beans.CheckResponse;
 import com.minecraft.ultikits.checker.prochecker.ProChecker;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -12,8 +13,8 @@ public class ProCheckerTask extends BukkitRunnable {
     public void run() {
         if (UltiTools.getInstance().getConfig().getBoolean("enable_pro")) {
             try {
-                int res = ProChecker.run();
-                if (res==200) {
+                CheckResponse res = ProChecker.run();
+                if (res.code.equals("200")) {
                     UltiTools.isProVersion = true;
                 }
             }catch (Exception ignored){

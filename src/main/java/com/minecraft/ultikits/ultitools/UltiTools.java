@@ -1,12 +1,12 @@
 package com.minecraft.ultikits.ultitools;
 
+import com.minecraft.ultikits.beans.CheckResponse;
 import com.minecraft.ultikits.checker.Metrics;
 import com.minecraft.ultikits.checker.prochecker.ProChecker;
 import com.minecraft.ultikits.checker.updatechecker.ConfigFileChecker;
 import com.minecraft.ultikits.checker.updatechecker.VersionChecker;
 import com.minecraft.ultikits.commands.*;
 import com.minecraft.ultikits.config.ConfigController;
-import com.minecraft.ultikits.enums.ErrorType;
 import com.minecraft.ultikits.inventoryapi.PageRegister;
 import com.minecraft.ultikits.listener.*;
 import com.minecraft.ultikits.register.CommandRegister;
@@ -94,14 +94,14 @@ public final class UltiTools extends JavaPlugin {
                 public void run() {
                     if (UltiTools.getInstance().getConfig().getBoolean("enable_pro")) {
                         try {
-                            int res = ProChecker.run();
-                            if (res == 200) {
+                            CheckResponse res = ProChecker.run();
+                            if (res.code.equals("200")) {
                                 UltiTools.isProVersion = true;
                                 UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools] Pro版验证成功！");
                             } else {
                                 UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] Pro版验证失败, 启用免费版！");
                             }
-                            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] " + ErrorType.getNameByCode(res));
+                            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] " + res.msg);
                         } catch (Exception e) {
                             UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] Pro版验证失败, 启用免费版！");
                         }
@@ -157,7 +157,7 @@ public final class UltiTools extends JavaPlugin {
             getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 世界加载成功！");
         }
 
-        Objects.requireNonNull(this.getCommand("ultitools")).setExecutor(new ToolsCommands());
+        //Objects.requireNonNull(this.getCommand("ultitools")).setExecutor(new ToolsCommands());
         if (this.getConfig().getBoolean("enable_email")) {
             CommandRegister.registerCommand(plugin, new EmailCommands(), "ultikits.tools.email", "邮件系统", "email");
         }
