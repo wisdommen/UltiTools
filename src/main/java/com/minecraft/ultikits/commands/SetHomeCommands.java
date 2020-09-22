@@ -51,6 +51,7 @@ public class SetHomeCommands extends AbstractPlayerCommandExecutor {
         config.set(player.getName() + "." + homeName + ".z", player.getLocation().getBlockZ());
         if (homeName.equals("Def")) {
             homeName = "默认";
+            homelist.remove(homeName);
         }
         homelist.add(homeName);
         config.set(player.getName() + ".homelist", homelist);
