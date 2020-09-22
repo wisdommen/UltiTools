@@ -211,7 +211,7 @@ public final class UltiTools extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new LoginListener(), this);
             getServer().getPluginManager().registerEvents(new LoginGUIListener(), this);
             checkPlayerAlreadyLogin();
-            //CommandRegister.registerCommand(plugin, new LoginRegisterCommands(), "ultikits.tools.login", "登陆系统", "reg", "regs", "re");
+            CommandRegister.registerCommand(plugin, new LoginRegisterCommands(), "ultikits.tools.login", "登陆系统", "reg", "regs", "re");
         }
 
         //注册任务

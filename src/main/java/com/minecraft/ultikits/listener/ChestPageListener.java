@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 import static com.minecraft.ultikits.utils.EconomyUtils.withdraw;
 import static com.minecraft.ultikits.utils.MessagesUtils.not_enough_money;
@@ -32,11 +33,11 @@ import static com.minecraft.ultikits.utils.MessagesUtils.warning;
 
 public class ChestPageListener extends PagesListener {
 
-    private final static Map<String, Player> inventoryLock = new HashMap<>();
+    private final static Map<String, UUID> inventoryLock = new HashMap<>();
 
     public static void loadBag(String chest_name, Player player, OfflinePlayer loader) {
         if (inventoryLock.get(chest_name) != null) {
-            player.sendMessage(warning(inventoryLock.get(chest_name).getName() + "正在查看此背包，你暂时无法使用！"));
+            player.sendMessage(warning(Bukkit.getPlayer(inventoryLock.get(chest_name)).getName() + "正在查看此背包，你暂时无法使用！"));
             return;
         }
         Inventory remote_chest = Bukkit.createInventory(null, 36, chest_name);
@@ -55,7 +56,7 @@ public class ChestPageListener extends PagesListener {
         }
         player.playSound(player.getLocation(), Sound.BLOCK_CHEST_OPEN, 10, 1);
         player.openInventory(remote_chest);
-        inventoryLock.put(chest_name, player);
+        inventoryLock.put(chest_name, player.getUniqueId());
     }
 
     @EventHandler

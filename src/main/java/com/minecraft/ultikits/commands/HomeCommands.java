@@ -15,16 +15,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static com.minecraft.ultikits.utils.Utils.getHomeList;
 
 public class HomeCommands extends AbstractTabExecutor implements Listener {
 
-    public final static Map<Player, Boolean> teleportingPlayers = new HashMap<>();
+    public final static Map<UUID, Boolean> teleportingPlayers = new HashMap<>();
 
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] args, @NotNull Player player) {
@@ -38,7 +35,7 @@ public class HomeCommands extends AbstractTabExecutor implements Listener {
                     int y = config.getInt(player.getName() + ".Def.y");
                     int z = config.getInt(player.getName() + ".Def.z");
                     Location location = new Location(world, x, y, z);
-                    teleportingPlayers.put(player, true);
+                    teleportingPlayers.put(player.getUniqueId(), true);
                     teleportPlayer(player, location);
                 } else if (args.length == 1) {
                     World world = Bukkit.getServer().getWorld(Objects.requireNonNull(config.getString(player.getName() + "." + args[0] + ".world")));
@@ -46,7 +43,7 @@ public class HomeCommands extends AbstractTabExecutor implements Listener {
                     int y = config.getInt(player.getName() + "." + args[0] + ".y");
                     int z = config.getInt(player.getName() + "." + args[0] + ".z");
                     Location location = new Location(world, x, y, z);
-                    teleportingPlayers.put(player, true);
+                    teleportingPlayers.put(player.getUniqueId(), true);
                     teleportPlayer(player, location);
                 } else {
                     player.sendMessage(ChatColor.RED + "[家插件]用法：/home [家的名字（不设置则为默认）]");
@@ -69,9 +66,9 @@ public class HomeCommands extends AbstractTabExecutor implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event){
         Player player = event.getPlayer();
-        if (teleportingPlayers.get(player)==null || !teleportingPlayers.get(player)) return;
-        if (teleportingPlayers.get(player)){
-            teleportingPlayers.put(player, false);
+        if (teleportingPlayers.get(player.getUniqueId())==null || !teleportingPlayers.get(player.getUniqueId())) return;
+        if (teleportingPlayers.get(player.getUniqueId())){
+            teleportingPlayers.put(player.getUniqueId(), false);
         }
     }
 
@@ -87,7 +84,7 @@ public class HomeCommands extends AbstractTabExecutor implements Listener {
 
             @Override
             public void run() {
-                if (!teleportingPlayers.get(player)){
+                if (!teleportingPlayers.get(player.getUniqueId())){
                     player.sendTitle(ChatColor.RED + "[家插件]传送失败", "请勿移动！", 10, 50, 20);
                     this.cancel();
                     return;
@@ -96,7 +93,7 @@ public class HomeCommands extends AbstractTabExecutor implements Listener {
                     player.teleport(location);
                     player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 0);
                     player.sendTitle(ChatColor.GREEN + "[家插件]欢迎回家！", "", 10, 50, 20);
-                    teleportingPlayers.put(player, false);
+                    teleportingPlayers.put(player.getUniqueId(), false);
                     this.cancel();
                     return;
                 }

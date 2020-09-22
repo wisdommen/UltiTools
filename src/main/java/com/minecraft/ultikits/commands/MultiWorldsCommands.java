@@ -17,11 +17,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-import static com.minecraft.ultikits.utils.MessagesUtils.info;
 import static com.minecraft.ultikits.utils.MessagesUtils.warning;
-import static com.minecraft.ultikits.utils.Utils.getConfig;
 import static com.minecraft.ultikits.utils.Utils.getConfigFile;
 
 
@@ -262,7 +259,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
     }
 
     private void teleport(Player player, Location location) {
-        HomeCommands.teleportingPlayers.put(player, true);
+        HomeCommands.teleportingPlayers.put(player.getUniqueId(), true);
         Chunk chunk = location.getChunk();
         if (!chunk.isLoaded()) {
             chunk.load();
@@ -272,7 +269,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
 
             @Override
             public void run() {
-                if (!HomeCommands.teleportingPlayers.get(player)) {
+                if (!HomeCommands.teleportingPlayers.get(player.getUniqueId())) {
                     player.sendTitle(ChatColor.RED + "[多世界插件]传送失败", "请勿移动！", 10, 50, 20);
                     this.cancel();
                     return;
@@ -281,7 +278,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                     player.teleport(location);
                     player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 0);
                     player.sendTitle(ChatColor.GREEN + "[多世界插件]传送成功！", "", 10, 50, 20);
-                    HomeCommands.teleportingPlayers.put(player, false);
+                    HomeCommands.teleportingPlayers.put(player.getUniqueId(), false);
                     this.cancel();
                     return;
                 }
