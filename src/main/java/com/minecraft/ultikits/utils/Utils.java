@@ -1,5 +1,6 @@
 package com.minecraft.ultikits.utils;
 
+import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -62,7 +63,7 @@ public class Utils {
 
     public static List<String> getHomeList(Player player) {
         List<String> homeList = new ArrayList<>();
-        File file = new File(UltiTools.getInstance().getDataFolder() + "/playerData", player.getName() + ".yml");
+        File file = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         if (file.exists() && config.get(player.getName() + ".homelist") != null) {
             if (config.get(player.getName() + ".homelist") instanceof String) {
@@ -83,7 +84,6 @@ public class Utils {
                         e.printStackTrace();
                     }
                 }
-
             } else {
                 homeList = config.getStringList(player.getName() + ".homelist");
                 homeList.removeIf(each -> each.equals(""));
