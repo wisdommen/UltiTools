@@ -6,6 +6,7 @@ import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.enums.PermissionsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import com.minecraft.ultikits.utils.SendEmailUtils;
+import com.minecraft.ultikits.utils.database.DatabasePlayerTools;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -21,9 +22,9 @@ import static com.minecraft.ultikits.utils.MessagesUtils.info;
 import static com.minecraft.ultikits.utils.MessagesUtils.warning;
 
 public class LoginRegisterCommands extends AbstractTabExecutor {
-    static Map<UUID, Boolean> sentCodePlayers = new HashMap<>();
-    static Map<UUID, String> playersValidateCode = new HashMap<>();
-    static Map<UUID, String> playersEmail = new HashMap<>();
+    public static Map<UUID, Boolean> sentCodePlayers = new HashMap<>();
+    public static Map<UUID, String> playersValidateCode = new HashMap<>();
+    public static Map<UUID, String> playersEmail = new HashMap<>();
 
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
@@ -38,16 +39,12 @@ public class LoginRegisterCommands extends AbstractTabExecutor {
         File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), player.getName()+".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-        if (!config.getBoolean("registered")){
+        if (config.getBoolean("registered")){
             player.sendMessage(warning("你已经验证过邮箱了！"));
             return true;
         }
         if (strings.length == 1) {
             if (strings[0].contains("@")) {
-                if (sentCodePlayers.get(player.getUniqueId()) != null && sentCodePlayers.get(player.getUniqueId())) {
-                    player.sendMessage(warning("验证码已经发送过了，请稍等片刻!"));
-                    return true;
-                }
                 player.sendMessage(info("正在发送验证码..."));
                 new BukkitRunnable(){
 
@@ -76,12 +73,12 @@ public class LoginRegisterCommands extends AbstractTabExecutor {
                 if (playersValidateCode.get(player.getUniqueId()).equals(validateCode)) {
                     player.sendMessage(info("邮箱验证成功！"));
                     config.set("registered", true);
-                    config.set("register_email", playersEmail.get(player.getUniqueId()));
                     try {
                         config.save(file);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    DatabasePlayerTools.setPlayerEmail(player, playersEmail.get(player.getUniqueId()));
                     return true;
                 }
                 player.sendMessage(warning("验证码错误，请重新输入验证码！"));
@@ -97,7 +94,7 @@ public class LoginRegisterCommands extends AbstractTabExecutor {
         return null;
     }
 
-    private static String getValidateCode() {
+    public static String getValidateCode() {
         Random rand = new Random();
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < 6; i++) {

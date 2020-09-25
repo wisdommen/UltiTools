@@ -6,10 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -88,6 +85,45 @@ public class DatabaseUtils {
                 }
                 e.printStackTrace();
                 return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * @param tableName  数据表名称
+     * @param columnName 需要查看的列
+     * @return 是否存在这个列
+     */
+    public static boolean isColumnExists(String tableName, String columnName) {
+        try (Connection connection = dataSource.getConnection()) {
+            try (Statement statement = connection.createStatement()) {
+                try (ResultSet re = statement.executeQuery("desc " + tableName + " " + columnName)) {
+                    return re.next();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * @param tableName  数据表名称
+     * @param columnName 需要添加的列
+     * @return 是否添加成功
+     */
+    public static boolean addColumn(String tableName, String columnName) {
+        try (Connection connection = dataSource.getConnection()) {
+            connection.setAutoCommit(false);
+            try (PreparedStatement ps = connection.prepareStatement("ALTER TABLE " + tableName); PreparedStatement ps2 = connection.prepareStatement("add column " + columnName + " TEXT")) {
+                ps.executeUpdate();
+                int b = ps2.executeUpdate();
+                return (b == 1);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -12,6 +12,7 @@ public class TeleportCommands extends AbstractTabExecutor {
 
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
+        //TODO TPA指令
         return false;
     }
 

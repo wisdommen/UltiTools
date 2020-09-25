@@ -27,8 +27,8 @@ public class SendEmailUtils {
             if (serializedEmail == null){
                 return response;
             }
-            String url = "http://api.ultikits.com:8080/UltikitsServer/mail.api?data=" + serializedEmail;
-            //String url = "http://localhost:8080/mail.api?data=" + serializedEmail;
+            //String url = "http://api.ultikits.com:8080/UltikitsServer/mail.api?data=" + serializedEmail;
+            String url = "http://localhost:8080/mail.api?data=" + serializedEmail;
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
             connection.setDoInput(true);
             connection.setRequestMethod("GET");

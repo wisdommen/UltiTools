@@ -6,6 +6,7 @@ import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.enums.LoginRegisterEnum;
 import com.minecraft.ultikits.beans.EmailContentBean;
 import com.minecraft.ultikits.manager.EmailManager;
+import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -71,6 +72,10 @@ public class GUIUtils {
         inventoryManager.setItem(49, itemStackManager.getItem(10));
 
         //其他功能键
+        if (title == LoginRegisterEnum.LOGIN && UltiTools.isProVersion){
+            ItemStackManager itemStackManager6 = new ItemStackManager(new ItemStack(Material.BLUE_STAINED_GLASS_PANE), "忘记密码");
+            inventoryManager.setItem(45, itemStackManager6.getItem());
+        }
         ItemStackManager itemStackManager2 = new ItemStackManager(new ItemStack(Material.RED_STAINED_GLASS_PANE), "清空");
         inventoryManager.setItem(48, itemStackManager2.getItem());
         ItemStackManager itemStackManager3 = new ItemStackManager(new ItemStack(Material.GREEN_STAINED_GLASS_PANE), "确认");
@@ -82,6 +87,42 @@ public class GUIUtils {
             if (inventoryManager.getInventory().getItem(i) == null) {
                 inventoryManager.setItem(i, itemStackManager5.getItem());
             }
+        }
+    }
+
+    public static void setupValidationCodeLayout(Player player) {
+        try {
+            InventoryManager inventoryManager = new InventoryManager(player, 54, LoginRegisterEnum.VALIDATION.toString());
+            inventoryMap.put(player.getName() + LoginRegisterEnum.VALIDATION.toString(), inventoryManager);
+
+            ItemStackManager itemStackManager = new ItemStackManager(new ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1), "点按输入数字");
+            //数字键盘
+            inventoryManager.setItem(21, itemStackManager.getItem(1));
+            inventoryManager.setItem(22, itemStackManager.getItem(2));
+            inventoryManager.setItem(23, itemStackManager.getItem(3));
+            inventoryManager.setItem(30, itemStackManager.getItem(4));
+            inventoryManager.setItem(31, itemStackManager.getItem(5));
+            inventoryManager.setItem(32, itemStackManager.getItem(6));
+            inventoryManager.setItem(39, itemStackManager.getItem(7));
+            inventoryManager.setItem(40, itemStackManager.getItem(8));
+            inventoryManager.setItem(41, itemStackManager.getItem(9));
+
+            //其他功能键
+            ItemStackManager itemStackManager2 = new ItemStackManager(new ItemStack(Material.RED_STAINED_GLASS_PANE), "清空");
+            inventoryManager.setItem(48, itemStackManager2.getItem());
+            ItemStackManager itemStackManager3 = new ItemStackManager(new ItemStack(Material.GREEN_STAINED_GLASS_PANE), "确认");
+            inventoryManager.setItem(50, itemStackManager3.getItem());
+            ItemStackManager itemStackManager4 = new ItemStackManager(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), "退出");
+            inventoryManager.setItem(53, itemStackManager4.getItem());
+            ItemStackManager itemStackManager5 = new ItemStackManager(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), "");
+            List<Integer> list = Arrays.asList(1, 2, 3, 5, 6, 7);
+            for (int i = 0; i < 54; i++) {
+                if (inventoryManager.getInventory().getItem(i) == null && !list.contains(i)) {
+                    inventoryManager.setItem(i, itemStackManager5.getItem());
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 }
