@@ -15,7 +15,7 @@ public class ProChecker {
     private static final String key = UltiTools.getInstance().getConfig().getString("pro_key");
 
     public static CheckResponse run() throws IOException {
-        HttpURLConnection connection = (HttpURLConnection) new URL("http://api.ultikits.com:8080/UltikitsServer/validate.api?name="+name+"&key="+key).openConnection();
+        HttpURLConnection connection = (HttpURLConnection) new URL("http://49.235.106.98:8080/UltikitsServer/validate.api?name="+name+"&key="+key).openConnection();
         connection.setDoInput(true);
         connection.setRequestMethod("GET");
         connection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
