@@ -80,7 +80,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                         return true;
                     }
                 }
-            }else {
+            } else {
                 player.sendMessage(warning("不存在这个世界！"));
             }
             return true;
@@ -149,7 +149,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                         if (strings[1].equals(world.getName())) {
                             blockedWorlds.remove(strings[1]);
                             worlds.remove(strings[1]);
-                            worldConfig.set("world."+strings[1], null);
+                            worldConfig.set("world." + strings[1], null);
                             worldConfig.set("blocked_worlds", blockedWorlds);
                             worldConfig.set("worlds", worlds);
                             try {
@@ -226,7 +226,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                         player.sendMessage(warning("世界生成失败！"));
                     }
                     player.sendMessage(warning("世界生成成功！"));
-                }else {
+                } else {
                     player.sendMessage(warning("此世界已存在！"));
                 }
             }

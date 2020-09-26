@@ -99,7 +99,7 @@ public class DatabasePlayerTools {
     }
 
     public static String getPlayerEmail(String playerName) {
-        if (isPlayerAccountExist(playerName)) {
+        if (!isPlayerAccountExist(playerName)) {
             return null;
         }
         if (isDatabaseEnabled) {

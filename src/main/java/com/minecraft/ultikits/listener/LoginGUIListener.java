@@ -143,18 +143,14 @@ public class LoginGUIListener implements Listener {
                 } else if (clicked.getItemMeta().getDisplayName().contains("清空")) {
                     clearTheFirstLine(currentInventory);
                 } else if (clicked.getItemMeta().getDisplayName().contains("退出")) {
-                    // TODO java.lang.NullPointerException
+                    if(tempPlayerPassword.get(player.getUniqueId())!=null){
+                        tempPlayerPassword.remove(player.getUniqueId());
+                    }
                     if (isRegisteringNewPassword.get(player.getUniqueId())!=null &&isRegisteringNewPassword.get(player.getUniqueId())) {
                         isRegisteringNewPassword.put(player.getUniqueId(), false);
                         return;
                     }
                     player.kickPlayer(ChatColor.AQUA + "下次再见！");
-                    if (!getThePassword(currentInventory).equals("")) {
-                        setPlayerPassword(player, "");
-                    }
-                    if (file.exists()) {
-                        file.delete();
-                    }
                 }
             }
         }
