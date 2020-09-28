@@ -2,6 +2,7 @@ package com.minecraft.ultikits.listener;
 
 import com.minecraft.ultikits.ultitools.UltiTools;
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,6 +17,16 @@ public class ChatListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         String prefixes_str = UltiTools.getInstance().getConfig().getString("chat_prefix");
-        event.setFormat(Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, prefixes_str))+ChatColor.WHITE+" %2$s");
+        String papiMassage;
+        try{
+            papiMassage = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, prefixes_str));
+        }catch (Exception e){
+            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 正在下载PAPI必须的变量中...");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "papi ecloud download Player");
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "papi reload");
+            papiMassage = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, prefixes_str));
+        }
+        String message = papiMassage+ChatColor.WHITE+" %2$s";
+        event.setFormat(message);
     }
 }
