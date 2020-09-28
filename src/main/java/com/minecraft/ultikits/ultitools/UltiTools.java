@@ -25,7 +25,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static com.minecraft.ultikits.listener.LoginListener.*;
 import static com.minecraft.ultikits.utils.database.DatabasePlayerTools.getIsLogin;
@@ -221,6 +220,7 @@ public final class UltiTools extends JavaPlugin {
         }
         if (this.getConfig().getBoolean("enable_cleaner")) {
             new CleanerTask().runTaskTimerAsynchronously(this, 10 * 20L, 10 * 20L);
+            new UnloadChunksTask().runTaskTimer(this, 0L, 60 * 20L);
         }
         if (getConfig().getBoolean("enable_pro")) {
             new ProCheckerTask().runTaskTimerAsynchronously(this, 12000L, 12000L);

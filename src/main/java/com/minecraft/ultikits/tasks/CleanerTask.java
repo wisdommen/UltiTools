@@ -4,15 +4,15 @@ import com.minecraft.ultikits.enums.CleanTypeEnum;
 import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import com.minecraft.ultikits.utils.CleanerUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CleanerTask extends BukkitRunnable {
@@ -23,6 +23,7 @@ public class CleanerTask extends BukkitRunnable {
     final static int maxItem = config.getInt("item_max");
     final static int period = config.getInt("clean_period");
     final static int maxEntity = config.getInt("total_entity_max");
+    final static int maxChunkDistance = config.getInt("max_chunk_distance");
     final static boolean enableSmartClean = config.getBoolean("enable_smart_clean");
     final static boolean enableCleanEntityTask = config.getBoolean("clean_entity_task_enable");
     final static boolean enableUnloadChunkTask = config.getBoolean("unload_chunk_task_enable");
@@ -32,6 +33,8 @@ public class CleanerTask extends BukkitRunnable {
     private static boolean mobCleaning;
     private static boolean itemCleaning;
     private static boolean entityCleaning = (mobCleaning || itemCleaning);
+
+    private static List<Chunk> chunks = new ArrayList<>();
 
     private static int time = 0;
 
@@ -46,6 +49,10 @@ public class CleanerTask extends BukkitRunnable {
                 }
             }
         }
+    }
+
+    public static List<Chunk> getUnusedChunks() {
+        return chunks;
     }
 
     @Override
@@ -73,6 +80,9 @@ public class CleanerTask extends BukkitRunnable {
                 for (CleanTypeEnum typeEnum : types) {
                     notice(typeEnum.toString());
                 }
+            }
+            if (enableUnloadChunkTask){
+                chunks = getChucksAwayFromPlayer();
             }
         }
     }
@@ -109,5 +119,29 @@ public class CleanerTask extends BukkitRunnable {
                 cancel();
             }
         }.runTaskLater(UltiTools.getInstance(), 20 * 20L);
+    }
+
+    private static List<Chunk> getChucksAwayFromPlayer(){
+        List<Chunk> chunks = new ArrayList<>();
+        for (World world : Bukkit.getWorlds()) {
+            if (world.getPlayers().size()==0){
+                chunks.addAll(Arrays.asList(world.getLoadedChunks()));
+                continue;
+            }
+            for (Player player : world.getPlayers()) {
+                for (Chunk chunk : world.getLoadedChunks()) {
+                    if (chunk.isLoaded() && world.isChunkInUse(chunk.getX(), chunk.getZ())) {
+                        Location playerLocation = player.getLocation();
+                        int chunk_x = chunk.getX();
+                        int chunk_z = chunk.getZ();
+                        Location chunkLocation = new Location(player.getWorld(), chunk_x, playerLocation.getY(), chunk_z);
+                        if (playerLocation.distance(chunkLocation) > maxChunkDistance) {
+                            chunks.add(chunk);
+                        }
+                    }
+                }
+            }
+        }
+        return chunks;
     }
 }
