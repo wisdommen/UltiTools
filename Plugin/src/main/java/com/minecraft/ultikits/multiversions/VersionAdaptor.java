@@ -11,6 +11,7 @@ import com.minecraft.ultikits.v1_14_R1.Wrapper1_14_R1;
 import com.minecraft.ultikits.v1_15_R1.Wrapper1_15_R1;
 import com.minecraft.ultikits.v1_16_R1.Wrapper1_16_R1;
 import com.minecraft.ultikits.v1_16_R2.Wrapper1_16_R2;
+import com.minecraft.ultikits.v1_16_R3.Wrapper1_16_R3;
 import com.minecraft.ultikits.v1_8_R1.Wrapper1_8_R1;
 import com.minecraft.ultikits.v1_8_R2.Wrapper1_8_R2;
 import com.minecraft.ultikits.v1_8_R3.Wrapper1_8_R3;
@@ -40,7 +41,8 @@ public class VersionAdaptor {
             Wrapper1_14_4_R1.class,
             Wrapper1_15_R1.class,
             Wrapper1_16_R1.class,
-            Wrapper1_16_R2.class
+            Wrapper1_16_R2.class,
+            Wrapper1_16_R3.class
     );
 
     public VersionWrapper match() {
