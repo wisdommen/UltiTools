@@ -99,7 +99,7 @@ hs_err_pid*
 
 .DS_Store
 .gitignore
-src/test/
+Plugin/src/test/
 target/UltiTools-1.9.0.jar
 target/UltiTools-1.9.1.jar
 target/UltiTools-2.0.0-RELEASE.jar
@@ -124,3 +124,35 @@ target/test-classes/
 .idea/vcs.xml
 target/classes/config.yml
 target/classes/plugin.yml
+/API/API.iml
+/1_16_R1/1_16_R1.iml
+/1_12_R1/1_12_R1.iml
+.idea/workspace-MacBook Pro-2.xml
+.idea/workspace-MacBook Pro.xml
+1_12_R1/src/main/resources/
+1_12_R1/src/test/
+1_12_R1/target/classes/
+1_12_R1/target/maven-archiver/
+1_12_R1/target/maven-status/
+1_16_R1/src/main/resources/
+1_16_R1/src/test/
+API/src/main/resources/
+API/src/test/
+API/target/classes/
+API/target/maven-archiver/
+API/target/maven-status/
+Plugin/Plugin.iml
+Plugin/target/archive-tmp/
+Plugin/target/classes/config.yml
+Plugin/target/classes/plugin.yml
+Plugin/target/generated-sources/
+Plugin/target/maven-archiver/
+Plugin/target/maven-status/
+Plugin/target/test-classes/
+1_16_R1/target/maven-archiver/
+1_16_R1/target/maven-status/
+1_16_R2/1_16_R2.iml
+1_16_R2/src/main/resources/
+1_16_R2/src/test/
+API/target/generated-sources/
+/1_16_R2/1_16_R2.iml

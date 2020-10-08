@@ -1,0 +1,14 @@
+package com.minecraft.ultikits.enums;
+
+public enum Sounds {
+    BLOCK_NOTE_BLOCK_HAT,
+    BLOCK_CHEST_OPEN,
+    BLOCK_CHEST_LOCKED,
+    ENTITY_ENDERMAN_TELEPORT,
+    BLOCK_WET_GRASS_BREAK,
+    UI_TOAST_OUT,
+    BLOCK_NOTE_BLOCK_CHIME,
+    BLOCK_NOTE_BLOCK_BELL,
+    ITEM_BOOK_PAGE_TURN,
+    BLOCK_CHEST_CLOSE
+}
