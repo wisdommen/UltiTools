@@ -42,7 +42,7 @@ public class SideBarTask extends BukkitRunnable {
             Scoreboard scoreboard = sb.getNewScoreboard();
 
             //创建一个计分板对象
-            String title = sideBarConfig.getString("score_board_title");
+            String title = sideBarConfig.getString("scoreBoardTitle");
             Objective information = UltiTools.versionAdaptor.registerNewObjective(scoreboard, "侧边栏", "", ChatColor.DARK_AQUA + title);
             //设置计分板样式
             information.setDisplaySlot(DisplaySlot.SIDEBAR);
