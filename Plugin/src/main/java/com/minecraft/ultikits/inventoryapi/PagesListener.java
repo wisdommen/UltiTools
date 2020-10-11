@@ -65,6 +65,17 @@ public abstract class PagesListener implements Listener {
         }
     }
 
+    /**
+     * You need to complete the event when item clicked.
+     * You don't need to worry about the last line if you create the page with preset page.
+     * 你需要实现当物品被点击后的方法。
+     * 你不必处理最后一行的点击事件如果此界面是你使用预设界面创建的。
+     *
+     * @param event InventoryClickEvent
+     * @param player Player who clicked the item
+     * @param inventoryManager The inventoryManager that response to this inventory
+     * @param clickedItem the item that been clicked
+     */
     public abstract void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem);
 
 }

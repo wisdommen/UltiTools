@@ -66,6 +66,11 @@ public interface InventoryManagerAPI {
 
     /**
      * Add item.
+     * 向界面中添加一个物品
+     * <p>
+     * You can add item into a view by using this method. Item can stack automatically if they have a same
+     * property.
+     * 你可以使用这个方法向一个界面中添加物品。物品会自动堆叠如果物品属性相同。
      *
      * @param item the item
      */
@@ -73,6 +78,10 @@ public interface InventoryManagerAPI {
 
     /**
      * Add item.
+     * 向界面中添加一个物品
+     * <p>
+     * See addItem(ItemStack item)
+     * 详见 addItem(ItemStack item)
      *
      * @param itemStackManager the item stack manager
      */
@@ -80,6 +89,11 @@ public interface InventoryManagerAPI {
 
     /**
      * Gets inventory.
+     * 获取Inventory对象
+     * <p>
+     * You can get the inventory of this InventoryManager. You must only call this method AFTER call create(),
+     * otherwise you will get null.
+     * 你可以通过这个方法获取InventoryManager的Inventory对象。你必须先调用create()方法，否则会返回null！
      *
      * @return the inventory
      */
@@ -87,6 +101,10 @@ public interface InventoryManagerAPI {
 
     /**
      * Gets title.
+     * 获取标题
+     * <p>
+     * Get the tile of this inventory
+     * 获取这个inventory的标题
      *
      * @return the title
      */
@@ -94,13 +112,23 @@ public interface InventoryManagerAPI {
 
     /**
      * Gets group title.
+     * 获取这个inventoryManager的组名
+     * <p>
+     * Get the group name of this InventoryManager object if it has a group name.
+     * Group name often appears when there are pages hook to the view.
+     * 获取这个InventoryManager对象的组名。
+     * 组名一般出现在此界面拥有多个页面时。
      *
      * @return the group title
      */
     String getGroupTitle();
 
     /**
-     * Gets size.
+     * Gets size of the Inventory.
+     * 获取Inventory的大小
+     * <p>
+     * You can only invoke this method after call create()
+     * 你必须先调用create()方法。
      *
      * @return the size
      */
@@ -108,6 +136,7 @@ public interface InventoryManagerAPI {
 
     /**
      * Gets page number.
+     * 获取此页面的页码
      *
      * @return the page number
      */
@@ -115,6 +144,7 @@ public interface InventoryManagerAPI {
 
     /**
      * Is page button enabled boolean.
+     * 获取是否开启了页面按钮
      *
      * @return the boolean
      */
@@ -122,6 +152,7 @@ public interface InventoryManagerAPI {
 
     /**
      * Is last line disabled boolean.
+     * 获取最后一行是否不允许设置物品
      *
      * @return the boolean
      */
@@ -129,11 +160,19 @@ public interface InventoryManagerAPI {
 
     /**
      * Clear view.
+     * 清空页面
+     * <p>
+     * Clear all the item in the view. However if last line disabled, the last line will not be cleared.
+     * 清除页面上的所有物品。但是如果最后一行被关闭了，则不会清除最后一行的物品。
      */
     void clearView();
 
     /**
      * Sets background color.
+     * 设置背景颜色。
+     * <p>
+     * Set the background color of the Inventory. It will not rewrite the item that is already exists.
+     * 设置背景颜色，不会覆盖物品。
      *
      * @param backgroundColor the background color
      */
@@ -141,11 +180,13 @@ public interface InventoryManagerAPI {
 
     /**
      * Clear back ground.
+     * 删除所有背景颜色物品
      */
     void clearBackGround();
 
     /**
      * Is back ground boolean.
+     * 检查一个物品是否为背景颜色物品。
      *
      * @param item the item
      * @return the boolean
@@ -154,6 +195,7 @@ public interface InventoryManagerAPI {
 
     /**
      * Sets middle button.
+     * 设置中间按钮
      *
      * @param middleButton the middle button
      */
@@ -161,6 +203,7 @@ public interface InventoryManagerAPI {
 
     /**
      * Sets page button enabled.
+     * 设置是否开启翻页按钮
      *
      * @param isPageButtonEnabled the is page button enabled
      */

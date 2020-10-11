@@ -12,6 +12,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
+/**
+ * The type Inventory manager.
+ */
 public class InventoryManager implements InventoryManagerAPI {
 
     private Inventory inventory;
@@ -27,6 +30,13 @@ public class InventoryManager implements InventoryManagerAPI {
     private Colors backGroundColor;
     private Buttons middleButton = Buttons.QUIT;
 
+    /**
+     * Instantiates a new Inventory manager.
+     *
+     * @param owner the owner
+     * @param slots the slots
+     * @param title the title
+     */
     public InventoryManager(InventoryHolder owner, int slots, String title) {
         this.owner = owner;
         this.slots = slots;
@@ -45,6 +55,14 @@ public class InventoryManager implements InventoryManagerAPI {
         create();
     }
 
+    /**
+     * Instantiates a new Inventory manager.
+     *
+     * @param owner the owner
+     * @param slots the slots
+     * @param title the title
+     * @param block the block
+     */
     public InventoryManager(InventoryHolder owner, int slots, String title, boolean block) {
         this.owner = owner;
         this.slots = slots;
