@@ -76,7 +76,7 @@ public class SideBarTask extends BukkitRunnable {
         boolean isWizard = false;
         String occupation = "";
 
-        if (isPAPILoaded && sideBarConfig.getBoolean("enable_PAPI")) {
+        if (isPAPILoaded && UltiTools.getInstance().getConfig().getBoolean("enable_PAPI")) {
             name = setPlaceholderString(player, "name");
             onLinePlayers = setPlaceholderString(player, "onLinePlayers");
             CDq = setPlaceholderString(player, "CDq");

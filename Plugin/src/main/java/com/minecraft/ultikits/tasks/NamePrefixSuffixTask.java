@@ -1,5 +1,6 @@
 package com.minecraft.ultikits.tasks;
 
+import com.minecraft.ultikits.ultitools.UltiTools;
 import com.minecraft.ultikits.utils.TitlesUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
@@ -18,7 +19,7 @@ public class NamePrefixSuffixTask extends BukkitRunnable {
         for (Player player : Bukkit.getOnlinePlayers()) {
             String prefix;
             String suffix;
-            if (isPAPILoaded && sideBarConfig.getBoolean("enable_PAPI") ){
+            if (isPAPILoaded && UltiTools.getInstance().getConfig().getBoolean("enable_PAPI") ){
                 try {
                     prefix = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, sideBarConfig.getString("name_prefix")));
                     suffix = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, sideBarConfig.getString("name_suffix")));
