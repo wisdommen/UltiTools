@@ -9,7 +9,7 @@ public class DeathListener implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         if (isEnabled()) {
-            //some
+            //TODO 处理玩家死亡事件
         }
     }
 

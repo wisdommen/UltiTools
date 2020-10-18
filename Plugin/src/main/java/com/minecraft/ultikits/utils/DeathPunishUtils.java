@@ -30,8 +30,8 @@ public class DeathPunishUtils {
                 if (itemStack != null) {
                     itemStack.setAmount(random.nextInt(itemStack.getAmount()));
                     inventory.remove(itemStack);
-                    count++;
                 }
+                count++;
             }
         }
     }
