@@ -21,7 +21,8 @@ public enum ConfigsEnum {
     SIDEBAR_DATA(UltiTools.getInstance().getDataFolder() + "/sidebar/data.yml"),
     CHEST_LOCK(UltiTools.getInstance().getDataFolder() + "/chestlock.yml"),
     HOME(UltiTools.getInstance().getDataFolder() + "/home.yml"),
-    JOIN_WELCOME(UltiTools.getInstance().getDataFolder() + "/joinwelcome.yml");
+    JOIN_WELCOME(UltiTools.getInstance().getDataFolder() + "/joinwelcome.yml"),
+    DEATH(UltiTools.getInstance().getDataFolder()+"/death.yml");
 
     private final String path;
 

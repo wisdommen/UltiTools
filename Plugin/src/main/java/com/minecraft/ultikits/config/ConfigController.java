@@ -24,6 +24,7 @@ public class ConfigController {
         new ChestLockConfig();
         new HomeConfig();
         new ChestDataConfig();
+        new MultiworldsConfig();
         for (AbstractConfig abstractConfig : configMap.values()){
             for (String key : abstractConfig.map.keySet()){
                 config.put(key, abstractConfig.name);
