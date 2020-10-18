@@ -25,6 +25,7 @@ public class ConfigController {
         new HomeConfig();
         new ChestDataConfig();
         new MultiworldsConfig();
+        new DeathPunishConfig();
         for (AbstractConfig abstractConfig : configMap.values()){
             for (String key : abstractConfig.map.keySet()){
                 config.put(key, abstractConfig.name);
