@@ -1,5 +1,6 @@
 package com.minecraft.ultikits.utils;
 
+import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,6 +18,9 @@ public class EconomyUtils {
     }
 
     private static boolean hasBalance(OfflinePlayer player, int amount){
+        if (UltiTools.getIsVaultInstalled()){
+            return UltiTools.getEcon().has(player, amount);
+        }
         try{
             Object economy = getEconomy().newInstance();
             Object checkMoney = getEconomy().getMethod("checkMoney", String.class).invoke(economy, player.getName());
@@ -28,6 +32,9 @@ public class EconomyUtils {
     }
 
     public static int checkMoney(OfflinePlayer player){
+        if (UltiTools.getIsVaultInstalled()){
+            return (int) Math.round(UltiTools.getEcon().getBalance(player));
+        }
         try{
             Object economy = getEconomy().newInstance();
             Object checkMoney = getEconomy().getMethod("checkMoney", String.class).invoke(economy, player.getName());
@@ -50,6 +57,9 @@ public class EconomyUtils {
     }
 
     public static boolean withdraw(OfflinePlayer player, int amount){
+        if (UltiTools.getIsVaultInstalled()){
+            return UltiTools.getEcon().withdrawPlayer(player, amount).transactionSuccess();
+        }
         try{
             if (hasBalance(player,amount)){
                 Object economy = getEconomy().newInstance();

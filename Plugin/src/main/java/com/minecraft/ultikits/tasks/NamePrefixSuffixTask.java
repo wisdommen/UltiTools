@@ -21,8 +21,8 @@ public class NamePrefixSuffixTask extends BukkitRunnable {
             String suffix;
             if (isPAPILoaded && UltiTools.getInstance().getConfig().getBoolean("enable_PAPI") ){
                 try {
-                    prefix = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, sideBarConfig.getString("name_prefix")));
-                    suffix = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, sideBarConfig.getString("name_suffix")));
+                    prefix = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, UltiTools.getInstance().getConfig().getString("name_prefix")));
+                    suffix = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, UltiTools.getInstance().getConfig().getString("name_suffix")));
                 }catch (Exception e){
                     prefix = "";
                     suffix = "";

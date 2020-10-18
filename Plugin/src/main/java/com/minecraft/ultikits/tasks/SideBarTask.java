@@ -217,7 +217,7 @@ public class SideBarTask extends BukkitRunnable {
     }
 
     public void setCustomLine(Objective scoreboard, Player player){
-        List<String> tempList = sideBarConfig.getStringList("customer_lines");
+        List<String> tempList = sideBarConfig.getStringList("customerline");
         List<String> customer_line = Lists.reverse(tempList);
         int i = 1;
         for (String each_line : customer_line) {
