@@ -61,15 +61,15 @@ public class CleanerTask extends BukkitRunnable {
             time += 10;
             if (enableSmartClean) {
                 if (CleanerUtils.checkMobs(worlds) > maxMob && !mobCleaning) {
-                    notice("生物");
+                    notice(UltiTools.languageUtils.getWords("mobs"));
                     mobCleaning = true;
                 }
                 if (CleanerUtils.checkItems(worlds) > maxItem && !itemCleaning) {
-                    notice("掉落物");
+                    notice(UltiTools.languageUtils.getWords("dropped_item"));
                     itemCleaning = true;
                 }
                 if (CleanerUtils.checkEntities(worlds) > maxEntity && !entityCleaning) {
-                    notice("实体");
+                    notice(UltiTools.languageUtils.getWords("entity"));
                     entityCleaning = true;
                 }
             } else if (enableCleanEntityTask && time >= period) {
@@ -81,35 +81,31 @@ public class CleanerTask extends BukkitRunnable {
                     notice(typeEnum.toString());
                 }
             }
-            if (enableUnloadChunkTask){
+            if (enableUnloadChunkTask) {
                 chunks = getChucksAwayFromPlayer();
             }
         }
     }
 
     private static void notice(String typeName) {
-        Bukkit.broadcastMessage(ChatColor.GREEN + "[+" + name + String.format("+] 30秒后开始清理%s...", typeName));
+        Bukkit.broadcastMessage(ChatColor.GREEN + "[+" + name + String.format("+] " + UltiTools.languageUtils.getWords("clean_start_task_after_30s"), typeName));
         new BukkitRunnable() {
             @Override
             public void run() {
-                Bukkit.broadcastMessage(ChatColor.GREEN + "[+" + name + String.format("+] 10秒后开始清理%s...", typeName));
+                Bukkit.broadcastMessage(ChatColor.GREEN + "[+" + name + String.format("+] " + UltiTools.languageUtils.getWords("clean_start_task_after_10s"), typeName));
                 new BukkitRunnable() {
                     @Override
                     public void run() {
                         int count = 0;
-                        switch (typeName) {
-                            case "生物":
-                                count = CleanerUtils.cleanMobs(worlds);
-                                mobCleaning = false;
-                                break;
-                            case "掉落物":
-                                count = CleanerUtils.cleanDroppedItem(worlds);
-                                itemCleaning = false;
-                                break;
-                            case "实体":
-                                count = CleanerUtils.cleanEntities(worlds);
-                                entityCleaning = (mobCleaning || itemCleaning);
-                                break;
+                        if (typeName.equals(UltiTools.languageUtils.getWords("mobs"))) {
+                            count = CleanerUtils.cleanMobs(worlds);
+                            mobCleaning = false;
+                        } else if (typeName.equals(UltiTools.languageUtils.getWords("dropped_item"))) {
+                            count = CleanerUtils.cleanDroppedItem(worlds);
+                            itemCleaning = false;
+                        } else if (typeName.equals(UltiTools.languageUtils.getWords("entity"))) {
+                            count = CleanerUtils.cleanEntities(worlds);
+                            entityCleaning = (mobCleaning || itemCleaning);
                         }
                         Bukkit.broadcastMessage(CleanerUtils.sendCleanMessage(typeName, name, count));
                         time = 0;
@@ -121,10 +117,10 @@ public class CleanerTask extends BukkitRunnable {
         }.runTaskLater(UltiTools.getInstance(), 20 * 20L);
     }
 
-    private static List<Chunk> getChucksAwayFromPlayer(){
+    private static List<Chunk> getChucksAwayFromPlayer() {
         List<Chunk> chunks = new ArrayList<>();
         for (World world : Bukkit.getWorlds()) {
-            if (world.getPlayers().size()==0){
+            if (world.getPlayers().size() == 0) {
                 chunks.addAll(Arrays.asList(world.getLoadedChunks()));
                 continue;
             }

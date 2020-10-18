@@ -1,5 +1,6 @@
 package com.minecraft.ultikits.inventoryapi;
 
+import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,34 +33,28 @@ public abstract class PagesListener implements Listener {
                     return;
                 }
                 String itemName = ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
-                switch (itemName) {
-                    case "上一页":
-                        if (inventoryManager.getTitle().contains(" 第1页")) {
-                            return;
-                        }
-                        InventoryManager previousInventory = ViewManager.getViewByName(inventoryManager.getGroupTitle() + " 第" + (inventoryManager.getPageNumber() - 1) + "页");
-                        if (previousInventory != null) {
-                            player.openInventory(previousInventory.getInventory());
-                        }
+                if (itemName.equals(UltiTools.languageUtils.getWords("button_previous"))) {
+                    if (inventoryManager.getTitle().contains(String.format(UltiTools.languageUtils.getWords("inventory_manager_title_page_number"),1))) {
                         return;
-                    case "下一页":
-                        InventoryManager nextInventory = ViewManager.getViewByName(inventoryManager.getGroupTitle() + " 第" + (inventoryManager.getPageNumber() + 1) + "页");
-                        if (nextInventory != null) {
-                            player.openInventory(nextInventory.getInventory());
-                        }
-                        return;
-                    case "退出":
+                    }
+                    InventoryManager previousInventory = ViewManager.getViewByName(inventoryManager.getGroupTitle() + String.format(UltiTools.languageUtils.getWords("inventory_manager_title_page_number"),(inventoryManager.getPageNumber() - 1)));
+                    if (previousInventory != null) {
+                        player.openInventory(previousInventory.getInventory());
+                    }
+                } else if (itemName.equals(UltiTools.languageUtils.getWords("button_next"))) {
+                    InventoryManager nextInventory = ViewManager.getViewByName(inventoryManager.getGroupTitle() + String.format(UltiTools.languageUtils.getWords("inventory_manager_title_page_number"),(inventoryManager.getPageNumber() + 1)));
+                    if (nextInventory != null) {
+                        player.openInventory(nextInventory.getInventory());
+                    }
+                } else if (itemName.equals(UltiTools.languageUtils.getWords("button_quit"))) {
+                    player.closeInventory();
+                } else if (itemName.equals(UltiTools.languageUtils.getWords("button_back")) || itemName.equals(UltiTools.languageUtils.getWords("button_ok")) || itemName.equals(UltiTools.languageUtils.getWords("button_cancel"))) {
+                    InventoryManager lastInventory = getLastView(inventoryManager);
+                    if (lastInventory == null) {
                         player.closeInventory();
-                        return;
-                    case "返回":
-                    case "确认":
-                    case "取消":
-                        InventoryManager lastInventory = getLastView(inventoryManager);
-                        if (lastInventory == null) {
-                            player.closeInventory();
-                        } else {
-                            ViewManager.openInventoryForPlayer(player, inventoryManager, lastInventory);
-                        }
+                    } else {
+                        ViewManager.openInventoryForPlayer(player, inventoryManager, lastInventory);
+                    }
                 }
             }
         }
@@ -71,10 +66,10 @@ public abstract class PagesListener implements Listener {
      * 你需要实现当物品被点击后的方法。
      * 你不必处理最后一行的点击事件如果此界面是你使用预设界面创建的。
      *
-     * @param event InventoryClickEvent
-     * @param player Player who clicked the item
+     * @param event            InventoryClickEvent
+     * @param player           Player who clicked the item
      * @param inventoryManager The inventoryManager that response to this inventory
-     * @param clickedItem the item that been clicked
+     * @param clickedItem      the item that been clicked
      */
     public abstract void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem);
 

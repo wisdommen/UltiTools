@@ -60,7 +60,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                 blockedWorlds.add("World");
             }
             if (blockedWorlds.contains(strings[0]) && !player.hasPermission("ultikits.tools.admin")) {
-                player.sendMessage(warning("此世界已经被禁止进入！"));
+                player.sendMessage(warning(UltiTools.languageUtils.getWords("world_not_allow_enter")));
                 return true;
             }
             if (worldList.contains(strings[0])) {
@@ -77,12 +77,12 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                     try {
                         teleportPlayer(player, strings[0]);
                     } catch (NullPointerException e) {
-                        player.sendMessage(warning("不存在这个世界！"));
+                        player.sendMessage(warning(UltiTools.languageUtils.getWords("world_world_not_exits")));
                         return true;
                     }
                 }
             } else {
-                player.sendMessage(warning("不存在这个世界！"));
+                player.sendMessage(warning(UltiTools.languageUtils.getWords("world_world_not_exits")));
             }
             return true;
         } else if (strings.length == 2 && player.isOp()) {
@@ -91,7 +91,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                     for (World world : UltiTools.getInstance().getServer().getWorlds()) {
                         if (strings[1].equals(world.getName())) {
                             if (blockedWorlds.contains(strings[1])) {
-                                player.sendMessage(ChatColor.RED + "此世界已经被禁止进入!");
+                                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("world_not_allow_enter"));
                                 return true;
                             }
                             blockedWorlds.add(world.getName());
@@ -101,11 +101,11 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            player.sendMessage(ChatColor.RED + "已禁止玩家使用指令传送进入此世界!");
+                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("world_denied_player_enter"));
                             return true;
                         }
                     }
-                    player.sendMessage(warning("没有找到这个世界！"));
+                    player.sendMessage(warning(UltiTools.languageUtils.getWords("world_world_not_found")));
                     return true;
                 case "unblock":
                     for (World world : UltiTools.getInstance().getServer().getWorlds()) {
@@ -118,31 +118,31 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-                                player.sendMessage(ChatColor.RED + "已取消禁止玩家使用指令传送进入此世界!");
+                                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("world_cancel_denied_enter"));
                                 return true;
                             }
-                            player.sendMessage(ChatColor.RED + "此世界并没有被禁止进入!");
+                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("world_world_does_not_deny_enter"));
                             return true;
                         }
                     }
-                    player.sendMessage(warning("没有找到这个世界！"));
+                    player.sendMessage(warning(UltiTools.languageUtils.getWords("world_world_not_found")));
                     return true;
                 case "create":
                 case "load":
                     for (World world : UltiTools.getInstance().getServer().getWorlds()) {
                         if (strings[1].equals(world.getName())) {
-                            player.sendMessage(warning("此世界已存在！"));
+                            player.sendMessage(warning(UltiTools.languageUtils.getWords("world_already_exists")));
                             return false;
                         }
                     }
 
                     for (String each : worlds) {
                         if (each.equals(strings[1])) {
-                            player.sendMessage(warning("此世界已存在！"));
+                            player.sendMessage(warning(UltiTools.languageUtils.getWords("world_already_exists")));
                             return false;
                         }
                     }
-                    player.sendMessage(warning("处理中...请耐心等待"));
+                    player.sendMessage(warning(UltiTools.languageUtils.getWords("processing")));
                     createWorld(worldConfig, worldsFile, worlds, strings[1], player);
                     return true;
                 case "delete":
@@ -158,11 +158,11 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            player.sendMessage(warning("此世界已被删除，请重启服务器以生效！"));
+                            player.sendMessage(warning(UltiTools.languageUtils.getWords("world_world_deleted")));
                             return true;
                         }
                     }
-                    player.sendMessage(warning("未找到这个世界！"));
+                    player.sendMessage(warning(UltiTools.languageUtils.getWords("world_world_not_found")));
                     return true;
             }
         }
@@ -174,7 +174,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
         if (args.length == 1) {
             List<String> tabCommands = new ArrayList<>();
             tabCommands.add("help");
-            tabCommands.add("[世界名]");
+            tabCommands.add("[" + UltiTools.languageUtils.getWords("world_name") + "]");
             tabCommands.add("list");
             if (player.isOp()) {
                 tabCommands.add("block");
@@ -185,7 +185,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
             return tabCommands;
         } else if (args.length == 2 && player.isOp()) {
             List<String> tabCommands = new ArrayList<>();
-            tabCommands.add("[世界名]");
+            tabCommands.add("[" + UltiTools.languageUtils.getWords("world_name") + "]");
             return tabCommands;
         }
         return null;
@@ -193,16 +193,16 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
 
 
     private void multiWorldsHelp(Player player) {
-        player.sendMessage(ChatColor.GREEN + "----多世界帮助----");
-        player.sendMessage(ChatColor.GOLD + "/mw help" + ChatColor.GRAY + "  打开这个帮助列表");
-        player.sendMessage(ChatColor.GOLD + "/mw [世界名]" + ChatColor.GRAY + "  传送到某个世界");
-        player.sendMessage(ChatColor.GOLD + "/mw list" + ChatColor.GRAY + "  打开世界列表");
+        player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getWords("world_help_header"));
+        player.sendMessage(ChatColor.GOLD + "/mw help" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("world_help_help"));
+        player.sendMessage(ChatColor.GOLD + "/mw [" + UltiTools.languageUtils.getWords("world_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("world_help_teleport"));
+        player.sendMessage(ChatColor.GOLD + "/mw list" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("world_help_list"));
         if (player.isOp()) {
-            player.sendMessage(ChatColor.GOLD + "/mw block [世界名]" + ChatColor.GRAY + "  禁止玩家进入某个世界");
-            player.sendMessage(ChatColor.GOLD + "/mw unblock [世界名]" + ChatColor.GRAY + "  取消禁止玩家进入某个世界");
-            player.sendMessage(ChatColor.GOLD + "/mw create [世界名]" + ChatColor.GRAY + "  生成一个新的世界");
-            player.sendMessage(ChatColor.GOLD + "/mw load [世界名]" + ChatColor.GRAY + "  加载世界");
-            player.sendMessage(ChatColor.GOLD + "/mw delete [世界名]" + ChatColor.GRAY + "  删除世界");
+            player.sendMessage(ChatColor.GOLD + "/mw block [" + UltiTools.languageUtils.getWords("world_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("world_help_block"));
+            player.sendMessage(ChatColor.GOLD + "/mw unblock [" + UltiTools.languageUtils.getWords("world_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("world_help_unblock"));
+            player.sendMessage(ChatColor.GOLD + "/mw create [" + UltiTools.languageUtils.getWords("world_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("world_help_create"));
+            player.sendMessage(ChatColor.GOLD + "/mw load [" + UltiTools.languageUtils.getWords("world_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("world_help_load"));
+            player.sendMessage(ChatColor.GOLD + "/mw delete [" + UltiTools.languageUtils.getWords("world_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("world_help_delete"));
         }
     }
 
@@ -219,16 +219,16 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                     worlds.add(worldName);
                     worlds_config.set("worlds", worlds);
                     worlds_config.set("world." + worldName + ".type", "GRASS_BLOCK");
-                    worlds_config.set("world." + worldName + ".describe", "无");
+                    worlds_config.set("world." + worldName + ".describe", UltiTools.languageUtils.getWords("none"));
                     try {
                         worlds_config.save(world_file);
                     } catch (IOException e) {
                         e.printStackTrace();
-                        player.sendMessage(warning("世界生成失败！"));
+                        player.sendMessage(warning(UltiTools.languageUtils.getWords("world_generate_failed")));
                     }
-                    player.sendMessage(warning("世界生成成功！"));
+                    player.sendMessage(warning(UltiTools.languageUtils.getWords("world_generate_successfully")));
                 } else {
-                    player.sendMessage(warning("此世界已存在！"));
+                    player.sendMessage(warning(UltiTools.languageUtils.getWords("world_already_exists")));
                 }
             }
         }.runTask(UltiTools.getInstance());
@@ -255,7 +255,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
         if (!player.getWorld().getName().equalsIgnoreCase(world)) {
             teleport(player, location);
         } else {
-            player.sendMessage(warning("你就在这个世界！"));
+            player.sendMessage(warning(UltiTools.languageUtils.getWords("world_you_are_in_this_world")));
         }
     }
 
@@ -271,20 +271,20 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
             @Override
             public void run() {
                 if (!HomeCommands.teleportingPlayers.get(player.getUniqueId())) {
-                    player.sendTitle(ChatColor.RED + "[多世界插件]传送失败", "请勿移动！", 10, 50, 20);
+                    player.sendTitle(ChatColor.RED + UltiTools.languageUtils.getWords("world_teleport_failed"), UltiTools.languageUtils.getWords("do_not_move"), 10, 50, 20);
                     this.cancel();
                     return;
                 }
                 if (time == 0) {
                     player.teleport(location);
                     player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.ENTITY_ENDERMAN_TELEPORT), 1, 0);
-                    player.sendTitle(ChatColor.GREEN + "[多世界插件]传送成功！", "", 10, 50, 20);
+                    player.sendTitle(ChatColor.GREEN + UltiTools.languageUtils.getWords("world_teleport_successfully"), "", 10, 50, 20);
                     HomeCommands.teleportingPlayers.put(player.getUniqueId(), false);
                     this.cancel();
                     return;
                 }
                 if ((time / 0.5 % 2) == 0) {
-                    player.sendTitle(ChatColor.GREEN + "[多世界插件]正在传送...", "离传送还有" + (int) time + "秒", 10, 70, 20);
+                    player.sendTitle(ChatColor.GREEN + UltiTools.languageUtils.getWords("world_teleporting"), String.format(UltiTools.languageUtils.getWords("world_teleporting_countdown"), (int) time), 10, 70, 20);
                 }
                 time -= 0.5;
             }
@@ -294,14 +294,12 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
     private void reviewOldVersionConfig(YamlConfiguration newConfig, YamlConfiguration oldConfig) {
         if (newConfig.get("blocked_worlds") == null) {
             newConfig.set("blocked_worlds", oldConfig.getStringList("blocked_worlds"));
-            oldConfig.set("注释38请勿修改", "禁止传送进入的世界(已移动至worlds.yml文件里)");
 
             for (String world : getWorlds()) {
                 newConfig.set("world." + world + ".type", "GRASS_BLOCK");
                 newConfig.set("world." + world + ".describe", "无");
             }
             try {
-                oldConfig.save(file);
                 newConfig.save(worldsFile);
             } catch (IOException e) {
                 e.printStackTrace();

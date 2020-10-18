@@ -61,7 +61,7 @@ public class LoginListener implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    player.sendMessage(ChatColor.RED + "请输入你的登录信息！");
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("login_enter_login_detail"));
                     if (isPlayerAccountExist(player)) {
                         setupLoginRegisterLayout(player, LoginRegisterEnum.LOGIN);
                         player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.LOGIN.toString()).getInventory());

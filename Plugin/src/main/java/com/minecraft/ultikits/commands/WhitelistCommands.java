@@ -26,7 +26,7 @@ public class WhitelistCommands implements TabExecutor {
             if (player.hasPermission("ultikits.tools.admin") || player.hasPermission("ultikits.tools.whitelist")) {
                 return whiteListCommands(sender, command, args);
             } else {
-                player.sendMessage(ChatColor.RED + "你没有权限！");
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("no_permission"));
                 return true;
             }
         } else {
@@ -72,11 +72,11 @@ public class WhitelistCommands implements TabExecutor {
     }
 
     private void sendHelpMessage(CommandSender sender) {
-        sender.sendMessage(ChatColor.YELLOW + "白名单系统帮助：");
-        sender.sendMessage(ChatColor.AQUA + "/wl help 帮助");
-        sender.sendMessage(ChatColor.AQUA + "/wl list 白名单列表");
-        sender.sendMessage(ChatColor.AQUA + "/wl add [玩家名] 添加玩家到白名单");
-        sender.sendMessage(ChatColor.AQUA + "/wl remove [玩家名] 将玩家移出白名单");
+        sender.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getWords("whitelist_help_header"));
+        sender.sendMessage(ChatColor.AQUA + "/wl help " + UltiTools.languageUtils.getWords("whitelist_help_help"));
+        sender.sendMessage(ChatColor.AQUA + "/wl list " + UltiTools.languageUtils.getWords("whitelist_help_list"));
+        sender.sendMessage(ChatColor.AQUA + "/wl add [" + UltiTools.languageUtils.getWords("player_name") + "] " + UltiTools.languageUtils.getWords("whitelist_help_add"));
+        sender.sendMessage(ChatColor.AQUA + "/wl remove [" + UltiTools.languageUtils.getWords("player_name") + "] " + UltiTools.languageUtils.getWords("whitelist_help_remove"));
     }
 
     private boolean whiteListCommands(CommandSender sender, Command command, String[] args) {
@@ -88,7 +88,7 @@ public class WhitelistCommands implements TabExecutor {
                         return true;
                     case "list":
                         List<String> whitelist = config.getStringList("whitelist");
-                        sender.sendMessage(String.format("%s白名单列表有：", ChatColor.YELLOW));
+                        sender.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getWords("whitelist_contains"));
                         for (String each : whitelist) {
                             sender.sendMessage(String.format("-%s", each));
                         }
@@ -99,11 +99,11 @@ public class WhitelistCommands implements TabExecutor {
             } else if (args.length == 2) {
                 if ("add".equalsIgnoreCase(args[0])) {
                     addPlayerToWhitelist(file, args[1]);
-                    sender.sendMessage(String.format("%s已将%s加入白名单！", ChatColor.RED, args[1]));
+                    sender.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getWords("whitelist_added"), args[1]));
                     return true;
                 } else if ("remove".equalsIgnoreCase(args[0])) {
                     removePlayerFromWhitelist(file, args[1]);
-                    sender.sendMessage(String.format("%s已将%s移出白名单！", ChatColor.RED, args[1]));
+                    sender.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getWords("whitelist_removed"), args[1]));
                     return true;
                 }
             }
@@ -125,7 +125,7 @@ public class WhitelistCommands implements TabExecutor {
                     return tabCommands;
                 } else if (args.length == 2) {
                     List<String> tabCommands = new ArrayList<>();
-                    tabCommands.add("[玩家名]");
+                    tabCommands.add("[" + UltiTools.languageUtils.getWords("player_name") + "]");
                     return tabCommands;
                 }
             }

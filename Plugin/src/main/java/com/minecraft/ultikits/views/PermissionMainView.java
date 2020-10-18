@@ -24,7 +24,7 @@ public class PermissionMainView {
     }
 
     public static Inventory setUp() {
-        InventoryManager inventoryManager = new InventoryManager(null, 54, "服务器权限管理", true);
+        InventoryManager inventoryManager = new InventoryManager(null, 54, UltiTools.languageUtils.getWords("permission_check_page_title"), true);
         inventoryManager.presetPage(ViewType.PREVIOUS_QUIT_NEXT);
         inventoryManager.create();
         ViewManager.registerView(inventoryManager, new PermissionListener());
@@ -54,17 +54,17 @@ public class PermissionMainView {
         String group = GroupManagerUtils.getGroup(uuid);
         List<String> subGroups = GroupManagerUtils.getSubGroups(uuid);
         ArrayList<String> lore = new ArrayList<>();
-        if (group == null) group = "无";
-        lore.add(ChatColor.LIGHT_PURPLE + "主权限组: " + group);
+        if (group == null) group = UltiTools.languageUtils.getWords("none");
+        lore.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getWords("permission_check_page_main_group")+" " + group);
         if (subGroups.size() == 0) {
-            lore.add(ChatColor.LIGHT_PURPLE + "副权限组: 无");
+            lore.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getWords("permission_check_page_sub_group")+" "+UltiTools.languageUtils.getWords("none"));
         } else {
-            lore.add(ChatColor.LIGHT_PURPLE + "副权限组: ");
+            lore.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getWords("permission_check_page_sub_group")+" ");
             lore.addAll(subGroups);
         }
-        lore.add(ChatColor.YELLOW + "------拥有的权限------");
+        lore.add(ChatColor.YELLOW + UltiTools.languageUtils.getWords("permission_check_page_permission_header"));
         if (permissions.size() == 0) {
-            lore.add("无");
+            lore.add(UltiTools.languageUtils.getWords("none"));
         } else {
             lore.addAll(permissions);
         }

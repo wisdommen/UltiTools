@@ -24,7 +24,7 @@ public class SetHomeCommands extends AbstractPlayerCommandExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] args, @NotNull Player player) {
         if (!isPlayerCanSetHome(player)) {
-            player.sendMessage(ChatColor.RED + "[家插件]你的家数量已经到达上限，删除家或者升级权限获得设置更多的家");
+            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("sethome_reached_limit"));
             return true;
         }
         if (args.length == 0) {
@@ -32,13 +32,13 @@ public class SetHomeCommands extends AbstractPlayerCommandExecutor {
             return true;
         } else if (args.length == 1) {
             if (getHomeList(player).contains(args[0])) {
-                player.sendMessage(warning("你已经有叫这个名字的家了！"));
+                player.sendMessage(warning(UltiTools.languageUtils.getWords("sethome_home_already_have")));
                 return true;
             }
             setHome(player, args[0]);
             return true;
         } else {
-            player.sendMessage(ChatColor.RED + "[家插件]用法：/sethome [家的名字（不设置则为默认）]");
+            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("sethome_usage"));
             return false;
         }
     }
@@ -63,7 +63,7 @@ public class SetHomeCommands extends AbstractPlayerCommandExecutor {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        player.sendMessage(ChatColor.YELLOW + "[家插件]设置家成功！");
+        player.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getWords("sethome_successfully"));
     }
 
     private static boolean isPlayerCanSetHome(Player player) {

@@ -36,14 +36,14 @@ public class ChestPageListener extends PagesListener {
 
     public static void loadBag(String chest_name, Player player, OfflinePlayer loader) {
         if (inventoryLock.get(chest_name) != null) {
-            player.sendMessage(warning(Bukkit.getPlayer(inventoryLock.get(chest_name)).getName() + "正在查看此背包，你暂时无法使用！"));
+            player.sendMessage(warning(Bukkit.getPlayer(inventoryLock.get(chest_name)).getName() + UltiTools.languageUtils.getWords("bag_someone_is_using")));
             return;
         }
         Inventory remote_chest = Bukkit.createInventory(null, 36, chest_name);
         File chest_file = new File(ConfigsEnum.PLAYER_CHEST.toString(), loader.getName() + ".yml");
         YamlConfiguration chest_config = YamlConfiguration.loadConfiguration(chest_file);
 
-        String name = ChatColor.stripColor(chest_name.split("号背包")[0].replace(loader.getName() + "的", ""));
+        String name = ChatColor.stripColor(chest_name.split(UltiTools.languageUtils.getWords("bag_number"))[0].replace(loader.getName() + UltiTools.languageUtils.getWords("bag_s"), ""));
         if (chest_config.getString(name) != null && !chest_config.getString(name).equals("")) {
             for (String item : Objects.requireNonNull(chest_config.getConfigurationSection(name)).getKeys(false)) {
                 if (item != null) {
@@ -62,8 +62,8 @@ public class ChestPageListener extends PagesListener {
     public void onInventoryClose(InventoryCloseEvent event) throws IOException {
         Player player = (Player) event.getPlayer();
         Inventory inventory = event.getInventory();
-        if (event.getView().getTitle().contains("号背包")) {
-            String[] strings = event.getView().getTitle().split("的");
+        if (event.getView().getTitle().contains(UltiTools.languageUtils.getWords("bag_number"))) {
+            String[] strings = event.getView().getTitle().split(UltiTools.languageUtils.getWords("bag_s"));
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < strings.length - 1; i++) {
                 stringBuilder.append(strings[i]);
@@ -72,7 +72,7 @@ public class ChestPageListener extends PagesListener {
             File chestFile = new File(ConfigsEnum.PLAYER_CHEST.toString(), playerName + ".yml");
             YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
 
-            String number = ChatColor.stripColor(event.getView().getTitle()).split("号")[0].replace(playerName + "的", "");
+            String number = ChatColor.stripColor(event.getView().getTitle()).split(UltiTools.languageUtils.getWords("bag_s"))[0].replace(playerName + UltiTools.languageUtils.getWords("bag_s"), "");
             chestConfig.set(number, "");
 
             for (int i = 0; i < inventory.getSize(); i++) {
@@ -90,33 +90,33 @@ public class ChestPageListener extends PagesListener {
 
     @Override
     public void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clicked) {
-        if (event.getView().getTitle().contains((player.getName()+"的远程背包"))) {
+        if (event.getView().getTitle().contains((String.format(UltiTools.languageUtils.getWords("bag_main_page_title"), player.getName())))) {
             YamlConfiguration config = Utils.getConfig(Utils.getConfigFile());
             File chestFile = new File(ConfigsEnum.PLAYER_CHEST.toString(), player.getName() + ".yml");
             YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
 
             if (clicked != null && clicked.getItemMeta() != null) {
                 event.setCancelled(true);
-                if (clicked.getItemMeta().getDisplayName().contains("号背包")) {
-                    String chestName = player.getName() + "的" + ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
+                if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("bag_number"))) {
+                    String chestName = player.getName() + UltiTools.languageUtils.getWords("bag_s") + ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
                     loadBag(chestName, player, player);
-                } else if ("创建背包".equals(ChatColor.stripColor(clicked.getItemMeta().getDisplayName()))) {
+                } else if (UltiTools.languageUtils.getWords("bag_button_create_bag").equals(ChatColor.stripColor(clicked.getItemMeta().getDisplayName()))) {
                     int price = config.getInt("price_of_create_a_remote_chest");
                     if (UltiTools.getIsVaultInstalled()) {
                         if (UltiTools.getEcon().has(Bukkit.getOfflinePlayer(player.getUniqueId()), price)) {
                             UltiTools.getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(player.getUniqueId()), config.getInt("price_of_create_a_remote_chest"));
-                            loadBag(player.getName() + "的" + (chestConfig.getKeys(false).size() + 1) + "号背包", player, player);
+                            loadBag(player.getName() + UltiTools.languageUtils.getWords("bag_s") + (chestConfig.getKeys(false).size() + 1) + UltiTools.languageUtils.getWords("bag_number"), player, player);
                         } else {
                             player.sendMessage(not_enough_money);
                         }
                     } else if (UltiTools.getIsUltiEconomyInstalled()) {
                         if (withdraw(player, price)) {
-                            loadBag(player.getName() + "的" + (chestConfig.getKeys(false).size() + 1) + "号背包", player, player);
+                            loadBag(player.getName() + UltiTools.languageUtils.getWords("bag_s") + (chestConfig.getKeys(false).size() + 1) + UltiTools.languageUtils.getWords("bag_number"), player, player);
                         } else {
                             player.sendMessage(not_enough_money);
                         }
                     } else {
-                        player.sendMessage(ChatColor.RED + "未找到经济前置！");
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("economy_dependency_not_found"));
                     }
                 }
             }

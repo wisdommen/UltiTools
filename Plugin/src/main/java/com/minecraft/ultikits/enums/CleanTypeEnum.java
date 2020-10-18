@@ -1,7 +1,12 @@
 package com.minecraft.ultikits.enums;
 
+import com.minecraft.ultikits.ultitools.UltiTools;
+
 public enum CleanTypeEnum {
-    MOBS("生物", "mobs"), ITEMS("掉落物", "items"), ENTITIES("实体", "all"), CHECK("实体", "check");
+    MOBS(UltiTools.languageUtils.getWords("mobs"), "mobs"),
+    ITEMS(UltiTools.languageUtils.getWords("dropped_item"), "items"),
+    ENTITIES(UltiTools.languageUtils.getWords("entity"), "all"),
+    CHECK(UltiTools.languageUtils.getWords("entity"), "check");
 
     String name;
     String alis;

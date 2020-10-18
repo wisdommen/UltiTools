@@ -1,6 +1,7 @@
 package com.minecraft.ultikits.config;
 
 import com.minecraft.ultikits.enums.ConfigsEnum;
+import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.*;
@@ -16,7 +17,7 @@ public class SideBarConfig extends AbstractConfigReviewable{
     private SideBarConfig(String name, String filePath) {
         super(name, filePath);
         map.put("config_version", 1.0);
-        map.put("scoreBoardTitle", "欢迎加入服务器");
+        map.put("scoreBoardTitle", UltiTools.languageUtils.getWords("sidebar_config_title"));
         map.put("name", "%player_name%");
         map.put("online_player", "");
         map.put("CDq", "");
@@ -33,7 +34,9 @@ public class SideBarConfig extends AbstractConfigReviewable{
         map.put("hp", "");
         map.put("max_hp", "");
         map.put("occupation", "");
-        map.put("customerline", Arrays.asList("这是自定义的内容", "可以在配置文件里改", "支持PAPI变量"));
+        map.put("customerline", Arrays.asList(UltiTools.languageUtils.getWords("sidebar_config_line_1"),
+                UltiTools.languageUtils.getWords("sidebar_config_line_2"),
+                UltiTools.languageUtils.getWords("sidebar_config_line_3")));
     }
 
     @Override

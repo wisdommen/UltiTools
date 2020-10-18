@@ -30,7 +30,7 @@ public class KitsPageListener extends PagesListener {
 
     @Override
     public void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
-        if (!inventoryManager.getTitle().contains("物品包/礼包中心")){
+        if (!inventoryManager.getTitle().contains(UltiTools.languageUtils.getWords("kits_page_title"))){
             return;
         }
         File kit_file = new File(ConfigsEnum.DATA_KIT.toString());
@@ -106,7 +106,7 @@ public class KitsPageListener extends PagesListener {
             int level = kitsConfig.getInt(item + ".level");
             if (checkLevel(player) < level) return false;
             String job = kitsConfig.getString(item + ".job");
-            return job.equals("全部") || checkJob(player).equals(job);
+            return job.equals(UltiTools.languageUtils.getWords("kits_config_job")) || checkJob(player).equals(job);
         }
         return true;
     }

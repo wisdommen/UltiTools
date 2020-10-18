@@ -28,7 +28,7 @@ public class EmailView {
     private EmailView(){}
 
     public static Inventory setUp(Player player){
-        InventoryManager inventoryManager = new InventoryManager(null, 54, player.getName()+"的收件箱", true);
+        InventoryManager inventoryManager = new InventoryManager(null, 54, String.format(UltiTools.languageUtils.getWords("email_page_title"), player.getName()), true);
         inventoryManager.presetPage(ViewType.PREVIOUS_QUIT_NEXT);
         inventoryManager.create();
         ViewManager.registerView(inventoryManager, new EmailPageListener());
@@ -50,9 +50,9 @@ public class EmailView {
             ArrayList<String> lore = (ArrayList<String>) getLoreList(emailContentManagers.get(each), message, 18);
             ItemStackManager mail;
             if (!emailContentManagers.get(each).getRead()) {
-                mail = new ItemStackManager(UltiTools.versionAdaptor.getEmailMaterial(false), lore, "来自：" + sender);
+                mail = new ItemStackManager(UltiTools.versionAdaptor.getEmailMaterial(false), lore, UltiTools.languageUtils.getWords("email_item_description_from") + sender);
             } else {
-                mail = new ItemStackManager(UltiTools.versionAdaptor.getEmailMaterial(true), lore, "来自：" + sender);
+                mail = new ItemStackManager(UltiTools.versionAdaptor.getEmailMaterial(true), lore, UltiTools.languageUtils.getWords("email_item_description_from") + sender);
             }
             res.add(mail);
         }
@@ -69,7 +69,7 @@ public class EmailView {
     public static @NotNull List<String> getLoreList(EmailContentBean emailContentBean, @NotNull String inputString, int length) {
         List<String> list = new ArrayList<>();
         list.add(ChatColor.GRAY + convertMillisecondsToRegularTime(Long.valueOf(emailContentBean.getUuid())));
-        list.add(ChatColor.GOLD + "------邮件内容------");
+        list.add(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_text_content_header"));
         int strLen = inputString.length();
         int start = 0;
         int num = length;
@@ -89,21 +89,21 @@ public class EmailView {
             num = num + length;
         }
         if (emailContentBean.getItemStack() != null) {
-            list.add(ChatColor.GOLD + "------附件内容------");
+            list.add(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_attachment_content_header"));
             if (emailContentBean.getItemStack().getItemMeta().getDisplayName().equals("")) {
-                list.add(ChatColor.LIGHT_PURPLE + emailContentBean.getItemStack().getType().name() + " * " + emailContentBean.getItemStack().getAmount() + "个");
+                list.add(ChatColor.LIGHT_PURPLE + emailContentBean.getItemStack().getType().name() + " * " + emailContentBean.getItemStack().getAmount() + UltiTools.languageUtils.getWords("ge"));
             } else {
-                list.add(ChatColor.LIGHT_PURPLE + emailContentBean.getItemStack().getItemMeta().getDisplayName() + " * " + emailContentBean.getItemStack().getAmount() + "个");
+                list.add(ChatColor.LIGHT_PURPLE + emailContentBean.getItemStack().getItemMeta().getDisplayName() + " * " + emailContentBean.getItemStack().getAmount() + UltiTools.languageUtils.getWords("ge"));
             }
         }
         if (!emailContentBean.getRead()) {
             if (emailContentBean.getItemStack() != null) {
-                list.add(ChatColor.RED + "点击领取附件！");
+                list.add(ChatColor.RED + UltiTools.languageUtils.getWords("email_click_to_claim"));
             } else {
-                list.add(ChatColor.RED + "点击来标记为已读！");
+                list.add(ChatColor.RED + UltiTools.languageUtils.getWords("email_click_to_read"));
             }
         } else {
-            list.add(ChatColor.AQUA + "已读！");
+            list.add(ChatColor.AQUA + UltiTools.languageUtils.getWords("email_read"));
         }
         list.add(ChatColor.DARK_GRAY + "ID:" + emailContentBean.getUuid());
         return list;

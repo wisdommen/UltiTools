@@ -3,6 +3,7 @@ package com.minecraft.ultikits.checker.updatechecker;
 import com.minecraft.ultikits.config.ConfigController;
 import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
+import com.minecraft.ultikits.utils.LanguageUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -93,13 +94,13 @@ public class ConfigFileChecker {
 
             @Override
             public void run() {
-                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 正在下载更新...");
+                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] "+ UltiTools.languageUtils.getWords("downloading"));
                 if (download()){
-                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 下载完成, 重启服务器以应用更新！");
+                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] "+UltiTools.languageUtils.getWords("download_successfully"));
                     this.cancel();
                     return;
                 }
-                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + String.format("[UltiTools] 下载失败，请前往 %s 手动下载！", "https://www.mcbbs.net/thread-1062730-1-1.html"));
+                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + String.format("[UltiTools] "+UltiTools.languageUtils.getWords("download_failed"), "https://www.mcbbs.net/thread-1062730-1-1.html"));
             }
 
         }.runTaskAsynchronously(UltiTools.getInstance());

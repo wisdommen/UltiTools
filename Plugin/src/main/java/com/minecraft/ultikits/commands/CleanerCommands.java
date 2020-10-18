@@ -31,9 +31,9 @@ public class CleanerCommands implements TabExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (command.getName().equalsIgnoreCase("clean") && (sender.hasPermission("ultikits.tools.clean")||sender.hasPermission("ultikits.tools.admin"))) {
+        if (command.getName().equalsIgnoreCase("clean") && (sender.hasPermission("ultikits.tools.clean") || sender.hasPermission("ultikits.tools.admin"))) {
             if (!UltiTools.isProVersion) {
-                sender.sendMessage(warning("这是一个付费版功能，激活付费版之后就可以使用啦！"));
+                sender.sendMessage(warning(UltiTools.languageUtils.getWords("warning_pro_fuction")));
                 return true;
             }
             new BukkitRunnable() {
@@ -94,11 +94,11 @@ public class CleanerCommands implements TabExecutor {
         return null;
     }
 
-    private static void sendHelp(CommandSender sender){
-        sender.sendMessage(info("/clean check  检查所有实体数量"));
-        sender.sendMessage(info("/clean item [world]  清理所有/某个世界的掉落物"));
-        sender.sendMessage(info("/clean mobs [world]  清理所有/某个世界的生物"));
-        sender.sendMessage(info("/clean all [world]  清理所有/某个世界的实体"));
-        sender.sendMessage(info("/clean help  检查所有实体数量"));
+    private static void sendHelp(CommandSender sender) {
+        sender.sendMessage(info("/clean check  " + UltiTools.languageUtils.getWords("clean_usage_check")));
+        sender.sendMessage(info("/clean item [world]  " + UltiTools.languageUtils.getWords("clean_usage_clean_item")));
+        sender.sendMessage(info("/clean mobs [world]  " + UltiTools.languageUtils.getWords("clean_usage_mobs")));
+        sender.sendMessage(info("/clean all [world]  " + UltiTools.languageUtils.getWords("clean_usage_all")));
+        sender.sendMessage(info("/clean help  " + UltiTools.languageUtils.getWords("clean_usage_help")));
     }
 }

@@ -11,27 +11,27 @@ public enum Buttons {
     /**
      * Previous buttons.
      */
-    PREVIOUS("上一页", UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.RED)),
+    PREVIOUS(UltiTools.languageUtils.getWords("button_previous"), UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.RED)),
     /**
      * Next buttons.
      */
-    NEXT("下一页", UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.RED)),
+    NEXT(UltiTools.languageUtils.getWords("button_next"), UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.RED)),
     /**
      * Back buttons.
      */
-    BACK("返回", UltiTools.versionAdaptor.getSign()),
+    BACK(UltiTools.languageUtils.getWords("button_back"), UltiTools.versionAdaptor.getSign()),
     /**
      * Quit buttons.
      */
-    QUIT("退出", UltiTools.versionAdaptor.getEndEye()),
+    QUIT(UltiTools.languageUtils.getWords("button_quit"), UltiTools.versionAdaptor.getEndEye()),
     /**
      * Ok buttons.
      */
-    OK("确认", UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.GREEN)),
+    OK(UltiTools.languageUtils.getWords("button_ok"), UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.GREEN)),
     /**
      * Cancel buttons.
      */
-    CANCEL("取消", UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.RED));
+    CANCEL(UltiTools.languageUtils.getWords("button_cancel"), UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.RED));
 
     /**
      * The Name.

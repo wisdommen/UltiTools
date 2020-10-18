@@ -2,6 +2,7 @@ package com.minecraft.ultikits.commands;
 
 import com.minecraft.ultikits.commands.abstracts.AbstractPlayerCommandExecutor;
 import com.minecraft.ultikits.enums.ConfigsEnum;
+import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -28,10 +29,10 @@ public class UnlockCommands extends AbstractPlayerCommandExecutor {
             try {
                 playerData.save(playerFile);
             } catch (IOException e) {
-                player.sendMessage(ChatColor.RED + "文件保存失败，解锁失败！重新输入/unlock指令。");
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("unlock_file_save_failed"));
                 return true;
             }
-            player.sendMessage(ChatColor.GREEN + "请点击箱子解锁！");
+            player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getWords("unlock_click_to_unlock"));
             return true;
         }
         return false;

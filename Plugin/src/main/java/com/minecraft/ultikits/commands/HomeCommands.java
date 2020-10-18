@@ -32,7 +32,7 @@ public class HomeCommands extends AbstractTabExecutor implements Listener {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         if (file.exists()) {
             try {
-                if (args.length == 0 || (args.length == 1 && args[0].equals("默认"))) {
+                if (args.length == 0 || (args.length == 1 && args[0].equals(UltiTools.languageUtils.getWords("default")))) {
                     World world = Bukkit.getServer().getWorld(Objects.requireNonNull(config.getString(player.getName() + ".Def.world")));
                     int x = config.getInt(player.getName() + ".Def.x");
                     int y = config.getInt(player.getName() + ".Def.y");
@@ -49,14 +49,14 @@ public class HomeCommands extends AbstractTabExecutor implements Listener {
                     teleportingPlayers.put(player.getUniqueId(), true);
                     teleportPlayer(player, location);
                 } else {
-                    player.sendMessage(ChatColor.RED + "[家插件]用法：/home [家的名字（不设置则为默认）]");
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("home_usage"));
                     return false;
                 }
             } catch (NullPointerException e) {
-                player.sendMessage(ChatColor.RED + "[家插件]你没有这个家！");
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("home_dont_have"));
             }
         } else {
-            player.sendMessage(ChatColor.RED + "[家插件]你还没有设置家！");
+            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("home_have_no_home"));
         }
         return true;
     }
@@ -67,10 +67,11 @@ public class HomeCommands extends AbstractTabExecutor implements Listener {
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event){
+    public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        if (teleportingPlayers.get(player.getUniqueId())==null || !teleportingPlayers.get(player.getUniqueId())) return;
-        if (teleportingPlayers.get(player.getUniqueId())){
+        if (teleportingPlayers.get(player.getUniqueId()) == null || !teleportingPlayers.get(player.getUniqueId()))
+            return;
+        if (teleportingPlayers.get(player.getUniqueId())) {
             teleportingPlayers.put(player.getUniqueId(), false);
         }
     }
@@ -78,7 +79,7 @@ public class HomeCommands extends AbstractTabExecutor implements Listener {
     private static void teleportPlayer(Player player, Location location) {
         boolean isChunkLoaded = location.getChunk().isLoaded();
 
-        if (!isChunkLoaded){
+        if (!isChunkLoaded) {
             location.getChunk().load();
         }
 
@@ -87,21 +88,21 @@ public class HomeCommands extends AbstractTabExecutor implements Listener {
 
             @Override
             public void run() {
-                if (!teleportingPlayers.get(player.getUniqueId())){
-                    player.sendTitle(ChatColor.RED + "[家插件]传送失败", "请勿移动！", 10, 50, 20);
+                if (!teleportingPlayers.get(player.getUniqueId())) {
+                    player.sendTitle(ChatColor.RED + UltiTools.languageUtils.getWords("home_teleport_failed"), UltiTools.languageUtils.getWords("do_not_move"), 10, 50, 20);
                     this.cancel();
                     return;
                 }
                 if (time == 0) {
                     player.teleport(location);
                     player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.ENTITY_ENDERMAN_TELEPORT), 1, 0);
-                    player.sendTitle(ChatColor.GREEN + "[家插件]欢迎回家！", "", 10, 50, 20);
+                    player.sendTitle(ChatColor.GREEN + UltiTools.languageUtils.getWords("home_teleport_success"), "", 10, 50, 20);
                     teleportingPlayers.put(player.getUniqueId(), false);
                     this.cancel();
                     return;
                 }
                 if ((time / 0.5 % 2) == 0) {
-                    player.sendTitle(ChatColor.GREEN + "[家插件]正在传送...", "离传送还有" + (int) time + "秒", 10, 70, 20);
+                    player.sendTitle(ChatColor.GREEN + UltiTools.languageUtils.getWords("home_teleporting"), String.format(UltiTools.languageUtils.getWords("world_teleporting_countdown"),(int) time), 10, 70, 20);
                 }
                 time -= 0.5;
             }

@@ -119,39 +119,39 @@ public class SideBarTask extends BukkitRunnable {
             }
         }
 
-        setScoreboard(scoreboard, ChatColor.WHITE + "金币： " + ChatColor.GOLD , money, 97);
-        setScoreboard(scoreboard, ChatColor.WHITE + "存款： " + ChatColor.GOLD , deposit, 96);
-        setScoreboard(scoreboard, ChatColor.WHITE + "等级： " + ChatColor.GOLD , level_num, 95);
-        setScoreboard(scoreboard, ChatColor.WHITE + "职业： " + ChatColor.GOLD , occupation, 98);
-        setScoreboard(scoreboard, ChatColor.WHITE + "名字： " + ChatColor.GOLD , name, 99);
-        setScoreboard(scoreboard,ChatColor.WHITE + "在线人数： " + ChatColor.GOLD , onLinePlayers,0);
-        setScoreboard(scoreboard, ChatColor.WHITE + "生命值： " + ChatColor.YELLOW + hp + ChatColor.BOLD + " / " + ChatColor.GOLD , max_hp, 93);
+        setScoreboard(scoreboard, ChatColor.WHITE + UltiTools.languageUtils.getWords("sidebar_money")+" " + ChatColor.GOLD , money, 97);
+        setScoreboard(scoreboard, ChatColor.WHITE + UltiTools.languageUtils.getWords("sidebar_deposit")+" " + ChatColor.GOLD , deposit, 96);
+        setScoreboard(scoreboard, ChatColor.WHITE + UltiTools.languageUtils.getWords("sidebar_level")+" " + ChatColor.GOLD , level_num, 95);
+        setScoreboard(scoreboard, ChatColor.WHITE + UltiTools.languageUtils.getWords("sidebar_job")+" " + ChatColor.GOLD , occupation, 98);
+        setScoreboard(scoreboard, ChatColor.WHITE + UltiTools.languageUtils.getWords("sidebar_name")+" " + ChatColor.GOLD , name, 99);
+        setScoreboard(scoreboard,ChatColor.WHITE + UltiTools.languageUtils.getWords("sidebar_online_player")+" " + ChatColor.GOLD , onLinePlayers,0);
+        setScoreboard(scoreboard, ChatColor.WHITE + UltiTools.languageUtils.getWords("sidebar_health")+" " + ChatColor.YELLOW + hp + ChatColor.BOLD + " / " + ChatColor.GOLD , max_hp, 93);
         if (getUnReadEmailNum(player) > 0) {
-            Score mail = scoreboard.getScore(ChatColor.WHITE + "新邮件： " + ChatColor.GOLD + getUnReadEmailNum(player) + "封");
+            Score mail = scoreboard.getScore(ChatColor.WHITE + UltiTools.languageUtils.getWords("sidebar_new_email")+" " + ChatColor.GOLD + getUnReadEmailNum(player) + UltiTools.languageUtils.getWords("feng"));
             mail.setScore(92);
         }
         if (!max_exp.equals("") && !exp.equals("")) {
-            Score level = scoreboard.getScore(ChatColor.WHITE + "经验值： " + ChatColor.YELLOW + exp + ChatColor.BOLD + " / " + ChatColor.GOLD + max_exp);
+            Score level = scoreboard.getScore(ChatColor.WHITE + UltiTools.languageUtils.getWords("sidebar_exp")+" " + ChatColor.YELLOW + exp + ChatColor.BOLD + " / " + ChatColor.GOLD + max_exp);
             level.setScore(94);
         }
         if (CDq != null && !CDq.equals("") && Integer.parseInt(CDq) > 0) {
-            Score CD = scoreboard.getScore(ChatColor.WHITE + "Q技能CD还剩 " + ChatColor.GOLD + CDq + "秒");
+            Score CD = scoreboard.getScore(ChatColor.WHITE + UltiTools.languageUtils.getWords("sidebar_Q_countdown")+" " + ChatColor.GOLD + CDq + UltiTools.languageUtils.getWords("second"));
             CD.setScore(89);
         }
         if (CDw != null && !CDw.equals("") && Integer.parseInt(CDw) > 0) {
-            Score CD = scoreboard.getScore(ChatColor.WHITE + "W技能CD还剩 " + ChatColor.GOLD + CDw + "秒");
+            Score CD = scoreboard.getScore(ChatColor.WHITE + UltiTools.languageUtils.getWords("sidebar_W_countdown")+" " + ChatColor.GOLD + CDw + UltiTools.languageUtils.getWords("second"));
             CD.setScore(88);
         }
         if (CDe != null && !CDe.equals("") && Integer.parseInt(CDe) > 0) {
-            Score CD = scoreboard.getScore(ChatColor.WHITE + "E技能CD还剩 " + ChatColor.GOLD + CDe + "秒");
+            Score CD = scoreboard.getScore(ChatColor.WHITE + UltiTools.languageUtils.getWords("sidebar_E_countdown")+" " + ChatColor.GOLD + CDe + UltiTools.languageUtils.getWords("second"));
             CD.setScore(87);
         }
         if (CDr != null && !CDr.equals("") && Integer.parseInt(CDr) > 0) {
-            Score CD = scoreboard.getScore(ChatColor.WHITE + "R技能CD还剩 " + ChatColor.GOLD + CDr + "秒");
+            Score CD = scoreboard.getScore(ChatColor.WHITE + UltiTools.languageUtils.getWords("sidebar_R_countdown")+" " + ChatColor.GOLD + CDr + UltiTools.languageUtils.getWords("second"));
             CD.setScore(86);
         }
         if (isWizard && mp != null && max_mp != null && !mp.equals("")&& !max_mp.equals("")) {
-            Score magic = scoreboard.getScore(ChatColor.WHITE + "魔力值：" + ChatColor.YELLOW + mp + ChatColor.BOLD + "/" + ChatColor.GOLD + max_mp);
+            Score magic = scoreboard.getScore(ChatColor.WHITE + UltiTools.languageUtils.getWords("sidebar_magic")+"" + ChatColor.YELLOW + mp + ChatColor.BOLD + "/" + ChatColor.GOLD + max_mp);
             magic.setScore(90);
         }
 
@@ -209,7 +209,7 @@ public class SideBarTask extends BukkitRunnable {
 
     public String setArmorString(String string){
         if ("-1".equals(string)) {
-            string = "无";
+            string = UltiTools.languageUtils.getWords("none");
         } else if ("0".equals(string)) {
             string = "∞";
         }
@@ -217,7 +217,7 @@ public class SideBarTask extends BukkitRunnable {
     }
 
     public void setCustomLine(Objective scoreboard, Player player){
-        List<String> tempList = sideBarConfig.getStringList("customer_lines");
+        List<String> tempList = sideBarConfig.getStringList("customerline");
         List<String> customer_line = Lists.reverse(tempList);
         int i = 1;
         for (String each_line : customer_line) {

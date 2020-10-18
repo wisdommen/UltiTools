@@ -36,7 +36,7 @@ public class ChestLockListener implements Listener {
         Block placedBlock = event.getBlock();
         if (placedBlock.getType() == Material.CHEST){
             Player player = event.getPlayer();
-            player.sendMessage(info("输入/lock后点击这个箱子即可上锁哦！"));
+            player.sendMessage(info(UltiTools.languageUtils.getWords("lock_tip")));
         }
     }
 
@@ -63,16 +63,16 @@ public class ChestLockListener implements Listener {
                 try {
                     playerData.save(playerFile);
                 } catch (IOException e) {
-                    player.sendMessage(ChatColor.RED + "文件保存失败，上锁失败！请再次点击。");
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_file_save_fail_click"));
                     return;
                 }
                 if (chests.contains(local)) {
-                    player.sendMessage(ChatColor.RED + "这个箱子已经上锁了！");
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_chest_already_locked"));
                     return;
                 } else {
                     for (String each : chests) {
                         if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
-                            player.sendMessage(ChatColor.RED + "这是别人的箱子，你无法上锁！");
+                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_you_cannot_lock_others_chest"));
                             return;
                         }
                     }
@@ -82,12 +82,11 @@ public class ChestLockListener implements Listener {
                 try {
                     chestData.save(chestFile);
                 } catch (IOException e) {
-                    player.sendMessage(ChatColor.RED + "文件保存失败，上锁失败！重新输入/lock指令。");
+                    player.sendMessage(ChatColor.RED +UltiTools.languageUtils.getWords("lock_file_save_failed"));
                     return;
                 }
-                player.sendMessage(ChatColor.GREEN + "上锁成功！");
-                player.sendMessage(ChatColor.RED + "如果是大箱子，请将另一半也锁上");
-                player.sendMessage(ChatColor.RED + "或者你可以让另一个人锁，即为共享箱子");
+                player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getWords("lock_successfully"));
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_tip_after_lock"));
                 player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_CHEST_LOCKED), 10, 1);
                 return;
             } else if (playerData.getBoolean("unlock")) {
@@ -96,7 +95,7 @@ public class ChestLockListener implements Listener {
                 try {
                     playerData.save(playerFile);
                 } catch (IOException e) {
-                    player.sendMessage(ChatColor.RED + "文件保存失败，解锁失败！请再次点击。");
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("unlock_file_save_fail_click"));
                     return;
                 }
                 if (chests.contains(local)) {
@@ -105,34 +104,33 @@ public class ChestLockListener implements Listener {
                     try {
                         chestData.save(chestFile);
                     } catch (IOException e) {
-                        player.sendMessage(ChatColor.RED + "文件保存失败，解锁失败！重新输入/lock指令。");
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("unlock_file_save_failed"));
                         return;
                     }
-                    player.sendMessage(ChatColor.GREEN + "解锁成功！");
-                    player.sendMessage(ChatColor.RED + "如果是大箱子，请将另一半也解锁");
-                    player.sendMessage(ChatColor.RED + "如果是共享箱子，请也告知你的同伴");
+                    player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getWords("unlock_successfully"));
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("unlock_tip_after_unlock"));
                     player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_CHEST_LOCKED), 10, 1);
                     return;
                 } else {
                     for (String each : chests) {
                         if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
-                            player.sendMessage(ChatColor.RED + "这是别人的箱子，你无法解锁！");
+                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("unlock_you_cannot_unlock_others_chest"));
                             return;
                         }
                     }
                 }
-                player.sendMessage(ChatColor.RED + "这个箱子没有上锁哦！");
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("unlock_chest_not_locked"));
                 return;
             }
             if (!chests.contains(local)) {
                 for (String each : chests) {
                     if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
                         if ((chestConfig.getBoolean("op_unlock") && player.isOp() && event.getAction() == Action.RIGHT_CLICK_BLOCK) || (chestConfig.getBoolean("op_break_locked") && player.isOp() && event.getAction() == Action.LEFT_CLICK_BLOCK)) {
-                            player.sendMessage(ChatColor.GREEN + "虽然你是OP，但是请不要为所欲为哦");
+                            player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getWords("lock_op_warning"));
                             return;
                         }
                         event.setCancelled(true);
-                        player.sendMessage(ChatColor.RED + "这是别人的箱子，你无权操作哦");
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_this_is_others_chest"));
                         return;
                     }
                 }
@@ -168,7 +166,7 @@ public class ChestLockListener implements Listener {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                player.sendMessage(ChatColor.RED + "你删除了一个上锁的箱子！");
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_chest_deleted"));
             }
         }
     }

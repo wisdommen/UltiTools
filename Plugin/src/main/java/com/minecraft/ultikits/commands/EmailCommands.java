@@ -54,7 +54,7 @@ public class EmailCommands extends AbstractTabExecutor {
                             sendHelpMessage(player);
                             return true;
                         default:
-                            player.sendMessage(ChatColor.RED + "格式错误！");
+                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("wrong_format"));
                             return false;
                     }
                 case 2:
@@ -71,7 +71,7 @@ public class EmailCommands extends AbstractTabExecutor {
                             sendMessage(file, emailManager, player, strings[1]);
                             return true;
                         default:
-                            player.sendMessage(ChatColor.RED + "格式错误！");
+                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("wrong_format"));
                             return false;
                     }
                 case 3:
@@ -86,13 +86,13 @@ public class EmailCommands extends AbstractTabExecutor {
                             hasContent = true;
                             break;
                         default:
-                            player.sendMessage(ChatColor.RED + "格式错误！");
+                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("wrong_format"));
                             return false;
                     }
                     sendMessage(file2, emailManager, player, strings[1], strings[2], hasContent);
                     return true;
                 default:
-                    player.sendMessage(ChatColor.RED + "格式错误！");
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("wrong_format"));
                     return false;
             }
         }
@@ -133,16 +133,16 @@ public class EmailCommands extends AbstractTabExecutor {
     }
 
     private void sendHelpMessage(@NotNull Player player) {
-        player.sendMessage(ChatColor.YELLOW + "-------------邮件系统帮助------------");
-        player.sendMessage(ChatColor.GREEN + "/email read " + ChatColor.GRAY + "打开收件箱");
-        player.sendMessage(ChatColor.GREEN + "/email delhistory " + ChatColor.GRAY + "删除所有邮件");
-        player.sendMessage(ChatColor.GREEN + "/email send [玩家名] [文本内容] " + ChatColor.GRAY + "给某人发送只包含文本的邮件");
-        player.sendMessage(ChatColor.GREEN + "/email senditem [玩家名] " + ChatColor.GRAY + "手持需要发送的物品，发送一个带有附件的邮件");
-        player.sendMessage(ChatColor.GREEN + "/email senditem [玩家名] [文本内容] " + ChatColor.GRAY + "手持需要发送的物品，发送一个带有附件的文本邮件");
+        player.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getWords("email_help_header"));
+        player.sendMessage(ChatColor.GREEN + "/email read " + ChatColor.GRAY + UltiTools.languageUtils.getWords("email_help_read"));
+        player.sendMessage(ChatColor.GREEN + "/email delhistory " + ChatColor.GRAY + UltiTools.languageUtils.getWords("email_help_delhistory"));
+        player.sendMessage(ChatColor.GREEN + "/email send [" + UltiTools.languageUtils.getWords("player_name") + "] [" + UltiTools.languageUtils.getWords("text_content") + "] " + ChatColor.GRAY + UltiTools.languageUtils.getWords("email_help_send"));
+        player.sendMessage(ChatColor.GREEN + "/email senditem [" + UltiTools.languageUtils.getWords("player_name") + "] " + ChatColor.GRAY + UltiTools.languageUtils.getWords("email_help_senditem"));
+        player.sendMessage(ChatColor.GREEN + "/email senditem [" + UltiTools.languageUtils.getWords("player_name") + "] [" + UltiTools.languageUtils.getWords("text_content") + "] " + ChatColor.GRAY + UltiTools.languageUtils.getWords("email_help_senditem_with_text"));
         if (!player.isOp()) {
             return;
         }
-        player.sendMessage(ChatColor.GREEN + "/email sendall [文本内容] " + ChatColor.GRAY + "给所有人发邮件，如果空手则不包含附件，手持物品发送带有物品的邮件，不会扣除你的物品！");
+        player.sendMessage(ChatColor.GREEN + "/email sendall [" + UltiTools.languageUtils.getWords("text_content") + "] " + ChatColor.GRAY + UltiTools.languageUtils.getWords("email_help_sendall"));
     }
 
     private void pushToReceiver(String receiver) {
@@ -150,7 +150,7 @@ public class EmailCommands extends AbstractTabExecutor {
             return;
         }
         Player receiverPlayer = Bukkit.getPlayer(receiver);
-        receiverPlayer.sendMessage(info("你收到一条新的邮件！\n使用/email read 来查看"));
+        receiverPlayer.sendMessage(info(UltiTools.languageUtils.getWords("email_received_new_email")));
         receiverPlayer.playSound(receiverPlayer.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_CHIME), 10, 1);
     }
 
@@ -158,7 +158,7 @@ public class EmailCommands extends AbstractTabExecutor {
         if (!player.isOp()) {
             return;
         }
-        player.sendMessage(ChatColor.GOLD + "正在发送全体邮件...");
+        player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_sending_all_email"));
         if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
             ItemStack itemStack = player.getInventory().getItemInMainHand();
             for (OfflinePlayer player1 : UltiTools.getInstance().getServer().getOfflinePlayers()) {
@@ -173,29 +173,29 @@ public class EmailCommands extends AbstractTabExecutor {
             emailManager.sendTo(file, receiver);
             pushToReceiver(player2.getName());
         }
-        player.sendMessage(ChatColor.GOLD + "发送成功！");
+        player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_send_successfully"));
         player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.UI_TOAST_OUT), 15, 1);
     }
 
     public void deleteHistoryEmail(@NotNull EmailManager emailManager, Player player) {
         if (!emailManager.deleteHistoryEmails()) {
-            player.sendMessage(warning("你还没有收到过任何邮件！"));
+            player.sendMessage(warning(UltiTools.languageUtils.getWords("email_not_received_any_email")));
             return;
         }
-        player.sendMessage(warning("所有历史邮件都已删除！"));
+        player.sendMessage(warning(UltiTools.languageUtils.getWords("email_all_email_deleted")));
         player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_WET_GRASS_BREAK), 10, 1);
     }
 
     public void sendMessage(@NotNull File file, EmailManager emailManager, Player player, String receiver) {
         if (!file.exists()) {
-            player.sendMessage(warning("未找到指定的收件人！"));
+            player.sendMessage(warning(UltiTools.languageUtils.getWords("email_receiver_not_found")));
         }
         sendItem(file, emailManager, player, receiver);
     }
 
     public void sendMessage(@NotNull File file, EmailManager emailManager, Player player, String receiver, String message, boolean hasContent) {
         if (!file.exists()) {
-            player.sendMessage(warning("未找到指定的收件人！"));
+            player.sendMessage(warning(UltiTools.languageUtils.getWords("email_receiver_not_found")));
         }
         if (hasContent) {
             sendItem(file, emailManager, player, receiver, message);
@@ -205,47 +205,47 @@ public class EmailCommands extends AbstractTabExecutor {
     }
 
     private void sendText(File file, @NotNull EmailManager emailManager, @NotNull Player player, String receiver, String message) {
-        player.sendMessage(ChatColor.GOLD + "正在发送邮件...");
+        player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_sending"));
         if (emailManager.sendTo(file, message)) {
-            player.sendMessage(ChatColor.GOLD + "发送成功！");
+            player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_send_successfully"));
             player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.UI_TOAST_OUT), 15, 1);
             pushToReceiver(receiver);
         } else {
-            player.sendMessage(warning("未找到指定的收件人！"));
+            player.sendMessage(warning(UltiTools.languageUtils.getWords("email_receiver_not_found")));
         }
     }
 
     private void sendItem(File file, EmailManager emailManager, @NotNull Player player, String receiver, String message) {
         if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
             ItemStack itemStack = player.getInventory().getItemInMainHand();
-            player.sendMessage(ChatColor.GOLD + "正在发送邮件...");
+            player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_sending"));
             if (emailManager.sendTo(file, message, itemStack)) {
                 player.getInventory().setItemInMainHand(null);
-                player.sendMessage(ChatColor.GOLD + "发送成功！");
+                player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_send_successfully"));
                 player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.UI_TOAST_OUT), 15, 1);
                 pushToReceiver(receiver);
             } else {
-                player.sendMessage(warning("发送失败！"));
+                player.sendMessage(warning(UltiTools.languageUtils.getWords("email_send_failed")));
             }
         } else {
-            player.sendMessage(warning("请手持需要发送的物品！"));
+            player.sendMessage(warning(UltiTools.languageUtils.getWords("email_hand_item")));
         }
     }
 
     private void sendItem(File file, EmailManager emailManager, @NotNull Player player, String receiver) {
         if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
             ItemStack itemStack = player.getInventory().getItemInMainHand();
-            player.sendMessage(ChatColor.GOLD + "正在发送邮件...");
-            if (emailManager.sendTo(file, "对方没有留言哦!", itemStack)) {
+            player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_sending"));
+            if (emailManager.sendTo(file, UltiTools.languageUtils.getWords("email_sender_no_message"), itemStack)) {
                 player.getInventory().setItemInMainHand(null);
-                player.sendMessage(ChatColor.GOLD + "发送成功！");
+                player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_send_successfully"));
                 player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.UI_TOAST_OUT), 15, 1);
                 pushToReceiver(receiver);
             } else {
-                player.sendMessage(warning("发送失败！"));
+                player.sendMessage(warning(UltiTools.languageUtils.getWords("email_send_failed")));
             }
         } else {
-            player.sendMessage(warning("请手持需要发送的物品！"));
+            player.sendMessage(warning(UltiTools.languageUtils.getWords("email_hand_item")));
         }
     }
 }

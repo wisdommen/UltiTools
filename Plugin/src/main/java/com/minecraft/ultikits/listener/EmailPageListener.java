@@ -3,6 +3,7 @@ package com.minecraft.ultikits.listener;
 import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.inventoryapi.InventoryManager;
 import com.minecraft.ultikits.inventoryapi.PagesListener;
+import com.minecraft.ultikits.ultitools.UltiTools;
 import com.minecraft.ultikits.utils.SerializationUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,7 +20,7 @@ public class EmailPageListener extends PagesListener {
 
     @Override
     public void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
-        if (!event.getView().getTitle().contains(player.getName() + "的收件箱")) {
+        if (!event.getView().getTitle().contains(String.format(UltiTools.languageUtils.getWords("email_page_title"), player.getName()))) {
             return;
         }
         ItemStack clicked = event.getCurrentItem();
@@ -28,7 +29,7 @@ public class EmailPageListener extends PagesListener {
 
         if (clicked != null) {
             event.setCancelled(true);
-            if (Objects.requireNonNull(clicked.getItemMeta()).getDisplayName().contains("来自：")) {
+            if (Objects.requireNonNull(clicked.getItemMeta()).getDisplayName().contains(UltiTools.languageUtils.getWords("email_item_description_from"))) {
                 for (String lore : Objects.requireNonNull(clicked.getItemMeta().getLore())) {
                     if (lore.contains("ID:")) {
                         String uuid = lore.split(":")[1];
@@ -45,7 +46,7 @@ public class EmailPageListener extends PagesListener {
                                 config.set(uuid + ".isRead", true);
                                 config.set(uuid + ".isClaimed", true);
                             } else {
-                                player.sendMessage(ChatColor.RED + "背包容量不足，无法接受附件，请保证至少有一个空位！");
+                                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("email_inventory_space_not_enough"));
                             }
                         }
                         try {
