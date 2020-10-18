@@ -20,18 +20,21 @@ public class DeathPunishUtils {
         UltiTools.getInstance().getServer().dispatchCommand(player, cmd);
     }
 
-    public static void takeItem(Player player, int times) {
+    public static void takeItem(Player player, int drop) {
         Random random = new Random();
         Inventory inventory = player.getInventory();
         int count = 1;
         if (inventory.getContents().length != 0) {
-            while (count < times) {
+            while (count < drop) {
                 ItemStack itemStack = player.getInventory().getItem(random.nextInt(45));
                 if (itemStack != null) {
-                    itemStack.setAmount(random.nextInt(itemStack.getAmount()));
+                    itemStack.setAmount(1);
                     inventory.remove(itemStack);
+                    count++;
                 }
-                count++;
+                if(inventory.getContents().length == 0) {
+                    break;
+                }
             }
         }
     }
