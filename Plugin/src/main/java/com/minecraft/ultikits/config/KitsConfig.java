@@ -1,6 +1,7 @@
 package com.minecraft.ultikits.config;
 
 import com.minecraft.ultikits.enums.ConfigsEnum;
+import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.ArrayList;
@@ -29,10 +30,10 @@ public class KitsConfig extends AbstractConfig{
     void doInit(YamlConfiguration config) {
         config.set("xinshou.item", "OAK_PLANKS");
         config.set("xinshou.reBuyable", false);
-        config.set("xinshou.name", "新手礼包");
+        config.set("xinshou.name", UltiTools.languageUtils.getWords("kits_config_name"));
         config.set("xinshou.level", 1);
-        config.set("xinshou.job", "全部");
-        config.set("xinshou.description", "虽然是木头的，但是却很实用");
+        config.set("xinshou.job", UltiTools.languageUtils.getWords("kits_config_job"));
+        config.set("xinshou.description", UltiTools.languageUtils.getWords("kits_config_description"));
         config.set("xinshou.price", 0);
         List<String> list = Arrays.asList("WOODEN_PICKAXE", "WOODEN_AXE", "WOODEN_SHOVEL", "WOODEN_SWORD", "WOODEN_HOE");
         for (String item : list){
@@ -40,7 +41,7 @@ public class KitsConfig extends AbstractConfig{
         }
         List<String> playerCommands = new ArrayList<>();
         config.set("xinshou.playerCommands",playerCommands);
-        List<String> console = Arrays.asList("say {PLAYER} 领取了新手礼包", "givemoney {PLAYER} 100");
+        List<String> console = Arrays.asList(UltiTools.languageUtils.getWords("kits_config_commands"), "givemoney {PLAYER} 100");
         config.set("xinshou.consoleCommands", console);
     }
 

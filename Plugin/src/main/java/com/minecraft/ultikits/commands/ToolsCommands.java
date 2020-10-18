@@ -21,7 +21,7 @@ public class ToolsCommands implements TabExecutor {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             if (!(player.isOp() || player.hasPermission("ultitools.tools.commands"))) {
-                sender.sendMessage(warning("你没有权限使用这个指令！"));
+                sender.sendMessage(warning(UltiTools.languageUtils.getWords("no_permission")));
                 return false;
             }
         }
@@ -29,7 +29,7 @@ public class ToolsCommands implements TabExecutor {
             return false;
         }
         UltiTools.getInstance().reloadConfig();
-        sender.sendMessage(warning("配置文件已重载！"));
+        sender.sendMessage(warning(UltiTools.languageUtils.getWords("config_reloaded")));
         return true;
     }
 

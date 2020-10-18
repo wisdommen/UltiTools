@@ -22,18 +22,18 @@ public class ValidationPageListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         ItemStack clicked = event.getCurrentItem();
 
-        if (event.getView().getTitle().contains("验证界面")) {
+        if (event.getView().getTitle().equals(UltiTools.languageUtils.getWords("login_validation_page_title"))) {
             if (clicked != null) {
                 event.setCancelled(true);
-                if (clicked.getItemMeta().getDisplayName().contains("点按输入数字")) {
+                if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("login_keyboard_button_label"))) {
                     int slot = currentInventory.firstEmpty();
                     if (slot >= 1 && slot < 8 && slot != 4) {
                         currentInventory.setItem(slot, clicked);
                         player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_HAT), 10, 1);
                     }
-                } else if (clicked.getItemMeta().getDisplayName().contains("确认")) {
+                } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("button_ok"))) {
                     if (!isCodeEnteredFully(currentInventory)){
-                        player.sendMessage(warning("请输入6位验证码！"));
+                        player.sendMessage(warning(UltiTools.languageUtils.getWords("emailregister_enter_validation_code")));
                     }
                     String password = "null";
                     try {
@@ -42,16 +42,16 @@ public class ValidationPageListener implements Listener {
                     }
                     if (!validateTheCode(player, password)){
                         clearTheEnteringSlots(currentInventory);
-                        player.sendMessage(warning("验证码错误！"));
+                        player.sendMessage(warning(UltiTools.languageUtils.getWords("emailregister_code_invalid")));
                     }else {
                         LoginGUIListener.playerIsValidating.put(player.getUniqueId(), false);
                         LoginGUIListener.isRegisteringNewPassword.put(player.getUniqueId(), true);
                         setupLoginRegisterLayout(player, LoginRegisterEnum.REGISTER);
                         player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.REGISTER.toString()).getInventory());
                     }
-                } else if (clicked.getItemMeta().getDisplayName().contains("清空")) {
+                } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("button_clear"))) {
                     clearTheEnteringSlots(currentInventory);
-                } else if (clicked.getItemMeta().getDisplayName().contains("退出")) {
+                } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("button_quit"))) {
                     LoginGUIListener.playerIsValidating.put(player.getUniqueId(), false);
                     player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.LOGIN.toString()).getInventory());
                 }

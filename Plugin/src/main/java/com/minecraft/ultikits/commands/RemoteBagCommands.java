@@ -37,7 +37,7 @@ public class RemoteBagCommands extends AbstractTabExecutor {
                     }
                     List<File> fileList = getFiles(ConfigsEnum.PLAYER_CHEST.toString());
                     if (fileList == null) {
-                        player.sendMessage(warning("服务器内没有任何人开通了远程背包！"));
+                        player.sendMessage(warning(UltiTools.languageUtils.getWords("bag_no_user")));
                         return true;
                     }
                     for (File file : fileList) {
@@ -47,26 +47,26 @@ public class RemoteBagCommands extends AbstractTabExecutor {
                             int size = chestConfig.getKeys(false).size();
                             try {
                                 if (size < Integer.parseInt(strings[1])) {
-                                    player.sendMessage(warning("此玩家没有这个背包！"));
+                                    player.sendMessage(warning(UltiTools.languageUtils.getWords("bag_player_does_not_have_this_bag")));
                                     return true;
                                 }
                             } catch (NumberFormatException e) {
-                                player.sendMessage(warning("请在玩家名后输入需要打开的背包号！"));
+                                player.sendMessage(warning(UltiTools.languageUtils.getWords("bag_enter_number_of_the_bag")));
                                 return true;
                             }
                             String bagNumber = strings[1];
-                            String bagName = strings[0] + "的" + bagNumber + "号背包";
+                            String bagName = String.format(UltiTools.languageUtils.getWords("bag_title"), strings[0], bagNumber);
                             loadBag(bagName, player, Bukkit.getOfflinePlayer(strings[0]));
                             return true;
                         }
                     }
-                    player.sendMessage(warning("此玩家不存在或未开通远程背包"));
+                    player.sendMessage(warning(UltiTools.languageUtils.getWords("bag_player_data_not_exists")));
                     return true;
                 case 3:
-                    if (!UltiTools.isProVersion){
+                    if (!UltiTools.isProVersion) {
                         return false;
                     }
-                    switch (strings[1]){
+                    switch (strings[1]) {
                         case "share":
 
                         case "unshare":

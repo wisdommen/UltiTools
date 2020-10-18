@@ -30,48 +30,48 @@ public class LoginRegisterCommands extends AbstractTabExecutor {
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
         if (!UltiTools.isProVersion) {
             if (player.hasPermission(PermissionsEnum.ADMIN.getPermission())) {
-                player.sendMessage(warning("这是一个付费版功能！"));
+                player.sendMessage(warning(UltiTools.languageUtils.getWords("warning_pro_fuction")));
             } else {
-                player.sendMessage(warning("你没有权限！"));
+                player.sendMessage(warning(UltiTools.languageUtils.getWords("no_permission")));
             }
             return true;
         }
-        File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), player.getName()+".yml");
+        File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), player.getName() + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-        if (config.getBoolean("registered")){
-            player.sendMessage(warning("你已经验证过邮箱了！"));
+        if (config.getBoolean("registered")) {
+            player.sendMessage(warning(UltiTools.languageUtils.getWords("emailregister_registered")));
             return true;
         }
         if (strings.length == 1) {
             if (strings[0].contains("@")) {
-                player.sendMessage(info("正在发送验证码..."));
-                new BukkitRunnable(){
+                player.sendMessage(info(UltiTools.languageUtils.getWords("emailregister_sending_code")));
+                new BukkitRunnable() {
 
                     @Override
                     public void run() {
                         String email = strings[0];
                         String code = getValidateCode();
-                        CheckResponse response = SendEmailUtils.sendEmail(email, "服务器注册验证码", String.format("你正在注册我的世界服务器账户，你的验证码是 %s，请勿将验证码告诉他人。", code));
+                        CheckResponse response = SendEmailUtils.sendEmail(email, UltiTools.languageUtils.getWords("emailregister_email_title"), String.format(UltiTools.languageUtils.getWords("emailregister_email_content"), code));
                         if (response.code.equals("200")) {
                             sentCodePlayers.put(player.getUniqueId(), true);
                             playersValidateCode.put(player.getUniqueId(), code);
                             playersEmail.put(player.getUniqueId(), strings[0]);
-                            player.sendMessage(info("验证码已经发送至 " + strings[0] + " ，若未收到请稍等。"));
+                            player.sendMessage(info(String.format(UltiTools.languageUtils.getWords("emailregister_code_sent"), strings[0])));
                         } else {
-                            player.sendMessage(warning("验证码发送失败，错误信息： " + response.msg));
+                            player.sendMessage(warning(UltiTools.languageUtils.getWords("emailregister_email_send_failed") + response.msg));
                         }
                     }
                 }.runTaskAsynchronously(UltiTools.getInstance());
 
             } else if (strings[0].length() == 6) {
                 if (!sentCodePlayers.get(player.getUniqueId())) {
-                    player.sendMessage(warning("请先输入邮箱！"));
+                    player.sendMessage(warning(UltiTools.languageUtils.getWords("emailregister_enter_email_first")));
                     return true;
                 }
                 String validateCode = strings[0];
                 if (playersValidateCode.get(player.getUniqueId()).equals(validateCode)) {
-                    player.sendMessage(info("邮箱验证成功！"));
+                    player.sendMessage(info(UltiTools.languageUtils.getWords("emailregister_email_validated")));
                     config.set("registered", true);
                     try {
                         config.save(file);
@@ -81,7 +81,7 @@ public class LoginRegisterCommands extends AbstractTabExecutor {
                     DatabasePlayerTools.setPlayerEmail(player, playersEmail.get(player.getUniqueId()));
                     return true;
                 }
-                player.sendMessage(warning("验证码错误，请重新输入验证码！"));
+                player.sendMessage(warning(UltiTools.languageUtils.getWords("emailregister_code_invalid")));
             } else {
                 return false;
             }

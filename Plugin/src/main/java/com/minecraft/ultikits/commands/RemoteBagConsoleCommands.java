@@ -2,6 +2,7 @@ package com.minecraft.ultikits.commands;
 
 import com.minecraft.ultikits.commands.abstracts.AbstractConsoleCommandExecutor;
 import com.minecraft.ultikits.enums.ConfigsEnum;
+import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -32,7 +33,7 @@ public class RemoteBagConsoleCommands extends AbstractConsoleCommandExecutor {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            commandSender.sendMessage(info(String.format("已为%s创建一个新的背包！", strings[0])));
+            commandSender.sendMessage(info(String.format(UltiTools.languageUtils.getWords("bag_create_new_bag_for_someone_successfully"), strings[0])));
         }
         return false;
     }

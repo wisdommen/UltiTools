@@ -30,7 +30,7 @@ public class HomeListView {
     }
 
     public static Inventory setUp(Player player) {
-        InventoryManager inventoryManager = new InventoryManager(null, 36, player.getName() + "的家列表", true);
+        InventoryManager inventoryManager = new InventoryManager(null, 36, player.getName() + UltiTools.languageUtils.getWords("home_'s_home_list"), true);
         inventoryManager.presetPage(ViewType.PREVIOUS_QUIT_NEXT);
         inventoryManager.create();
         ViewManager.registerView(inventoryManager, new HomeListPageListener());
@@ -49,11 +49,11 @@ public class HomeListView {
         for (String each : homeNames) {
             ArrayList<String> lore = new ArrayList<>();
             String homeName = each;
-            if (each.equals("默认")) {
+            if (each.equals(UltiTools.languageUtils.getWords("default"))) {
                 each = "Def";
             }
             String path = player.getName() + "." + each;
-            String world = String.format(ChatColor.YELLOW + "所在世界: %s", config.getString(path + ".world"));
+            String world = String.format(ChatColor.YELLOW + UltiTools.languageUtils.getWords("home_page_home_description_in_world")+" %s", config.getString(path + ".world"));
             String xyz = String.format(ChatColor.GRAY + "X: %d Y: %d Z: %d", config.getInt(path + ".x"), config.getInt(path + ".y"), config.getInt(path + ".z"));
             lore.add(world);
             lore.add(xyz);

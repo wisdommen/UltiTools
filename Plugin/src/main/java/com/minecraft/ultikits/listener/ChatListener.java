@@ -21,7 +21,7 @@ public class ChatListener implements Listener {
         try{
             papiMassage = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, prefixes_str));
         }catch (Exception e){
-            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 正在下载PAPI必须的变量中...");
+            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] "+UltiTools.languageUtils.getWords("chat_prefix_downloading_papi"));
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "papi ecloud download Player");
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "papi reload");
             papiMassage = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, prefixes_str));

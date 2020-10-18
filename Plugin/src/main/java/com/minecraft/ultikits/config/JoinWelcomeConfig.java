@@ -1,6 +1,7 @@
 package com.minecraft.ultikits.config;
 
 import com.minecraft.ultikits.enums.ConfigsEnum;
+import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.Arrays;
@@ -17,11 +18,13 @@ public class JoinWelcomeConfig extends AbstractConfigReviewable{
         super(name, filePath);
         map.put("config_version", 1.0);
         map.put("sendMessageDelay", 4);
-        map.put("welcome_message", Arrays.asList("§b欢迎加入服务器，§e%player_name%§b!", "§b请友善对待他人，游戏愉快！", "     ---可以在配置文件在修改此提醒"));
-        map.put("op_join", "§c[管理员] §e%player_name% §c已上线");
-        map.put("op_quit", "§c[管理员] §e%player_name% §c已下线");
-        map.put("player_join", "§c[玩家] §e%player_name% §c已上线");
-        map.put("player_quit", "§c[玩家] §e%player_name% §c已下线");
+        map.put("welcome_message", Arrays.asList(UltiTools.languageUtils.getWords("join_welcome_message_1"),
+                UltiTools.languageUtils.getWords("join_welcome_message_2"),
+                UltiTools.languageUtils.getWords("join_welcome_message_3")));
+        map.put("op_join", UltiTools.languageUtils.getWords("join_op_join"));
+        map.put("op_quit", UltiTools.languageUtils.getWords("join_op_quit"));
+        map.put("player_join", UltiTools.languageUtils.getWords("join_player_join"));
+        map.put("player_quit", UltiTools.languageUtils.getWords("join_player_quit"));
     }
 
     @Override

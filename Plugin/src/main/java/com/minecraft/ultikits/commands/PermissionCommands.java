@@ -29,11 +29,11 @@ public class PermissionCommands implements TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            if (!player.hasPermission("ultikits.tools.admin")){
-                player.sendMessage(warning("你没有权限！"));
+            if (!player.hasPermission("ultikits.tools.admin")) {
+                player.sendMessage(warning(UltiTools.languageUtils.getWords("no_permission")));
                 return true;
             }
-            switch (args.length){
+            switch (args.length) {
                 case 0:
                     Inventory inventory = PermissionMainView.setUp();
                     player.openInventory(inventory);
@@ -41,22 +41,22 @@ public class PermissionCommands implements TabExecutor {
                 case 1:
                     if (args[0].equals("help")) sendHelpMessage(player);
                 case 2:
-                    switch (args[0]){
+                    switch (args[0]) {
                         case "create":
-                            new BukkitRunnable(){
+                            new BukkitRunnable() {
                                 @Override
                                 public void run() {
                                     GroupManagerUtils.createGroup(args[1]);
-                                    player.sendMessage(info("已创建！"));
+                                    player.sendMessage(info(UltiTools.languageUtils.getWords("created")));
                                 }
                             }.runTaskAsynchronously(UltiTools.getInstance());
                             return true;
                         case "delete":
-                            new BukkitRunnable(){
+                            new BukkitRunnable() {
                                 @Override
                                 public void run() {
                                     GroupManagerUtils.deleteGroup(args[1]);
-                                    player.sendMessage(warning("已删除！"));
+                                    player.sendMessage(warning(UltiTools.languageUtils.getWords("deleted")));
                                 }
                             }.runTaskAsynchronously(UltiTools.getInstance());
                             return true;
@@ -64,41 +64,41 @@ public class PermissionCommands implements TabExecutor {
                             return false;
                     }
                 case 3:
-                    switch (args[0]){
+                    switch (args[0]) {
                         case "add":
                             Player addedPlayer = Bukkit.getPlayerExact(args[1]);
                             if (addedPlayer == null) {
-                                player.sendMessage(warning("玩家不在线/不存在这个玩家！"));
+                                player.sendMessage(warning(UltiTools.languageUtils.getWords("player_not_online_or_not_exits")));
                                 return true;
                             }
-                            new BukkitRunnable(){
+                            new BukkitRunnable() {
                                 @Override
                                 public void run() {
                                     GroupManagerUtils.addPlayerToGroup(addedPlayer, args[2]);
-                                    player.sendMessage(info("已添加！"));
+                                    player.sendMessage(info(UltiTools.languageUtils.getWords("added")));
                                 }
                             }.runTaskAsynchronously(UltiTools.getInstance());
                             return true;
                         case "remove":
                             Player removedPlayer = Bukkit.getPlayerExact(args[1]);
                             if (removedPlayer == null) {
-                                player.sendMessage(warning("玩家不在线/不存在这个玩家！"));
+                                player.sendMessage(warning(UltiTools.languageUtils.getWords("player_not_online_or_not_exits")));
                                 return true;
                             }
-                            new BukkitRunnable(){
+                            new BukkitRunnable() {
                                 @Override
                                 public void run() {
                                     GroupManagerUtils.removePlayerFromGroup(removedPlayer, args[2]);
-                                    player.sendMessage(info("已移除！"));
+                                    player.sendMessage(info(UltiTools.languageUtils.getWords("removed")));
                                 }
                             }.runTaskAsynchronously(UltiTools.getInstance());
                             return true;
                         case "create":
-                            new BukkitRunnable(){
+                            new BukkitRunnable() {
                                 @Override
                                 public void run() {
                                     GroupManagerUtils.createGroup(args[1], args[2]);
-                                    player.sendMessage(info("已创建！"));
+                                    player.sendMessage(info(UltiTools.languageUtils.getWords("created")));
                                 }
                             }.runTaskAsynchronously(UltiTools.getInstance());
                         default:
@@ -106,39 +106,39 @@ public class PermissionCommands implements TabExecutor {
                     }
                 case 4:
                     String permission = args[3];
-                    switch (args[0]){
+                    switch (args[0]) {
                         case "give":
-                            switch (args[1]){
+                            switch (args[1]) {
                                 case "player":
                                     Player addedPlayer = Bukkit.getPlayerExact(args[2]);
                                     if (addedPlayer == null) {
-                                        player.sendMessage(warning("玩家不在线/不存在这个玩家！"));
+                                        player.sendMessage(warning(UltiTools.languageUtils.getWords("player_not_online_or_not_exits")));
                                         return true;
                                     }
                                     GroupManagerUtils.addPlayerPermission(addedPlayer, permission);
-                                    player.sendMessage(info("已添加！"));
+                                    player.sendMessage(info(UltiTools.languageUtils.getWords("added")));
                                     return true;
                                 case "group":
                                     GroupManagerUtils.addGroupPermission(args[2], permission);
-                                    player.sendMessage(info("已添加！"));
+                                    player.sendMessage(info(UltiTools.languageUtils.getWords("added")));
                                     return true;
                                 default:
                                     return false;
                             }
                         case "take":
-                            switch (args[1]){
+                            switch (args[1]) {
                                 case "player":
                                     Player addedPlayer = Bukkit.getPlayerExact(args[2]);
                                     if (addedPlayer == null) {
-                                        player.sendMessage(warning("玩家不在线/不存在这个玩家！"));
+                                        player.sendMessage(warning(UltiTools.languageUtils.getWords("player_not_online_or_not_exits")));
                                         return true;
                                     }
                                     GroupManagerUtils.takePlayerPermission(addedPlayer, permission);
-                                    player.sendMessage(info("已移除！"));
+                                    player.sendMessage(info(UltiTools.languageUtils.getWords("removed")));
                                     return true;
                                 case "group":
                                     GroupManagerUtils.takeGroupPermission(args[2], permission);
-                                    player.sendMessage(info("已移除！"));
+                                    player.sendMessage(info(UltiTools.languageUtils.getWords("removed")));
                                     return true;
                                 default:
                                     return false;
@@ -153,10 +153,10 @@ public class PermissionCommands implements TabExecutor {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-        if (sender.hasPermission("ultikits.tools.admin") || sender.isOp()){
-            if (args.length==1){
+        if (sender.hasPermission("ultikits.tools.admin") || sender.isOp()) {
+            if (args.length == 1) {
                 return Arrays.asList("help", "give", "take", "add", "remove", "create", "delete");
-            }else if (args.length==2){
+            } else if (args.length == 2) {
                 switch (args[0]) {
                     case "give":
                     case "take":
@@ -164,72 +164,72 @@ public class PermissionCommands implements TabExecutor {
                     case "add":
                     case "remove":
                         List<String> tabs = new ArrayList<>();
-                        tabs.add("[玩家名]");
-                        for (Player player : Bukkit.getOnlinePlayers()){
+                        tabs.add("[" + UltiTools.languageUtils.getWords("player_name") + "]");
+                        for (Player player : Bukkit.getOnlinePlayers()) {
                             tabs.add(player.getName());
                         }
                         return tabs;
                     case "create":
-                        return Collections.singletonList("[权限组名]");
+                        return Collections.singletonList("[" + UltiTools.languageUtils.getWords("permission_group_name") + "]");
                     case "delete":
                         List<String> tab = new ArrayList<>();
-                        tab.add("[权限组名]");
+                        tab.add("[" + UltiTools.languageUtils.getWords("permission_group_name") + "]");
                         tab.addAll(GroupManagerUtils.getGroups());
                         return tab;
                     default:
                         return null;
                 }
-            }else if (args.length==3){
-                switch (args[1]){
+            } else if (args.length == 3) {
+                switch (args[1]) {
                     case "player":
                         List<String> tabs = new ArrayList<>();
-                        tabs.add("[玩家名]");
-                        for (Player player : Bukkit.getOnlinePlayers()){
+                        tabs.add("[" + UltiTools.languageUtils.getWords("player_name") + "]");
+                        for (Player player : Bukkit.getOnlinePlayers()) {
                             tabs.add(player.getName());
                         }
                         return tabs;
                     case "group":
                         List<String> tab = new ArrayList<>();
-                        tab.add("[权限组名]");
+                        tab.add("[" + UltiTools.languageUtils.getWords("permission_group_name") + "]");
                         tab.addAll(GroupManagerUtils.getGroups());
                         return tab;
                     default:
-                        switch (args[0]){
+                        switch (args[0]) {
                             case "add":
                             case "remove":
                                 List<String> tab1 = new ArrayList<>();
-                                tab1.add("[权限组名]");
+                                tab1.add("[" + UltiTools.languageUtils.getWords("permission_group_name") + "]");
                                 tab1.addAll(GroupManagerUtils.getGroups());
                                 return tab1;
                             case "create":
-                                return Collections.singletonList("[继承的权限组]");
+                                return Collections.singletonList("[" + UltiTools.languageUtils.getWords("inherited_permission_group") + "]");
                             default:
                                 return null;
                         }
                 }
-            }else if (args.length==4){
-                if (args[0].equals("give")||args[0].equals("take")){
-                    return Collections.singletonList("[权限]");
+            } else if (args.length == 4) {
+                if (args[0].equals("give") || args[0].equals("take")) {
+                    return Collections.singletonList("[" + UltiTools.languageUtils.getWords("permission") + "]");
                 }
                 return null;
-            }else {
+            } else {
                 return null;
             }
         }
         return null;
     }
 
-    private static void sendHelpMessage(CommandSender sender){
-        sender.sendMessage(ChatColor.LIGHT_PURPLE+"-----权限组管理帮助-----");
-        sender.sendMessage(ChatColor.AQUA+"/pers help"+ChatColor.GRAY+"  权限组帮助");
-        sender.sendMessage(ChatColor.AQUA+"/pers give player [玩家名] [权限]"+ChatColor.GRAY+"  给玩家添加权限");
-        sender.sendMessage(ChatColor.AQUA+"/pers give group [权限组名] [权限]"+ChatColor.GRAY+"  给权限组添加权限");
-        sender.sendMessage(ChatColor.AQUA+"/pers take player [玩家名] [权限]"+ChatColor.GRAY+"  移除玩家的权限");
-        sender.sendMessage(ChatColor.AQUA+"/pers take group [权限组名] [权限]"+ChatColor.GRAY+"  移除权限组的权限");
-        sender.sendMessage(ChatColor.AQUA+"/pers add [玩家名] [权限组名]"+ChatColor.GRAY+"  将玩家添加到权限组");
-        sender.sendMessage(ChatColor.AQUA+"/pers remove [玩家名] [权限组名]"+ChatColor.GRAY+"  将玩家移除权限组");
-        sender.sendMessage(ChatColor.AQUA+"/pers create [权限组名]"+ChatColor.GRAY+"  创建权限组");
-        sender.sendMessage(ChatColor.AQUA+"/pers create [权限组名] [继承的权限组]"+ChatColor.GRAY+"  创建权限组继承自另一个权限组");
-        sender.sendMessage(ChatColor.AQUA+"/pers delete [权限组名]"+ChatColor.GRAY+"  删除权限组");
+    private static void sendHelpMessage(CommandSender sender) {
+        sender.sendMessage(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getWords("permission_help_header"));
+        sender.sendMessage(ChatColor.AQUA + "/pers help" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("permission_help_help"));
+        sender.sendMessage(ChatColor.AQUA + "/pers give player [" + UltiTools.languageUtils.getWords("player_name") + "] [" + UltiTools.languageUtils.getWords("permission") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("permission_help_give_player"));
+        sender.sendMessage(ChatColor.AQUA + "/pers give group [" + UltiTools.languageUtils.getWords("permission_group_name") + "] [" + UltiTools.languageUtils.getWords("permission") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("permission_help_give_group"));
+        sender.sendMessage(ChatColor.AQUA + "/pers take player [" + UltiTools.languageUtils.getWords("player_name") + "] [" + UltiTools.languageUtils.getWords("permission") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("permission_help_take_player"));
+        sender.sendMessage(ChatColor.AQUA + "/pers take group [" + UltiTools.languageUtils.getWords("permission_group_name") + "] [" + UltiTools.languageUtils.getWords("permission") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("permission_help_take_group"));
+        sender.sendMessage(ChatColor.AQUA + "/pers add [" + UltiTools.languageUtils.getWords("player_name") + "] [" + UltiTools.languageUtils.getWords("permission_group_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("permission_help_add_player"));
+        sender.sendMessage(ChatColor.AQUA + "/pers remove [" + UltiTools.languageUtils.getWords("player_name") + "] [" + UltiTools.languageUtils.getWords("permission_group_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("permission_help_remove_player"));
+        sender.sendMessage(ChatColor.AQUA + "/pers create [" + UltiTools.languageUtils.getWords("permission_group_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("permission_create_group"));
+        sender.sendMessage(ChatColor.AQUA + "/pers create [" + UltiTools.languageUtils.getWords("permission_group_name") + "] [" + UltiTools.languageUtils.getWords("inherited_permission_group") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("permission_create_group_inherited"));
+        sender.sendMessage(ChatColor.AQUA + "/pers delete [" + UltiTools.languageUtils.getWords("permission_group_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("permission_delete_group"));
     }
 }

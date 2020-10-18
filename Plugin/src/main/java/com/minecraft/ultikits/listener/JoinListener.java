@@ -53,8 +53,8 @@ public class JoinListener implements Listener {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        player.sendMessage(ChatColor.RED + String.format("[UltiTools] 工具插件最新版为%s，你的版本是%s！请下载最新版本！", version, current_version));
-                        player.sendMessage(ChatColor.RED + "[UltiTools] 你知道吗？现在UltiTools可以自动更新啦！在配置文件中打开自动更新，更新再也不用麻烦！");
+                        player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getWords("join_send_update_reminding"), version, current_version));
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("join_send_update_tip"));
                     }
                 }.runTaskLaterAsynchronously(UltiTools.getInstance(), 80L);
             }
@@ -128,7 +128,7 @@ public class JoinListener implements Listener {
                 playerList.add(player.getUniqueId().toString());
                 config.set("ip." + ip + ".players", playerList);
             } else {
-                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.RED + "此IP已达到注册上限，无法登入！");
+                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.RED + UltiTools.languageUtils.getWords("login_ip_limit_warning"));
                 return;
             }
         }

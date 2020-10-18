@@ -12,7 +12,7 @@ public class KitsCommands extends AbstractPlayerCommandExecutor {
 
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
-        if(strings.length>0){
+        if (strings.length > 0) {
             return false;
         }
         Inventory inventory = KitsView.setUp(player);

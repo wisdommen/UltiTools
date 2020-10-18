@@ -1,6 +1,7 @@
 package com.minecraft.ultikits.config;
 
 import com.minecraft.ultikits.enums.ConfigsEnum;
+import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class GroupPermissionConfig extends AbstractConfig {
     @Override
     void doInit(YamlConfiguration config) {
         String defaultPath = "groups.default";
-        config.set(defaultPath + ".name", "默认");
+        config.set(defaultPath + ".name", UltiTools.languageUtils.getWords("default"));
         config.set(defaultPath + ".type", "PAPER");
         config.set(defaultPath + ".isDefault", true);
         config.set(defaultPath + ".permissions", new ArrayList<>());

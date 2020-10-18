@@ -48,7 +48,7 @@ public class InventoryManager implements InventoryManagerAPI {
         this.owner = owner;
         this.slots = slots;
         this.pageNumber = pageNumber;
-        this.title = title + String.format(" 第%d页", pageNumber);
+        this.title = title + String.format(UltiTools.languageUtils.getWords("inventory_manager_title_page_number"), pageNumber);
         this.groupTitle = title;
         this.isPageButtonEnabled = true;
         this.isLastLineDisabled = true;
@@ -136,7 +136,7 @@ public class InventoryManager implements InventoryManagerAPI {
         if (!isPageButtonEnabled) {
             return;
         }
-        InventoryManager nextPage = ViewManager.getViewByName(getGroupTitle() + " 第" + (getPageNumber() + 1) + "页");
+        InventoryManager nextPage = ViewManager.getViewByName(getGroupTitle() + String.format(UltiTools.languageUtils.getWords("inventory_manager_title_page_number"),(getPageNumber() + 1)));
         if (nextPage == null && autoAddPage) {
             InventoryManager newPage = new InventoryManager(this.owner, this.slots, getGroupTitle(), getPageNumber() + 1);
             if (this.backGroundColor != null) {
@@ -185,7 +185,7 @@ public class InventoryManager implements InventoryManagerAPI {
     }
 
     private void setPageButtons() {
-        this.title = groupTitle + String.format(" 第%d页", pageNumber);
+        this.title = groupTitle + String.format(UltiTools.languageUtils.getWords("inventory_manager_title_page_number"), pageNumber);
         inventory = Bukkit.createInventory(owner, slots, title);
         fillLastLine();
         try {

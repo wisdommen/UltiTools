@@ -33,21 +33,21 @@ public class GUIUtils {
         YamlConfiguration config = Utils.getConfig(Utils.getConfigFile());
         File chestFile = new File(ConfigsEnum.PLAYER_CHEST.toString(), playerName + ".yml");
         YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
-        InventoryManager chest = new InventoryManager(null, 36, "远程背包");
+        InventoryManager chest = new InventoryManager(null, 36, UltiTools.languageUtils.getWords("bag_function"));
         inventoryMap.put(playerName + ".chest", chest);
 
         if (!chestConfig.getKeys(false).isEmpty()) {
             for (int i = 1; i <= chestConfig.getKeys(false).size(); i++) {
-                ItemStackManager itemStackManager = new ItemStackManager(new ItemStack(Material.CHEST), new ArrayList<>(), info(i + "号背包"));
+                ItemStackManager itemStackManager = new ItemStackManager(new ItemStack(Material.CHEST), new ArrayList<>(), info(i + UltiTools.languageUtils.getWords("bag_number")));
                 inventoryMap.get(playerName + ".chest").setItem(i - 1, itemStackManager.getItem());
             }
         }
         ArrayList<String> lore = new ArrayList<>();
         ItemStack item2 = new ItemStack(Material.MINECART);
         ItemMeta stickmeta = item2.getItemMeta();
-        lore.add(unimportant("价格：" + config.getInt("price_of_create_a_remote_chest")));
+        lore.add(unimportant(UltiTools.languageUtils.getWords("price") + config.getInt("price_of_create_a_remote_chest")));
         Objects.requireNonNull(stickmeta).setLore(lore);
-        stickmeta.setDisplayName(ChatColor.AQUA + "创建背包");
+        stickmeta.setDisplayName(ChatColor.AQUA + UltiTools.languageUtils.getWords("bag_button_create_bag"));
         item2.setItemMeta(stickmeta);
         inventoryMap.get(playerName + ".chest").setItem(35, item2);
     }
@@ -57,7 +57,7 @@ public class GUIUtils {
         inventoryMap.put(player.getName() + title.toString(), inventoryManager);
 
         ItemStack whiteGlass = UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.WHITE);
-        ItemStackManager itemStackManager = new ItemStackManager(whiteGlass, "点按输入数字");
+        ItemStackManager itemStackManager = new ItemStackManager(whiteGlass, UltiTools.languageUtils.getWords("login_keyboard_button_label"));
         //数字键盘
         inventoryManager.setItem(21, itemStackManager.getItem(1));
         inventoryManager.setItem(22, itemStackManager.getItem(2));
@@ -77,14 +77,14 @@ public class GUIUtils {
         ItemStack orangeGlass = UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.ORANGE);
         ItemStack grayGlass = UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.GRAY);
         if (title == LoginRegisterEnum.LOGIN && UltiTools.isProVersion){
-            ItemStackManager itemStackManager6 = new ItemStackManager(blueGlass, "忘记密码");
+            ItemStackManager itemStackManager6 = new ItemStackManager(blueGlass, UltiTools.languageUtils.getWords("button_forget_password"));
             inventoryManager.setItem(45, itemStackManager6.getItem());
         }
-        ItemStackManager itemStackManager2 = new ItemStackManager(redGlass, "清空");
+        ItemStackManager itemStackManager2 = new ItemStackManager(redGlass, UltiTools.languageUtils.getWords("button_clear"));
         inventoryManager.setItem(48, itemStackManager2.getItem());
-        ItemStackManager itemStackManager3 = new ItemStackManager(greenGlass, "确认");
+        ItemStackManager itemStackManager3 = new ItemStackManager(greenGlass, UltiTools.languageUtils.getWords("button_ok"));
         inventoryManager.setItem(50, itemStackManager3.getItem());
-        ItemStackManager itemStackManager4 = new ItemStackManager(orangeGlass, "退出");
+        ItemStackManager itemStackManager4 = new ItemStackManager(orangeGlass,  UltiTools.languageUtils.getWords("button_quit"));
         inventoryManager.setItem(53, itemStackManager4.getItem());
         ItemStackManager itemStackManager5 = new ItemStackManager(grayGlass, "");
         for (int i = 9; i < 54; i++) {
@@ -100,7 +100,7 @@ public class GUIUtils {
             inventoryMap.put(player.getName() + LoginRegisterEnum.VALIDATION.toString(), inventoryManager);
 
             ItemStack whiteGlass = UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.WHITE);
-            ItemStackManager itemStackManager = new ItemStackManager(whiteGlass, "点按输入数字");
+            ItemStackManager itemStackManager = new ItemStackManager(whiteGlass, UltiTools.languageUtils.getWords("login_keyboard_button_label"));
             //数字键盘
             inventoryManager.setItem(21, itemStackManager.getItem(1));
             inventoryManager.setItem(22, itemStackManager.getItem(2));
@@ -117,11 +117,11 @@ public class GUIUtils {
             ItemStack greenGlass = UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.GREEN);
             ItemStack orangeGlass = UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.ORANGE);
             ItemStack grayGlass = UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.GRAY);
-            ItemStackManager itemStackManager2 = new ItemStackManager(redGlass, "清空");
+            ItemStackManager itemStackManager2 = new ItemStackManager(redGlass, UltiTools.languageUtils.getWords("button_clear"));
             inventoryManager.setItem(48, itemStackManager2.getItem());
-            ItemStackManager itemStackManager3 = new ItemStackManager(greenGlass, "确认");
+            ItemStackManager itemStackManager3 = new ItemStackManager(greenGlass, UltiTools.languageUtils.getWords("button_ok"));
             inventoryManager.setItem(50, itemStackManager3.getItem());
-            ItemStackManager itemStackManager4 = new ItemStackManager(orangeGlass, "退出");
+            ItemStackManager itemStackManager4 = new ItemStackManager(orangeGlass, UltiTools.languageUtils.getWords("button_quit"));
             inventoryManager.setItem(53, itemStackManager4.getItem());
             ItemStackManager itemStackManager5 = new ItemStackManager(grayGlass, "");
             List<Integer> list = Arrays.asList(1, 2, 3, 5, 6, 7);

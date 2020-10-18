@@ -49,10 +49,10 @@ public class VersionChecker {
                             current_version = UltiTools.getInstance().getDescription().getVersion();
                             int currentVersion = getVersion(current_version);
                             int onlineVersion = getVersion(version);
-                            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] 正在检查更新...");
+                            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] "+UltiTools.languageUtils.getWords("checking_update"));
                             if (currentVersion < onlineVersion) {
                                 isOutDate = true;
-                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + String.format("[UltiTools] 工具插件最新版为%s，你的版本是%s！请下载最新版本！", version, current_version));
+                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getWords("join_send_update_reminding"), version, current_version));
                                 if (UltiTools.getInstance().getConfig().getBoolean("enable_auto_update")) {
 //                                    if (currentVersion<321 && onlineVersion >=321){
 //                                        UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] 自动更新失败！");
@@ -62,13 +62,13 @@ public class VersionChecker {
 //                                    }
                                     downloadNewVersion();
                                 } else {
-                                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] 下载地址：https://www.mcbbs.net/thread-1062730-1-1.html");
-                                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] 你知道吗？现在UltiTools可以自动更新啦！在配置文件中打开自动更新，更新再也不用麻烦！");
+                                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("download_url"));
+                                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("join_send_update_tip"));
                                 }
                             }
                             if (!isOutDate) {
                                 deleteOldVersion();
-                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools]太棒了！你的插件是最新的！保持最新的版本可以为你带来最好的体验！");
+                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getWords("plugin_up_to_date"));
                                 break;
                             }
                             break;

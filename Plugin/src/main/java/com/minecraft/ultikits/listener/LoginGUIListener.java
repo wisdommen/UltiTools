@@ -48,18 +48,18 @@ public class LoginGUIListener implements Listener {
 
         ItemStack clicked = event.getCurrentItem();
 
-        if (event.getView().getTitle().contains("登录界面")) {
+        if (event.getView().getTitle().equals(UltiTools.languageUtils.getWords("login_login_page_title"))) {
             if (clicked != null) {
                 event.setCancelled(true);
-                if (clicked.getItemMeta().getDisplayName().contains("点按输入数字")) {
+                if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("login_keyboard_button_label"))) {
                     int slot = currentInventory.firstEmpty();
                     if (slot >= 0 && slot < 9) {
                         currentInventory.setItem(slot, clicked);
                         player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_HAT), 10, 1);
                     } else {
-                        player.sendMessage(warning("不可以超过9个数字！"));
+                        player.sendMessage(warning(UltiTools.languageUtils.getWords("login_number_limit_warning")));
                     }
-                } else if (clicked.getItemMeta().getDisplayName().contains("确认")) {
+                } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("button_ok"))) {
                     String password = "null";
                     try {
                         password = getThePassword(currentInventory);
@@ -68,19 +68,19 @@ public class LoginGUIListener implements Listener {
                     if (!validateThePassword(player, password)) {
                         clearTheFirstLine(currentInventory);
                     }
-                } else if (clicked.getItemMeta().getDisplayName().contains("清空")) {
+                } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("button_clear"))) {
                     clearTheFirstLine(currentInventory);
-                } else if (clicked.getItemMeta().getDisplayName().contains("退出")) {
+                } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("button_quit"))) {
                     setIsLogin(player, true);
                     player.closeInventory();
-                    player.kickPlayer(ChatColor.AQUA + "下次再见！");
-                } else if (clicked.getItemMeta().getDisplayName().contains("忘记密码")) {
+                    player.kickPlayer(ChatColor.AQUA + UltiTools.languageUtils.getWords("login_kick_message"));
+                } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("button_forget_password"))) {
                     YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
                     if (!config.getBoolean("registered")) {
-                        player.sendMessage(warning("你还没有绑定邮箱，不可以找回密码！"));
+                        player.sendMessage(warning(UltiTools.languageUtils.getWords("emailregister_not_register_email")));
                         return;
                     }
-                    player.sendMessage(info("正在发送验证码..."));
+                    player.sendMessage(info(UltiTools.languageUtils.getWords("emailregister_sending_code")));
                     playerIsValidating.put(player.getUniqueId(), true);
                     setupValidationCodeLayout(player);
                     player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.VALIDATION.toString()).getInventory());
@@ -91,31 +91,31 @@ public class LoginGUIListener implements Listener {
                         public void run() {
                             String email = DatabasePlayerTools.getPlayerEmail(player);
                             String code = getValidateCode();
-                            CheckResponse response = SendEmailUtils.sendEmail(email, "服务器验证码", String.format("你正在找回我的世界服务器账户，你的验证码是 %s，请勿将验证码告诉他人。", code));
+                            CheckResponse response = SendEmailUtils.sendEmail(email, UltiTools.languageUtils.getWords("emailregister_email_title"), String.format(UltiTools.languageUtils.getWords("emialregister_forget_password_email_content"), code));
                             if (response.code.equals("200")) {
                                 LoginRegisterCommands.sentCodePlayers.put(player.getUniqueId(), true);
                                 LoginRegisterCommands.playersValidateCode.put(player.getUniqueId(), code);
-                                player.sendMessage(info("验证码已经发送至 " + email + " ，若未收到请稍等。"));
+                                player.sendMessage(info(String.format(UltiTools.languageUtils.getWords("emailregister_code_sent"), email)));
                             } else {
-                                player.sendMessage(warning("验证码发送失败，错误信息： " + response.msg));
+                                player.sendMessage(warning(UltiTools.languageUtils.getWords("emailregister_email_send_failed") + response.msg));
                                 playerIsValidating.put(player.getUniqueId(), false);
                             }
                         }
                     }.runTaskAsynchronously(UltiTools.getInstance());
                 }
             }
-        } else if (event.getView().getTitle().contains("注册界面")) {
+        } else if (event.getView().getTitle().equals(UltiTools.languageUtils.getWords("login_register_page_tile"))) {
             if (clicked != null) {
                 event.setCancelled(true);
-                if (clicked.getItemMeta().getDisplayName().contains("点按输入数字")) {
+                if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("login_keyboard_button_label"))) {
                     int slot = currentInventory.firstEmpty();
                     if (slot < 9) {
                         currentInventory.setItem(slot, clicked);
                         player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_HAT), 10, 1);
                     } else {
-                        player.sendMessage(warning("不可以超过9个数字！"));
+                        player.sendMessage(warning(UltiTools.languageUtils.getWords("login_number_limit_warning")));
                     }
-                } else if (clicked.getItemMeta().getDisplayName().contains("确认")) {
+                } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("button_ok"))) {
                     String password = "null";
                     try {
                         password = getThePassword(currentInventory);
@@ -124,15 +124,15 @@ public class LoginGUIListener implements Listener {
                     if (tempPlayerPassword.get(player.getUniqueId()) == null) {
                         tempPlayerPassword.put(player.getUniqueId(), password);
                         clearTheFirstLine(currentInventory);
-                        player.sendMessage(ChatColor.LIGHT_PURPLE + "请再次输入密码！");
+                        player.sendMessage(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getWords("login_register_enter_password_again"));
                     } else {
                         if (!(password.equals(tempPlayerPassword.get(player.getUniqueId())))) {
-                            player.sendMessage(warning("两次输入的密码不同！请重试！"));
+                            player.sendMessage(warning(UltiTools.languageUtils.getWords("login_register_different_entered_password")));
                             clearTheFirstLine(currentInventory);
                         } else {
                             setIsLogin(player, true);
                             setPlayerPassword(player, password);
-                            player.sendMessage(ChatColor.LIGHT_PURPLE + "注册成功！");
+                            player.sendMessage(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getWords("login_register_successfully"));
                             player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_BELL), 10, 1);
                             player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_CHIME), 10, 1);
                             player.setGameMode(GameMode.SURVIVAL);
@@ -142,9 +142,9 @@ public class LoginGUIListener implements Listener {
                             player.closeInventory();
                         }
                     }
-                } else if (clicked.getItemMeta().getDisplayName().contains("清空")) {
+                } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("button_clear"))) {
                     clearTheFirstLine(currentInventory);
-                } else if (clicked.getItemMeta().getDisplayName().contains("退出")) {
+                } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("button_quit"))) {
                     if(tempPlayerPassword.get(player.getUniqueId())!=null){
                         tempPlayerPassword.remove(player.getUniqueId());
                     }
@@ -154,7 +154,7 @@ public class LoginGUIListener implements Listener {
                     }
                     setIsLogin(player, true);
                     player.closeInventory();
-                    player.kickPlayer(ChatColor.AQUA + "下次再见！");
+                    player.kickPlayer(ChatColor.AQUA + UltiTools.languageUtils.getWords("login_kick_message"));
                 }
             }
         }
@@ -173,11 +173,11 @@ public class LoginGUIListener implements Listener {
                     }else {
                         isValidating = playerIsValidating.get(player.getUniqueId());
                     }
-                    if (event.getView().getTitle().contains("登录界面") && !isValidating) {
+                    if (event.getView().getTitle().equals(UltiTools.languageUtils.getWords("login_login_page_title")) && !isValidating) {
                         player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.LOGIN).getInventory());
-                    } else if (event.getView().getTitle().contains("注册界面") && !isValidating) {
+                    } else if (event.getView().getTitle().equals(UltiTools.languageUtils.getWords("login_register_page_tile")) && !isValidating) {
                         player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.REGISTER).getInventory());
-                    } else if (event.getView().getTitle().contains("验证界面") && isValidating) {
+                    } else if (event.getView().getTitle().equals(UltiTools.languageUtils.getWords("login_validation_page_title")) && isValidating) {
                         player.openInventory(inventoryMap.get(player.getName() + LoginRegisterEnum.VALIDATION).getInventory());
                     }
                 }
@@ -278,11 +278,11 @@ public class LoginGUIListener implements Listener {
         encryptExistPassword(player, getPlayerPassword(player));
         password = MD5Utils.encrypt(password, player.getName());
         if (!password.equals(getPlayerPassword(player))) {
-            player.sendMessage(warning("密码错误！"));
+            player.sendMessage(warning(UltiTools.languageUtils.getWords("login_wrong_password")));
             return false;
         } else {
             setIsLogin(player, true);
-            player.sendMessage(ChatColor.LIGHT_PURPLE + "登录成功！");
+            player.sendMessage(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getWords("login_successfully"));
             player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_BELL), 10, 1);
             player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_CHIME), 10, 1);
             player.setGameMode(GameMode.SURVIVAL);

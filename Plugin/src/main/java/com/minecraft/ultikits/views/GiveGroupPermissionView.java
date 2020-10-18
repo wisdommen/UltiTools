@@ -6,6 +6,7 @@ import com.minecraft.ultikits.inventoryapi.ViewManager;
 import com.minecraft.ultikits.inventoryapi.ViewType;
 import com.minecraft.ultikits.listener.GivePermissionListener;
 import com.minecraft.ultikits.manager.ItemStackManager;
+import com.minecraft.ultikits.ultitools.UltiTools;
 import com.minecraft.ultikits.utils.GroupManagerUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -26,7 +27,7 @@ public class GiveGroupPermissionView {
     }
 
     public static Inventory setUp() {
-        InventoryManager setupGroupPage = new InventoryManager(null, 36, "请分配权限组", true);
+        InventoryManager setupGroupPage = new InventoryManager(null, 36, UltiTools.languageUtils.getWords("permission_give_page_title"), true);
         setupGroupPage.presetPage(ViewType.OK_CANCEL);
         setupGroupPage.create();
         ViewManager.registerView(setupGroupPage, new GivePermissionListener());
@@ -41,7 +42,7 @@ public class GiveGroupPermissionView {
         for (String group : GroupManagerUtils.getGroups()) {
             String type = config.getString("groups." + group + ".type");
             String name = config.getString("groups." + group + ".name");
-            if (name == null) name = "无";
+            if (name == null) name = UltiTools.languageUtils.getWords("none");
             if (type == null) type = "PAPER";
             Material material = Material.getMaterial(type);
             if (material == null) material = Material.PAPER;
@@ -53,8 +54,8 @@ public class GiveGroupPermissionView {
 
     private static ArrayList<String> setUpLore(String group) {
         ArrayList<String> lore = new ArrayList<>();
-        lore.add(ChatColor.LIGHT_PURPLE + "是否为默认权限组：" + config.getBoolean("groups." + group + ".isDefault"));
-        lore.add(ChatColor.YELLOW + "------权限------");
+        lore.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getWords("permission_page_is_default_group") + config.getBoolean("groups." + group + ".isDefault"));
+        lore.add(ChatColor.YELLOW + UltiTools.languageUtils.getWords("permission_page_description_permission_header"));
         List<String> permissions = config.getStringList("groups." + group + ".permissions");
         for (String each : permissions) {
             lore.add(ChatColor.GRAY + each);
