@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Random;
 
-public class DeathPunish {
+public class DeathPunishUtils {
     public static void takeMoney(Player player, int money) {
         EconomyUtils.withdraw(player, Math.min(EconomyUtils.checkMoney(player), money));
     }

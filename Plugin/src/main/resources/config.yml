@@ -90,3 +90,6 @@ name_prefix: '§e[§c%ul_job%§dLv.%ul_level%§e]'
 
 '注释44请勿修改': '(头衔) 自定义头顶显示后缀'
 name_suffix: '§e[§c%ul_health%§e/§c%ul_max_health%§e]'
+
+'注释45请勿修改': '是否开启死亡惩罚功能'
+death_punish: false
