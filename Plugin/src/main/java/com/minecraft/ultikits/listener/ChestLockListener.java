@@ -1,24 +1,34 @@
 package com.minecraft.ultikits.listener;
 
+import com.minecraft.ultikits.config.ConfigController;
 import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.enums.Sounds;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.Chest;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
+import org.bukkit.block.data.type.TNT;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.minecraft.ultikits.utils.MessagesUtils.info;
@@ -32,11 +42,47 @@ public class ChestLockListener implements Listener {
     static YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestConfigFile);
 
     @EventHandler
-    public void onPlacePlaceChest(BlockPlaceEvent event){
+    public void onPlacePlaceChest(BlockPlaceEvent event) {
         Block placedBlock = event.getBlock();
-        if (placedBlock.getType() == Material.CHEST){
+        if (placedBlock.getType() == Material.CHEST) {
             Player player = event.getPlayer();
-            player.sendMessage(info(UltiTools.languageUtils.getWords("lock_tip")));
+            Map<Direction, Block> blockMap = getBlocksBesides(placedBlock);
+            Block right = blockMap.get(Direction.RIGHT);
+            Block left = blockMap.get(Direction.LEFT);
+            List<String> chests = (List<String>) ConfigController.getValue("locked");
+            if (!(right.getType() == Material.CHEST || left.getType() == Material.CHEST)) {
+                player.sendMessage(info(UltiTools.languageUtils.getWords("lock_tip")));
+            } else {
+                BlockData blockData = placedBlock.getBlockData();
+                BlockFace blockFace = ((Directional) blockData).getFacing();
+
+                Location blockLocation = right.getLocation();
+                if (right.getType() == Material.CHEST) {
+                    BlockData rightBlockData = right.getBlockData();
+                    BlockFace rightBlockFace = ((Directional) rightBlockData).getFacing();
+                    if (rightBlockFace != blockFace) {
+                        return;
+                    }
+                    if (!checkCanPlaceChest(blockLocation, player, chests)) {
+                        event.setCancelled(true);
+                    } else {
+                        saveNewChestLocation(player, placedBlock, chests);
+                    }
+                }
+                blockLocation = left.getLocation();
+                if (left.getType() == Material.CHEST) {
+                    BlockData leftBlockData = left.getBlockData();
+                    BlockFace leftBlockFace = ((Directional) leftBlockData).getFacing();
+                    if (leftBlockFace != blockFace) {
+                        return;
+                    }
+                    if (!checkCanPlaceChest(blockLocation, player, chests)) {
+                        event.setCancelled(true);
+                    } else {
+                        saveNewChestLocation(player, placedBlock, chests);
+                    }
+                }
+            }
         }
     }
 
@@ -82,7 +128,7 @@ public class ChestLockListener implements Listener {
                 try {
                     chestData.save(chestFile);
                 } catch (IOException e) {
-                    player.sendMessage(ChatColor.RED +UltiTools.languageUtils.getWords("lock_file_save_failed"));
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_file_save_failed"));
                     return;
                 }
                 player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getWords("lock_successfully"));
@@ -152,14 +198,14 @@ public class ChestLockListener implements Listener {
             double x = chestLocation.getX();
             double y = chestLocation.getY();
             double z = chestLocation.getZ();
-            String local = player.getName() + "/" + world + "/" + x + "/" + y + "/" + z;
+            String local = getFormattedChestLocation(player, chestLocation);
 
             if (player.isOp()) {
                 chests.removeIf(each -> each.contains("/" + world + "/" + x + "/" + y + "/" + z));
             } else {
                 chests.remove(local);
             }
-            if (sizeBefore>chests.size()) {
+            if (sizeBefore > chests.size()) {
                 chestData.set("locked", chests);
                 try {
                     chestData.save(chestFile);
@@ -172,7 +218,7 @@ public class ChestLockListener implements Listener {
     }
 
     @EventHandler
-    public void onItemRemovedByHopper(@NotNull InventoryMoveItemEvent event){
+    public void onItemRemovedByHopper(@NotNull InventoryMoveItemEvent event) {
         Location chestLocation = event.getSource().getLocation();
         File chestFile = new File(ConfigsEnum.CHEST.toString());
         YamlConfiguration chestData = YamlConfiguration.loadConfiguration(chestFile);
@@ -184,10 +230,106 @@ public class ChestLockListener implements Listener {
         double z = chestLocation.getZ();
         String local = world + "/" + x + "/" + y + "/" + z;
 
-        for (String each : chests){
-            if (each.contains(local)){
+        for (String each : chests) {
+            if (each.contains(local)) {
                 event.setCancelled(true);
             }
         }
     }
+
+    @EventHandler
+    public void onEntityExplode(EntityExplodeEvent event) {
+        if ((event.getEntity() instanceof Creeper) || (event.getEntity() instanceof TNT)) {
+            for (Block block : event.blockList().toArray(new Block[event.blockList().size()])){
+                if(block.getType() == Material.CHEST){
+                    // TODO 此处chests是上次reload的数据
+                    List<String> chests = (List<String>) ConfigController.getValue("locked");
+                    Location chestLocation = block.getLocation();
+                    String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
+                    double x = chestLocation.getX();
+                    double y = chestLocation.getY();
+                    double z = chestLocation.getZ();
+                    Bukkit.broadcastMessage("orangn/" + world + "/" + x + "/" + y + "/" + z);
+                    for (String each : chests) {
+                        Bukkit.broadcastMessage(each);
+                        if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
+                            Bukkit.broadcastMessage("true");
+                            event.setCancelled(true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private Map<Direction, Block> getBlocksBesides(Block placedBlock) {
+        Map<Direction, Block> blockMap = new HashMap<>();
+        if (placedBlock.getState() instanceof Chest) {
+            BlockData blockData = placedBlock.getBlockData();
+            BlockFace blockFace = ((Directional) blockData).getFacing();
+
+            Block right = null;
+            Block left = null;
+            switch (blockFace) {
+                case EAST:
+                    right = placedBlock.getRelative(BlockFace.NORTH);
+                    left = placedBlock.getRelative(BlockFace.SOUTH);
+                    break;
+                case SOUTH:
+                    right = placedBlock.getRelative(BlockFace.EAST);
+                    left = placedBlock.getRelative(BlockFace.WEST);
+                    break;
+                case NORTH:
+                    right = placedBlock.getRelative(BlockFace.WEST);
+                    left = placedBlock.getRelative(BlockFace.EAST);
+                    break;
+                case WEST:
+                    right = placedBlock.getRelative(BlockFace.SOUTH);
+                    left = placedBlock.getRelative(BlockFace.NORTH);
+                    break;
+            }
+            blockMap.put(Direction.RIGHT, right);
+            blockMap.put(Direction.LEFT, left);
+        }
+        return blockMap;
+    }
+
+    private String getFormattedChestLocation(Player player, Location chestLocation) {
+        String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
+        double x = chestLocation.getX();
+        double y = chestLocation.getY();
+        double z = chestLocation.getZ();
+        return player.getName() + "/" + world + "/" + x + "/" + y + "/" + z;
+    }
+
+    private boolean checkCanPlaceChest(Location blockLocation, Player player, List<String> registeredChests) {
+        String world = Objects.requireNonNull(blockLocation.getWorld()).getName();
+        double x = blockLocation.getX();
+        double y = blockLocation.getY();
+        double z = blockLocation.getZ();
+        String location = getFormattedChestLocation(player, blockLocation);
+        if (registeredChests.contains(location)) {
+            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_chest_already_locked"));
+            return true;
+        } else {
+            for (String each : registeredChests) {
+                if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_you_cannot_lock_others_chest"));
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void saveNewChestLocation(Player player, Block placedBlock, List<String> chests) {
+        String loc = getFormattedChestLocation(player, placedBlock.getLocation());
+        chests.add(loc);
+        ConfigController.setValue("locked", chests);
+        ConfigController.saveConfig("chestData");
+    }
+}
+
+enum Direction {
+    LEFT, RIGHT
 }

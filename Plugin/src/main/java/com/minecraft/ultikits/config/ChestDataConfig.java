@@ -3,6 +3,8 @@ package com.minecraft.ultikits.config;
 import com.minecraft.ultikits.enums.ConfigsEnum;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.util.Collections;
+
 public class ChestDataConfig extends AbstractConfig{
 
     private static final ChestDataConfig chest = new ChestDataConfig("chestData", ConfigsEnum.CHEST.toString());
@@ -13,6 +15,7 @@ public class ChestDataConfig extends AbstractConfig{
 
     public ChestDataConfig(String name, String filePath) {
         super(name, filePath);
+        map.put("locked", Collections.emptyList());
     }
 
     @Override

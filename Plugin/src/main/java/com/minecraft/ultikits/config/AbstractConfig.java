@@ -14,7 +14,7 @@ abstract class AbstractConfig {
     Map<String, Object> map = new LinkedHashMap<>();
     File file;
 
-    public AbstractConfig(){
+    public AbstractConfig() {
     }
 
     public AbstractConfig(String name, String filePath) {
@@ -41,18 +41,18 @@ abstract class AbstractConfig {
         load();
     }
 
-    public void reload(){
+    public void reload() {
+        // TODO 手动reload正常显示，但是插件reload不会
+        this.file = new File(filePath);
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        for (String key : config.getKeys(true)){
-            if (map.containsKey(key)) {
-                map.put(key, config.get(key));
-            }
+        for (String key : config.getKeys(true)) {
+            map.put(key, config.get(key));
         }
     }
 
-    public void save(){
+    public void save() {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        for (String key : map.keySet()){
+        for (String key : map.keySet()) {
             if (config.getKeys(true).contains(key)) {
                 config.set(key, map.get(key));
             }

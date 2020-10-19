@@ -53,7 +53,14 @@ public class ConfigController {
     }
 
     public static void saveConfig(String configName){
-        configMap.get(config.get(configName)).save();
+        AbstractConfig config = configMap.get(configName);
+        config.save();
+        reloadConfig(config);
+    }
+
+    public static void reloadConfig(AbstractConfig config){
+        config.reload();
+        configMap.put(config.name, config);
     }
 
     public static void saveConfigs(){
