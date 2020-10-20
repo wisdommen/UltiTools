@@ -5,12 +5,12 @@
     <parent>
         <artifactId>UltiTools</artifactId>
         <groupId>com.minecraft.UltiKits</groupId>
-        <version>3.4.0</version>
+        <version>3.4.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>1_12_R2</artifactId>
+    <artifactId>1_12_R1</artifactId>
 
     <dependencies>
         <dependency>
@@ -22,7 +22,7 @@
         <dependency>
             <groupId>com.minecraft.UltiKits</groupId>
             <artifactId>API</artifactId>
-            <version>3.4.0</version>
+            <version>3.4.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
