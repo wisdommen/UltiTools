@@ -1,6 +1,5 @@
 package com.minecraft.ultikits.config;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +8,8 @@ public class ConfigController {
     private static final Map<String, AbstractConfig> configMap = new HashMap<>();
     private static final Map<String, String> config = new HashMap<>();
 
-    private ConfigController(){}
+    private ConfigController() {
+    }
 
     public static void initFiles() {
         new KitsConfig();
@@ -25,8 +25,8 @@ public class ConfigController {
         new HomeConfig();
         new ChestDataConfig();
         new MultiworldsConfig();
-        for (AbstractConfig abstractConfig : configMap.values()){
-            for (String key : abstractConfig.map.keySet()){
+        for (AbstractConfig abstractConfig : configMap.values()) {
+            for (String key : abstractConfig.map.keySet()) {
                 config.put(key, abstractConfig.name);
             }
         }
@@ -36,35 +36,34 @@ public class ConfigController {
         return configMap;
     }
 
-    public static void registerConfig(String name, AbstractConfig config){
+    public static void registerConfig(String name, AbstractConfig config) {
         configMap.put(name, config);
     }
 
-    public static AbstractConfig getConfig(String name){
+    public static AbstractConfig getConfig(String name) {
         return configMap.get(name);
     }
 
-    public static Object getValue(String key){
+    public static Object getValue(String key) {
         return configMap.get(config.get(key)).map.get(key);
     }
 
-    public static void setValue(String key, Object value){
+    public static void setValue(String key, Object value) {
         configMap.get(config.get(key)).map.put(key, value);
     }
 
-    public static void saveConfig(String configName){
+    public static void saveConfig(String configName) {
         AbstractConfig config = configMap.get(configName);
         config.save();
         reloadConfig(config);
     }
 
-    public static void reloadConfig(AbstractConfig config){
-        config.reload();
-        configMap.put(config.name, config);
+    public static void reloadConfig(AbstractConfig config) {
+        config.init();
     }
 
-    public static void saveConfigs(){
-        for (AbstractConfig configs : configMap.values()){
+    public static void saveConfigs() {
+        for (AbstractConfig configs : configMap.values()) {
             configs.save();
         }
     }

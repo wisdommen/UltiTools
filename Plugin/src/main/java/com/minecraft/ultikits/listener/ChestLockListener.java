@@ -10,10 +10,10 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
-import org.bukkit.block.data.type.TNT;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -26,10 +26,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static com.minecraft.ultikits.utils.MessagesUtils.info;
 
@@ -51,36 +48,22 @@ public class ChestLockListener implements Listener {
             Block left = blockMap.get(Direction.LEFT);
             List<String> chests = (List<String>) ConfigController.getValue("locked");
             if (!(right.getType() == Material.CHEST || left.getType() == Material.CHEST)) {
-                player.sendMessage(info(UltiTools.languageUtils.getWords("lock_tip")));
+                Random random = new Random();
+                int i = random.nextInt(3);
+                if (i <= 1) {
+                    player.sendMessage(info(UltiTools.languageUtils.getWords("lock_tip")));
+                }
             } else {
                 BlockData blockData = placedBlock.getBlockData();
                 BlockFace blockFace = ((Directional) blockData).getFacing();
 
                 Location blockLocation = right.getLocation();
-                if (right.getType() == Material.CHEST) {
-                    BlockData rightBlockData = right.getBlockData();
-                    BlockFace rightBlockFace = ((Directional) rightBlockData).getFacing();
-                    if (rightBlockFace != blockFace) {
-                        return;
-                    }
-                    if (!checkCanPlaceChest(blockLocation, player, chests)) {
-                        event.setCancelled(true);
-                    } else {
-                        saveNewChestLocation(player, placedBlock, chests);
-                    }
+                if (!checkNewChestBlock(right, placedBlock, blockFace, blockLocation, player, chests)) {
+                    event.setCancelled(true);
                 }
                 blockLocation = left.getLocation();
-                if (left.getType() == Material.CHEST) {
-                    BlockData leftBlockData = left.getBlockData();
-                    BlockFace leftBlockFace = ((Directional) leftBlockData).getFacing();
-                    if (leftBlockFace != blockFace) {
-                        return;
-                    }
-                    if (!checkCanPlaceChest(blockLocation, player, chests)) {
-                        event.setCancelled(true);
-                    } else {
-                        saveNewChestLocation(player, placedBlock, chests);
-                    }
+                if (!checkNewChestBlock(left, placedBlock, blockFace, blockLocation, player, chests)) {
+                    event.setCancelled(true);
                 }
             }
         }
@@ -91,11 +74,9 @@ public class ChestLockListener implements Listener {
         if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.CHEST) {
             Player player = event.getPlayer();
             Location chestLocation = event.getClickedBlock().getLocation();
-            File chestFile = new File(ConfigsEnum.CHEST.toString());
             File playerFile = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
-            YamlConfiguration chestData = YamlConfiguration.loadConfiguration(chestFile);
             YamlConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
-            List<String> chests = chestData.getStringList("locked");
+            List<String> chests = (List<String>) ConfigController.getValue("locked");
 
             String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
             double x = chestLocation.getX();
@@ -124,13 +105,8 @@ public class ChestLockListener implements Listener {
                     }
                 }
                 chests.add(local);
-                chestData.set("locked", chests);
-                try {
-                    chestData.save(chestFile);
-                } catch (IOException e) {
-                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_file_save_failed"));
-                    return;
-                }
+                ConfigController.setValue("locked", chests);
+                ConfigController.saveConfig("chestData");
                 player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getWords("lock_successfully"));
                 player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_tip_after_lock"));
                 player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_CHEST_LOCKED), 10, 1);
@@ -146,13 +122,8 @@ public class ChestLockListener implements Listener {
                 }
                 if (chests.contains(local)) {
                     chests.remove(local);
-                    chestData.set("locked", chests);
-                    try {
-                        chestData.save(chestFile);
-                    } catch (IOException e) {
-                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("unlock_file_save_failed"));
-                        return;
-                    }
+                    ConfigController.setValue("locked", chests);
+                    ConfigController.saveConfig("chestData");
                     player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getWords("unlock_successfully"));
                     player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("unlock_tip_after_unlock"));
                     player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_CHEST_LOCKED), 10, 1);
@@ -189,9 +160,7 @@ public class ChestLockListener implements Listener {
         if (event.getBlock().getType() == Material.CHEST) {
             Location chestLocation = event.getBlock().getLocation();
             Player player = event.getPlayer();
-            File chestFile = new File(ConfigsEnum.CHEST.toString());
-            YamlConfiguration chestData = YamlConfiguration.loadConfiguration(chestFile);
-            List<String> chests = chestData.getStringList("locked");
+            List<String> chests = (List<String>) ConfigController.getValue("locked");
             int sizeBefore = chests.size();
 
             String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
@@ -206,12 +175,8 @@ public class ChestLockListener implements Listener {
                 chests.remove(local);
             }
             if (sizeBefore > chests.size()) {
-                chestData.set("locked", chests);
-                try {
-                    chestData.save(chestFile);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                ConfigController.setValue("locked", chests);
+                ConfigController.saveConfig("chestData");
                 player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_chest_deleted"));
             }
         }
@@ -220,9 +185,7 @@ public class ChestLockListener implements Listener {
     @EventHandler
     public void onItemRemovedByHopper(@NotNull InventoryMoveItemEvent event) {
         Location chestLocation = event.getSource().getLocation();
-        File chestFile = new File(ConfigsEnum.CHEST.toString());
-        YamlConfiguration chestData = YamlConfiguration.loadConfiguration(chestFile);
-        List<String> chests = chestData.getStringList("locked");
+        List<String> chests = (List<String>) ConfigController.getValue("locked");
 
         String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
         double x = chestLocation.getX();
@@ -239,21 +202,17 @@ public class ChestLockListener implements Listener {
 
     @EventHandler
     public void onEntityExplode(EntityExplodeEvent event) {
-        if ((event.getEntity() instanceof Creeper) || (event.getEntity() instanceof TNT)) {
-            for (Block block : event.blockList().toArray(new Block[event.blockList().size()])){
-                if(block.getType() == Material.CHEST){
-                    // TODO 此处chests是上次reload的数据
+        if ((event.getEntity() instanceof Creeper) || (event.getEntity() instanceof TNTPrimed)) {
+            for (Block block : event.blockList().toArray(new Block[event.blockList().size()])) {
+                if (block.getType() == Material.CHEST) {
                     List<String> chests = (List<String>) ConfigController.getValue("locked");
                     Location chestLocation = block.getLocation();
                     String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
                     double x = chestLocation.getX();
                     double y = chestLocation.getY();
                     double z = chestLocation.getZ();
-                    Bukkit.broadcastMessage("orangn/" + world + "/" + x + "/" + y + "/" + z);
                     for (String each : chests) {
-                        Bukkit.broadcastMessage(each);
                         if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
-                            Bukkit.broadcastMessage("true");
                             event.setCancelled(true);
                         }
                     }
@@ -309,12 +268,12 @@ public class ChestLockListener implements Listener {
         double z = blockLocation.getZ();
         String location = getFormattedChestLocation(player, blockLocation);
         if (registeredChests.contains(location)) {
-            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_chest_already_locked"));
+            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_auto_lock"));
             return true;
         } else {
             for (String each : registeredChests) {
                 if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
-                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_you_cannot_lock_others_chest"));
+                    player.sendMessage(info(UltiTools.languageUtils.getWords("lock_locked_chest_besides")));
                     return false;
                 }
             }
@@ -327,6 +286,35 @@ public class ChestLockListener implements Listener {
         chests.add(loc);
         ConfigController.setValue("locked", chests);
         ConfigController.saveConfig("chestData");
+    }
+
+    private void saveNewChest(Location blockLocation, Player player, Block placedBlock, List<String> chests) {
+        String world = Objects.requireNonNull(blockLocation.getWorld()).getName();
+        double x = blockLocation.getX();
+        double y = blockLocation.getY();
+        double z = blockLocation.getZ();
+        for (String each : chests) {
+            if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
+                saveNewChestLocation(player, placedBlock, chests);
+            }
+        }
+    }
+
+    private boolean checkNewChestBlock(Block block, Block placedBlock, BlockFace blockFace, Location blockLocation, Player player, List<String> chests) {
+        if (block.getType() == Material.CHEST) {
+            BlockData leftBlockData = block.getBlockData();
+            BlockFace leftBlockFace = ((Directional) leftBlockData).getFacing();
+            if (leftBlockFace != blockFace) {
+                return true;
+            }
+            if (!checkCanPlaceChest(blockLocation, player, chests)) {
+                return false;
+            } else {
+                saveNewChest(blockLocation, player, placedBlock, chests);
+                return true;
+            }
+        }
+        return true;
     }
 }
 

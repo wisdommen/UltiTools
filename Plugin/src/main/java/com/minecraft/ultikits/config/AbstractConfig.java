@@ -1,5 +1,6 @@
 package com.minecraft.ultikits.config;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -42,7 +43,6 @@ abstract class AbstractConfig {
     }
 
     public void reload() {
-        // TODO 手动reload正常显示，但是插件reload不会
         this.file = new File(filePath);
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         for (String key : config.getKeys(true)) {
