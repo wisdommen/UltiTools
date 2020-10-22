@@ -72,7 +72,7 @@ public class ChestPageListener extends PagesListener {
             File chestFile = new File(ConfigsEnum.PLAYER_CHEST.toString(), playerName + ".yml");
             YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
 
-            String number = ChatColor.stripColor(event.getView().getTitle()).split(UltiTools.languageUtils.getWords("bag_s"))[0].replace(playerName + UltiTools.languageUtils.getWords("bag_s"), "");
+            String number = ChatColor.stripColor(event.getView().getTitle()).split(UltiTools.languageUtils.getWords("bag_s"))[0].replace(playerName + UltiTools.languageUtils.getWords("bag_s"), "").replaceAll(" ", "");
             chestConfig.set(number, "");
 
             for (int i = 0; i < inventory.getSize(); i++) {
