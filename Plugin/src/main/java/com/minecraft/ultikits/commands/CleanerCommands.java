@@ -64,6 +64,7 @@ public class CleanerCommands implements TabExecutor {
                             sender.sendMessage(sendMessage(cleanType, name, cleanCount));
                             break;
                         default:
+                            sendHelp(sender);
                             break;
                     }
                 }
