@@ -93,6 +93,7 @@ public class EmailCommands extends AbstractTabExecutor {
                     return true;
                 default:
                     player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("wrong_format"));
+                    sendHelpMessage(player);
                     return false;
             }
         }

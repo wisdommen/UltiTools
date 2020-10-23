@@ -3,6 +3,7 @@ package com.minecraft.ultikits.tasks;
 import com.google.common.collect.Lists;
 import com.minecraft.ultikits.beans.ArmorsBean;
 import com.minecraft.ultikits.beans.EmailContentBean;
+import com.minecraft.ultikits.config.ConfigController;
 import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.manager.EmailManager;
 import com.minecraft.ultikits.ultitools.UltiTools;
@@ -17,6 +18,7 @@ import org.bukkit.scoreboard.*;
 
 import java.io.File;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -26,9 +28,6 @@ import static com.minecraft.Ultilevel.utils.checkLevel.*;
 public class SideBarTask extends BukkitRunnable {
 
     boolean isPAPILoaded = UltiTools.isPAPILoaded;
-
-    static File file = new File(ConfigsEnum.SIDEBAR.toString());
-    static YamlConfiguration sideBarConfig = YamlConfiguration.loadConfiguration(file);
 
     @Override
     public void run() {
@@ -42,7 +41,11 @@ public class SideBarTask extends BukkitRunnable {
             Scoreboard scoreboard = sb.getNewScoreboard();
 
             //创建一个计分板对象
-            String title = sideBarConfig.getString("scoreBoardTitle");
+            String title="Welcome!";
+            try {
+                title = (String) ConfigController.getValue("scoreBoardTitle");
+            }catch (NullPointerException ignored){
+            }
             Objective information = UltiTools.versionAdaptor.registerNewObjective(scoreboard, "侧边栏", "", ChatColor.DARK_AQUA + title);
             //设置计分板样式
             information.setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -194,7 +197,7 @@ public class SideBarTask extends BukkitRunnable {
 
     public String setPlaceholderString(Player player, String string) {
         try {
-            return Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, sideBarConfig.getString(string)));
+            return Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, (String) ConfigController.getValue(string)));
         } catch (Exception e) {
             return "";
         }
@@ -217,7 +220,11 @@ public class SideBarTask extends BukkitRunnable {
     }
 
     public void setCustomLine(Objective scoreboard, Player player){
-        List<String> tempList = sideBarConfig.getStringList("customerline");
+        List<String> tempList = new ArrayList<>();
+        try {
+            tempList = (List<String>) ConfigController.getValue("customerline");
+        }catch (NullPointerException ignored){
+        }
         List<String> customer_line = Lists.reverse(tempList);
         int i = 1;
         for (String each_line : customer_line) {
