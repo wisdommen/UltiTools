@@ -28,7 +28,7 @@ public class DeathListener implements Listener {
             return;
         }
 
-        if (player.getHealth() >= event.getFinalDamage()) {
+        if (player.getHealth() > event.getFinalDamage()) {
             return;
         }
 
@@ -37,7 +37,7 @@ public class DeathListener implements Listener {
             for (String s : list) {
                 if (s.equals(world)) {
                     DeathPunishUtils.takeItem(player, getItemDrop());
-                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("punish_item_dropped"));
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("punish_item_dropped").replace("%n", String.valueOf(getItemDrop())));
                 }
             }
         }
@@ -47,7 +47,7 @@ public class DeathListener implements Listener {
             for (String s : list) {
                 if (s.equals(world)) {
                     DeathPunishUtils.takeMoney(player, getMoneyDrop());
-                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("punish_money_dropped"));
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("punish_money_dropped").replace("%n", String.valueOf(getMoneyDrop())));
                 }
             }
         }
