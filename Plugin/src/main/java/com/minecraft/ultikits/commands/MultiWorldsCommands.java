@@ -165,6 +165,9 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                     player.sendMessage(warning(UltiTools.languageUtils.getWords("world_world_not_found")));
                     return true;
             }
+        }else {
+            player.sendMessage(warning(UltiTools.languageUtils.getWords("wrong_format")));
+            multiWorldsHelp(player);
         }
         return false;
     }

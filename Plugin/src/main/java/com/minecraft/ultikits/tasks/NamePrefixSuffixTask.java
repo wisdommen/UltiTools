@@ -9,7 +9,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Objects;
 
-import static com.minecraft.ultikits.tasks.SideBarTask.sideBarConfig;
 import static com.minecraft.ultikits.ultitools.UltiTools.isPAPILoaded;
 
 public class NamePrefixSuffixTask extends BukkitRunnable {
