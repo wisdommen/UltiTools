@@ -82,7 +82,11 @@ public final class UltiTools extends JavaPlugin {
             Locale defaultLocale = Locale.getDefault();
             String language = defaultLocale.getLanguage()+"_"+defaultLocale.getCountry();
             YamlConfiguration configuration = YamlConfiguration.loadConfiguration(config_file);
-            configuration.set("language", language);
+            if (language.equalsIgnoreCase("en_us")) {
+                configuration.set("language", language);
+            }else if (!(language.equalsIgnoreCase("en_us") || language.equalsIgnoreCase("zh_cn"))){
+                configuration.set("language", "en_US");
+            }
             try {
                 configuration.save(config_file);
             } catch (IOException e) {
