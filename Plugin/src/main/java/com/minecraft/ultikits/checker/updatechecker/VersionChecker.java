@@ -66,7 +66,7 @@ public class VersionChecker {
                                     UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("join_send_update_tip"));
                                 }
                             }
-                            if (!isOutDate) {
+                            if (isOutDate) {
                                 deleteOldVersion();
                                 UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getWords("plugin_up_to_date"));
                                 break;

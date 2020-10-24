@@ -28,7 +28,7 @@ public class KitsConfig extends AbstractConfig{
 
     @Override
     void doInit(YamlConfiguration config) {
-        config.set("xinshou.item", "OAK_PLANKS");
+        config.set("xinshou.item", "LOG");
         config.set("xinshou.reBuyable", false);
         config.set("xinshou.name", UltiTools.languageUtils.getWords("kits_config_name"));
         config.set("xinshou.level", 1);

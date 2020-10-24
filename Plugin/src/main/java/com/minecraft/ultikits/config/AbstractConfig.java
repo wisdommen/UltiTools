@@ -1,5 +1,6 @@
 package com.minecraft.ultikits.config;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -14,7 +15,7 @@ abstract class AbstractConfig {
     Map<String, Object> map = new LinkedHashMap<>();
     File file;
 
-    public AbstractConfig(){
+    public AbstractConfig() {
     }
 
     public AbstractConfig(String name, String filePath) {
@@ -41,18 +42,17 @@ abstract class AbstractConfig {
         load();
     }
 
-    public void reload(){
+    public void reload() {
+        this.file = new File(filePath);
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        for (String key : config.getKeys(true)){
-            if (map.containsKey(key)) {
-                map.put(key, config.get(key));
-            }
+        for (String key : config.getKeys(true)) {
+            map.put(key, config.get(key));
         }
     }
 
-    public void save(){
+    public void save() {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        for (String key : map.keySet()){
+        for (String key : map.keySet()) {
             if (config.getKeys(true).contains(key)) {
                 config.set(key, map.get(key));
             }
