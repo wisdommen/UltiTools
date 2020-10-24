@@ -3,7 +3,6 @@ package com.minecraft.ultikits.listener;
 import com.minecraft.ultikits.config.ConfigController;
 import com.minecraft.ultikits.ultitools.UltiTools;
 import com.minecraft.ultikits.utils.DeathPunishUtils;
-import com.minecraft.ultikits.utils.LanguageUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
