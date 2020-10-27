@@ -126,6 +126,7 @@ public final class UltiTools extends JavaPlugin {
         }.runTaskAsynchronously(plugin);
 
         startBStates();
+        language = getConfig().getString("language").split("_")[0];
         pageRegister = new PageRegister(plugin);
         if (getConfig().getBoolean("enable_pro")) {
             new BukkitRunnable() {

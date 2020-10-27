@@ -36,65 +36,74 @@ public class EmailCommands extends AbstractTabExecutor {
         EmailManager emailManager = new EmailManager(senderFile);
 
         if ("email".equalsIgnoreCase(command.getName())) {
-            switch (strings.length) {
-                case 1:
-                    switch (strings[0].toLowerCase()) {
-                        case "read":
-                            readEmails(player);
-                            return true;
-                        case "delhistory":
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    deleteHistoryEmail(emailManager, player);
-                                }
-                            }.runTaskAsynchronously(UltiTools.getInstance());
-                            return true;
-                        case "help":
-                            sendHelpMessage(player);
-                            return true;
-                        default:
-                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("wrong_format"));
-                            return false;
-                    }
-                case 2:
-                    File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), strings[1] + ".yml");
-
-                    switch (strings[0].toLowerCase()) {
-                        case "sendall":
-                            if (player.isOp()) {
-                                sendAllMessage(player, emailManager, strings[1]);
-                                return true;
+            if (strings.length == 1) {
+                switch (strings[0].toLowerCase()) {
+                    case "read":
+                        readEmails(player);
+                        return true;
+                    case "delhistory":
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                deleteHistoryEmail(emailManager, player);
                             }
-                            return false;
-                        case "senditem":
-                            sendMessage(file, emailManager, player, strings[1]);
-                            return true;
-                        default:
-                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("wrong_format"));
-                            return false;
-                    }
-                case 3:
-                    File file2 = new File(ConfigsEnum.PLAYER_EMAIL.toString(), strings[1] + ".yml");
-                    boolean hasContent;
+                        }.runTaskAsynchronously(UltiTools.getInstance());
+                        return true;
+                    case "help":
+                        sendHelpMessage(player);
+                        return true;
+                    default:
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("wrong_format"));
+                        return false;
+                }
+            } else if (strings.length == 2) {
+                File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), strings[1] + ".yml");
 
-                    switch (strings[0].toLowerCase()) {
-                        case "send":
-                            hasContent = false;
-                            break;
-                        case "senditem":
-                            hasContent = true;
-                            break;
-                        default:
-                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("wrong_format"));
-                            return false;
+                switch (strings[0].toLowerCase()) {
+                    case "sendall":
+                        if (player.isOp()) {
+                            sendAllMessage(player, emailManager, strings[1]);
+                            return true;
+                        }
+                        return false;
+                    case "senditem":
+                        sendMessage(file, emailManager, player, strings[1]);
+                        return true;
+                    default:
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("wrong_format"));
+                        return false;
+                }
+            } else if (strings.length >= 3) {
+                File file2 = new File(ConfigsEnum.PLAYER_EMAIL.toString(), strings[1] + ".yml");
+                boolean hasContent;
+
+                switch (strings[0].toLowerCase()) {
+                    case "send":
+                        hasContent = false;
+                        break;
+                    case "senditem":
+                        hasContent = true;
+                        break;
+                    default:
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("wrong_format"));
+                        return false;
+                }
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int i = 2; i < strings.length; i++) {
+                    String s = " " + strings[i] + " ";
+                    if (i == 2) {
+                        s = strings[i] + " ";
+                    } else if (i == strings.length - 1) {
+                        s = " " + strings[i];
                     }
-                    sendMessage(file2, emailManager, player, strings[1], strings[2], hasContent);
-                    return true;
-                default:
-                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("wrong_format"));
-                    sendHelpMessage(player);
-                    return false;
+                    stringBuilder.append(s);
+                }
+                sendMessage(file2, emailManager, player, strings[1], stringBuilder.toString(), hasContent);
+                return true;
+            } else {
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("wrong_format"));
+                sendHelpMessage(player);
+                return false;
             }
         }
         return false;
