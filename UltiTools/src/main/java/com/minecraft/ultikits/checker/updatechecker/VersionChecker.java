@@ -61,7 +61,9 @@ public class VersionChecker {
                                 }
                             }
                             if (!isOutDate) {
-                                deleteOldVersion();
+                                if(UltiTools.getInstance().getConfig().getBoolean("enable_auto_update")) {
+                                    deleteOldVersion();
+                                }
                                 UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getWords("plugin_up_to_date"));
                                 break;
                             }
