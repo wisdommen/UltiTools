@@ -38,8 +38,13 @@ public class Utils {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         int second = calendar.get(Calendar.SECOND);
-        return (month + 1) + "月" + day + "日 "
-                + hour + ":" + minute + ":" + second;
+        if (UltiTools.language.equals("en")) {
+            return  day + UltiTools.languageUtils.getWords("day") + (month + 1) + UltiTools.languageUtils.getWords("month") + " "
+                    + hour + ":" + minute + ":" + second;
+        }else {
+            return (month + 1) + UltiTools.languageUtils.getWords("month") + day + UltiTools.languageUtils.getWords("day") + " "
+                    + hour + ":" + minute + ":" + second;
+        }
     }
 
     public static @NotNull Integer getRandomNumber(int range){

@@ -34,15 +34,15 @@ public abstract class PagesListener implements Listener {
                 }
                 String itemName = ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
                 if (itemName.equals(UltiTools.languageUtils.getWords("button_previous"))) {
-                    if (inventoryManager.getTitle().contains(String.format(UltiTools.languageUtils.getWords("inventory_manager_title_page_number"),1))) {
+                    if (inventoryManager.getTitle().contains(String.format(" " + UltiTools.languageUtils.getWords("inventory_manager_title_page_number"), 1))) {
                         return;
                     }
-                    InventoryManager previousInventory = ViewManager.getViewByName(inventoryManager.getGroupTitle() + String.format(UltiTools.languageUtils.getWords("inventory_manager_title_page_number"),(inventoryManager.getPageNumber() - 1)));
+                    InventoryManager previousInventory = ViewManager.getViewByName(inventoryManager.getGroupTitle() + " " + String.format(UltiTools.languageUtils.getWords("inventory_manager_title_page_number"), (inventoryManager.getPageNumber() - 1)));
                     if (previousInventory != null) {
                         player.openInventory(previousInventory.getInventory());
                     }
                 } else if (itemName.equals(UltiTools.languageUtils.getWords("button_next"))) {
-                    InventoryManager nextInventory = ViewManager.getViewByName(inventoryManager.getGroupTitle() + String.format(UltiTools.languageUtils.getWords("inventory_manager_title_page_number"),(inventoryManager.getPageNumber() + 1)));
+                    InventoryManager nextInventory = ViewManager.getViewByName(inventoryManager.getGroupTitle() + " " + String.format(UltiTools.languageUtils.getWords("inventory_manager_title_page_number"), (inventoryManager.getPageNumber() + 1)));
                     if (nextInventory != null) {
                         player.openInventory(nextInventory.getInventory());
                     }
