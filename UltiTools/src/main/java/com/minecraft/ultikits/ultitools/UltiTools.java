@@ -14,6 +14,7 @@ import com.minecraft.ultikits.multiversions.VersionAdaptor;
 import com.minecraft.ultikits.register.CommandRegister;
 import com.minecraft.ultikits.tasks.*;
 import com.minecraft.ultikits.utils.LanguageUtils;
+import com.minecraft.ultikits.utils.YamlFileUtils;
 import com.minecraft.ultikits.utils.database.DatabaseUtils;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -26,10 +27,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -48,6 +47,8 @@ public final class UltiTools extends JavaPlugin {
     public static boolean isGroupManagerEnabled;
     public static VersionWrapper versionAdaptor = new VersionAdaptor().match();
     public static LanguageUtils languageUtils;
+    public static YamlFileUtils yaml;
+    public static String language;
 
     private boolean setupVault() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
@@ -79,21 +80,11 @@ public final class UltiTools extends JavaPlugin {
         plugin = this;
         File folder = new File(String.valueOf(getDataFolder()));
         File config_file = new File(getDataFolder(), "config.yml");
+        yaml = new YamlFileUtils();
         if (!folder.exists() || !config_file.exists()) {
-            saveDefaultConfig();
-            Locale defaultLocale = Locale.getDefault();
-            String language = defaultLocale.getLanguage()+"_"+defaultLocale.getCountry();
-            YamlConfiguration configuration = YamlConfiguration.loadConfiguration(config_file);
-            if (language.equalsIgnoreCase("en_us")) {
-                configuration.set("language", language);
-            }else if (!(language.equalsIgnoreCase("en_us") || language.equalsIgnoreCase("zh_cn"))){
-                configuration.set("language", "en_US");
-            }
-            try {
-                configuration.save(config_file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            folder.mkdirs();
+            setLocalLanguage();
+            yaml.saveYamlFile(getDataFolder().getPath(), "config.yml", language+"_config.yml");
         }
 
         languageUtils = LanguageUtils.getInstance();
@@ -114,6 +105,7 @@ public final class UltiTools extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        setLocalLanguage();
         List<File> folders = new ArrayList<>();
         folders.add(new File(getDataFolder() + "/playerData"));
         folders.add(new File(getDataFolder() + "/chestData"));
@@ -307,5 +299,14 @@ public final class UltiTools extends JavaPlugin {
         // You can find the plugin ids of your plugins on the page https://bstats.org/what-is-my-plugin-id
         int pluginId = 8652; // <-- Replace with the id of your plugin!
         Metrics metrics = new Metrics(UltiTools.getInstance(), pluginId);
+    }
+
+    private void setLocalLanguage(){
+        Locale defaultLocale = Locale.getDefault();
+        List<String> langs = Arrays.asList("en", "zh");
+        language = defaultLocale.getLanguage();
+        if (!langs.contains(language)){
+            language = "en";
+        }
     }
 }
