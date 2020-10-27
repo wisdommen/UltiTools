@@ -1,0 +1,8 @@
+# 配置文件版本，请勿修改
+config_version: 1.0
+
+# op是否可以打开上锁的箱子
+op_unlock: true
+
+# op是否可以破坏上锁的箱子
+op_break_locked: true

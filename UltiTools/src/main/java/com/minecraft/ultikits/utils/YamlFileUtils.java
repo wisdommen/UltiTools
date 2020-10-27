@@ -8,7 +8,7 @@ import java.net.URLConnection;
 
 public class YamlFileUtils {
 
-    public InputStream getResource(@NotNull String filename) {
+    private InputStream getResource(@NotNull String filename) {
         try {
             URL url = this.getClass().getClassLoader().getResource(filename);
 
@@ -24,15 +24,15 @@ public class YamlFileUtils {
         }
     }
 
-    public void saveYamlFile(String filePath, String fileName) {
+    public void saveYamlFile(String filePath, String fileName, String resourcePath) {
         File folder = new File(filePath);
         if (!folder.exists()) {
             folder.mkdirs();
         }
-        saveResource(filePath, fileName + ".yml", false);
+        saveResource(filePath, resourcePath, fileName, false);
     }
 
-    public void saveResource(String filePath, @NotNull String resourcePath, boolean replace) {
+    private void saveResource(String filePath, @NotNull String resourcePath, String outFileName, boolean replace) {
         if (resourcePath.equals("")) {
             throw new IllegalArgumentException("ResourcePath cannot be null or empty");
         }
@@ -43,13 +43,7 @@ public class YamlFileUtils {
             throw new IllegalArgumentException("The embedded resource '" + resourcePath + "' cannot be found in " + resourcePath);
         }
 
-        File outFile = new File(filePath, resourcePath);
-        int lastIndex = resourcePath.lastIndexOf('/');
-        File outDir = new File(filePath, resourcePath.substring(0, Math.max(lastIndex, 0)));
-
-        if (!outDir.exists()) {
-            outDir.mkdirs();
-        }
+        File outFile = new File(filePath, outFileName);
 
         try {
             if (!outFile.exists() || replace) {
