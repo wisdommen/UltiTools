@@ -6,10 +6,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.HashMap;
@@ -124,6 +123,36 @@ public class ConfigFileChecker {
             e.printStackTrace();
             return false;
         }
+    }
+
+    //网络上的链接路径，下载保存的文件名,保存路径
+    public static void download(String urlstring,String fileName,String savePath) throws IOException{
+        //和网上资源建立连接
+        URL url=new URL(urlstring);
+        //获取URLConnection对象，从而获得输入流
+        URLConnection conn=url.openConnection();
+        //获取和网络上资源连接的输入流
+        InputStream is=conn.getInputStream();
+
+        //InputStream is=url.openStream();使用该方法也可以获取输入流
+
+        //用于缓存的字节数组，大小为1kb
+        byte[] buff=new byte[1024];
+        int len=0;
+        //建立File对象
+        File file=new File(savePath);
+        //检查File所对应对象的路径是否存在，如果不存在就自己建立好路径
+        if(!file.exists()){
+            file.mkdirs();
+        }
+        //获取将网上资源写入本地的输出流，路径+待保存的文件名
+        OutputStream os=new FileOutputStream(file.getPath()+"/"+fileName);
+        while((len=is.read(buff))!=-1){
+            os.write(buff, 0, len);
+        }
+        //释放资源
+        os.close();
+        is.close();
     }
 
     public static void deleteOldVersion() {

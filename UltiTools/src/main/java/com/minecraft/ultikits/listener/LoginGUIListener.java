@@ -109,7 +109,7 @@ public class LoginGUIListener implements Listener {
                 event.setCancelled(true);
                 if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("login_keyboard_button_label"))) {
                     int slot = currentInventory.firstEmpty();
-                    if (slot < 9) {
+                    if (slot < 9 && slot >= 0) {
                         currentInventory.setItem(slot, clicked);
                         player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_HAT), 10, 1);
                     } else {
