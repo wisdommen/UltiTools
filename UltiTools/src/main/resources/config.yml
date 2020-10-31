@@ -1,0 +1,95 @@
+config_version: 3.0
+
+language: zh_CN
+
+'注释52请勿修改': '是否开启PRO版本'
+enable_pro: false
+
+'注释53请勿修改': 'PRO版本注册账号名称'
+pro_name: xxxxxxxxxxxxxx
+
+'注释54请勿修改': 'PRO版本密钥'
+pro_key: xxxxxxxxxxxxxx
+
+'注释1请勿修改': '设置true为使用mysql数据库，设置false为使用yml储存数据'
+enableDataBase: false
+
+'注释2请勿修改': '填写你的Host, 默认为Localhost'
+host: localhost
+'注释3请勿修改': '填写你的Mysql端口, 默认为3306'
+port: 3306
+'注释4请勿修改': '填写你的用户名，默认为root'
+username: root
+'注释5请勿修改': '填写你的密码'
+password: root
+'注释6请勿修改': '填写你需要连接的数据库'
+database: minecraft
+
+'注释25请勿修改': '开关记分板'
+enable_scoreboard: true
+
+'注释21请勿修改': '是否开启自动版本检查'
+enable_version_check: true
+
+'注释56请勿修改': '是否开启自动版本升级(必须同时开启自动版本检查)'
+enable_auto_update: false
+
+'注释22请勿修改': '是否开启家功能'
+enable_home: true
+
+'注释34请勿修改': '是否开启锁箱子功能'
+enable_lock: true
+
+'注释33请勿修改': '是否开启邮件功能'
+enable_email: true
+
+'注释32请勿修改': '是否开启入服提示功能'
+enable_onjoin: true
+
+'注释35请勿修改': '是否开启远程背包功能'
+enable_remote_chest: true
+
+'注释36请勿修改': '是否开启侧边栏显示装备耐久度功能（如果性能不足请关闭这个功能）'
+enable_armor_check: true
+
+'注释37请勿修改': '是否开启多世界管理/传送'
+enable_multiworlds: true
+
+'注释39请勿修改': '是否开启聊天前缀功能'
+enable_chat: true
+
+'注释9请勿修改': '开启白名单'
+enable_white_list: false
+
+'注释43请勿修改': '开启头顶名称前缀后缀显示'
+enable_name_prefix: true
+
+'注释46请勿修改': '是否开启登录功能  (感谢 vang_z 大佬的意见！)'
+enable_login: true
+
+'注释47请勿修改': '是否开启礼包功能  (感谢 哈德良凯撒 大佬的意见！)'
+enable_kits: true
+
+'注释55请勿修改': '是否开启清理功能  (感谢 绝尘 大佬的意见！)'
+enable_cleaner: true
+
+'注释57请勿修改': '是否开启权限功能  (感谢 绝尘 大佬的意见！)'
+enable_permission: true
+
+'注释12请勿修改': '开启PAPI变量'
+enable_PAPI: false
+
+'注释13请勿修改': '开启死亡惩罚功能'
+enable_death_punishment: true
+
+'注释29请勿修改': '（远程背包）创建一个远程背包所需的价格'
+price_of_create_a_remote_chest: 10000
+
+'注释41请勿修改': '(chat) 自定义聊天前缀'
+chat_prefix: '§e[§a%player_world%§e][§c%ul_job%§dLv.%ul_level%§e][§b%player_name%§e]'
+
+'注释42请勿修改': '(头衔) 自定义头顶显示前缀'
+name_prefix: '§e[§c%ul_job%§dLv.%ul_level%§e]'
+
+'注释44请勿修改': '(头衔) 自定义头顶显示后缀'
+name_suffix: '§e[§c%ul_health%§e/§c%ul_max_health%§e]'
