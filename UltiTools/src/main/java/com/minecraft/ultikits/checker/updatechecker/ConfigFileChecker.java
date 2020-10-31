@@ -1,9 +1,7 @@
 package com.minecraft.ultikits.checker.updatechecker;
 
 import com.minecraft.ultikits.config.ConfigController;
-import com.minecraft.ultikits.enums.ConfigsEnum;
 import com.minecraft.ultikits.ultitools.UltiTools;
-import com.minecraft.ultikits.utils.LanguageUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -17,10 +15,9 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.IntFunction;
+import java.util.Objects;
 
-import static com.minecraft.ultikits.checker.updatechecker.VersionChecker.isOutDate;
-import static com.minecraft.ultikits.checker.updatechecker.VersionChecker.version;
+import static com.minecraft.ultikits.checker.updatechecker.VersionChecker.*;
 import static com.minecraft.ultikits.utils.Utils.getFiles;
 
 public class ConfigFileChecker {
@@ -55,7 +52,7 @@ public class ConfigFileChecker {
         File file = new File(UltiTools.getInstance().getDataFolder(), "config.yml");
         transferOldConfigs(config);
         if (file.delete()) {
-            UltiTools.getInstance().saveDefaultConfig();
+            UltiTools.yaml.saveYamlFile(UltiTools.getInstance().getDataFolder().getPath(), "config.yml", UltiTools.language + "_config.yml");
             File newFile = new File(UltiTools.getInstance().getDataFolder(), "config.yml");
             YamlConfiguration newConfig = YamlConfiguration.loadConfiguration(file);
             for (String key : config.keySet()) {
@@ -69,16 +66,25 @@ public class ConfigFileChecker {
                 e.printStackTrace();
             }
         }
+//        boolean change = false;
+//        Configuration defaults = YamlConfiguration.loadConfiguration(new File());
+//        for (String defaultKey : defaults.getKeys(true)) {
+//            if (!UltiTools.getInstance().getConfig().contains(defaultKey)) {
+//                UltiTools.getInstance().getConfig().set(defaultKey, defaults.get(defaultKey));
+//                change = true;
+//            }
+//        }
+//        if (change) UltiTools.getInstance().saveConfig();
     }
 
-    public static void transferOldConfigs(Map<String, Object> oldConfig){
-        if (oldConfig.containsKey("config_version")){
+    public static void transferOldConfigs(Map<String, Object> oldConfig) {
+        if (oldConfig.containsKey("config_version")) {
             return;
         }
-        for (String key: oldConfig.keySet()){
+        for (String key : oldConfig.keySet()) {
             try {
                 ConfigController.setValue(key, oldConfig.get(key));
-            }catch (NullPointerException ignore){
+            } catch (NullPointerException ignore) {
             }
         }
         ConfigController.saveConfigs();
@@ -94,38 +100,38 @@ public class ConfigFileChecker {
 
             @Override
             public void run() {
-                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] "+ UltiTools.languageUtils.getWords("downloading"));
-                if (download()){
-                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] "+UltiTools.languageUtils.getWords("download_successfully"));
+                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + UltiTools.languageUtils.getWords("downloading"));
+                if (download()) {
+                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + UltiTools.languageUtils.getWords("download_successfully"));
                     this.cancel();
                     return;
                 }
-                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + String.format("[UltiTools] "+UltiTools.languageUtils.getWords("download_failed"), "https://www.mcbbs.net/thread-1062730-1-1.html"));
+                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + String.format("[UltiTools] " + UltiTools.languageUtils.getWords("download_failed"), "https://www.mcbbs.net/thread-1062730-1-1.html"));
             }
 
         }.runTaskAsynchronously(UltiTools.getInstance());
     }
 
-        public static boolean download (){
-            try {
-                URL url = new URL("https://raw.githubusercontent.com/wisdommen/wisdommen.github.io/master/collections/Ultitools/UltiTools-" + version + ".jar");
-                ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-                FileOutputStream fos = new FileOutputStream(UltiTools.getInstance().getDataFolder().getPath().replace(java.io.File.separator+"UltiTools", "") + java.io.File.separator+"UltiTools-" + version + ".jar");
-                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-                fos.close();
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
+    public static boolean download() {
+        try {
+            URL url = new URL("https://raw.githubusercontent.com/wisdommen/wisdommen.github.io/master/collections/Ultitools/UltiTools-" + version + ".jar");
+            ReadableByteChannel rbc = Channels.newChannel(url.openStream());
+            FileOutputStream fos = new FileOutputStream(UltiTools.getInstance().getDataFolder().getPath().replace(java.io.File.separator + "UltiTools", "") + java.io.File.separator + "UltiTools-" + version + ".jar");
+            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            fos.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
+    }
 
-        public static void deleteOldVersion () {
-            List<File> files = getFiles(UltiTools.getInstance().getDataFolder().getPath().replace(java.io.File.separator+"UltiTools", ""));
-            for (File file : files) {
-                if (file.getName().contains("UltiTools-") && !file.getName().equals("UltiTools-" + version + ".jar")) {
-                    file.delete();
-                }
+    public static void deleteOldVersion() {
+        List<File> files = getFiles(UltiTools.getInstance().getDataFolder().getPath().replace(java.io.File.separator + "UltiTools", ""));
+        for (File file : files) {
+            if (file.getName().contains("UltiTools-") && !file.getName().equals("UltiTools-" + version + ".jar")) {
+                file.delete();
             }
         }
     }
+}

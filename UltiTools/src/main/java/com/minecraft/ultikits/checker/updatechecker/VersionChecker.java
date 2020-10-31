@@ -54,20 +54,16 @@ public class VersionChecker {
                                 isOutDate = true;
                                 UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getWords("join_send_update_reminding"), version, current_version));
                                 if (UltiTools.getInstance().getConfig().getBoolean("enable_auto_update")) {
-//                                    if (currentVersion<321 && onlineVersion >=321){
-//                                        UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] 自动更新失败！");
-//                                        UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] 新版插件与旧版插件有重大更新，请前往帖子查看注意事项后更新！");
-//                                        UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] 下载地址：https://www.mcbbs.net/thread-1062730-1-1.html");
-//                                        return;
-//                                    }
                                     downloadNewVersion();
                                 } else {
                                     UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("download_url"));
                                     UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("join_send_update_tip"));
                                 }
                             }
-                            if (isOutDate) {
-                                deleteOldVersion();
+                            if (!isOutDate) {
+                                if(UltiTools.getInstance().getConfig().getBoolean("enable_auto_update")) {
+                                    deleteOldVersion();
+                                }
                                 UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getWords("plugin_up_to_date"));
                                 break;
                             }

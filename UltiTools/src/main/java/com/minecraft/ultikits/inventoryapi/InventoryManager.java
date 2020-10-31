@@ -48,7 +48,7 @@ public class InventoryManager implements InventoryManagerAPI {
         this.owner = owner;
         this.slots = slots;
         this.pageNumber = pageNumber;
-        this.title = title + String.format(UltiTools.languageUtils.getWords("inventory_manager_title_page_number"), pageNumber);
+        this.title = title + String.format(" " + UltiTools.languageUtils.getWords("inventory_manager_title_page_number"), pageNumber);
         this.groupTitle = title;
         this.isPageButtonEnabled = true;
         this.isLastLineDisabled = true;
@@ -74,22 +74,22 @@ public class InventoryManager implements InventoryManagerAPI {
 
     @Override
     public void create() {
-        if (title == null){
+        if (title == null) {
             title = groupTitle;
         }
         inventory = Bukkit.createInventory(owner, slots, title);
         if (isPageButtonEnabled) {
             setPageButtons();
-        }else if (isOkCancelEnabled){
+        } else if (isOkCancelEnabled) {
             setOkCancelButtons();
         }
-        if (this.backGroundColor!=null) {
+        if (this.backGroundColor != null) {
             setBackgroundColor(this.backGroundColor);
         }
     }
 
     @Override
-    public void presetPage(ViewType type){
+    public void presetPage(ViewType type) {
         this.isLastLineDisabled = type.isLastLineEnabled();
         if (isLastLineDisabled) {
             this.isPageButtonEnabled = type.isPageButtonEnabled();
@@ -136,7 +136,7 @@ public class InventoryManager implements InventoryManagerAPI {
         if (!isPageButtonEnabled) {
             return;
         }
-        InventoryManager nextPage = ViewManager.getViewByName(getGroupTitle() + String.format(UltiTools.languageUtils.getWords("inventory_manager_title_page_number"),(getPageNumber() + 1)));
+        InventoryManager nextPage = ViewManager.getViewByName(getGroupTitle() + String.format(" " + UltiTools.languageUtils.getWords("inventory_manager_title_page_number"), (getPageNumber() + 1)));
         if (nextPage == null && autoAddPage) {
             InventoryManager newPage = new InventoryManager(this.owner, this.slots, getGroupTitle(), getPageNumber() + 1);
             if (this.backGroundColor != null) {
@@ -170,7 +170,7 @@ public class InventoryManager implements InventoryManagerAPI {
 
     @Override
     public String getGroupTitle() {
-        if (groupTitle == null){
+        if (groupTitle == null) {
             return title;
         }
         return groupTitle;
@@ -185,7 +185,7 @@ public class InventoryManager implements InventoryManagerAPI {
     }
 
     private void setPageButtons() {
-        this.title = groupTitle + String.format(UltiTools.languageUtils.getWords("inventory_manager_title_page_number"), pageNumber);
+        this.title = groupTitle + " " + String.format(UltiTools.languageUtils.getWords("inventory_manager_title_page_number"), pageNumber);
         inventory = Bukkit.createInventory(owner, slots, title);
         fillLastLine();
         try {
@@ -199,7 +199,7 @@ public class InventoryManager implements InventoryManagerAPI {
         }
     }
 
-    private void setOkCancelButtons(){
+    private void setOkCancelButtons() {
         fillLastLine();
         try {
             ItemStackManager ok = new ItemStackManager(Buttons.OK.getItemStack(), Buttons.OK.getName());
@@ -210,7 +210,7 @@ public class InventoryManager implements InventoryManagerAPI {
         }
     }
 
-    private void fillLastLine(){
+    private void fillLastLine() {
         ItemStack blackGlass = UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.BLACK);
         ItemStackManager blank = new ItemStackManager(blackGlass, "");
         for (int i = getSize(); i < inventory.getSize(); i++) {
@@ -270,7 +270,7 @@ public class InventoryManager implements InventoryManagerAPI {
     }
 
     @Override
-    public void setPageButtonEnabled(boolean isPageButtonEnabled){
+    public void setPageButtonEnabled(boolean isPageButtonEnabled) {
         this.isPageButtonEnabled = isPageButtonEnabled;
     }
 }

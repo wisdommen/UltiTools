@@ -1,0 +1,38 @@
+# 配置文件版本，请勿修改
+config_version: 1.0
+
+# 是否开启物品掉落
+enable_item_drop: false
+
+# 是否开启金币掉落
+enable_money_drop: true
+
+# 是否开启死亡执行后台命令
+enable_punish_commands: true
+
+# 死亡后掉落的金币数
+money_dropped_ondeath: 100
+
+# 死亡后随机掉落的物品数
+item_dropped_ondeath: 3
+
+# 死亡后后台执行的指令（{PLAYER}指代玩家占位符）
+punish_command: []
+
+# 开启死亡随机物品掉落的世界
+worlds_enabled_item_drop:
+  - world
+  - world_nether
+  - world_the_end
+
+# 开启死亡后金币掉落的世界
+worlds_enabled_money_drop:
+  - world
+  - world_nether
+  - world_the_end
+
+# 开启死亡后执行后台指令的世界
+worlds_enabled_punish_commands:
+  - world
+  - world_nether
+  - world_the_end

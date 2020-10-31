@@ -53,7 +53,7 @@ public class SetHomeCommands extends AbstractPlayerCommandExecutor {
         config.set(player.getName() + "." + homeName + ".y", player.getLocation().getBlockY());
         config.set(player.getName() + "." + homeName + ".z", player.getLocation().getBlockZ());
         if (homeName.equals("Def")) {
-            homeName = "默认";
+            homeName = UltiTools.languageUtils.getWords("default");
             homelist.remove(homeName);
         }
         homelist.add(homeName);

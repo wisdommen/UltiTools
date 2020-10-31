@@ -6,7 +6,7 @@
 
     <groupId>com.minecraft.UltiKits</groupId>
     <artifactId>UltiTools-Project</artifactId>
-    <version>3.4.3</version>
+    <version>3.4.6</version>
     <modules>
         <module>UltiTools</module>
         <module>API</module>
