@@ -64,6 +64,7 @@ public class ConfigFileChecker {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            return;
         }
 //        boolean change = false;
 //        Configuration defaults = YamlConfiguration.loadConfiguration(new File());
