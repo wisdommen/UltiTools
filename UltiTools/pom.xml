@@ -5,13 +5,13 @@
     <parent>
         <artifactId>UltiTools-Project</artifactId>
         <groupId>com.minecraft.UltiKits</groupId>
-        <version>3.4.7</version>
+        <version>3.4.8</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>UltiTools</artifactId>
-    <version>3.4.7</version>
+    <version>3.4.8</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -126,103 +126,103 @@
         <dependency>
             <groupId>com.minecraft.UltiKits</groupId>
             <artifactId>API</artifactId>
-            <version>3.4.7</version>
+            <version>3.4.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.minecraft.UltiKits</groupId>
             <artifactId>1_12_R1</artifactId>
-            <version>3.4.7</version>
+            <version>3.4.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.minecraft.UltiKits</groupId>
             <artifactId>1_16_R1</artifactId>
-            <version>3.4.7</version>
+            <version>3.4.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.minecraft.UltiKits</groupId>
             <artifactId>1_16_R2</artifactId>
-            <version>3.4.7</version>
+            <version>3.4.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.minecraft.UltiKits</groupId>
             <artifactId>1_15_R1</artifactId>
-            <version>3.4.7</version>
+            <version>3.4.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.minecraft.UltiKits</groupId>
             <artifactId>1_14_4_R1</artifactId>
-            <version>3.4.7</version>
+            <version>3.4.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.minecraft.UltiKits</groupId>
             <artifactId>1_14_R1</artifactId>
-            <version>3.4.7</version>
+            <version>3.4.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.minecraft.UltiKits</groupId>
             <artifactId>1_13_R2</artifactId>
-            <version>3.4.7</version>
+            <version>3.4.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.minecraft.UltiKits</groupId>
             <artifactId>1_13_R1</artifactId>
-            <version>3.4.7</version>
+            <version>3.4.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.minecraft.UltiKits</groupId>
             <artifactId>1_10_R1</artifactId>
-            <version>3.4.7</version>
+            <version>3.4.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.minecraft.UltiKits</groupId>
             <artifactId>1_11_R1</artifactId>
-            <version>3.4.7</version>
+            <version>3.4.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.minecraft.UltiKits</groupId>
             <artifactId>1_9_R2</artifactId>
-            <version>3.4.7</version>
+            <version>3.4.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.minecraft.UltiKits</groupId>
             <artifactId>1_9_R1</artifactId>
-            <version>3.4.7</version>
+            <version>3.4.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.minecraft.UltiKits</groupId>
             <artifactId>1_8_R3</artifactId>
-            <version>3.4.7</version>
+            <version>3.4.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.minecraft.UltiKits</groupId>
             <artifactId>1_8_R2</artifactId>
-            <version>3.4.7</version>
+            <version>3.4.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.minecraft.UltiKits</groupId>
             <artifactId>1_8_R1</artifactId>
-            <version>3.4.7</version>
+            <version>3.4.8</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.minecraft.UltiKits</groupId>
             <artifactId>1_16_R3</artifactId>
-            <version>3.4.7</version>
+            <version>3.4.8</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -75,36 +75,19 @@ public final class UltiTools extends JavaPlugin {
     }
 
     @Override
-    public void onLoad() {
-        super.onLoad();
+    public void onEnable() {
         plugin = this;
+        languageUtils = LanguageUtils.getInstance();
+
         File folder = new File(String.valueOf(getDataFolder()));
         File config_file = new File(getDataFolder(), "config.yml");
         yaml = new YamlFileUtils();
         if (!folder.exists() || !config_file.exists()) {
             folder.mkdirs();
             setLocalLanguage();
-            yaml.saveYamlFile(getDataFolder().getPath(), "config.yml", language+"_config.yml");
+            yaml.saveYamlFile(getDataFolder().getPath(), "config.yml", language + "_config.yml");
         }
 
-        languageUtils = LanguageUtils.getInstance();
-
-        if (isDatabaseEnabled) {
-            String table = "userinfo";
-            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] "+languageUtils.getWords("initializing_database"));
-            if (DatabaseUtils.createTable(table, new String[]{"username", "password", "whitelisted", "banned"})) {
-                getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] "+languageUtils.getWords("database_connected"));
-            } else {
-                getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] "+languageUtils.getWords("database_connect_failed"));
-                getConfig().set("enableDataBase", false);
-                saveConfig();
-                reloadConfig();
-            }
-        }
-    }
-
-    @Override
-    public void onEnable() {
         setLocalLanguage();
         List<File> folders = new ArrayList<>();
         folders.add(new File(getDataFolder() + "/playerData"));
@@ -115,19 +98,34 @@ public final class UltiTools extends JavaPlugin {
         folders.add(new File(getDataFolder() + "/sidebar"));
         folders.add(new File(getDataFolder() + "/kitData"));
 
-        new BukkitRunnable(){
-
-            @Override
-            public void run() {
-                makedirs(folders);
-                ConfigController.initFiles();
-                ConfigFileChecker.reviewMainConfigFile();
-            }
-        }.runTaskAsynchronously(plugin);
+        makedirs(folders);
+        ConfigController.initFiles();
+        ConfigFileChecker.reviewMainConfigFile();
+        String la;
+        if (getConfig().getString("language") == null) {
+            la = languageUtils.getLanguage();
+        } else {
+            la = getConfig().getString("language");
+            languageUtils.setLanguage(la);
+        }
+        language = la.split("_")[0];
 
         startBStates();
-        language = getConfig().getString("language").split("_")[0];
         pageRegister = new PageRegister(plugin);
+
+        if (isDatabaseEnabled) {
+            String table = "userinfo";
+            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getWords("initializing_database"));
+            if (DatabaseUtils.createTable(table, new String[]{"username", "password", "whitelisted", "banned"})) {
+                getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getWords("database_connected"));
+            } else {
+                getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getWords("database_connect_failed"));
+                getConfig().set("enableDataBase", false);
+                saveConfig();
+                reloadConfig();
+            }
+        }
+
         if (getConfig().getBoolean("enable_pro")) {
             new BukkitRunnable() {
                 @Override
@@ -137,13 +135,13 @@ public final class UltiTools extends JavaPlugin {
                             CheckResponse res = ProChecker.run();
                             if (res.code.equals("200")) {
                                 UltiTools.isProVersion = true;
-                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools] "+languageUtils.getWords("pro_validated"));
+                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools] " + languageUtils.getWords("pro_validated"));
                             } else {
-                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] "+languageUtils.getWords("pro_validation_failed"));
+                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] " + languageUtils.getWords("pro_validation_failed"));
                             }
                             UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] " + res.msg);
                         } catch (Exception e) {
-                            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] "+languageUtils.getWords("pro_validation_failed"));
+                            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] " + languageUtils.getWords("pro_validation_failed"));
                         }
                     }
                 }
@@ -159,27 +157,27 @@ public final class UltiTools extends JavaPlugin {
         isGroupManagerEnabled = getServer().getPluginManager().getPlugin("GroupManager") != null;
 
         if (!isPAPILoaded) {
-            getLogger().warning("[UltiTools] "+languageUtils.getWords("papi_not_found"));
+            getLogger().warning("[UltiTools] " + languageUtils.getWords("papi_not_found"));
             if (!(getIsUltiEconomyInstalled() && isVaultInstalled)) {
-                getLogger().warning("[UltiTools] "+languageUtils.getWords("economy_dependency_not_found_closing"));
-                getLogger().warning("[UltiTools] "+languageUtils.getWords("work_at_least_with_an_economy"));
+                getLogger().warning("[UltiTools] " + languageUtils.getWords("economy_dependency_not_found_closing"));
+                getLogger().warning("[UltiTools] " + languageUtils.getWords("work_at_least_with_an_economy"));
                 getServer().getPluginManager().disablePlugin(this);
             }
             if (getServer().getPluginManager().getPlugin("UltiLevel") == null) {
-                getLogger().warning("[UltiTools] "+languageUtils.getWords("ultilevel_not_found"));
+                getLogger().warning("[UltiTools] " + languageUtils.getWords("ultilevel_not_found"));
             }
         }
 
         //加载世界
         if (this.getConfig().getBoolean("enable_multiworlds")) {
-            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] "+languageUtils.getWords("loading_worlds"));
+            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getWords("loading_worlds"));
             File worldFile = new File(getDataFolder(), "worlds.yml");
             YamlConfiguration worldConfig = YamlConfiguration.loadConfiguration(worldFile);
             List<String> worlds = worldConfig.getStringList("worlds");
             for (String eachWorld : worlds) {
                 getServer().createWorld(new WorldCreator(eachWorld));
             }
-            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] "+languageUtils.getWords("worlds_load_successfully"));
+            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getWords("worlds_load_successfully"));
         }
 
         //Objects.requireNonNull(this.getCommand("ultitools")).setExecutor(new ToolsCommands());
@@ -255,8 +253,8 @@ public final class UltiTools extends JavaPlugin {
             new ProCheckerTask().runTaskTimerAsynchronously(this, 12000L, 12000L);
         }
 
-        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] "+languageUtils.getWords("plugin_loaded"));
-        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] "+languageUtils.getWords("author")+"wisdomme");
+        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getWords("plugin_loaded"));
+        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getWords("author") + "wisdomme");
 
         //检查更新
         if (getConfig().getBoolean("enable_version_check")) {
@@ -271,12 +269,12 @@ public final class UltiTools extends JavaPlugin {
                 Player player1 = Bukkit.getPlayerExact(player);
                 assert player1 != null;
                 if (!getIsLogin(player1)) {
-                    player1.kickPlayer(ChatColor.AQUA + "[UltiTools Login] "+languageUtils.getWords("login_plugin_reloaded"));
+                    player1.kickPlayer(ChatColor.AQUA + "[UltiTools Login] " + languageUtils.getWords("login_plugin_reloaded"));
                 }
             }
         }
         savePlayerLoginStatus();
-        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] "+languageUtils.getWords("plugin_disabled"));
+        getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getWords("plugin_disabled"));
     }
 
     public static UltiTools getInstance() {
@@ -302,11 +300,11 @@ public final class UltiTools extends JavaPlugin {
         Metrics metrics = new Metrics(UltiTools.getInstance(), pluginId);
     }
 
-    private void setLocalLanguage(){
+    private void setLocalLanguage() {
         Locale defaultLocale = Locale.getDefault();
         List<String> langs = Arrays.asList("en", "zh");
         language = defaultLocale.getLanguage();
-        if (!langs.contains(language)){
+        if (!langs.contains(language)) {
             language = "en";
         }
     }

@@ -12,11 +12,17 @@ import java.util.logging.Level;
 
 public class LanguageUtils {
 
-    private String language = UltiTools.getInstance().getConfig().getString("language").toLowerCase();
+    private String language;
     private static LanguageUtils instance = null;
     private Properties properties;
 
     private LanguageUtils() {
+        language = UltiTools.getInstance().getConfig().getString("language");
+        if (language == null){
+            language = "en_us";
+        }else {
+            language = language.toLowerCase();
+        }
         ResourceFile resourceFile = null;
         try {
             resourceFile = new ResourceFile(language);
