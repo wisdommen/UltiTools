@@ -6,7 +6,7 @@
 
     <groupId>com.minecraft.UltiKits</groupId>
     <artifactId>UltiTools-Project</artifactId>
-    <version>3.4.6</version>
+    <version>3.4.7</version>
     <modules>
         <module>UltiTools</module>
         <module>API</module>
@@ -57,9 +57,15 @@
 
     <distributionManagement>
         <repository>
-            <id>ultitools</id>
-            <url>ftp://ultikits.com</url>
+            <id>ultitools-release</id>
+            <name>Release Repository of UltiTools</name>
+            <url>http://ultikits.com:8081/repository/ultitools-release/</url>
         </repository>
+        <snapshotRepository>
+            <id>ultitools-snapshot</id>
+            <name>Snapshot Repository of UltiTools</name>
+            <url>http://ultikits.com:8081/repository/ultitools-snapshot/</url>
+        </snapshotRepository>
     </distributionManagement>
 
     <build>
