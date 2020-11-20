@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.minecraft.ultikits.listener.LoginListener.playerLoginStatus;
@@ -59,7 +60,14 @@ public class DatabasePlayerTools {
     public static void setPlayerPassword(String playerName, String password) {
         password = MD5Utils.encrypt(password, playerName);
         if (isDatabaseEnabled) {
-            updatePlayerData(playerName, "password", password);
+            if (isPlayerAccountExist(playerName)) {
+                updatePlayerData(playerName, "password", password);
+            }else {
+                Map<String, String> temp = new HashMap<>();
+                temp.put("username", playerName);
+                temp.put("password", password);
+                insertPlayerData(temp);
+            }
         } else {
             File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
@@ -145,7 +153,7 @@ public class DatabasePlayerTools {
 
     public static boolean isPlayerAccountExist(String playerName) {
         if (isDatabaseEnabled) {
-            return !DatabaseUtils.getData(primaryID, playerName, table, "password").equals("");
+            return DatabaseUtils.getData(primaryID, playerName, table, "password") != null && !DatabaseUtils.getData(primaryID, playerName, table, "password").equals("");
         } else {
             File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
             return file.exists();
