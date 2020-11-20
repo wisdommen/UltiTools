@@ -16,6 +16,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -25,9 +26,10 @@ import static com.minecraft.ultikits.utils.Utils.convertMillisecondsToRegularTim
 
 public class EmailView {
 
-    private EmailView(){}
+    private EmailView() {
+    }
 
-    public static Inventory setUp(Player player){
+    public static Inventory setUp(Player player) {
         InventoryManager inventoryManager = new InventoryManager(null, 54, String.format(UltiTools.languageUtils.getWords("email_page_title"), player.getName()), true);
         inventoryManager.presetPage(ViewType.PREVIOUS_QUIT_NEXT);
         inventoryManager.create();
@@ -35,13 +37,13 @@ public class EmailView {
         File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player.getName() + ".yml");
         EmailManager emailManager = new EmailManager(file);
         Map<String, EmailContentBean> emailContentManagers = emailManager.getEmails();
-        for (ItemStackManager itemStackManager : setUpItems(emailContentManagers)){
+        for (ItemStackManager itemStackManager : setUpItems(emailContentManagers)) {
             inventoryManager.addItem(itemStackManager);
         }
         return inventoryManager.getInventory();
     }
 
-    private static List<ItemStackManager> setUpItems(Map<String, EmailContentBean> emailContentManagers){
+    private static List<ItemStackManager> setUpItems(Map<String, EmailContentBean> emailContentManagers) {
         List<ItemStackManager> res = new ArrayList<>();
         List<String> list = sortSet(emailContentManagers.keySet());
         for (String each : list) {
@@ -90,7 +92,7 @@ public class EmailView {
         }
         if (emailContentBean.getItemStack() != null) {
             list.add(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_attachment_content_header"));
-            if (emailContentBean.getItemStack().getItemMeta().getDisplayName().equals("")) {
+            if (emailContentBean.getItemStack().getItemMeta().getDisplayName() == null || emailContentBean.getItemStack().getItemMeta().getDisplayName().equals("")) {
                 list.add(ChatColor.LIGHT_PURPLE + emailContentBean.getItemStack().getType().name() + " * " + emailContentBean.getItemStack().getAmount() + UltiTools.languageUtils.getWords("ge"));
             } else {
                 list.add(ChatColor.LIGHT_PURPLE + emailContentBean.getItemStack().getItemMeta().getDisplayName() + " * " + emailContentBean.getItemStack().getAmount() + UltiTools.languageUtils.getWords("ge"));

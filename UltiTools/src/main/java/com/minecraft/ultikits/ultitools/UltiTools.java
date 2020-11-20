@@ -113,6 +113,14 @@ public final class UltiTools extends JavaPlugin {
         startBStates();
         pageRegister = new PageRegister(plugin);
 
+        isVaultInstalled = setupVault();
+
+        isDatabaseEnabled = getConfig().getBoolean("enableDataBase");
+
+        isPAPILoaded = getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
+
+        isGroupManagerEnabled = getServer().getPluginManager().getPlugin("GroupManager") != null;
+
         if (isDatabaseEnabled) {
             String table = "userinfo";
             getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getWords("initializing_database"));
@@ -147,14 +155,6 @@ public final class UltiTools extends JavaPlugin {
                 }
             }.runTaskAsynchronously(plugin);
         }
-
-        isVaultInstalled = setupVault();
-
-        isDatabaseEnabled = getConfig().getBoolean("enableDataBase");
-
-        isPAPILoaded = getServer().getPluginManager().getPlugin("PlaceholderAPI") != null;
-
-        isGroupManagerEnabled = getServer().getPluginManager().getPlugin("GroupManager") != null;
 
         if (!isPAPILoaded) {
             getLogger().warning("[UltiTools] " + languageUtils.getWords("papi_not_found"));
