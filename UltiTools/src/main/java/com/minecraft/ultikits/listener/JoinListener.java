@@ -112,7 +112,6 @@ public class JoinListener implements Listener {
         Player player = event.getPlayer();
         InetAddress ipAddress = event.getAddress();
         String ip = ipAddress.getHostAddress().replaceAll("\\.", "_");
-        System.out.println(ip);
         File file = new File(ConfigsEnum.LOGIN.toString());
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         if (config.get("ip." + ip + ".players") == null) {
