@@ -2,24 +2,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>UltiTools-Project</artifactId>
-        <groupId>com.minecraft.UltiKits</groupId>
-        <version>3.4.9</version>
-        <relativePath>../pom.xml</relativePath>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.ultikits</groupId>
     <artifactId>UltiTools</artifactId>
-    <version>3.4.9</version>
+    <version>4.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>UltiTools</name>
 
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <url>ultikits.com</url>
 
     <build>
-        <defaultGoal>clean package</defaultGoal>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -49,187 +47,59 @@
         </plugins>
         <resources>
             <resource>
-                <directory>src\main\resources</directory>
+                <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>
-        <extensions>
-            <!-- Enabling the use of FTP -->
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ftp</artifactId>
-                <version>1.0-beta-6</version>
-            </extension>
-        </extensions>
     </build>
 
+    <repositories>
+        <repository>
+            <id>spigotmc-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>sonatype</id>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>placeholderapi</id>
+            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>[8.0.16,)</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>2.7.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.comphenix.protocol</groupId>
-            <artifactId>ProtocolLib</artifactId>
-            <version>4.5.0</version>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.16.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.github.wisdommen</groupId>-->
+<!--            <artifactId>UltiCoreAPI</artifactId>-->
+<!--            <version>[1.1.0,)</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <version>2.10.6</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.MilkBowl</groupId>
-            <artifactId>VaultAPI</artifactId>
-            <version>1.7</version>
-            <scope>provided</scope>
+            <groupId>com.github.wisdommen</groupId>
+            <artifactId>UltiCoreAPI</artifactId>
+            <version>1.1.0</version>
+            <systemPath>${basedir}/src/lib/UltiCoreAPI-1.1.0.jar</systemPath>
+            <scope>system</scope>
         </dependency>
         <dependency>
             <groupId>com.minecraft.plugins.UltiKits</groupId>
             <artifactId>Ultilevel</artifactId>
             <version>2.1.1</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/UltiLevel-2.1.1.jar</systemPath>
+            <systemPath>${basedir}/src/lib/UltiLevel-2.1.1.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>18.0.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.16.1-R0.1-SNAPSHOT</version>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.10.6</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.70</version>
-        </dependency>
-        <dependency>
-            <groupId>com.minecraft.UltiKits</groupId>
-            <artifactId>API</artifactId>
-            <version>3.4.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minecraft.UltiKits</groupId>
-            <artifactId>1_12_R1</artifactId>
-            <version>3.4.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minecraft.UltiKits</groupId>
-            <artifactId>1_16_R1</artifactId>
-            <version>3.4.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minecraft.UltiKits</groupId>
-            <artifactId>1_16_R2</artifactId>
-            <version>3.4.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minecraft.UltiKits</groupId>
-            <artifactId>1_15_R1</artifactId>
-            <version>3.4.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minecraft.UltiKits</groupId>
-            <artifactId>1_14_4_R1</artifactId>
-            <version>3.4.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minecraft.UltiKits</groupId>
-            <artifactId>1_14_R1</artifactId>
-            <version>3.4.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minecraft.UltiKits</groupId>
-            <artifactId>1_13_R2</artifactId>
-            <version>3.4.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minecraft.UltiKits</groupId>
-            <artifactId>1_13_R1</artifactId>
-            <version>3.4.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minecraft.UltiKits</groupId>
-            <artifactId>1_10_R1</artifactId>
-            <version>3.4.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minecraft.UltiKits</groupId>
-            <artifactId>1_11_R1</artifactId>
-            <version>3.4.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minecraft.UltiKits</groupId>
-            <artifactId>1_9_R2</artifactId>
-            <version>3.4.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minecraft.UltiKits</groupId>
-            <artifactId>1_9_R1</artifactId>
-            <version>3.4.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minecraft.UltiKits</groupId>
-            <artifactId>1_8_R3</artifactId>
-            <version>3.4.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minecraft.UltiKits</groupId>
-            <artifactId>1_8_R2</artifactId>
-            <version>3.4.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minecraft.UltiKits</groupId>
-            <artifactId>1_8_R1</artifactId>
-            <version>3.4.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.minecraft.UltiKits</groupId>
-            <artifactId>1_16_R3</artifactId>
-            <version>3.4.9</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
