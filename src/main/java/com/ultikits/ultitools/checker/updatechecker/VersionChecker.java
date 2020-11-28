@@ -49,11 +49,11 @@ public class VersionChecker {
                             current_version = UltiTools.getInstance().getDescription().getVersion();
                             int currentVersion = getVersion(current_version);
                             int onlineVersion = getVersion(version);
-                            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] "+UltiTools.languageUtils.getString("checking_update"));
+                            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + UltiTools.languageUtils.getString("checking_update"));
                             if (currentVersion < onlineVersion) {
                                 isOutDate = true;
                                 UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("join_send_update_reminding"), version, current_version));
-                                if (UltiTools.getInstance().getConfig().getBoolean("enable_auto_update")) {
+                                if (UltiTools.getInstance().getConfig().getBoolean("enable_auto_update") && !(onlineVersion >= 400 && currentVersion < 400)) {
                                     downloadNewVersion();
                                 } else {
                                     UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("download_url"));
@@ -61,10 +61,10 @@ public class VersionChecker {
                                 }
                             }
                             if (!isOutDate) {
-                                if(UltiTools.getInstance().getConfig().getBoolean("enable_auto_update")) {
+                                if (UltiTools.getInstance().getConfig().getBoolean("enable_auto_update")) {
                                     deleteOldVersion();
                                 }
-                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " +  UltiTools.languageUtils.getString("plugin_up_to_date"));
+                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + UltiTools.languageUtils.getString("plugin_up_to_date"));
                                 break;
                             }
                             break;
