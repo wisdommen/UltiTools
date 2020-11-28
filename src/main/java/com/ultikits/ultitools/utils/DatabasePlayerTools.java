@@ -3,7 +3,6 @@ package com.ultikits.ultitools.utils;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.listener.LoginListener;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.utils.DatabaseUtils;
 import com.ultikits.utils.MD5Utils;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -24,19 +23,19 @@ public class DatabasePlayerTools {
     }
 
     public static boolean isPlayerExist(String playerName) {
-        return DatabaseUtils.isRecordExists(table, primaryID, playerName);
+        return UltiTools.databaseUtils.isRecordExists(table, primaryID, playerName);
     }
 
     public static String getPlayerData(String playerName, String field) {
-        return DatabaseUtils.getData(primaryID, playerName, table, field);
+        return UltiTools.databaseUtils.getData(primaryID, playerName, table, field);
     }
 
     public static boolean updatePlayerData(String playerName, String field, String value) {
-        return DatabaseUtils.updateData(table, field, primaryID, playerName, value);
+        return UltiTools.databaseUtils.updateData(table, field, primaryID, playerName, value);
     }
 
     public static boolean insertPlayerData(Map<String, String> dataMap) {
-        return DatabaseUtils.insertData(table, dataMap);
+        return UltiTools.databaseUtils.insertData(table, dataMap);
     }
 
     public static String getPlayerPassword(Player player) {
@@ -111,8 +110,8 @@ public class DatabasePlayerTools {
             return null;
         }
         if (isDatabaseEnabled) {
-            if (!DatabaseUtils.isColumnExists(table, "email")) {
-                DatabaseUtils.addColumn(table, "email");
+            if (!UltiTools.databaseUtils.isColumnExists(table, "email")) {
+                UltiTools.databaseUtils.addColumn(table, "email");
             }
             return getPlayerData(playerName, "email");
         } else {
@@ -131,8 +130,8 @@ public class DatabasePlayerTools {
             return;
         }
         if (isDatabaseEnabled) {
-            if (!DatabaseUtils.isColumnExists(table, "email")) {
-                DatabaseUtils.addColumn(table, "email");
+            if (!UltiTools.databaseUtils.isColumnExists(table, "email")) {
+                UltiTools.databaseUtils.addColumn(table, "email");
             }
             updatePlayerData(playerName, "email", playerEmail);
         } else {
@@ -153,7 +152,7 @@ public class DatabasePlayerTools {
 
     public static boolean isPlayerAccountExist(String playerName) {
         if (isDatabaseEnabled) {
-            return DatabaseUtils.getData(primaryID, playerName, table, "password") != null && !DatabaseUtils.getData(primaryID, playerName, table, "password").equals("");
+            return UltiTools.databaseUtils.getData(primaryID, playerName, table, "password") != null && !UltiTools.databaseUtils.getData(primaryID, playerName, table, "password").equals("");
         } else {
             File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
             return file.exists();

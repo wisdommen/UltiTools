@@ -36,7 +36,7 @@ public class DeathListener implements Listener {
             for (String s : list) {
                 if (s.equals(world)) {
                     DeathPunishUtils.takeItem(player, getItemDrop());
-                    player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getWords("punish_item_dropped"), getItemDrop()));
+                    player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("punish_item_dropped"), getItemDrop()));
                 }
             }
         }
@@ -46,7 +46,7 @@ public class DeathListener implements Listener {
             for (String s : list) {
                 if (s.equals(world)) {
                     DeathPunishUtils.takeMoney(player, getMoneyDrop());
-                    player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getWords("punish_money_dropped"), getMoneyDrop()));
+                    player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("punish_money_dropped"), getMoneyDrop()));
                 }
             }
         }

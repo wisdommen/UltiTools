@@ -35,14 +35,14 @@ public class ChestPageListener extends PagesListener {
 
     public static void loadBag(String chest_name, Player player, OfflinePlayer loader) {
         if (inventoryLock.get(chest_name) != null) {
-            player.sendMessage(MessagesUtils.warning(Bukkit.getPlayer(inventoryLock.get(chest_name)).getName() + UltiTools.languageUtils.getWords("bag_someone_is_using")));
+            player.sendMessage(MessagesUtils.warning(Bukkit.getPlayer(inventoryLock.get(chest_name)).getName() + UltiTools.languageUtils.getString("bag_someone_is_using")));
             return;
         }
         Inventory remote_chest = Bukkit.createInventory(null, 36, chest_name);
         File chest_file = new File(ConfigsEnum.PLAYER_CHEST.toString(), loader.getName() + ".yml");
         YamlConfiguration chest_config = YamlConfiguration.loadConfiguration(chest_file);
 
-        String name = ChatColor.stripColor(chest_name.split(UltiTools.languageUtils.getWords("bag_number"))[0].replace(loader.getName() + UltiTools.languageUtils.getWords("bag_s"), "")).replaceAll(" ", "");
+        String name = ChatColor.stripColor(chest_name.split(UltiTools.languageUtils.getString("bag_number"))[0].replace(loader.getName() + UltiTools.languageUtils.getString("bag_s"), "")).replaceAll(" ", "");
         if (chest_config.getString(name) != null && !chest_config.getString(name).equals("")) {
             for (String item : Objects.requireNonNull(chest_config.getConfigurationSection(name)).getKeys(false)) {
                 if (item != null) {
@@ -61,8 +61,8 @@ public class ChestPageListener extends PagesListener {
     public void onInventoryClose(InventoryCloseEvent event) throws IOException {
         Player player = (Player) event.getPlayer();
         Inventory inventory = event.getInventory();
-        if (event.getView().getTitle().contains(UltiTools.languageUtils.getWords("bag_number"))) {
-            String[] strings = event.getView().getTitle().split(UltiTools.languageUtils.getWords("bag_s"));
+        if (event.getView().getTitle().contains(UltiTools.languageUtils.getString("bag_number"))) {
+            String[] strings = event.getView().getTitle().split(UltiTools.languageUtils.getString("bag_s"));
             StringBuilder stringBuilder = new StringBuilder();
             for (int i = 0; i < strings.length - 1; i++) {
                 stringBuilder.append(strings[i]);
@@ -71,7 +71,7 @@ public class ChestPageListener extends PagesListener {
             File chestFile = new File(ConfigsEnum.PLAYER_CHEST.toString(), playerName + ".yml");
             YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
 
-            String number = ChatColor.stripColor(event.getView().getTitle()).split(UltiTools.languageUtils.getWords("bag_number"))[0].replace(playerName + UltiTools.languageUtils.getWords("bag_s"), "").replaceAll(" ", "");
+            String number = ChatColor.stripColor(event.getView().getTitle()).split(UltiTools.languageUtils.getString("bag_number"))[0].replace(playerName + UltiTools.languageUtils.getString("bag_s"), "").replaceAll(" ", "");
             chestConfig.set(number, "");
 
             for (int i = 0; i < inventory.getSize(); i++) {
@@ -89,20 +89,20 @@ public class ChestPageListener extends PagesListener {
 
     @Override
     public void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clicked) {
-        if (event.getView().getTitle().contains((String.format(UltiTools.languageUtils.getWords("bag_main_page_title"), player.getName())))) {
+        if (event.getView().getTitle().contains((String.format(UltiTools.languageUtils.getString("bag_main_page_title"), player.getName())))) {
             YamlConfiguration config = Utils.getConfig(Utils.getConfigFile());
             File chestFile = new File(ConfigsEnum.PLAYER_CHEST.toString(), player.getName() + ".yml");
             YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
 
             if (clicked != null && clicked.getItemMeta() != null) {
                 event.setCancelled(true);
-                if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("bag_number"))) {
-                    String chestName = player.getName() + UltiTools.languageUtils.getWords("bag_s") + ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
+                if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getString("bag_number"))) {
+                    String chestName = player.getName() + UltiTools.languageUtils.getString("bag_s") + ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
                     loadBag(chestName, player, player);
-                } else if (UltiTools.languageUtils.getWords("bag_button_create_bag").equals(ChatColor.stripColor(clicked.getItemMeta().getDisplayName()))) {
+                } else if (UltiTools.languageUtils.getString("bag_button_create_bag").equals(ChatColor.stripColor(clicked.getItemMeta().getDisplayName()))) {
                     int price = config.getInt("price_of_create_a_remote_chest");
                     if (EconomyUtils.withdraw(player, price)) {
-                        loadBag(player.getName() + UltiTools.languageUtils.getWords("bag_s") + (chestConfig.getKeys(false).size() + 1) + UltiTools.languageUtils.getWords("bag_number"), player, player);
+                        loadBag(player.getName() + UltiTools.languageUtils.getString("bag_s") + (chestConfig.getKeys(false).size() + 1) + UltiTools.languageUtils.getString("bag_number"), player, player);
                     } else {
                         player.sendMessage(not_enough_money);
                     }

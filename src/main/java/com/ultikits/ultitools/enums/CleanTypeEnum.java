@@ -4,10 +4,10 @@ package com.ultikits.ultitools.enums;
 import com.ultikits.ultitools.ultitools.UltiTools;
 
 public enum CleanTypeEnum {
-    MOBS(UltiTools.languageUtils.getWords("mobs"), "mobs"),
-    ITEMS(UltiTools.languageUtils.getWords("dropped_item"), "items"),
-    ENTITIES(UltiTools.languageUtils.getWords("entity"), "all"),
-    CHECK(UltiTools.languageUtils.getWords("entity"), "check");
+    MOBS(UltiTools.languageUtils.getString("mobs"), "mobs"),
+    ITEMS(UltiTools.languageUtils.getString("dropped_item"), "items"),
+    ENTITIES(UltiTools.languageUtils.getString("entity"), "all"),
+    CHECK(UltiTools.languageUtils.getString("entity"), "check");
 
     String name;
     String alis;

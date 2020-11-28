@@ -39,10 +39,10 @@ public class Utils {
         int minute = calendar.get(Calendar.MINUTE);
         int second = calendar.get(Calendar.SECOND);
         if (UltiTools.language.equals("en")) {
-            return  day + UltiTools.languageUtils.getWords("day") + (month + 1) + UltiTools.languageUtils.getWords("month") + " "
+            return  day + UltiTools.languageUtils.getString("day") + (month + 1) + UltiTools.languageUtils.getString("month") + " "
                     + hour + ":" + minute + ":" + second;
         }else {
-            return (month + 1) + UltiTools.languageUtils.getWords("month") + day + UltiTools.languageUtils.getWords("day") + " "
+            return (month + 1) + UltiTools.languageUtils.getString("month") + day + UltiTools.languageUtils.getString("day") + " "
                     + hour + ":" + minute + ":" + second;
         }
     }

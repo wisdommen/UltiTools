@@ -23,7 +23,7 @@ public class SetHomeCommands extends AbstractPlayerCommandExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] args, @NotNull Player player) {
         if (!isPlayerCanSetHome(player)) {
-            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("sethome_reached_limit"));
+            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("sethome_reached_limit"));
             return true;
         }
         if (args.length == 0) {
@@ -31,13 +31,13 @@ public class SetHomeCommands extends AbstractPlayerCommandExecutor {
             return true;
         } else if (args.length == 1) {
             if (Utils.getHomeList(player).contains(args[0])) {
-                player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getWords("sethome_home_already_have")));
+                player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("sethome_home_already_have")));
                 return true;
             }
             setHome(player, args[0]);
             return true;
         } else {
-            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("sethome_usage"));
+            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("sethome_usage"));
             return false;
         }
     }
@@ -52,7 +52,7 @@ public class SetHomeCommands extends AbstractPlayerCommandExecutor {
         config.set(player.getName() + "." + homeName + ".y", player.getLocation().getBlockY());
         config.set(player.getName() + "." + homeName + ".z", player.getLocation().getBlockZ());
         if (homeName.equals("Def")) {
-            homeName = UltiTools.languageUtils.getWords("default");
+            homeName = UltiTools.languageUtils.getString("default");
             homelist.remove(homeName);
         }
         homelist.add(homeName);
@@ -62,7 +62,7 @@ public class SetHomeCommands extends AbstractPlayerCommandExecutor {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        player.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getWords("sethome_successfully"));
+        player.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("sethome_successfully"));
     }
 
     private static boolean isPlayerCanSetHome(Player player) {

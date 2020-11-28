@@ -8,16 +8,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class TeleportCommands extends AbstractTabExecutor {
-
+public class SocialSystemCommands extends AbstractTabExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
-        //TODO TPA指令
+
         return false;
     }
 
+    @Nullable
     @Override
-    protected @Nullable List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
+    protected List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
         return null;
     }
 }

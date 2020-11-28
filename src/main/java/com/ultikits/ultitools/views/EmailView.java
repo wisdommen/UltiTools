@@ -24,7 +24,7 @@ public class EmailView {
     }
 
     public static Inventory setUp(Player player) {
-        InventoryManager inventoryManager = new InventoryManager(null, 54, String.format(UltiTools.languageUtils.getWords("email_page_title"), player.getName()), true);
+        InventoryManager inventoryManager = new InventoryManager(null, 54, String.format(UltiTools.languageUtils.getString("email_page_title"), player.getName()), true);
         inventoryManager.presetPage(ViewType.PREVIOUS_QUIT_NEXT);
         inventoryManager.create();
         ViewManager.registerView(inventoryManager, new EmailPageListener());
@@ -46,9 +46,9 @@ public class EmailView {
             ArrayList<String> lore = (ArrayList<String>) getLoreList(emailContentManagers.get(each), message, 18);
             ItemStackManager mail;
             if (!emailContentManagers.get(each).getRead()) {
-                mail = new ItemStackManager(UltiTools.versionAdaptor.getEmailMaterial(false), lore, UltiTools.languageUtils.getWords("email_item_description_from") + sender);
+                mail = new ItemStackManager(UltiTools.versionAdaptor.getEmailMaterial(false), lore, UltiTools.languageUtils.getString("email_item_description_from") + sender);
             } else {
-                mail = new ItemStackManager(UltiTools.versionAdaptor.getEmailMaterial(true), lore, UltiTools.languageUtils.getWords("email_item_description_from") + sender);
+                mail = new ItemStackManager(UltiTools.versionAdaptor.getEmailMaterial(true), lore, UltiTools.languageUtils.getString("email_item_description_from") + sender);
             }
             res.add(mail);
         }
@@ -65,7 +65,7 @@ public class EmailView {
     public static @NotNull List<String> getLoreList(EmailContentBean emailContentBean, @NotNull String inputString, int length) {
         List<String> list = new ArrayList<>();
         list.add(ChatColor.GRAY + Utils.convertMillisecondsToRegularTime(Long.valueOf(emailContentBean.getUuid())));
-        list.add(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_text_content_header"));
+        list.add(ChatColor.GOLD + UltiTools.languageUtils.getString("email_text_content_header"));
         int strLen = inputString.length();
         int start = 0;
         int num = length;
@@ -85,21 +85,21 @@ public class EmailView {
             num = num + length;
         }
         if (emailContentBean.getItemStack() != null) {
-            list.add(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_attachment_content_header"));
+            list.add(ChatColor.GOLD + UltiTools.languageUtils.getString("email_attachment_content_header"));
             if (emailContentBean.getItemStack().getItemMeta().getDisplayName() == null || emailContentBean.getItemStack().getItemMeta().getDisplayName().equals("")) {
-                list.add(ChatColor.LIGHT_PURPLE + emailContentBean.getItemStack().getType().name() + " * " + emailContentBean.getItemStack().getAmount() + UltiTools.languageUtils.getWords("ge"));
+                list.add(ChatColor.LIGHT_PURPLE + emailContentBean.getItemStack().getType().name() + " * " + emailContentBean.getItemStack().getAmount() + UltiTools.languageUtils.getString("ge"));
             } else {
-                list.add(ChatColor.LIGHT_PURPLE + emailContentBean.getItemStack().getItemMeta().getDisplayName() + " * " + emailContentBean.getItemStack().getAmount() + UltiTools.languageUtils.getWords("ge"));
+                list.add(ChatColor.LIGHT_PURPLE + emailContentBean.getItemStack().getItemMeta().getDisplayName() + " * " + emailContentBean.getItemStack().getAmount() + UltiTools.languageUtils.getString("ge"));
             }
         }
         if (!emailContentBean.getRead()) {
             if (emailContentBean.getItemStack() != null) {
-                list.add(ChatColor.RED + UltiTools.languageUtils.getWords("email_click_to_claim"));
+                list.add(ChatColor.RED + UltiTools.languageUtils.getString("email_click_to_claim"));
             } else {
-                list.add(ChatColor.RED + UltiTools.languageUtils.getWords("email_click_to_read"));
+                list.add(ChatColor.RED + UltiTools.languageUtils.getString("email_click_to_read"));
             }
         } else {
-            list.add(ChatColor.AQUA + UltiTools.languageUtils.getWords("email_read"));
+            list.add(ChatColor.AQUA + UltiTools.languageUtils.getString("email_read"));
         }
         list.add(ChatColor.DARK_GRAY + "ID:" + emailContentBean.getUuid());
         return list;

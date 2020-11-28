@@ -27,7 +27,7 @@ public class GroupPermissionConfig extends AbstractConfig {
     @Override
     void doInit(YamlConfiguration config) {
         String defaultPath = "groups.default";
-        config.set(defaultPath + ".name", UltiTools.languageUtils.getWords("default"));
+        config.set(defaultPath + ".name", UltiTools.languageUtils.getString("default"));
         config.set(defaultPath + ".type", "PAPER");
         config.set(defaultPath + ".isDefault", true);
         config.set(defaultPath + ".permissions", new ArrayList<>());

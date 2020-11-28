@@ -56,7 +56,7 @@ public class EmailCommands extends AbstractTabExecutor {
                         sendHelpMessage(player);
                         return true;
                     default:
-                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("wrong_format"));
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("wrong_format"));
                         return false;
                 }
             } else if (strings.length == 2) {
@@ -73,7 +73,7 @@ public class EmailCommands extends AbstractTabExecutor {
                         sendMessage(file, emailManager, player, strings[1]);
                         return true;
                     default:
-                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("wrong_format"));
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("wrong_format"));
                         return false;
                 }
             } else if (strings.length >= 3) {
@@ -88,7 +88,7 @@ public class EmailCommands extends AbstractTabExecutor {
                         hasContent = true;
                         break;
                     default:
-                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("wrong_format"));
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("wrong_format"));
                         return false;
                 }
                 StringBuilder stringBuilder = new StringBuilder();
@@ -104,7 +104,7 @@ public class EmailCommands extends AbstractTabExecutor {
                 sendMessage(file2, emailManager, player, strings[1], stringBuilder.toString(), hasContent);
                 return true;
             } else {
-                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("wrong_format"));
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("wrong_format"));
                 sendHelpMessage(player);
                 return false;
             }
@@ -146,16 +146,16 @@ public class EmailCommands extends AbstractTabExecutor {
     }
 
     private void sendHelpMessage(@NotNull Player player) {
-        player.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getWords("email_help_header"));
-        player.sendMessage(ChatColor.GREEN + "/email read " + ChatColor.GRAY + UltiTools.languageUtils.getWords("email_help_read"));
-        player.sendMessage(ChatColor.GREEN + "/email delhistory " + ChatColor.GRAY + UltiTools.languageUtils.getWords("email_help_delhistory"));
-        player.sendMessage(ChatColor.GREEN + "/email send [" + UltiTools.languageUtils.getWords("player_name") + "] [" + UltiTools.languageUtils.getWords("text_content") + "] " + ChatColor.GRAY + UltiTools.languageUtils.getWords("email_help_send"));
-        player.sendMessage(ChatColor.GREEN + "/email senditem [" + UltiTools.languageUtils.getWords("player_name") + "] " + ChatColor.GRAY + UltiTools.languageUtils.getWords("email_help_senditem"));
-        player.sendMessage(ChatColor.GREEN + "/email senditem [" + UltiTools.languageUtils.getWords("player_name") + "] [" + UltiTools.languageUtils.getWords("text_content") + "] " + ChatColor.GRAY + UltiTools.languageUtils.getWords("email_help_senditem_with_text"));
+        player.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("email_help_header"));
+        player.sendMessage(ChatColor.GREEN + "/email read " + ChatColor.GRAY + UltiTools.languageUtils.getString("email_help_read"));
+        player.sendMessage(ChatColor.GREEN + "/email delhistory " + ChatColor.GRAY + UltiTools.languageUtils.getString("email_help_delhistory"));
+        player.sendMessage(ChatColor.GREEN + "/email send [" + UltiTools.languageUtils.getString("player_name") + "] [" + UltiTools.languageUtils.getString("text_content") + "] " + ChatColor.GRAY + UltiTools.languageUtils.getString("email_help_send"));
+        player.sendMessage(ChatColor.GREEN + "/email senditem [" + UltiTools.languageUtils.getString("player_name") + "] " + ChatColor.GRAY + UltiTools.languageUtils.getString("email_help_senditem"));
+        player.sendMessage(ChatColor.GREEN + "/email senditem [" + UltiTools.languageUtils.getString("player_name") + "] [" + UltiTools.languageUtils.getString("text_content") + "] " + ChatColor.GRAY + UltiTools.languageUtils.getString("email_help_senditem_with_text"));
         if (!player.isOp()) {
             return;
         }
-        player.sendMessage(ChatColor.GREEN + "/email sendall [" + UltiTools.languageUtils.getWords("text_content") + "] " + ChatColor.GRAY + UltiTools.languageUtils.getWords("email_help_sendall"));
+        player.sendMessage(ChatColor.GREEN + "/email sendall [" + UltiTools.languageUtils.getString("text_content") + "] " + ChatColor.GRAY + UltiTools.languageUtils.getString("email_help_sendall"));
     }
 
     private void pushToReceiver(String receiver) {
@@ -163,7 +163,7 @@ public class EmailCommands extends AbstractTabExecutor {
             return;
         }
         Player receiverPlayer = Bukkit.getPlayer(receiver);
-        receiverPlayer.sendMessage(info(UltiTools.languageUtils.getWords("email_received_new_email")));
+        receiverPlayer.sendMessage(info(UltiTools.languageUtils.getString("email_received_new_email")));
         receiverPlayer.playSound(receiverPlayer.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_CHIME), 10, 1);
     }
 
@@ -171,7 +171,7 @@ public class EmailCommands extends AbstractTabExecutor {
         if (!player.isOp()) {
             return;
         }
-        player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_sending_all_email"));
+        player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("email_sending_all_email"));
         if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
             ItemStack itemStack = player.getInventory().getItemInMainHand();
             for (OfflinePlayer player1 : UltiTools.getInstance().getServer().getOfflinePlayers()) {
@@ -186,29 +186,29 @@ public class EmailCommands extends AbstractTabExecutor {
             emailManager.sendTo(file, receiver);
             pushToReceiver(player2.getName());
         }
-        player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_send_successfully"));
+        player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("email_send_successfully"));
         player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.UI_TOAST_OUT), 15, 1);
     }
 
     public void deleteHistoryEmail(@NotNull EmailManager emailManager, Player player) {
         if (!emailManager.deleteHistoryEmails()) {
-            player.sendMessage(warning(UltiTools.languageUtils.getWords("email_not_received_any_email")));
+            player.sendMessage(warning(UltiTools.languageUtils.getString("email_not_received_any_email")));
             return;
         }
-        player.sendMessage(warning(UltiTools.languageUtils.getWords("email_all_email_deleted")));
+        player.sendMessage(warning(UltiTools.languageUtils.getString("email_all_email_deleted")));
         player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_WET_GRASS_BREAK), 10, 1);
     }
 
     public void sendMessage(@NotNull File file, EmailManager emailManager, Player player, String receiver) {
         if (!file.exists()) {
-            player.sendMessage(warning(UltiTools.languageUtils.getWords("email_receiver_not_found")));
+            player.sendMessage(warning(UltiTools.languageUtils.getString("email_receiver_not_found")));
         }
         sendItem(file, emailManager, player, receiver);
     }
 
     public void sendMessage(@NotNull File file, EmailManager emailManager, Player player, String receiver, String message, boolean hasContent) {
         if (!file.exists()) {
-            player.sendMessage(warning(UltiTools.languageUtils.getWords("email_receiver_not_found")));
+            player.sendMessage(warning(UltiTools.languageUtils.getString("email_receiver_not_found")));
         }
         if (hasContent) {
             sendItem(file, emailManager, player, receiver, message);
@@ -218,47 +218,47 @@ public class EmailCommands extends AbstractTabExecutor {
     }
 
     private void sendText(File file, @NotNull EmailManager emailManager, @NotNull Player player, String receiver, String message) {
-        player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_sending"));
+        player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("email_sending"));
         if (emailManager.sendTo(file, message)) {
-            player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_send_successfully"));
+            player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("email_send_successfully"));
             player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.UI_TOAST_OUT), 15, 1);
             pushToReceiver(receiver);
         } else {
-            player.sendMessage(warning(UltiTools.languageUtils.getWords("email_receiver_not_found")));
+            player.sendMessage(warning(UltiTools.languageUtils.getString("email_receiver_not_found")));
         }
     }
 
     private void sendItem(File file, EmailManager emailManager, @NotNull Player player, String receiver, String message) {
         if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
             ItemStack itemStack = player.getInventory().getItemInMainHand();
-            player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_sending"));
+            player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("email_sending"));
             if (emailManager.sendTo(file, message, itemStack)) {
                 player.getInventory().setItemInMainHand(null);
-                player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_send_successfully"));
+                player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("email_send_successfully"));
                 player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.UI_TOAST_OUT), 15, 1);
                 pushToReceiver(receiver);
             } else {
-                player.sendMessage(warning(UltiTools.languageUtils.getWords("email_send_failed")));
+                player.sendMessage(warning(UltiTools.languageUtils.getString("email_send_failed")));
             }
         } else {
-            player.sendMessage(warning(UltiTools.languageUtils.getWords("email_hand_item")));
+            player.sendMessage(warning(UltiTools.languageUtils.getString("email_hand_item")));
         }
     }
 
     private void sendItem(File file, EmailManager emailManager, @NotNull Player player, String receiver) {
         if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
             ItemStack itemStack = player.getInventory().getItemInMainHand();
-            player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_sending"));
-            if (emailManager.sendTo(file, UltiTools.languageUtils.getWords("email_sender_no_message"), itemStack)) {
+            player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("email_sending"));
+            if (emailManager.sendTo(file, UltiTools.languageUtils.getString("email_sender_no_message"), itemStack)) {
                 player.getInventory().setItemInMainHand(null);
-                player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getWords("email_send_successfully"));
+                player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("email_send_successfully"));
                 player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.UI_TOAST_OUT), 15, 1);
                 pushToReceiver(receiver);
             } else {
-                player.sendMessage(warning(UltiTools.languageUtils.getWords("email_send_failed")));
+                player.sendMessage(warning(UltiTools.languageUtils.getString("email_send_failed")));
             }
         } else {
-            player.sendMessage(warning(UltiTools.languageUtils.getWords("email_hand_item")));
+            player.sendMessage(warning(UltiTools.languageUtils.getString("email_hand_item")));
         }
     }
 }

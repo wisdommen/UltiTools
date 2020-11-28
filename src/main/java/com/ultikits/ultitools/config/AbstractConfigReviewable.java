@@ -16,8 +16,8 @@ public abstract class AbstractConfigReviewable extends AbstractConfig{
     @Override
     public void init() {
         if (file.exists()) {
-            load();
             review();
+            load();
             return;
         }
         try {

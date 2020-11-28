@@ -3,9 +3,9 @@ package com.ultikits.ultitools.enums;
 import com.ultikits.ultitools.ultitools.UltiTools;
 
 public enum LoginRegisterEnum {
-    LOGIN(UltiTools.languageUtils.getWords("login_login_page_title")),
-    REGISTER(UltiTools.languageUtils.getWords("login_register_page_tile")),
-    VALIDATION(UltiTools.languageUtils.getWords("login_validation_page_title"));
+    LOGIN(UltiTools.languageUtils.getString("login_login_page_title")),
+    REGISTER(UltiTools.languageUtils.getString("login_register_page_tile")),
+    VALIDATION(UltiTools.languageUtils.getString("login_validation_page_title"));
 
     private final String type;
 

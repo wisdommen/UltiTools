@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 public class HomeListPageListener extends PagesListener {
     @Override
     public void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
-        if (inventoryManager.getTitle().contains(player.getName()+ UltiTools.languageUtils.getWords("home_'s_home_list"))) {
+        if (inventoryManager.getTitle().contains(player.getName()+ UltiTools.languageUtils.getString("home_'s_home_list"))) {
             String homeName = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName());
             player.performCommand("home " + homeName);
         }

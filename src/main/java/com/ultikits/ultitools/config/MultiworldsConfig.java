@@ -29,10 +29,10 @@ public class MultiworldsConfig extends AbstractConfig{
         config.set("worlds", Collections.emptyList());
         config.set("blocked_worlds", Collections.emptyList());
         config.set("world.World.type", "GRASS_BLOCK");
-        config.set("world.World.describe", UltiTools.languageUtils.getWords("none"));
+        config.set("world.World.describe", UltiTools.languageUtils.getString("none"));
         config.set("world.Nether.type", "GRASS_BLOCK");
-        config.set("world.Nether.describe", UltiTools.languageUtils.getWords("none"));
+        config.set("world.Nether.describe", UltiTools.languageUtils.getString("none"));
         config.set("world.End.type", "GRASS_BLOCK");
-        config.set("world.End.describe", UltiTools.languageUtils.getWords("none"));
+        config.set("world.End.describe", UltiTools.languageUtils.getString("none"));
     }
 }

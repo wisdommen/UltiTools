@@ -37,7 +37,7 @@ public class RemoteBagCommands extends AbstractTabExecutor {
                     }
                     List<File> fileList = Utils.getFiles(ConfigsEnum.PLAYER_CHEST.toString());
                     if (fileList == null) {
-                        player.sendMessage(warning(UltiTools.languageUtils.getWords("bag_no_user")));
+                        player.sendMessage(warning(UltiTools.languageUtils.getString("bag_no_user")));
                         return true;
                     }
                     for (File file : fileList) {
@@ -47,20 +47,20 @@ public class RemoteBagCommands extends AbstractTabExecutor {
                             int size = chestConfig.getKeys(false).size();
                             try {
                                 if (size < Integer.parseInt(strings[1])) {
-                                    player.sendMessage(warning(UltiTools.languageUtils.getWords("bag_player_does_not_have_this_bag")));
+                                    player.sendMessage(warning(UltiTools.languageUtils.getString("bag_player_does_not_have_this_bag")));
                                     return true;
                                 }
                             } catch (NumberFormatException e) {
-                                player.sendMessage(warning(UltiTools.languageUtils.getWords("bag_enter_number_of_the_bag")));
+                                player.sendMessage(warning(UltiTools.languageUtils.getString("bag_enter_number_of_the_bag")));
                                 return true;
                             }
                             String bagNumber = strings[1];
-                            String bagName = String.format(UltiTools.languageUtils.getWords("bag_title"), strings[0], bagNumber);
+                            String bagName = String.format(UltiTools.languageUtils.getString("bag_title"), strings[0], bagNumber);
                             ChestPageListener.loadBag(bagName, player, Bukkit.getOfflinePlayer(strings[0]));
                             return true;
                         }
                     }
-                    player.sendMessage(warning(UltiTools.languageUtils.getWords("bag_player_data_not_exists")));
+                    player.sendMessage(warning(UltiTools.languageUtils.getString("bag_player_data_not_exists")));
                     return true;
                 case 3:
                     if (!UltiTools.isProVersion) {

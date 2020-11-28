@@ -34,7 +34,7 @@ public class RemoteBagConsoleCommands extends AbstractConsoleCommandExecutor {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            commandSender.sendMessage(info(String.format(UltiTools.languageUtils.getWords("bag_create_new_bag_for_someone_successfully"), strings[0])));
+            commandSender.sendMessage(info(String.format(UltiTools.languageUtils.getString("bag_create_new_bag_for_someone_successfully"), strings[0])));
         }
         return false;
     }

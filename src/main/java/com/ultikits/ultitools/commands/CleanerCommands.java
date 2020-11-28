@@ -33,7 +33,7 @@ public class CleanerCommands implements TabExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (command.getName().equalsIgnoreCase("clean") && (sender.hasPermission("ultikits.tools.clean") || sender.hasPermission("ultikits.tools.admin"))) {
             if (!UltiTools.isProVersion) {
-                sender.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getWords("warning_pro_fuction")));
+                sender.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("warning_pro_fuction")));
                 return true;
             }
             new BukkitRunnable() {
@@ -96,10 +96,10 @@ public class CleanerCommands implements TabExecutor {
     }
 
     private static void sendHelp(CommandSender sender) {
-        sender.sendMessage(info("/clean check  " + UltiTools.languageUtils.getWords("clean_usage_check")));
-        sender.sendMessage(info("/clean item [world]  " + UltiTools.languageUtils.getWords("clean_usage_clean_item")));
-        sender.sendMessage(info("/clean mobs [world]  " + UltiTools.languageUtils.getWords("clean_usage_mobs")));
-        sender.sendMessage(info("/clean all [world]  " + UltiTools.languageUtils.getWords("clean_usage_all")));
-        sender.sendMessage(info("/clean help  " + UltiTools.languageUtils.getWords("clean_usage_help")));
+        sender.sendMessage(info("/clean check  " + UltiTools.languageUtils.getString("clean_usage_check")));
+        sender.sendMessage(info("/clean item [world]  " + UltiTools.languageUtils.getString("clean_usage_clean_item")));
+        sender.sendMessage(info("/clean mobs [world]  " + UltiTools.languageUtils.getString("clean_usage_mobs")));
+        sender.sendMessage(info("/clean all [world]  " + UltiTools.languageUtils.getString("clean_usage_all")));
+        sender.sendMessage(info("/clean help  " + UltiTools.languageUtils.getString("clean_usage_help")));
     }
 }

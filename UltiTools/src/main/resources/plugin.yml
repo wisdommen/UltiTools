@@ -1,7 +1,0 @@
-name: UltiTools
-version: ${project.version}
-main: com.ultikits.ultitools.ultitools.UltiTools
-api-version: 1.13
-depend: [ PlaceholderAPI, Vault ]
-authors: [ wisdomme, qianmo ]
-website: ultikits.com

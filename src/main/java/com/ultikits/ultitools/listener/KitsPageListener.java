@@ -27,7 +27,7 @@ public class KitsPageListener extends PagesListener {
 
     @Override
     public void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
-        if (!inventoryManager.getTitle().contains(UltiTools.languageUtils.getWords("kits_page_title"))){
+        if (!inventoryManager.getTitle().contains(UltiTools.languageUtils.getString("kits_page_title"))){
             return;
         }
         File kit_file = new File(ConfigsEnum.DATA_KIT.toString());
@@ -103,7 +103,7 @@ public class KitsPageListener extends PagesListener {
             int level = kitsConfig.getInt(item + ".level");
             if (checkLevel.checkLevel(player) < level) return false;
             String job = kitsConfig.getString(item + ".job");
-            return job.equals(UltiTools.languageUtils.getWords("kits_config_job")) || checkLevel.checkJob(player).equals(job);
+            return job.equals(UltiTools.languageUtils.getString("kits_config_job")) || checkLevel.checkJob(player).equals(job);
         }
         return true;
     }

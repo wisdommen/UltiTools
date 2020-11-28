@@ -17,7 +17,7 @@ public class CleanerConfig extends AbstractConfigReviewable {
     private CleanerConfig(String name, String filePath) {
         super(name, filePath);
         map.put("config_version", 1.1);
-        map.put("cleaner_name", UltiTools.languageUtils.getWords("clean_name"));
+        map.put("cleaner_name", UltiTools.languageUtils.getString("clean_name"));
         map.put("clean_entity_task_enable", false);
         map.put("enable_smart_clean", true);
         map.put("unload_chunk_task_enable", false);

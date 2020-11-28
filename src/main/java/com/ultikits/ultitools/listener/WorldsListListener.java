@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 public class WorldsListListener extends PagesListener {
     @Override
     public void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
-        if (inventoryManager.getTitle().contains(UltiTools.languageUtils.getWords("world_page_title"))) {
+        if (inventoryManager.getTitle().contains(UltiTools.languageUtils.getString("world_page_title"))) {
             String worldName = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName());
             player.performCommand("mw " + worldName);
         }

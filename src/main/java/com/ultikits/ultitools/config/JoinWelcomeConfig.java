@@ -18,13 +18,13 @@ public class JoinWelcomeConfig extends AbstractConfigReviewable{
         super(name, filePath);
         map.put("config_version", 1.0);
         map.put("sendMessageDelay", 4);
-        map.put("welcome_message", Arrays.asList(UltiTools.languageUtils.getWords("join_welcome_message_1"),
-                UltiTools.languageUtils.getWords("join_welcome_message_2"),
-                UltiTools.languageUtils.getWords("join_welcome_message_3")));
-        map.put("op_join", UltiTools.languageUtils.getWords("join_op_join"));
-        map.put("op_quit", UltiTools.languageUtils.getWords("join_op_quit"));
-        map.put("player_join", UltiTools.languageUtils.getWords("join_player_join"));
-        map.put("player_quit", UltiTools.languageUtils.getWords("join_player_quit"));
+        map.put("welcome_message", Arrays.asList(UltiTools.languageUtils.getString("join_welcome_message_1"),
+                UltiTools.languageUtils.getString("join_welcome_message_2"),
+                UltiTools.languageUtils.getString("join_welcome_message_3")));
+        map.put("op_join", UltiTools.languageUtils.getString("join_op_join"));
+        map.put("op_quit", UltiTools.languageUtils.getString("join_op_quit"));
+        map.put("player_join", UltiTools.languageUtils.getString("join_player_join"));
+        map.put("player_quit", UltiTools.languageUtils.getString("join_player_quit"));
     }
 
     @Override

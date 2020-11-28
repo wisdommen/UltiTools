@@ -22,6 +22,7 @@ public enum ConfigsEnum {
     CHEST_LOCK(UltiTools.getInstance().getDataFolder() + "/chestlock.yml"),
     HOME(UltiTools.getInstance().getDataFolder() + "/home.yml"),
     JOIN_WELCOME(UltiTools.getInstance().getDataFolder() + "/joinwelcome.yml"),
+    MAIN(UltiTools.getInstance().getDataFolder() + "/config.yml"),
     DEATH(UltiTools.getInstance().getDataFolder()+"/death.yml");
 
     private final String path;

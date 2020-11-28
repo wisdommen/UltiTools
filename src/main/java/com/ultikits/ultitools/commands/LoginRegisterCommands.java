@@ -30,9 +30,9 @@ public class LoginRegisterCommands extends AbstractTabExecutor {
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
         if (!UltiTools.isProVersion) {
             if (player.hasPermission(PermissionsEnum.ADMIN.getPermission())) {
-                player.sendMessage(warning(UltiTools.languageUtils.getWords("warning_pro_fuction")));
+                player.sendMessage(warning(UltiTools.languageUtils.getString("warning_pro_fuction")));
             } else {
-                player.sendMessage(warning(UltiTools.languageUtils.getWords("no_permission")));
+                player.sendMessage(warning(UltiTools.languageUtils.getString("no_permission")));
             }
             return true;
         }
@@ -40,38 +40,38 @@ public class LoginRegisterCommands extends AbstractTabExecutor {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
         if (config.getBoolean("registered")) {
-            player.sendMessage(warning(UltiTools.languageUtils.getWords("emailregister_registered")));
+            player.sendMessage(warning(UltiTools.languageUtils.getString("emailregister_registered")));
             return true;
         }
         if (strings.length == 1) {
             if (strings[0].contains("@")) {
-                player.sendMessage(info(UltiTools.languageUtils.getWords("emailregister_sending_code")));
+                player.sendMessage(info(UltiTools.languageUtils.getString("emailregister_sending_code")));
                 new BukkitRunnable() {
 
                     @Override
                     public void run() {
                         String email = strings[0];
                         String code = getValidateCode();
-                        CheckResponse response = SendEmailUtils.sendEmail(email, UltiTools.languageUtils.getWords("emailregister_email_title"), String.format(UltiTools.languageUtils.getWords("emailregister_email_content"), code));
+                        CheckResponse response = SendEmailUtils.sendEmail(email, UltiTools.languageUtils.getString("emailregister_email_title"), String.format(UltiTools.languageUtils.getString("emailregister_email_content"), code));
                         if (response.code.equals("200")) {
                             sentCodePlayers.put(player.getUniqueId(), true);
                             playersValidateCode.put(player.getUniqueId(), code);
                             playersEmail.put(player.getUniqueId(), strings[0]);
-                            player.sendMessage(info(String.format(UltiTools.languageUtils.getWords("emailregister_code_sent"), strings[0])));
+                            player.sendMessage(info(String.format(UltiTools.languageUtils.getString("emailregister_code_sent"), strings[0])));
                         } else {
-                            player.sendMessage(warning(UltiTools.languageUtils.getWords("emailregister_email_send_failed") + response.msg));
+                            player.sendMessage(warning(UltiTools.languageUtils.getString("emailregister_email_send_failed") + response.msg));
                         }
                     }
                 }.runTaskAsynchronously(UltiTools.getInstance());
 
             } else if (strings[0].length() == 6) {
                 if (!sentCodePlayers.get(player.getUniqueId())) {
-                    player.sendMessage(warning(UltiTools.languageUtils.getWords("emailregister_enter_email_first")));
+                    player.sendMessage(warning(UltiTools.languageUtils.getString("emailregister_enter_email_first")));
                     return true;
                 }
                 String validateCode = strings[0];
                 if (playersValidateCode.get(player.getUniqueId()).equals(validateCode)) {
-                    player.sendMessage(info(UltiTools.languageUtils.getWords("emailregister_email_validated")));
+                    player.sendMessage(info(UltiTools.languageUtils.getString("emailregister_email_validated")));
                     config.set("registered", true);
                     try {
                         config.save(file);
@@ -81,7 +81,7 @@ public class LoginRegisterCommands extends AbstractTabExecutor {
                     DatabasePlayerTools.setPlayerEmail(player, playersEmail.get(player.getUniqueId()));
                     return true;
                 }
-                player.sendMessage(warning(UltiTools.languageUtils.getWords("emailregister_code_invalid")));
+                player.sendMessage(warning(UltiTools.languageUtils.getString("emailregister_code_invalid")));
             } else {
                 return false;
             }

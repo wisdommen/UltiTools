@@ -20,7 +20,7 @@ public class EmailPageListener extends PagesListener {
 
     @Override
     public void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
-        if (!event.getView().getTitle().contains(String.format(UltiTools.languageUtils.getWords("email_page_title"), player.getName()))) {
+        if (!event.getView().getTitle().contains(String.format(UltiTools.languageUtils.getString("email_page_title"), player.getName()))) {
             return;
         }
         ItemStack clicked = event.getCurrentItem();
@@ -29,7 +29,7 @@ public class EmailPageListener extends PagesListener {
 
         if (clicked != null) {
             event.setCancelled(true);
-            if (Objects.requireNonNull(clicked.getItemMeta()).getDisplayName().contains(UltiTools.languageUtils.getWords("email_item_description_from"))) {
+            if (Objects.requireNonNull(clicked.getItemMeta()).getDisplayName().contains(UltiTools.languageUtils.getString("email_item_description_from"))) {
                 for (String lore : Objects.requireNonNull(clicked.getItemMeta().getLore())) {
                     if (lore.contains("ID:")) {
                         String uuid = lore.split(":")[1];
@@ -46,7 +46,7 @@ public class EmailPageListener extends PagesListener {
                                 config.set(uuid + ".isRead", true);
                                 config.set(uuid + ".isClaimed", true);
                             } else {
-                                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("email_inventory_space_not_enough"));
+                                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("email_inventory_space_not_enough"));
                             }
                         }
                         try {

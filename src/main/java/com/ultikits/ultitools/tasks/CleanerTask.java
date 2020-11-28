@@ -60,15 +60,15 @@ public class CleanerTask extends BukkitRunnable {
             time += 10;
             if (enableSmartClean) {
                 if (CleanerUtils.checkMobs(worlds) > maxMob && !mobCleaning) {
-                    notice(UltiTools.languageUtils.getWords("mobs"));
+                    notice(UltiTools.languageUtils.getString("mobs"));
                     mobCleaning = true;
                 }
                 if (CleanerUtils.checkItems(worlds) > maxItem && !itemCleaning) {
-                    notice(UltiTools.languageUtils.getWords("dropped_item"));
+                    notice(UltiTools.languageUtils.getString("dropped_item"));
                     itemCleaning = true;
                 }
                 if (CleanerUtils.checkEntities(worlds) > maxEntity && !entityCleaning) {
-                    notice(UltiTools.languageUtils.getWords("entity"));
+                    notice(UltiTools.languageUtils.getString("entity"));
                     entityCleaning = true;
                 }
             } else if (enableCleanEntityTask && time >= period) {
@@ -87,22 +87,22 @@ public class CleanerTask extends BukkitRunnable {
     }
 
     private static void notice(String typeName) {
-        Bukkit.broadcastMessage(ChatColor.GREEN + "[+" + name + String.format("+] " + UltiTools.languageUtils.getWords("clean_start_task_after_30s"), typeName));
+        Bukkit.broadcastMessage(ChatColor.GREEN + "[+" + name + String.format("+] " + UltiTools.languageUtils.getString("clean_start_task_after_30s"), typeName));
         new BukkitRunnable() {
             @Override
             public void run() {
-                Bukkit.broadcastMessage(ChatColor.GREEN + "[+" + name + String.format("+] " + UltiTools.languageUtils.getWords("clean_start_task_after_10s"), typeName));
+                Bukkit.broadcastMessage(ChatColor.GREEN + "[+" + name + String.format("+] " + UltiTools.languageUtils.getString("clean_start_task_after_10s"), typeName));
                 new BukkitRunnable() {
                     @Override
                     public void run() {
                         int count = 0;
-                        if (typeName.equals(UltiTools.languageUtils.getWords("mobs"))) {
+                        if (typeName.equals(UltiTools.languageUtils.getString("mobs"))) {
                             count = CleanerUtils.cleanMobs(worlds);
                             mobCleaning = false;
-                        } else if (typeName.equals(UltiTools.languageUtils.getWords("dropped_item"))) {
+                        } else if (typeName.equals(UltiTools.languageUtils.getString("dropped_item"))) {
                             count = CleanerUtils.cleanDroppedItem(worlds);
                             itemCleaning = false;
-                        } else if (typeName.equals(UltiTools.languageUtils.getWords("entity"))) {
+                        } else if (typeName.equals(UltiTools.languageUtils.getString("entity"))) {
                             count = CleanerUtils.cleanEntities(worlds);
                             entityCleaning = (mobCleaning || itemCleaning);
                         }

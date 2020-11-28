@@ -22,18 +22,18 @@ public class ValidationPageListener implements Listener {
         Player player = (Player) event.getWhoClicked();
         ItemStack clicked = event.getCurrentItem();
 
-        if (event.getView().getTitle().equals(UltiTools.languageUtils.getWords("login_validation_page_title"))) {
+        if (event.getView().getTitle().equals(UltiTools.languageUtils.getString("login_validation_page_title"))) {
             if (clicked != null) {
                 event.setCancelled(true);
-                if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("login_keyboard_button_label"))) {
+                if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getString("login_keyboard_button_label"))) {
                     int slot = currentInventory.firstEmpty();
                     if (slot >= 1 && slot < 8 && slot != 4) {
                         currentInventory.setItem(slot, clicked);
                         player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_HAT), 10, 1);
                     }
-                } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("button_ok"))) {
+                } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getString("button_ok"))) {
                     if (!isCodeEnteredFully(currentInventory)){
-                        player.sendMessage(warning(UltiTools.languageUtils.getWords("emailregister_enter_validation_code")));
+                        player.sendMessage(warning(UltiTools.languageUtils.getString("emailregister_enter_validation_code")));
                     }
                     String password = "null";
                     try {
@@ -42,16 +42,16 @@ public class ValidationPageListener implements Listener {
                     }
                     if (!validateTheCode(player, password)){
                         clearTheEnteringSlots(currentInventory);
-                        player.sendMessage(warning(UltiTools.languageUtils.getWords("emailregister_code_invalid")));
+                        player.sendMessage(warning(UltiTools.languageUtils.getString("emailregister_code_invalid")));
                     }else {
                         LoginGUIListener.playerIsValidating.put(player.getUniqueId(), false);
                         LoginGUIListener.isRegisteringNewPassword.put(player.getUniqueId(), true);
                         GUIUtils.setupLoginRegisterLayout(player, LoginRegisterEnum.REGISTER);
                         player.openInventory(GUIUtils.inventoryMap.get(player.getName() + LoginRegisterEnum.REGISTER.toString()).getInventory());
                     }
-                } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("button_clear"))) {
+                } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getString("button_clear"))) {
                     clearTheEnteringSlots(currentInventory);
-                } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getWords("button_quit"))) {
+                } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getString("button_quit"))) {
                     LoginGUIListener.playerIsValidating.put(player.getUniqueId(), false);
                     player.openInventory(GUIUtils.inventoryMap.get(player.getName() + LoginRegisterEnum.LOGIN.toString()).getInventory());
                 }

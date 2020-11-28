@@ -53,7 +53,7 @@ public class ChestLockListener implements Listener {
                 Random random = new Random();
                 int i = random.nextInt(3);
                 if (i <= 1) {
-                    player.sendMessage(info(UltiTools.languageUtils.getWords("lock_tip")));
+                    player.sendMessage(info(UltiTools.languageUtils.getString("lock_tip")));
                 }
             } else {
                 BlockData blockData = placedBlock.getBlockData();
@@ -92,16 +92,16 @@ public class ChestLockListener implements Listener {
                 try {
                     playerData.save(playerFile);
                 } catch (IOException e) {
-                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_file_save_fail_click"));
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_file_save_fail_click"));
                     return;
                 }
                 if (chests.contains(local)) {
-                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_chest_already_locked"));
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_chest_already_locked"));
                     return;
                 } else {
                     for (String each : chests) {
                         if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
-                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_you_cannot_lock_others_chest"));
+                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_you_cannot_lock_others_chest"));
                             return;
                         }
                     }
@@ -109,8 +109,8 @@ public class ChestLockListener implements Listener {
                 chests.add(local);
                 ConfigController.setValue("locked", chests);
                 ConfigController.saveConfig("chestData");
-                player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getWords("lock_successfully"));
-                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_tip_after_lock"));
+                player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("lock_successfully"));
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_tip_after_lock"));
                 player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_CHEST_LOCKED), 10, 1);
                 return;
             } else if (playerData.getBoolean("unlock")) {
@@ -119,37 +119,37 @@ public class ChestLockListener implements Listener {
                 try {
                     playerData.save(playerFile);
                 } catch (IOException e) {
-                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("unlock_file_save_fail_click"));
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("unlock_file_save_fail_click"));
                     return;
                 }
                 if (chests.contains(local)) {
                     chests.remove(local);
                     ConfigController.setValue("locked", chests);
                     ConfigController.saveConfig("chestData");
-                    player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getWords("unlock_successfully"));
-                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("unlock_tip_after_unlock"));
+                    player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("unlock_successfully"));
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("unlock_tip_after_unlock"));
                     player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_CHEST_LOCKED), 10, 1);
                     return;
                 } else {
                     for (String each : chests) {
                         if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
-                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("unlock_you_cannot_unlock_others_chest"));
+                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("unlock_you_cannot_unlock_others_chest"));
                             return;
                         }
                     }
                 }
-                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("unlock_chest_not_locked"));
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("unlock_chest_not_locked"));
                 return;
             }
             if (!chests.contains(local)) {
                 for (String each : chests) {
                     if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
                         if ((chestConfig.getBoolean("op_unlock") && player.isOp() && event.getAction() == Action.RIGHT_CLICK_BLOCK) || (chestConfig.getBoolean("op_break_locked") && player.isOp() && event.getAction() == Action.LEFT_CLICK_BLOCK)) {
-                            player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getWords("lock_op_warning"));
+                            player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("lock_op_warning"));
                             return;
                         }
                         event.setCancelled(true);
-                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_this_is_others_chest"));
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_this_is_others_chest"));
                         return;
                     }
                 }
@@ -179,7 +179,7 @@ public class ChestLockListener implements Listener {
             if (sizeBefore > chests.size()) {
                 ConfigController.setValue("locked", chests);
                 ConfigController.saveConfig("chestData");
-                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_chest_deleted"));
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_chest_deleted"));
             }
         }
     }
@@ -270,12 +270,12 @@ public class ChestLockListener implements Listener {
         double z = blockLocation.getZ();
         String location = getFormattedChestLocation(player, blockLocation);
         if (registeredChests.contains(location)) {
-            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_auto_lock"));
+            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_auto_lock"));
             return true;
         } else {
             for (String each : registeredChests) {
                 if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
-                    player.sendMessage(info(UltiTools.languageUtils.getWords("lock_locked_chest_besides")));
+                    player.sendMessage(info(UltiTools.languageUtils.getString("lock_locked_chest_besides")));
                     return false;
                 }
             }

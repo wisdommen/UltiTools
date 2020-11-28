@@ -45,67 +45,18 @@ public class ConfigFileChecker {
         return config;
     }
 
-    public static void reviewMainConfigFile() {
-        Map<String, Object> config = getAllConfigs();
-        File file = new File(UltiTools.getInstance().getDataFolder(), "config.yml");
-        transferOldConfigs(config);
-        if (file.delete()) {
-            UltiTools.yaml.saveYamlFile(UltiTools.getInstance().getDataFolder().getPath(), "config.yml", UltiTools.language + "_config.yml");
-            File newFile = new File(UltiTools.getInstance().getDataFolder(), "config.yml");
-            YamlConfiguration newConfig = YamlConfiguration.loadConfiguration(file);
-            for (String key : config.keySet()) {
-                if (newConfig.getKeys(true).contains(key)) {
-                    newConfig.set(key, config.get(key));
-                }
-            }
-            try {
-                newConfig.save(newFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return;
-        }
-//        boolean change = false;
-//        Configuration defaults = YamlConfiguration.loadConfiguration(new File());
-//        for (String defaultKey : defaults.getKeys(true)) {
-//            if (!UltiTools.getInstance().getConfig().contains(defaultKey)) {
-//                UltiTools.getInstance().getConfig().set(defaultKey, defaults.get(defaultKey));
-//                change = true;
-//            }
-//        }
-//        if (change) UltiTools.getInstance().saveConfig();
-    }
-
-    public static void transferOldConfigs(Map<String, Object> oldConfig) {
-        if (oldConfig.containsKey("config_version")) {
-            return;
-        }
-        for (String key : oldConfig.keySet()) {
-            try {
-                ConfigController.setValue(key, oldConfig.get(key));
-            } catch (NullPointerException ignore) {
-            }
-        }
-        ConfigController.saveConfigs();
-    }
-
-    public static void reviewConfigFile(YamlConfiguration configuration, String filePath) {
-        File file = new File(filePath);
-
-    }
-
     public static void downloadNewVersion() {
         new BukkitRunnable() {
 
             @Override
             public void run() {
-                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + UltiTools.languageUtils.getWords("downloading"));
+                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + UltiTools.languageUtils.getString("downloading"));
                 if (download()) {
-                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + UltiTools.languageUtils.getWords("download_successfully"));
+                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + UltiTools.languageUtils.getString("download_successfully"));
                     this.cancel();
                     return;
                 }
-                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + String.format("[UltiTools] " + UltiTools.languageUtils.getWords("download_failed"), "https://www.mcbbs.net/thread-1062730-1-1.html"));
+                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + String.format("[UltiTools] " + UltiTools.languageUtils.getString("download_failed"), "https://www.mcbbs.net/thread-1062730-1-1.html"));
             }
 
         }.runTaskAsynchronously(UltiTools.getInstance());

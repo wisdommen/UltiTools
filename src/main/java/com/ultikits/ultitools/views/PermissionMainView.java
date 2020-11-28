@@ -22,7 +22,7 @@ public class PermissionMainView {
     }
 
     public static Inventory setUp() {
-        InventoryManager inventoryManager = new InventoryManager(null, 54, UltiTools.languageUtils.getWords("permission_check_page_title"), true);
+        InventoryManager inventoryManager = new InventoryManager(null, 54, UltiTools.languageUtils.getString("permission_check_page_title"), true);
         inventoryManager.presetPage(ViewType.PREVIOUS_QUIT_NEXT);
         inventoryManager.create();
         ViewManager.registerView(inventoryManager, new PermissionListener());
@@ -52,17 +52,17 @@ public class PermissionMainView {
         String group = GroupManagerUtils.getGroup(uuid);
         List<String> subGroups = GroupManagerUtils.getSubGroups(uuid);
         ArrayList<String> lore = new ArrayList<>();
-        if (group == null) group = UltiTools.languageUtils.getWords("none");
-        lore.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getWords("permission_check_page_main_group")+" " + group);
+        if (group == null) group = UltiTools.languageUtils.getString("none");
+        lore.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("permission_check_page_main_group")+" " + group);
         if (subGroups.size() == 0) {
-            lore.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getWords("permission_check_page_sub_group")+" "+UltiTools.languageUtils.getWords("none"));
+            lore.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("permission_check_page_sub_group")+" "+UltiTools.languageUtils.getString("none"));
         } else {
-            lore.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getWords("permission_check_page_sub_group")+" ");
+            lore.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("permission_check_page_sub_group")+" ");
             lore.addAll(subGroups);
         }
-        lore.add(ChatColor.YELLOW + UltiTools.languageUtils.getWords("permission_check_page_permission_header"));
+        lore.add(ChatColor.YELLOW + UltiTools.languageUtils.getString("permission_check_page_permission_header"));
         if (permissions.size() == 0) {
-            lore.add(UltiTools.languageUtils.getWords("none"));
+            lore.add(UltiTools.languageUtils.getString("none"));
         } else {
             lore.addAll(permissions);
         }

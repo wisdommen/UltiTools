@@ -116,13 +116,13 @@ public class CleanerUtils {
     public static String sendMessage(CleanTypeEnum cleanType, String name, int cleanCount) {
         switch (cleanType) {
             case CHECK:
-                return ChatColor.GREEN + String.format(UltiTools.languageUtils.getWords("clean_check_report"),name, ChatColor.RED + String.valueOf(cleanCount) + ChatColor.GREEN, ChatColor.RED + cleanType.toString() + ChatColor.GREEN);
+                return ChatColor.GREEN + String.format(UltiTools.languageUtils.getString("clean_check_report"),name, ChatColor.RED + String.valueOf(cleanCount) + ChatColor.GREEN, ChatColor.RED + cleanType.toString() + ChatColor.GREEN);
             default:
-                return ChatColor.GREEN + String.format(UltiTools.languageUtils.getWords("clean_clean_report"), name, ChatColor.RED + String.valueOf(cleanCount) + ChatColor.GREEN, ChatColor.RED + cleanType.toString());
+                return ChatColor.GREEN + String.format(UltiTools.languageUtils.getString("clean_clean_report"), name, ChatColor.RED + String.valueOf(cleanCount) + ChatColor.GREEN, ChatColor.RED + cleanType.toString());
         }
     }
 
     public static String sendCleanMessage(String cleanName, String name, int cleanCount) {
-        return ChatColor.GREEN + String.format(UltiTools.languageUtils.getWords("clean_clean_report"), name, ChatColor.RED + String.valueOf(cleanCount) + ChatColor.GREEN, ChatColor.RED + cleanName);
+        return ChatColor.GREEN + String.format(UltiTools.languageUtils.getString("clean_clean_report"), name, ChatColor.RED + String.valueOf(cleanCount) + ChatColor.GREEN, ChatColor.RED + cleanName);
     }
 }

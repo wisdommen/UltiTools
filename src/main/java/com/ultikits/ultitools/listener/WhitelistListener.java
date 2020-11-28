@@ -25,12 +25,12 @@ public class WhitelistListener implements Listener {
 
         if (!UltiTools.isDatabaseEnabled) {
             if (!whitelist.contains(player.getName())) {
-                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.AQUA + UltiTools.languageUtils.getWords("whitelist_not_on"));
+                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.AQUA + UltiTools.languageUtils.getString("whitelist_not_on"));
             }
         } else {
             if (DatabasePlayerTools.isPlayerExist(player.getName())) {
                 if (DatabasePlayerTools.isPlayerExist(player.getName()) && DatabasePlayerTools.getPlayerData(player.getName(), "whitelisted").equals("false")) {
-                    event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.AQUA + UltiTools.languageUtils.getWords("whitelist_not_on"));
+                    event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.AQUA + UltiTools.languageUtils.getString("whitelist_not_on"));
                 }
             }else {
                 Map<String, String> playerData = new HashMap<>();
@@ -39,7 +39,7 @@ public class WhitelistListener implements Listener {
                 playerData.put("whitelisted", "false");
                 playerData.put("banned", "false");
                 DatabasePlayerTools.insertPlayerData(playerData);
-                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.AQUA + UltiTools.languageUtils.getWords("whitelist_not_on"));
+                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.AQUA + UltiTools.languageUtils.getString("whitelist_not_on"));
             }
         }
     }

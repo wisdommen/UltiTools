@@ -24,7 +24,7 @@ public class DeleteHomeCommands extends AbstractTabExecutor {
         if (file.exists()) {
             String homeName;
             if (args.length == 0) {
-                homeName = UltiTools.languageUtils.getWords("default");
+                homeName = UltiTools.languageUtils.getString("default");
                 return deleteHome(homeName, player, file);
             } else if (args.length == 1) {
                 homeName = args[0];
@@ -34,7 +34,7 @@ public class DeleteHomeCommands extends AbstractTabExecutor {
             }
 
         } else {
-            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("home_have_no_home"));
+            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("home_have_no_home"));
         }
         return true;
     }
@@ -48,25 +48,25 @@ public class DeleteHomeCommands extends AbstractTabExecutor {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         List<String> homeList = Utils.getHomeList(player);
         if (!homeList.contains(homeName)) {
-            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("home_dont_have"));
+            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("home_dont_have"));
             return true;
         }
         homeList.remove(homeName);
         String homeNameNew = homeName;
-        if (homeName.equals(UltiTools.languageUtils.getWords("default"))) {
+        if (homeName.equals(UltiTools.languageUtils.getString("default"))) {
             homeNameNew = "Def";
         }
         if (config.get(player.getName() + "." + homeNameNew) != null) {
             config.set(player.getName() + "." + homeNameNew, "");
             config.set(player.getName() + ".homelist", homeList);
-            player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getWords("delhome_successfully"), homeName));
+            player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("delhome_successfully"), homeName));
             try {
                 config.save(file);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
-            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("home_dont_have"));
+            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("home_dont_have"));
         }
         return false;
     }

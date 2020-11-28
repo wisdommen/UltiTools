@@ -24,7 +24,7 @@ public class WorldsListView {
     private WorldsListView(){}
 
     public static Inventory setUp(){
-        InventoryManager inventoryManager = new InventoryManager(null, 27, UltiTools.languageUtils.getWords("world_page_title"), true);
+        InventoryManager inventoryManager = new InventoryManager(null, 27, UltiTools.languageUtils.getString("world_page_title"), true);
         inventoryManager.presetPage(ViewType.PREVIOUS_QUIT_NEXT);
         inventoryManager.create();
         ViewManager.registerView(inventoryManager, new WorldsListListener());
@@ -69,7 +69,7 @@ public class WorldsListView {
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.YELLOW+config.getString("world."+world+".describe"));
             if (blockedWorlds.contains(world)){
-                lore.add(ChatColor.RED+UltiTools.languageUtils.getWords("world_page_description_teleport_denied"));
+                lore.add(ChatColor.RED+UltiTools.languageUtils.getString("world_page_description_teleport_denied"));
             }
             Material material = Material.getMaterial(Objects.requireNonNull(config.getString("world." + world + ".type")));
             ItemStack worldMaterial;

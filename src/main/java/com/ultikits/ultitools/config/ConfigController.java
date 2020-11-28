@@ -26,6 +26,7 @@ public class ConfigController {
         new ChestDataConfig();
         new MultiworldsConfig();
         new DeathPunishConfig();
+        new MainConfig();
         for (AbstractConfig abstractConfig : configMap.values()) {
             for (String key : abstractConfig.map.keySet()) {
                 config.put(key, abstractConfig.name);
@@ -66,6 +67,12 @@ public class ConfigController {
     public static void saveConfigs() {
         for (AbstractConfig configs : configMap.values()) {
             configs.save();
+        }
+    }
+
+    public static void reloadAll(){
+        for (AbstractConfig config : configMap.values()){
+            reloadConfig(config);
         }
     }
 }

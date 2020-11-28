@@ -47,8 +47,8 @@ public class JoinListener implements Listener {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getWords("join_send_update_reminding"), version, current_version));
-                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("join_send_update_tip"));
+                        player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("join_send_update_reminding"), version, current_version));
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("join_send_update_tip"));
                     }
                 }.runTaskLaterAsynchronously(UltiTools.getInstance(), 80L);
             }
@@ -121,7 +121,7 @@ public class JoinListener implements Listener {
                 playerList.add(player.getUniqueId().toString());
                 config.set("ip." + ip + ".players", playerList);
             } else {
-                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.RED + UltiTools.languageUtils.getWords("login_ip_limit_warning"));
+                event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.RED + UltiTools.languageUtils.getString("login_ip_limit_warning"));
                 return;
             }
         }

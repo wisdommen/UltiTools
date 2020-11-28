@@ -29,10 +29,10 @@ public class UnlockCommands extends AbstractPlayerCommandExecutor {
             try {
                 playerData.save(playerFile);
             } catch (IOException e) {
-                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("unlock_file_save_failed"));
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("unlock_file_save_failed"));
                 return true;
             }
-            player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getWords("unlock_click_to_unlock"));
+            player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("unlock_click_to_unlock"));
             return true;
         }
         return false;

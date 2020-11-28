@@ -27,7 +27,7 @@ public class KitsView {
     private KitsView(){}
 
     public static Inventory setUp(Player player){
-        InventoryManager inventoryManager = new InventoryManager(null, 54, UltiTools.languageUtils.getWords("kits_page_title"), true);
+        InventoryManager inventoryManager = new InventoryManager(null, 54, UltiTools.languageUtils.getString("kits_page_title"), true);
         inventoryManager.presetPage(ViewType.PREVIOUS_QUIT_NEXT);
         inventoryManager.create();
         ViewManager.registerView(inventoryManager, new KitsPageListener());
@@ -50,16 +50,16 @@ public class KitsView {
             ItemStack item = new ItemStack(Material.valueOf(kitsConfig.getString(kitItem + ".item")));
             ItemMeta itemMeta = item.getItemMeta();
             lore.add(unimportant(kitsConfig.getString(kitItem + ".description")));
-            lore.add(ChatColor.AQUA + UltiTools.languageUtils.getWords("kits_page_description_level")+"    " + ChatColor.GOLD + kitsConfig.getInt(kitItem + ".level"));
-            lore.add(ChatColor.AQUA + UltiTools.languageUtils.getWords("kits_page_description_job")+" " + ChatColor.GOLD + kitsConfig.getString(kitItem + ".job"));
-            lore.add(ChatColor.AQUA + UltiTools.languageUtils.getWords("kits_page_description_price")+"        " + ChatColor.GOLD + kitsConfig.getInt(kitItem + ".price") + ChatColor.AQUA + " "+UltiTools.languageUtils.getWords("money"));
-            lore.add(ChatColor.DARK_GRAY + UltiTools.languageUtils.getWords("kits_page_description_content"));
+            lore.add(ChatColor.AQUA + UltiTools.languageUtils.getString("kits_page_description_level")+"    " + ChatColor.GOLD + kitsConfig.getInt(kitItem + ".level"));
+            lore.add(ChatColor.AQUA + UltiTools.languageUtils.getString("kits_page_description_job")+" " + ChatColor.GOLD + kitsConfig.getString(kitItem + ".job"));
+            lore.add(ChatColor.AQUA + UltiTools.languageUtils.getString("kits_page_description_price")+"        " + ChatColor.GOLD + kitsConfig.getInt(kitItem + ".price") + ChatColor.AQUA + " "+UltiTools.languageUtils.getString("money"));
+            lore.add(ChatColor.DARK_GRAY + UltiTools.languageUtils.getString("kits_page_description_content"));
             for (String i : Objects.requireNonNull(kitsConfig.getConfigurationSection(kitItem + ".contain").getKeys(false))) {
-                lore.add(unimportant(i) + " x " + unimportant(String.valueOf(kitsConfig.getInt(kitItem + ".contain." + i + ".quantity"))) + UltiTools.languageUtils.getWords("ge"));
+                lore.add(unimportant(i) + " x " + unimportant(String.valueOf(kitsConfig.getInt(kitItem + ".contain." + i + ".quantity"))) + UltiTools.languageUtils.getString("ge"));
             }
             String kitName = kitsConfig.getString(kitItem + ".name");
             if (Objects.requireNonNull(claimState.getStringList(Objects.requireNonNull(kitName))).contains(player.getName())) {
-                lore.add(MessagesUtils.warning(UltiTools.languageUtils.getWords("claimed")));
+                lore.add(MessagesUtils.warning(UltiTools.languageUtils.getString("claimed")));
             }
             Objects.requireNonNull(itemMeta).setLore(lore);
             itemMeta.setDisplayName(ChatColor.LIGHT_PURPLE + kitsConfig.getString(kitItem + ".name"));

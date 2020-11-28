@@ -26,10 +26,10 @@ public class LockCommands extends AbstractPlayerCommandExecutor {
             try {
                 playerData.save(playerFile);
             } catch (IOException e) {
-                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("lock_file_save_failed"));
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_file_save_failed"));
                 return true;
             }
-            player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getWords("lock_click_to_lock"));
+            player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("lock_click_to_lock"));
             return true;
         }
         return false;

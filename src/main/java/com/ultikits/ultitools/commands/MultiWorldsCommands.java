@@ -59,7 +59,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                 blockedWorlds.add("World");
             }
             if (blockedWorlds.contains(strings[0]) && !player.hasPermission("ultikits.tools.admin")) {
-                player.sendMessage(warning(UltiTools.languageUtils.getWords("world_not_allow_enter")));
+                player.sendMessage(warning(UltiTools.languageUtils.getString("world_not_allow_enter")));
                 return true;
             }
             if (worldList.contains(strings[0])) {
@@ -76,12 +76,12 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                     try {
                         teleportPlayer(player, strings[0]);
                     } catch (NullPointerException e) {
-                        player.sendMessage(warning(UltiTools.languageUtils.getWords("world_world_not_exits")));
+                        player.sendMessage(warning(UltiTools.languageUtils.getString("world_world_not_exits")));
                         return true;
                     }
                 }
             } else {
-                player.sendMessage(warning(UltiTools.languageUtils.getWords("world_world_not_exits")));
+                player.sendMessage(warning(UltiTools.languageUtils.getString("world_world_not_exits")));
             }
             return true;
         } else if (strings.length == 2 && player.isOp()) {
@@ -90,7 +90,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                     for (World world : UltiTools.getInstance().getServer().getWorlds()) {
                         if (strings[1].equals(world.getName())) {
                             if (blockedWorlds.contains(strings[1])) {
-                                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("world_not_allow_enter"));
+                                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("world_not_allow_enter"));
                                 return true;
                             }
                             blockedWorlds.add(world.getName());
@@ -100,11 +100,11 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("world_denied_player_enter"));
+                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("world_denied_player_enter"));
                             return true;
                         }
                     }
-                    player.sendMessage(warning(UltiTools.languageUtils.getWords("world_world_not_found")));
+                    player.sendMessage(warning(UltiTools.languageUtils.getString("world_world_not_found")));
                     return true;
                 case "unblock":
                     for (World world : UltiTools.getInstance().getServer().getWorlds()) {
@@ -117,31 +117,31 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-                                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("world_cancel_denied_enter"));
+                                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("world_cancel_denied_enter"));
                                 return true;
                             }
-                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getWords("world_world_does_not_deny_enter"));
+                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("world_world_does_not_deny_enter"));
                             return true;
                         }
                     }
-                    player.sendMessage(warning(UltiTools.languageUtils.getWords("world_world_not_found")));
+                    player.sendMessage(warning(UltiTools.languageUtils.getString("world_world_not_found")));
                     return true;
                 case "create":
                 case "load":
                     for (World world : UltiTools.getInstance().getServer().getWorlds()) {
                         if (strings[1].equals(world.getName())) {
-                            player.sendMessage(warning(UltiTools.languageUtils.getWords("world_already_exists")));
+                            player.sendMessage(warning(UltiTools.languageUtils.getString("world_already_exists")));
                             return false;
                         }
                     }
 
                     for (String each : worlds) {
                         if (each.equals(strings[1])) {
-                            player.sendMessage(warning(UltiTools.languageUtils.getWords("world_already_exists")));
+                            player.sendMessage(warning(UltiTools.languageUtils.getString("world_already_exists")));
                             return false;
                         }
                     }
-                    player.sendMessage(warning(UltiTools.languageUtils.getWords("processing")));
+                    player.sendMessage(warning(UltiTools.languageUtils.getString("processing")));
                     createWorld(worldConfig, worldsFile, worlds, strings[1], player);
                     return true;
                 case "delete":
@@ -157,15 +157,15 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                            player.sendMessage(warning(UltiTools.languageUtils.getWords("world_world_deleted")));
+                            player.sendMessage(warning(UltiTools.languageUtils.getString("world_world_deleted")));
                             return true;
                         }
                     }
-                    player.sendMessage(warning(UltiTools.languageUtils.getWords("world_world_not_found")));
+                    player.sendMessage(warning(UltiTools.languageUtils.getString("world_world_not_found")));
                     return true;
             }
         }else {
-            player.sendMessage(warning(UltiTools.languageUtils.getWords("wrong_format")));
+            player.sendMessage(warning(UltiTools.languageUtils.getString("wrong_format")));
             multiWorldsHelp(player);
         }
         return false;
@@ -176,7 +176,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
         if (args.length == 1) {
             List<String> tabCommands = new ArrayList<>();
             tabCommands.add("help");
-            tabCommands.add("[" + UltiTools.languageUtils.getWords("world_name") + "]");
+            tabCommands.add("[" + UltiTools.languageUtils.getString("world_name") + "]");
             tabCommands.add("list");
             if (player.isOp()) {
                 tabCommands.add("block");
@@ -187,7 +187,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
             return tabCommands;
         } else if (args.length == 2 && player.isOp()) {
             List<String> tabCommands = new ArrayList<>();
-            tabCommands.add("[" + UltiTools.languageUtils.getWords("world_name") + "]");
+            tabCommands.add("[" + UltiTools.languageUtils.getString("world_name") + "]");
             return tabCommands;
         }
         return null;
@@ -195,16 +195,16 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
 
 
     private void multiWorldsHelp(Player player) {
-        player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getWords("world_help_header"));
-        player.sendMessage(ChatColor.GOLD + "/mw help" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("world_help_help"));
-        player.sendMessage(ChatColor.GOLD + "/mw [" + UltiTools.languageUtils.getWords("world_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("world_help_teleport"));
-        player.sendMessage(ChatColor.GOLD + "/mw list" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("world_help_list"));
+        player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("world_help_header"));
+        player.sendMessage(ChatColor.GOLD + "/mw help" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getString("world_help_help"));
+        player.sendMessage(ChatColor.GOLD + "/mw [" + UltiTools.languageUtils.getString("world_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getString("world_help_teleport"));
+        player.sendMessage(ChatColor.GOLD + "/mw list" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getString("world_help_list"));
         if (player.isOp()) {
-            player.sendMessage(ChatColor.GOLD + "/mw block [" + UltiTools.languageUtils.getWords("world_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("world_help_block"));
-            player.sendMessage(ChatColor.GOLD + "/mw unblock [" + UltiTools.languageUtils.getWords("world_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("world_help_unblock"));
-            player.sendMessage(ChatColor.GOLD + "/mw create [" + UltiTools.languageUtils.getWords("world_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("world_help_create"));
-            player.sendMessage(ChatColor.GOLD + "/mw load [" + UltiTools.languageUtils.getWords("world_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("world_help_load"));
-            player.sendMessage(ChatColor.GOLD + "/mw delete [" + UltiTools.languageUtils.getWords("world_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getWords("world_help_delete"));
+            player.sendMessage(ChatColor.GOLD + "/mw block [" + UltiTools.languageUtils.getString("world_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getString("world_help_block"));
+            player.sendMessage(ChatColor.GOLD + "/mw unblock [" + UltiTools.languageUtils.getString("world_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getString("world_help_unblock"));
+            player.sendMessage(ChatColor.GOLD + "/mw create [" + UltiTools.languageUtils.getString("world_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getString("world_help_create"));
+            player.sendMessage(ChatColor.GOLD + "/mw load [" + UltiTools.languageUtils.getString("world_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getString("world_help_load"));
+            player.sendMessage(ChatColor.GOLD + "/mw delete [" + UltiTools.languageUtils.getString("world_name") + "]" + ChatColor.GRAY + "  " + UltiTools.languageUtils.getString("world_help_delete"));
         }
     }
 
@@ -221,16 +221,16 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                     worlds.add(worldName);
                     worlds_config.set("worlds", worlds);
                     worlds_config.set("world." + worldName + ".type", "GRASS_BLOCK");
-                    worlds_config.set("world." + worldName + ".describe", UltiTools.languageUtils.getWords("none"));
+                    worlds_config.set("world." + worldName + ".describe", UltiTools.languageUtils.getString("none"));
                     try {
                         worlds_config.save(world_file);
                     } catch (IOException e) {
                         e.printStackTrace();
-                        player.sendMessage(warning(UltiTools.languageUtils.getWords("world_generate_failed")));
+                        player.sendMessage(warning(UltiTools.languageUtils.getString("world_generate_failed")));
                     }
-                    player.sendMessage(warning(UltiTools.languageUtils.getWords("world_generate_successfully")));
+                    player.sendMessage(warning(UltiTools.languageUtils.getString("world_generate_successfully")));
                 } else {
-                    player.sendMessage(warning(UltiTools.languageUtils.getWords("world_already_exists")));
+                    player.sendMessage(warning(UltiTools.languageUtils.getString("world_already_exists")));
                 }
             }
         }.runTask(UltiTools.getInstance());
@@ -257,7 +257,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
         if (!player.getWorld().getName().equalsIgnoreCase(world)) {
             teleport(player, location);
         } else {
-            player.sendMessage(warning(UltiTools.languageUtils.getWords("world_you_are_in_this_world")));
+            player.sendMessage(warning(UltiTools.languageUtils.getString("world_you_are_in_this_world")));
         }
     }
 
@@ -273,20 +273,20 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
             @Override
             public void run() {
                 if (!HomeCommands.teleportingPlayers.get(player.getUniqueId())) {
-                    player.sendTitle(ChatColor.RED + UltiTools.languageUtils.getWords("world_teleport_failed"), UltiTools.languageUtils.getWords("do_not_move"), 10, 50, 20);
+                    player.sendTitle(ChatColor.RED + UltiTools.languageUtils.getString("world_teleport_failed"), UltiTools.languageUtils.getString("do_not_move"), 10, 50, 20);
                     this.cancel();
                     return;
                 }
                 if (time == 0) {
                     player.teleport(location);
                     player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.ENTITY_ENDERMAN_TELEPORT), 1, 0);
-                    player.sendTitle(ChatColor.GREEN + UltiTools.languageUtils.getWords("world_teleport_successfully"), "", 10, 50, 20);
+                    player.sendTitle(ChatColor.GREEN + UltiTools.languageUtils.getString("world_teleport_successfully"), "", 10, 50, 20);
                     HomeCommands.teleportingPlayers.put(player.getUniqueId(), false);
                     this.cancel();
                     return;
                 }
                 if ((time / 0.5 % 2) == 0) {
-                    player.sendTitle(ChatColor.GREEN + UltiTools.languageUtils.getWords("world_teleporting"), String.format(UltiTools.languageUtils.getWords("world_teleporting_countdown"), (int) time), 10, 70, 20);
+                    player.sendTitle(ChatColor.GREEN + UltiTools.languageUtils.getString("world_teleporting"), String.format(UltiTools.languageUtils.getString("world_teleporting_countdown"), (int) time), 10, 70, 20);
                 }
                 time -= 0.5;
             }

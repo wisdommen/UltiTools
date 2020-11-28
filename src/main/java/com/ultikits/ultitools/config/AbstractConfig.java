@@ -45,6 +45,9 @@ abstract class AbstractConfig {
         this.file = new File(filePath);
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         for (String key : config.getKeys(true)) {
+            if (key.equals("config_version")){
+                continue;
+            }
             map.put(key, config.get(key));
         }
     }
