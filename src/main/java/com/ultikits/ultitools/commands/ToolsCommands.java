@@ -54,14 +54,10 @@ public class ToolsCommands implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
-        if (!(sender instanceof Player)) {
-            return null;
-        }
-        Player player = (Player) sender;
-        if (!player.hasPermission("ultikits.tools.commands")) {
-            return null;
-        }
         List<String> tabCommands = new ArrayList<>();
+        if (!sender.hasPermission("ultikits.tools.commands")) {
+            return null;
+        }
         switch (args.length){
             case 1:
                 tabCommands.add("reload");

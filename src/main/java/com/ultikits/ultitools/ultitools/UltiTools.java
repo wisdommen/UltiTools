@@ -56,6 +56,7 @@ public final class UltiTools extends JavaPlugin {
             folder.mkdirs();
             yaml.saveYamlFile(getDataFolder().getPath(), "config.yml", language + "_config.yml");
         }
+        language = getConfig().getString("language").split("_")[0];
         yaml.saveYamlFile(getDataFolder().getPath() + File.separator + "lang", language + ".yml", language + ".yml", true);
 
         List<File> folders = new ArrayList<>();
@@ -68,7 +69,6 @@ public final class UltiTools extends JavaPlugin {
         folders.add(new File(getDataFolder() + "/kitData"));
 
         makedirs(folders);
-
         File langFile = new File(getDataFolder().getPath() + File.separator + "lang", language + ".yml");
         languageUtils = YamlConfiguration.loadConfiguration(langFile);
 

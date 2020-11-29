@@ -2,6 +2,7 @@ package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractTabExecutor;
 import com.ultikits.ultitools.ultitools.UltiTools;
+import com.ultikits.ultitools.utils.FunctionUtils;
 import com.ultikits.utils.MessagesUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -10,6 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +67,15 @@ public class TeleportCommands extends AbstractTabExecutor {
     @Override
     protected @Nullable
     List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
+        List<String> tabCommands = new ArrayList<>();
+        if (strings.length == 1) {
+            tabCommands.add("accept");
+            tabCommands.add("reject");
+            for (Player player1 : Bukkit.getOnlinePlayers()) {
+                tabCommands.add(player1.getName());
+            }
+            return tabCommands;
+        }
         return null;
     }
 
