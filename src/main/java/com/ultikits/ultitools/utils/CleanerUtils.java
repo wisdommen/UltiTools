@@ -56,7 +56,7 @@ public class CleanerUtils {
         for (World world : worlds) {
             for (Entity entity : world.getEntities()) {
                 if (entity instanceof LivingEntity) {
-                    if (!(entity instanceof Player && entity instanceof ArmorStand)) {
+                    if (!(entity instanceof Player)) {
                         if (canMobBeClean((LivingEntity) entity)) {
                             List<String> list = (List<String>) ConfigController.getValue("clean_whitelist");
                             boolean doClean = true;
@@ -119,6 +119,14 @@ public class CleanerUtils {
         if (entity instanceof Tameable) {
             if (((Tameable) entity).isTamed()) {
                 return false;
+            }
+        }
+        List<String> list = (List<String>) ConfigController.getValue("clean_whitelist");
+        if (!(list == null || list.size() == 0)) {
+            for (String whiteListEntity : list) {
+                if (entity.getType() == EntityType.valueOf(whiteListEntity)) {
+                    return false;
+                }
             }
         }
         return !entity.isCustomNameVisible();
