@@ -37,8 +37,8 @@ public class WhitelistCommands implements TabExecutor {
     private void addPlayerToWhitelist(File file, String name) {
         List<String> whitelist = config.getStringList("whitelist");
         if (UltiTools.isDatabaseEnabled) {
-            if (DatabasePlayerTools.isPlayerExist(name) && DatabasePlayerTools.getPlayerData(name, "whitelisted").equals("false")) {
-                DatabasePlayerTools.updatePlayerData(name, "whitelisted", "true");
+            if (DatabasePlayerTools.isPlayerExist(name, "userinfo") && DatabasePlayerTools.getPlayerData(name, "userinfo", "whitelisted").equals("false")) {
+                DatabasePlayerTools.updatePlayerData(name, "userinfo", "whitelisted", "true");
             }
         } else {
             whitelist.add(name);
@@ -55,8 +55,8 @@ public class WhitelistCommands implements TabExecutor {
     private void removePlayerFromWhitelist(File file, String name) {
         List<String> whitelist = config.getStringList("whitelist");
         if (UltiTools.isDatabaseEnabled) {
-            if (DatabasePlayerTools.isPlayerExist(name) && DatabasePlayerTools.getPlayerData(name, "whitelisted").equals("true")) {
-                DatabasePlayerTools.updatePlayerData(name, "whitelisted", "false");
+            if (DatabasePlayerTools.isPlayerExist(name, "userinfo") && DatabasePlayerTools.getPlayerData(name, "userinfo", "whitelisted").equals("true")) {
+                DatabasePlayerTools.updatePlayerData(name, "userinfo", "whitelisted", "false");
             }
         } else {
             if (whitelist.contains(name)) {

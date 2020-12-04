@@ -1,40 +1,46 @@
 package com.ultikits.ultitools.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.listener.LoginListener;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.utils.MD5Utils;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.ultikits.ultitools.ultitools.UltiTools.isDatabaseEnabled;
 
 public class DatabasePlayerTools {
 
-    private static final String table = "userinfo";
+    private static final String userTable = "userinfo";
+    private static final String friendTable = "social_system";
     private static final String primaryID = "username";
 
     private DatabasePlayerTools() {
     }
 
-    public static boolean isPlayerExist(String playerName) {
+    public static boolean isPlayerExist(String playerName, String table) {
         return UltiTools.databaseUtils.isRecordExists(table, primaryID, playerName);
     }
 
-    public static String getPlayerData(String playerName, String field) {
+    public static String getPlayerData(String playerName, String table, String field) {
         return UltiTools.databaseUtils.getData(primaryID, playerName, table, field);
     }
 
-    public static boolean updatePlayerData(String playerName, String field, String value) {
+    public static boolean updatePlayerData(String playerName, String table, String field, String value) {
         return UltiTools.databaseUtils.updateData(table, field, primaryID, playerName, value);
     }
 
-    public static boolean insertPlayerData(Map<String, String> dataMap) {
+    public static boolean insertPlayerData(Map<String, String> dataMap, String table) {
         return UltiTools.databaseUtils.insertData(table, dataMap);
     }
 
@@ -44,7 +50,7 @@ public class DatabasePlayerTools {
 
     public static String getPlayerPassword(String playerName) {
         if (isDatabaseEnabled) {
-            return getPlayerData(playerName, "password");
+            return getPlayerData(playerName, userTable, "password");
         } else {
             File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
@@ -60,12 +66,12 @@ public class DatabasePlayerTools {
         password = MD5Utils.encrypt(password, playerName);
         if (isDatabaseEnabled) {
             if (isPlayerAccountExist(playerName)) {
-                updatePlayerData(playerName, "password", password);
-            }else {
+                updatePlayerData(playerName, userTable, "password", password);
+            } else {
                 Map<String, String> temp = new HashMap<>();
                 temp.put("username", playerName);
                 temp.put("password", password);
-                insertPlayerData(temp);
+                insertPlayerData(temp, userTable);
             }
         } else {
             File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
@@ -88,7 +94,7 @@ public class DatabasePlayerTools {
             return;
         }
         if (isDatabaseEnabled) {
-            updatePlayerData(playerName, "password", null);
+            updatePlayerData(playerName, userTable, "password", null);
         } else {
             File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
@@ -110,10 +116,10 @@ public class DatabasePlayerTools {
             return null;
         }
         if (isDatabaseEnabled) {
-            if (!UltiTools.databaseUtils.isColumnExists(table, "email")) {
-                UltiTools.databaseUtils.addColumn(table, "email");
+            if (!UltiTools.databaseUtils.isColumnExists(userTable, "email")) {
+                UltiTools.databaseUtils.addColumn(userTable, "email");
             }
-            return getPlayerData(playerName, "email");
+            return getPlayerData(playerName, userTable, "email");
         } else {
             File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
@@ -130,10 +136,10 @@ public class DatabasePlayerTools {
             return;
         }
         if (isDatabaseEnabled) {
-            if (!UltiTools.databaseUtils.isColumnExists(table, "email")) {
-                UltiTools.databaseUtils.addColumn(table, "email");
+            if (!UltiTools.databaseUtils.isColumnExists(userTable, "email")) {
+                UltiTools.databaseUtils.addColumn(userTable, "email");
             }
-            updatePlayerData(playerName, "email", playerEmail);
+            updatePlayerData(playerName, userTable, "email", playerEmail);
         } else {
             File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
@@ -152,7 +158,7 @@ public class DatabasePlayerTools {
 
     public static boolean isPlayerAccountExist(String playerName) {
         if (isDatabaseEnabled) {
-            return UltiTools.databaseUtils.getData(primaryID, playerName, table, "password") != null && !UltiTools.databaseUtils.getData(primaryID, playerName, table, "password").equals("");
+            return UltiTools.databaseUtils.getData(primaryID, playerName, userTable, "password") != null && !UltiTools.databaseUtils.getData(primaryID, playerName, userTable, "password").equals("");
         } else {
             File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
             return file.exists();
@@ -174,5 +180,66 @@ public class DatabasePlayerTools {
 
     public static void setIsLogin(String playerName, boolean isLogin) {
         LoginListener.playerLoginStatus.put(playerName, isLogin);
+    }
+
+    public static void addPlayerFriends(OfflinePlayer player, OfflinePlayer target) {
+        playerFriendOperator(player, target, true);
+    }
+
+    public static void removePlayerFriends(OfflinePlayer player, OfflinePlayer target) {
+        playerFriendOperator(player, target, false);
+    }
+
+    private static void playerFriendOperator(OfflinePlayer player, OfflinePlayer target, boolean operation) {
+        if (isDatabaseEnabled) {
+            if (!isPlayerExist(player.getName(), friendTable)) {
+                String friends = JSON.toJSONString(new ArrayList<>());
+                String blackList = JSON.toJSONString(new ArrayList<>());
+                Map<String, String> map = new HashMap<>();
+                map.put("username", player.getName());
+                map.put("black_list", blackList);
+                map.put("friends", friends);
+                insertPlayerData(map, friendTable);
+            }
+            String friendsJsonString = getPlayerData(player.getName(), friendTable, "username");
+            List<String> friends = JSON.parseArray(friendsJsonString, String.class);
+            friendsListOperator(friends, target.getName(), operation);
+            String friendsJsonStringReady = JSON.toJSONString(friends);
+            updatePlayerData(player.getName(), friendTable, "friends", friendsJsonStringReady);
+            return;
+        }
+        File file = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        List<String> list;
+        if (config.get("friends") == null) {
+            list = new ArrayList<>();
+        } else {
+            list = config.getStringList("friends");
+        }
+        friendsListOperator(list, target.getName(), operation);
+        config.set("friends", list);
+        try {
+            config.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static List<String> friendsListOperator(List<String> friends, String name, boolean operation) {
+        if (operation) {
+            friends.add(name);
+        } else {
+            if (friends.contains(name)) {
+                friends.remove(name);
+            }
+        }
+        return friends;
     }
 }

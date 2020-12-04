@@ -28,6 +28,8 @@ public class FunctionUtils {
         commandMap.put("chat-prefix", "enable_chat");
         commandMap.put("name-prefix", "enable_name_prefix");
         commandMap.put("death-punishment", "enable_death_punishment");
+        commandMap.put("tpa", "enable_tpa");
+        commandMap.put("warp", "enable_wrap");
         commandMap.put("papi", "enable_PAPI");
         commandMap.put("social-system", "enable_social_system");
         commandMap.put("auto-version-check", "enable_version_check");

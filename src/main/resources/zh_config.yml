@@ -88,6 +88,9 @@ enable_social_system: true
 '注释15请勿修改': '开启TPA功能'
 enable_tpa: true
 
+'注释16请勿修改': '开启地标功能'
+enable_warp: true
+
 '注释29请勿修改': '（远程背包）创建一个远程背包所需的价格'
 price_of_create_a_remote_chest: 10000
 

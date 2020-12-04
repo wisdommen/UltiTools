@@ -1,20 +1,20 @@
 package com.ultikits.ultitools.utils;
 
+import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.CleanTypeEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Tameable;
+import org.bukkit.entity.*;
 
+import java.io.File;
 import java.util.List;
 
 public class CleanerUtils {
 
-    private CleanerUtils(){}
+    private CleanerUtils() {
+    }
 
     public static int run(CleanTypeEnum cleanType) {
         return run(cleanType, null);
@@ -56,10 +56,21 @@ public class CleanerUtils {
         for (World world : worlds) {
             for (Entity entity : world.getEntities()) {
                 if (entity instanceof LivingEntity) {
-                    if (!(entity instanceof Player)) {
+                    if (!(entity instanceof Player && entity instanceof ArmorStand)) {
                         if (canMobBeClean((LivingEntity) entity)) {
-                            entity.remove();
-                            count++;
+                            List<String> list = (List<String>) ConfigController.getValue("clean_whitelist");
+                            boolean doClean = true;
+                            if (!(list == null || list.size() == 0)) {
+                                for (String whiteListEntity : list) {
+                                    if (entity.getType() == EntityType.valueOf(whiteListEntity)) {
+                                        doClean = false;
+                                    }
+                                }
+                            }
+                            if (doClean) {
+                                entity.remove();
+                                count++;
+                            }
                         }
                     }
                 }
@@ -69,11 +80,11 @@ public class CleanerUtils {
     }
 
     public static int cleanEntities(List<World> worlds) {
-        return cleanMobs(worlds)+cleanDroppedItem(worlds);
+        return cleanMobs(worlds) + cleanDroppedItem(worlds);
     }
 
-    public static int checkEntities(List<World> worlds){
-        return checkItems(worlds)+checkMobs(worlds);
+    public static int checkEntities(List<World> worlds) {
+        return checkItems(worlds) + checkMobs(worlds);
     }
 
     public static int checkItems(List<World> worlds) {
@@ -102,10 +113,10 @@ public class CleanerUtils {
         return count;
     }
 
-    private static boolean canMobBeClean(LivingEntity entity){
+    private static boolean canMobBeClean(LivingEntity entity) {
         if (!entity.hasGravity()) return false;
-        if (entity.getCustomName()!=null) return false;
-        if (entity instanceof Tameable){
+        if (entity.getCustomName() != null) return false;
+        if (entity instanceof Tameable) {
             if (((Tameable) entity).isTamed()) {
                 return false;
             }
@@ -116,7 +127,7 @@ public class CleanerUtils {
     public static String sendMessage(CleanTypeEnum cleanType, String name, int cleanCount) {
         switch (cleanType) {
             case CHECK:
-                return ChatColor.GREEN + String.format(UltiTools.languageUtils.getString("clean_check_report"),name, ChatColor.RED + String.valueOf(cleanCount) + ChatColor.GREEN, ChatColor.RED + cleanType.toString() + ChatColor.GREEN);
+                return ChatColor.GREEN + String.format(UltiTools.languageUtils.getString("clean_check_report"), name, ChatColor.RED + String.valueOf(cleanCount) + ChatColor.GREEN, ChatColor.RED + cleanType.toString() + ChatColor.GREEN);
             default:
                 return ChatColor.GREEN + String.format(UltiTools.languageUtils.getString("clean_clean_report"), name, ChatColor.RED + String.valueOf(cleanCount) + ChatColor.GREEN, ChatColor.RED + cleanType.toString());
         }

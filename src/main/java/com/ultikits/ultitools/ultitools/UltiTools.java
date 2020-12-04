@@ -3,6 +3,7 @@ package com.ultikits.ultitools.ultitools;
 import com.ultikits.api.VersionWrapper;
 import com.ultikits.beans.CheckResponse;
 import com.ultikits.main.UltiCoreAPI;
+import com.ultikits.ultitools.checker.prochecker.DependencyChecker;
 import com.ultikits.ultitools.checker.prochecker.ProChecker;
 import com.ultikits.ultitools.checker.updatechecker.VersionChecker;
 import com.ultikits.ultitools.commands.*;
@@ -12,6 +13,7 @@ import com.ultikits.ultitools.register.CommandRegister;
 import com.ultikits.ultitools.tasks.*;
 import com.ultikits.ultitools.utils.YamlFileUtils;
 import com.ultikits.utils.DatabaseUtils;
+import com.ultikits.utils.MessagesUtils;
 import com.ultikits.utils.VersionAdaptor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -44,6 +46,12 @@ public final class UltiTools extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+        if (!DependencyChecker.isUltiCoreUpToDate()){
+            this.getServer().getConsoleSender().sendMessage(MessagesUtils.warning(languageUtils.getString("ulticore_version_old")));
+            this.getServer().getConsoleSender().sendMessage(MessagesUtils.warning(languageUtils.getString("ulticore_download")));
+            this.getServer().getPluginManager().disablePlugin(plugin);
+            return;
+        }
         ultiCoreAPI = new UltiCoreAPI(this);
         isPAPILoaded = UltiCoreAPI.isPapiLoaded();
         ultiCoreAPI.startBStates(8652);
@@ -67,6 +75,7 @@ public final class UltiTools extends JavaPlugin {
         folders.add(new File(getDataFolder() + "/permission"));
         folders.add(new File(getDataFolder() + "/sidebar"));
         folders.add(new File(getDataFolder() + "/kitData"));
+        folders.add(new File(getDataFolder() + "/warps"));
 
         makedirs(folders);
         File langFile = new File(getDataFolder().getPath() + File.separator + "lang", language + ".yml");
@@ -87,7 +96,8 @@ public final class UltiTools extends JavaPlugin {
             ultiCoreAPI.setUpDatabase(database, ip, port, username, password);
             databaseUtils = new DatabaseUtils(ultiCoreAPI);
 
-            if (databaseUtils.createTable(table, new String[]{"username", "password", "whitelisted", "banned"})) {
+            if (databaseUtils.createTable(table, new String[]{"username", "password", "whitelisted", "banned"})
+                    && databaseUtils.createTable(table, new String[]{"username", "friends", "black_list"})) {
                 getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("database_connected"));
             } else {
                 getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("database_connect_failed"));
@@ -179,7 +189,14 @@ public final class UltiTools extends JavaPlugin {
         }
         if (this.getConfig().getBoolean("enable_tpa")) {
             CommandRegister.registerCommand(plugin, new TeleportCommands(), "ultikits.tools.tpa", languageUtils.getString("tpa_function"), "tpa");
+            CommandRegister.registerCommand(plugin, new TpaHereCommands(), "ultikits.tools.tpa", languageUtils.getString("tpa_function"), "tphere");
             getServer().getPluginManager().registerEvents(new TpaAcceptListener(), this);
+        }
+        if (this.getConfig().getBoolean("enable_warp")) {
+            CommandRegister.registerCommand(plugin, new WarpCommands(), "ultikits.tools.warp", languageUtils.getString("warp_function"), "warp");
+            CommandRegister.registerCommand(plugin, new WarpCommands(), "ultikits.tools.warp", languageUtils.getString("warp_function"), "warps");
+            CommandRegister.registerCommand(plugin, new WarpCommands(), "ultikits.tools.warp", languageUtils.getString("warp_function"), "delwarp");
+            CommandRegister.registerCommand(plugin, new WarpCommands(), "ultikits.tools.warp", languageUtils.getString("warp_function"), "setwarp");
         }
 
 

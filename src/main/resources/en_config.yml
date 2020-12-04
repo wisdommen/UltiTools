@@ -88,6 +88,9 @@ enable_social_system: true
 'comment15': 'enable tpa function'
 enable_tpa: true
 
+'comment16': 'enable tpa function'
+enable_warp: true
+
 'comment29': '(Remote bag) Price to create a bag'
 price_of_create_a_remote_chest: 10000
 

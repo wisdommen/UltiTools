@@ -28,8 +28,8 @@ public class WhitelistListener implements Listener {
                 event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.AQUA + UltiTools.languageUtils.getString("whitelist_not_on"));
             }
         } else {
-            if (DatabasePlayerTools.isPlayerExist(player.getName())) {
-                if (DatabasePlayerTools.isPlayerExist(player.getName()) && DatabasePlayerTools.getPlayerData(player.getName(), "whitelisted").equals("false")) {
+            if (DatabasePlayerTools.isPlayerExist(player.getName(), "userinfo")) {
+                if (DatabasePlayerTools.isPlayerExist(player.getName(), "userinfo") && DatabasePlayerTools.getPlayerData(player.getName(), "userinfo", "whitelisted").equals("false")) {
                     event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.AQUA + UltiTools.languageUtils.getString("whitelist_not_on"));
                 }
             }else {
@@ -38,7 +38,7 @@ public class WhitelistListener implements Listener {
                 playerData.put("password", "");
                 playerData.put("whitelisted", "false");
                 playerData.put("banned", "false");
-                DatabasePlayerTools.insertPlayerData(playerData);
+                DatabasePlayerTools.insertPlayerData(playerData, "userinfo");
                 event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.AQUA + UltiTools.languageUtils.getString("whitelist_not_on"));
             }
         }

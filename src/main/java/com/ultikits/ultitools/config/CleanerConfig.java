@@ -4,7 +4,9 @@ import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class CleanerConfig extends AbstractConfigReviewable {
 
@@ -16,7 +18,7 @@ public class CleanerConfig extends AbstractConfigReviewable {
 
     private CleanerConfig(String name, String filePath) {
         super(name, filePath);
-        map.put("config_version", 1.1);
+        map.put("config_version", 1.2);
         map.put("cleaner_name", UltiTools.languageUtils.getString("clean_name"));
         map.put("clean_entity_task_enable", false);
         map.put("enable_smart_clean", true);
@@ -30,6 +32,7 @@ public class CleanerConfig extends AbstractConfigReviewable {
         map.put("max_chunk_distance", 320);
         map.put("max_unused_chunks", 100);
         map.put("unload_chunks_per_minute", 10);
+        map.put("clean_whitelist", new ArrayList<>());
     }
 
     @Override
