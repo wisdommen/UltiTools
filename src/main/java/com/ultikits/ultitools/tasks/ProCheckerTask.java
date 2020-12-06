@@ -1,7 +1,7 @@
 package com.ultikits.ultitools.tasks;
 
 import com.ultikits.beans.CheckResponse;
-import com.ultikits.ultitools.checker.prochecker.ProChecker;
+import com.ultikits.ultitools.checker.ProChecker;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.scheduler.BukkitRunnable;
 

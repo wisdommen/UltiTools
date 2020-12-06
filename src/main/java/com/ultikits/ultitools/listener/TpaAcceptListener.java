@@ -1,6 +1,6 @@
 package com.ultikits.ultitools.listener;
 
-import com.ultikits.ultitools.beans.TpBean;
+import com.ultikits.ultitools.tasks.TpTimerTask;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,9 +13,9 @@ public class TpaAcceptListener implements Listener {
     public void onPlayerPressKey(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         if (player.isSneaking()) {
-            if (TpBean.tpTemp.get(player) != null) {
+            if (TpTimerTask.tpTemp.get(player) != null) {
                 tpOperation(event, player, "tpa");
-            } else if (TpBean.tphereTemp.get(player) != null) {
+            } else if (TpTimerTask.tphereTemp.get(player) != null) {
                 tpOperation(event, player, "tpahere");
             }
         }

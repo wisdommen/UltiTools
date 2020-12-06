@@ -13,7 +13,7 @@ public class WhiteListConfig extends AbstractConfig{
         config.init();
     }
 
-    public WhiteListConfig(String name, String filePath) {
+    private WhiteListConfig(String name, String filePath) {
         super(name, filePath);
         map.put("whitelist", Collections.emptyList());
     }

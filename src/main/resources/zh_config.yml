@@ -1,5 +1,6 @@
-config_version: 3.11
+config_version: 3.22
 
+'注释0请勿修改': '语言: zh_cn(简体中文), en_us(English)'
 language: zh_CN
 
 '注释52请勿修改': '是否开启PRO版本'
@@ -91,8 +92,14 @@ enable_tpa: true
 '注释16请勿修改': '开启地标功能'
 enable_warp: true
 
-'注释29请勿修改': '（远程背包）创建一个远程背包所需的价格'
-price_of_create_a_remote_chest: 10000
+'注释17请勿修改': '开启返回死亡地功能'
+enable_back: true
+
+'注释18请勿修改': '开启返回出生地功能'
+enable_spawn: true
+
+'注释19请勿修改': '开启自动回复功能'
+enable_auto-reply: true
 
 '注释41请勿修改': '(chat) 自定义聊天前缀'
 chat_prefix: '§e[§a%player_world%§e][§c%ul_job%§dLv.%ul_level%§e][§b%player_name%§e]'

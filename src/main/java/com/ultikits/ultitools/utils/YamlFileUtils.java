@@ -40,7 +40,7 @@ public class YamlFileUtils {
         saveResource(filePath, resourcePath, fileName, replace);
     }
 
-    private void saveResource(String filePath, @NotNull String resourcePath, String outFileName, boolean replace) {
+    public void saveResource(String filePath, @NotNull String resourcePath, String outFileName, boolean replace) {
         if (resourcePath.equals("")) {
             throw new IllegalArgumentException("ResourcePath cannot be null or empty");
         }

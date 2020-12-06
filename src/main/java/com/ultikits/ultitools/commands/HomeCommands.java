@@ -12,9 +12,6 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,11 +19,15 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.*;
 
-public class HomeCommands extends AbstractTabExecutor implements Listener {
+public class HomeCommands extends AbstractTabExecutor {
 
     public final static Map<UUID, Boolean> teleportingPlayers = new HashMap<>();
     private static final File homeFile = new File(ConfigsEnum.HOME.toString());
     private static final YamlConfiguration homeConfig = YamlConfiguration.loadConfiguration(homeFile);
+
+    static {
+        new Task().runTaskTimerAsynchronously(UltiTools.getInstance(), 0, 10L);
+    }
 
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] args, @NotNull Player player) {
@@ -64,18 +65,9 @@ public class HomeCommands extends AbstractTabExecutor implements Listener {
     }
 
     @Override
-    protected @Nullable List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
+    protected @Nullable
+    List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
         return Utils.getHomeList(player);
-    }
-
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
-        if (teleportingPlayers.get(player.getUniqueId()) == null || !teleportingPlayers.get(player.getUniqueId()))
-            return;
-        if (teleportingPlayers.get(player.getUniqueId())) {
-            teleportingPlayers.put(player.getUniqueId(), false);
-        }
     }
 
     private static void teleportPlayer(Player player, Location location) {
@@ -92,6 +84,7 @@ public class HomeCommands extends AbstractTabExecutor implements Listener {
             public void run() {
                 if (!teleportingPlayers.get(player.getUniqueId())) {
                     player.sendTitle(ChatColor.RED + UltiTools.languageUtils.getString("home_teleport_failed"), UltiTools.languageUtils.getString("do_not_move"), 10, 50, 20);
+                    Task.playerLocationMap.put(player, null);
                     this.cancel();
                     return;
                 }
@@ -100,14 +93,42 @@ public class HomeCommands extends AbstractTabExecutor implements Listener {
                     player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.ENTITY_ENDERMAN_TELEPORT), 1, 0);
                     player.sendTitle(ChatColor.GREEN + UltiTools.languageUtils.getString("home_teleport_success"), "", 10, 50, 20);
                     teleportingPlayers.put(player.getUniqueId(), false);
+                    Task.playerLocationMap.put(player, null);
                     this.cancel();
                     return;
                 }
                 if ((time / 0.5 % 2) == 0) {
-                    player.sendTitle(ChatColor.GREEN + UltiTools.languageUtils.getString("home_teleporting"), String.format(UltiTools.languageUtils.getString("world_teleporting_countdown"),(int) time), 10, 70, 20);
+                    player.sendTitle(ChatColor.GREEN + UltiTools.languageUtils.getString("home_teleporting"), String.format(UltiTools.languageUtils.getString("world_teleporting_countdown"), (int) time), 10, 70, 20);
                 }
                 time -= 0.5;
             }
         }.runTaskTimer(UltiTools.getInstance(), 0, 10L);
+    }
+}
+
+class Task extends BukkitRunnable {
+    public static Map<Player, String> playerLocationMap = new HashMap<>();
+
+    @Override
+    public void run() {
+        for (UUID playerUUID : HomeCommands.teleportingPlayers.keySet()) {
+            if (!HomeCommands.teleportingPlayers.get(playerUUID)){
+                continue;
+            }
+            Player player = Bukkit.getPlayer(playerUUID);
+            if (player == null) {
+                continue;
+            }
+            Location location = player.getLocation();
+            String currentLocation = location.getX() + "" + location.getY() + "" + location.getZ();
+            if (playerLocationMap.get(player) == null) {
+                playerLocationMap.put(player, currentLocation);
+            } else {
+                String lastLocation = playerLocationMap.get(player);
+                if (!currentLocation.equals(lastLocation)) {
+                    HomeCommands.teleportingPlayers.put(playerUUID, false);
+                }
+            }
+        }
     }
 }

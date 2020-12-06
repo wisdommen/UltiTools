@@ -27,6 +27,9 @@ public class ConfigController {
         new MultiworldsConfig();
         new DeathPunishConfig();
         new MainConfig();
+        new WhiteListConfig();
+        new BagConfig();
+        new ChatConfig();
         for (AbstractConfig abstractConfig : configMap.values()) {
             for (String key : abstractConfig.map.keySet()) {
                 config.put(key, abstractConfig.name);

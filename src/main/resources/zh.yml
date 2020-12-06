@@ -8,6 +8,7 @@ dropped_item: 掉落物
 entity: 实体
 default: 默认
 config_reloaded: 配置文件已重载！
+no_such_player: 未找到此玩家！
 economy_dependency_not_found: 未找到经济前置！
 inherited_permission_group: 继承的权限组
 permission_group_name: 权限组名
@@ -150,7 +151,9 @@ emailregister_enter_email_first: 请先输入邮箱！
 emailregister_email_validated: 邮箱验证成功！
 emailregister_code_invalid: 验证码错误，请重新输入验证码！
 emailregister_not_register_email: 你还没有绑定邮箱，不可以找回密码！
+emailregister_not_register_email_description: 未绑定邮箱，无法使用
 emailregister_enter_validation_code: 请输入6位验证码！
+emailregister_password_changed: 已更改此玩家的密码！
 world_not_allow_enter: 此世界已经被禁止进入！
 world_world_not_exits: 不存在这个世界！
 world_world_not_found: 没有找到这个世界！
@@ -298,3 +301,5 @@ warp_already_exists: 已存在此地标！
 warp_name_shall_not_empty: '[格式错误]地标必须有一个名字!'
 warp_set_successfully: '成功创建地标 %s'
 warp_deleted: '地标 %s 删除成功!'
+back_function: 死亡返回功能
+back_havent_dead: 无法找到死亡地点！\n这可能是因为插件重载或者你还没死过哩。

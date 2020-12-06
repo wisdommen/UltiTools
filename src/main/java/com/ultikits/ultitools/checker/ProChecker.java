@@ -1,4 +1,4 @@
-package com.ultikits.ultitools.checker.prochecker;
+package com.ultikits.ultitools.checker;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

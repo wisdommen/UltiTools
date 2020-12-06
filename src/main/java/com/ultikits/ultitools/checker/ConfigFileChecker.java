@@ -1,6 +1,5 @@
-package com.ultikits.ultitools.checker.updatechecker;
+package com.ultikits.ultitools.checker;
 
-import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -15,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.ultikits.ultitools.checker.updatechecker.VersionChecker.*;
+import static com.ultikits.ultitools.checker.VersionChecker.*;
 import static com.ultikits.ultitools.utils.Utils.getFiles;
 
 public class ConfigFileChecker {

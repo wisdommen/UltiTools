@@ -6,54 +6,27 @@ import com.ultikits.manager.ItemStackManager;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.enums.LoginRegisterEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.*;
 
-import static com.ultikits.utils.MessagesUtils.info;
-import static com.ultikits.utils.MessagesUtils.unimportant;
+import static com.ultikits.utils.MessagesUtils.warning;
 
 public class GUIUtils {
 
     public static Map<String, InventoryManager> inventoryMap = new HashMap<>();
 
-    private GUIUtils(){}
-
-    public static void setPlayerRemoteChest(@NotNull Player player) {
-        setPlayerRemoteChest(player.getName());
-    }
-
-    public static void setPlayerRemoteChest(@NotNull String playerName) {
-        YamlConfiguration config = Utils.getConfig(Utils.getConfigFile());
-        File chestFile = new File(ConfigsEnum.PLAYER_CHEST.toString(), playerName + ".yml");
-        YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
-        InventoryManager chest = new InventoryManager(null, 36, UltiTools.languageUtils.getString("bag_function"));
-        inventoryMap.put(playerName + ".chest", chest);
-
-        if (!chestConfig.getKeys(false).isEmpty()) {
-            for (int i = 1; i <= chestConfig.getKeys(false).size(); i++) {
-                ItemStackManager itemStackManager = new ItemStackManager(new ItemStack(Material.CHEST), new ArrayList<>(), info(i + UltiTools.languageUtils.getString("bag_number")));
-                inventoryMap.get(playerName + ".chest").setItem(i - 1, itemStackManager.getItem());
-            }
-        }
-        ArrayList<String> lore = new ArrayList<>();
-        ItemStack item2 = new ItemStack(Material.MINECART);
-        ItemMeta stickmeta = item2.getItemMeta();
-        lore.add(unimportant(UltiTools.languageUtils.getString("price") + config.getInt("price_of_create_a_remote_chest")));
-        Objects.requireNonNull(stickmeta).setLore(lore);
-        stickmeta.setDisplayName(ChatColor.AQUA + UltiTools.languageUtils.getString("bag_button_create_bag"));
-        item2.setItemMeta(stickmeta);
-        inventoryMap.get(playerName + ".chest").setItem(35, item2);
+    private GUIUtils() {
     }
 
     public static void setupLoginRegisterLayout(Player player, @NotNull LoginRegisterEnum title) {
+        File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), player.getName() + ".yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+
         InventoryManager inventoryManager = new InventoryManager(player, 54, title.toString());
         inventoryMap.put(player.getName() + title.toString(), inventoryManager);
 
@@ -77,15 +50,22 @@ public class GUIUtils {
         ItemStack greenGlass = UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.GREEN);
         ItemStack orangeGlass = UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.ORANGE);
         ItemStack grayGlass = UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.GRAY);
-        if (title == LoginRegisterEnum.LOGIN && UltiTools.isProVersion){
-            ItemStackManager itemStackManager6 = new ItemStackManager(blueGlass, UltiTools.languageUtils.getString("button_forget_password"));
+        if (title == LoginRegisterEnum.LOGIN && UltiTools.isProVersion) {
+            ArrayList<String> lore = new ArrayList<>();
+            ItemStackManager itemStackManager6;
+            if (!config.getBoolean("registered")) {
+                lore.add(warning(UltiTools.languageUtils.getString("emailregister_not_register_email_description")));
+                itemStackManager6 = new ItemStackManager(blueGlass, lore, UltiTools.languageUtils.getString("button_forget_password"));
+            } else {
+                itemStackManager6 = new ItemStackManager(blueGlass, UltiTools.languageUtils.getString("button_forget_password"));
+            }
             inventoryManager.setItem(45, itemStackManager6.getItem());
         }
         ItemStackManager itemStackManager2 = new ItemStackManager(redGlass, UltiTools.languageUtils.getString("button_clear"));
         inventoryManager.setItem(48, itemStackManager2.getItem());
         ItemStackManager itemStackManager3 = new ItemStackManager(greenGlass, UltiTools.languageUtils.getString("button_ok"));
         inventoryManager.setItem(50, itemStackManager3.getItem());
-        ItemStackManager itemStackManager4 = new ItemStackManager(orangeGlass,  UltiTools.languageUtils.getString("button_quit"));
+        ItemStackManager itemStackManager4 = new ItemStackManager(orangeGlass, UltiTools.languageUtils.getString("button_quit"));
         inventoryManager.setItem(53, itemStackManager4.getItem());
         ItemStackManager itemStackManager5 = new ItemStackManager(grayGlass, "");
         for (int i = 9; i < 54; i++) {
@@ -131,7 +111,7 @@ public class GUIUtils {
                     inventoryManager.setItem(i, itemStackManager5.getItem());
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

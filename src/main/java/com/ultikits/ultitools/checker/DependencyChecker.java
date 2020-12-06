@@ -1,4 +1,4 @@
-package com.ultikits.ultitools.checker.prochecker;
+package com.ultikits.ultitools.checker;
 
 import org.bukkit.Bukkit;
 

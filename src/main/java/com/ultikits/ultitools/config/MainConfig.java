@@ -11,9 +11,9 @@ public class MainConfig extends AbstractConfigReviewable{
         config.init();
     }
 
-    public MainConfig(String name, String filePath) {
+    private MainConfig(String name, String filePath) {
         super(name, filePath);
-        map.put("config_version", 3.2);
+        map.put("config_version", 3.22);
         map.put("language", "zh_CN");
         map.put("enable_pro", false);
         map.put("pro_name", "xxxxxxxxxxxxxx");
@@ -46,8 +46,9 @@ public class MainConfig extends AbstractConfigReviewable{
         map.put("enable_social_system", true);
         map.put("enable_tpa", true);
         map.put("enable_warp", true);
-        map.put("price_of_create_a_remote_chest", 10000);
-        map.put("chat_prefix", "§e[§a%player_world%§e][§c%ul_job%§dLv.%ul_level%§e][§b%player_name%§e]");
+        map.put("enable_back", true);
+        map.put("enable_spawn", true);
+        map.put("enable_auto-reply", true);
         map.put("name_prefix", "§e[§c%ul_job%§dLv.%ul_level%§e]");
         map.put("name_suffix", "§e[§c%ul_health%§e/§c%ul_max_health%§e]");
     }

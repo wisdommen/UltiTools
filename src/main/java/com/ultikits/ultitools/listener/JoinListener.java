@@ -1,6 +1,6 @@
 package com.ultikits.ultitools.listener;
 
-import com.ultikits.ultitools.checker.updatechecker.VersionChecker;
+import com.ultikits.ultitools.checker.VersionChecker;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -22,7 +22,7 @@ import java.net.InetAddress;
 import java.util.Collections;
 import java.util.List;
 
-import static com.ultikits.ultitools.checker.updatechecker.VersionChecker.*;
+import static com.ultikits.ultitools.checker.VersionChecker.*;
 
 public class JoinListener implements Listener {
 
@@ -52,9 +52,9 @@ public class JoinListener implements Listener {
                     }
                 }.runTaskLaterAsynchronously(UltiTools.getInstance(), 80L);
             }
-            Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, opJoinMessage == null ? vanillaJoinMessage : opJoinMessage));
+            Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, opJoinMessage == null ? vanillaJoinMessage : opJoinMessage.replace("%player_name%", player.getName())));
         } else {
-            Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, playerJoinMessage == null ? vanillaJoinMessage : playerJoinMessage));
+            Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, playerJoinMessage == null ? vanillaJoinMessage : playerJoinMessage.replace("%player_name%", player.getName())));
         }
 
         new BukkitRunnable() {
@@ -92,9 +92,9 @@ public class JoinListener implements Listener {
         String vanillaQuitMessage = event.getQuitMessage() == null ? "" : event.getQuitMessage();
         event.setQuitMessage(null);
         if (event.getPlayer().isOp()) {
-            Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, opQuitMessage == null ? vanillaQuitMessage : opQuitMessage));
+            Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, opQuitMessage == null ? vanillaQuitMessage : opQuitMessage.replace("%player_name%", player.getName())));
         } else {
-            Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, playerQuitMessage == null ? vanillaQuitMessage : playerQuitMessage));
+            Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, playerQuitMessage == null ? vanillaQuitMessage : playerQuitMessage.replace("%player_name%", player.getName())));
         }
     }
 

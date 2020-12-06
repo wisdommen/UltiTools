@@ -1,4 +1,4 @@
-package com.ultikits.ultitools.checker.updatechecker;
+package com.ultikits.ultitools.checker;
 
 import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.ChatColor;
@@ -12,8 +12,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-import static com.ultikits.ultitools.checker.updatechecker.ConfigFileChecker.deleteOldVersion;
-import static com.ultikits.ultitools.checker.updatechecker.ConfigFileChecker.downloadNewVersion;
+import static com.ultikits.ultitools.checker.ConfigFileChecker.deleteOldVersion;
+import static com.ultikits.ultitools.checker.ConfigFileChecker.downloadNewVersion;
 
 public class VersionChecker {
 

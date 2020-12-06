@@ -1,7 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractTabExecutor;
-import com.ultikits.ultitools.beans.TpBean;
+import com.ultikits.ultitools.tasks.TpTimerTask;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.utils.MessagesUtils;
 import org.bukkit.Bukkit;
@@ -21,22 +21,22 @@ public class TpaHereCommands extends AbstractTabExecutor {
         if (strings.length == 1){
             switch (strings[0]) {
                 case "accept":
-                    Player teleporter = TpBean.tphereTemp.get(player);
+                    Player teleporter = TpTimerTask.tphereTemp.get(player);
                     if (teleporter == null) {
                         player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("tpa_no_request")));
                         return true;
                     }
-                    TpBean.tphereTemp.put(player, null);
-                    TpBean.tphereTimer.put(player, 0);
+                    TpTimerTask.tphereTemp.put(player, null);
+                    TpTimerTask.tphereTimer.put(player, 0);
                     player.teleport(teleporter.getLocation());
                     teleporter.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("tpa_teleport_success")));
                     return true;
                 case "reject":
-                    Player teleporter2 = TpBean.tphereTemp.get(player);
+                    Player teleporter2 = TpTimerTask.tphereTemp.get(player);
                     teleporter2.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("tpa_teleport_rejected")));
                     player.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("tpa_rejected")));
-                    TpBean.tphereTemp.put(player, null);
-                    TpBean.tphereTimer.put(player, 0);
+                    TpTimerTask.tphereTemp.put(player, null);
+                    TpTimerTask.tphereTimer.put(player, 0);
                     return true;
                 default:
                     Player target = Bukkit.getPlayerExact(strings[0]);
@@ -44,8 +44,8 @@ public class TpaHereCommands extends AbstractTabExecutor {
                         player.sendMessage(warning(UltiTools.languageUtils.getString("tpa_player_not_found")));
                         return true;
                     }
-                    TpBean.tphereTemp.put(target, player);
-                    TpBean.tphereTimer.put(target, 20);
+                    TpTimerTask.tphereTemp.put(target, player);
+                    TpTimerTask.tphereTimer.put(target, 20);
                     target.sendMessage(MessagesUtils.info(String.format(UltiTools.languageUtils.getString("tpahere_enquire"), player.getName())));
                     target.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("tpahere_accept_tip")));
                     target.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("tpahere_reject_tip")));

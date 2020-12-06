@@ -13,7 +13,7 @@ public class ChestDataConfig extends AbstractConfig{
         chest.init();
     }
 
-    public ChestDataConfig(String name, String filePath) {
+    private ChestDataConfig(String name, String filePath) {
         super(name, filePath);
         map.put("locked", new ArrayList<>());
     }

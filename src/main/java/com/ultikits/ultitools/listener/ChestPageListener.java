@@ -3,6 +3,7 @@ package com.ultikits.ultitools.listener;
 import com.ultikits.enums.Sounds;
 import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.PagesListener;
+import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.Utils;
@@ -90,7 +91,6 @@ public class ChestPageListener extends PagesListener {
     @Override
     public void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clicked) {
         if (event.getView().getTitle().contains((String.format(UltiTools.languageUtils.getString("bag_main_page_title"), player.getName())))) {
-            YamlConfiguration config = Utils.getConfig(Utils.getConfigFile());
             File chestFile = new File(ConfigsEnum.PLAYER_CHEST.toString(), player.getName() + ".yml");
             YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
 
@@ -100,14 +100,23 @@ public class ChestPageListener extends PagesListener {
                     String chestName = player.getName() + UltiTools.languageUtils.getString("bag_s") + ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
                     loadBag(chestName, player, player);
                 } else if (UltiTools.languageUtils.getString("bag_button_create_bag").equals(ChatColor.stripColor(clicked.getItemMeta().getDisplayName()))) {
-                    int price = config.getInt("price_of_create_a_remote_chest");
+                    int bagNumber = chestConfig.getKeys(false).size() + 1;
+                    int price = getBagPrice(bagNumber);
                     if (EconomyUtils.withdraw(player, price)) {
-                        loadBag(player.getName() + UltiTools.languageUtils.getString("bag_s") + (chestConfig.getKeys(false).size() + 1) + UltiTools.languageUtils.getString("bag_number"), player, player);
+                        loadBag(player.getName() + UltiTools.languageUtils.getString("bag_s") + (bagNumber) + UltiTools.languageUtils.getString("bag_number"), player, player);
                     } else {
                         player.sendMessage(not_enough_money);
                     }
                 }
             }
         }
+    }
+
+    public static int getBagPrice(int bagNumber){
+        int price = (int) ConfigController.getValue("price_of_create_a_remote_chest");
+        if ((Boolean) ConfigController.getValue("enable_price_increase")) {
+            price = price + Math.toIntExact(Math.round((float) ((int) ConfigController.getValue("price_of_create_a_remote_chest")) * (((double) ConfigController.getValue("price_increase_rate"))*bagNumber)));
+        }
+        return price;
     }
 }

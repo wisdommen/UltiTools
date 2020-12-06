@@ -1,5 +1,6 @@
-config_version: 3.11
+config_version: 3.22
 
+'comment0': 'Language: zh_cn(简体中文), en_us(English)'
 language: en_US
 
 'comment52': 'if enable PRO version'
@@ -91,8 +92,14 @@ enable_tpa: true
 'comment16': 'enable tpa function'
 enable_warp: true
 
-'comment29': '(Remote bag) Price to create a bag'
-price_of_create_a_remote_chest: 10000
+'comment17': 'enable back function'
+enable_back: true
+
+'comment18': 'enable spawn function'
+enable_spawn: true
+
+'comment19': 'enable auto-reply function'
+enable_auto-reply: true
 
 'comment41': '(chat) customize chat prefix'
 chat_prefix: '§e[§a%player_world%§e][§c%ul_job%§dLv.%ul_level%§e][§b%player_name%§e]'

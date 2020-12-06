@@ -1,99 +1,40 @@
 package com.ultikits.ultitools.listener;
 
-import com.ultikits.ultitools.config.ConfigController;
-import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.DeathPunishUtils;
-import org.bukkit.ChatColor;
+import com.ultikits.ultitools.tasks.DeathPunishmentTask;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author qianmo, wisdomme
  */
 public class DeathListener implements Listener {
+    private static final List<Player> list = new ArrayList<>();
+
+    @EventHandler
+    public void onPlayerDeath(PlayerDeathEvent event){
+        Player player = event.getEntity();
+        if (list.contains(player)){
+            list.remove(player);
+            DeathPunishmentTask.addPlayerToQueue(player);
+        }
+    }
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
-        Player player;
-        List<String> list;
-        String world;
         if (!(event.getEntity() instanceof Player)) {
             return;
         }
-            player = (Player) event.getEntity();
-            world = player.getWorld().getName();
+        Player player = (Player) event.getEntity();
 
         if (player.getHealth() > event.getFinalDamage()) {
             return;
         }
-
-        if (isEnableItemDrop()) {
-            list = getWorldsEnabledItemDrop();
-            for (String s : list) {
-                if (s.equals(world)) {
-                    DeathPunishUtils.takeItem(player, getItemDrop());
-                    player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("punish_item_dropped"), getItemDrop()));
-                }
-            }
-        }
-
-        if (isEnableMoneyDrop()) {
-            list = getWorldsEnabledMoneyDrop();
-            for (String s : list) {
-                if (s.equals(world)) {
-                    DeathPunishUtils.takeMoney(player, getMoneyDrop());
-                    player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("punish_money_dropped"), getMoneyDrop()));
-                }
-            }
-        }
-
-        if (isEnablePunishCommands()) {
-            list = getWorldsEnabledPunishCommand();
-            for (String s : list) {
-                if (s.equals(world)) {
-                    DeathPunishUtils.Exec(getPunishCommands(), player.getName());
-                }
-            }
-        }
-    }
-
-    private boolean isEnableMoneyDrop() {
-        return (boolean) ConfigController.getValue("enable_money_drop");
-    }
-
-    private boolean isEnablePunishCommands() {
-        return (boolean) ConfigController.getValue("enable_punish_commands");
-    }
-
-    private boolean isEnableItemDrop() {
-        return (boolean) ConfigController.getValue("enable_item_drop");
-    }
-
-    private int getMoneyDrop() {
-        return (int) ConfigController.getValue("money_dropped_ondeath");
-    }
-
-    private int getItemDrop() {
-        return (int) ConfigController.getValue("item_dropped_ondeath");
-    }
-
-    private List<String> getPunishCommands() {
-        return (List<String>) ConfigController.getValue("punish_command");
-    }
-
-    private List<String> getWorldsEnabledItemDrop() {
-        return (List<String>) ConfigController.getValue("worlds_enabled_item_drop");
-    }
-
-    private List<String> getWorldsEnabledMoneyDrop() {
-        return (List<String>) ConfigController.getValue("worlds_enabled_money_drop");
-    }
-
-    private List<String> getWorldsEnabledPunishCommand() {
-        return (List<String>) ConfigController.getValue("worlds_enabled_punish_commands");
+        list.add(player);
     }
 }

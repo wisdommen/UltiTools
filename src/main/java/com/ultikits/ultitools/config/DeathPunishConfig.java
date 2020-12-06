@@ -14,7 +14,7 @@ public class DeathPunishConfig extends AbstractConfigReviewable{
         config.init();
     }
 
-    public DeathPunishConfig(String name, String filePath) {
+    private DeathPunishConfig(String name, String filePath) {
         super(name, filePath);
         map.put("config_version", 1.0);
         map.put("enable_item_drop", false);

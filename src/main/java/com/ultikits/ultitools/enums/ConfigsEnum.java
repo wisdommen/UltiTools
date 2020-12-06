@@ -24,7 +24,9 @@ public enum ConfigsEnum {
     JOIN_WELCOME(UltiTools.getInstance().getDataFolder() + "/joinwelcome.yml"),
     MAIN(UltiTools.getInstance().getDataFolder() + "/config.yml"),
     DEATH(UltiTools.getInstance().getDataFolder()+"/death.yml"),
-    WARPS(UltiTools.getInstance().getDataFolder()+"/warps");
+    WARPS(UltiTools.getInstance().getDataFolder()+"/warps"),
+    BAG(UltiTools.getInstance().getDataFolder()+"/bag.yml"),
+    CHAT(UltiTools.getInstance().getDataFolder()+"/chat.yml");
 
     private final String path;
 

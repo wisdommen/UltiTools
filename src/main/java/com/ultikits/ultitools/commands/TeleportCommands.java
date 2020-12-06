@@ -1,7 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractTabExecutor;
-import com.ultikits.ultitools.beans.TpBean;
+import com.ultikits.ultitools.tasks.TpTimerTask;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.utils.MessagesUtils;
 import org.bukkit.Bukkit;
@@ -22,22 +22,22 @@ public class TeleportCommands extends AbstractTabExecutor {
             case 1:
                 switch (strings[0]) {
                     case "accept":
-                        Player teleporter = TpBean.tpTemp.get(player);
+                        Player teleporter = TpTimerTask.tpTemp.get(player);
                         if (teleporter == null) {
                             player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("tpa_no_request")));
                             return true;
                         }
-                        TpBean.tpTemp.put(player, null);
-                        TpBean.tpTimer.put(player, 0);
+                        TpTimerTask.tpTemp.put(player, null);
+                        TpTimerTask.tpTimer.put(player, 0);
                         teleporter.teleport(player.getLocation());
                         teleporter.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("tpa_teleport_success")));
                         return true;
                     case "reject":
-                        Player teleporter2 = TpBean.tpTemp.get(player);
+                        Player teleporter2 = TpTimerTask.tpTemp.get(player);
                         teleporter2.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("tpa_teleport_rejected")));
                         player.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("tpa_rejected")));
-                        TpBean.tpTemp.put(player, null);
-                        TpBean.tpTimer.put(player, 0);
+                        TpTimerTask.tpTemp.put(player, null);
+                        TpTimerTask.tpTimer.put(player, 0);
                         return true;
                     default:
                         Player target = Bukkit.getPlayerExact(strings[0]);
@@ -45,8 +45,8 @@ public class TeleportCommands extends AbstractTabExecutor {
                             player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("tpa_player_not_found")));
                             return true;
                         }
-                        TpBean.tpTemp.put(target, player);
-                        TpBean.tpTimer.put(target, 20);
+                        TpTimerTask.tpTemp.put(target, player);
+                        TpTimerTask.tpTimer.put(target, 20);
                         target.sendMessage(MessagesUtils.info(String.format(UltiTools.languageUtils.getString("tpa_tp_enquire"), player.getName())));
                         target.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("tpa_accept_tip")));
                         target.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("tpa_reject_tip")));

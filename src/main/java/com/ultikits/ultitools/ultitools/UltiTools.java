@@ -3,9 +3,9 @@ package com.ultikits.ultitools.ultitools;
 import com.ultikits.api.VersionWrapper;
 import com.ultikits.beans.CheckResponse;
 import com.ultikits.main.UltiCoreAPI;
-import com.ultikits.ultitools.checker.prochecker.DependencyChecker;
-import com.ultikits.ultitools.checker.prochecker.ProChecker;
-import com.ultikits.ultitools.checker.updatechecker.VersionChecker;
+import com.ultikits.ultitools.checker.DependencyChecker;
+import com.ultikits.ultitools.checker.ProChecker;
+import com.ultikits.ultitools.checker.VersionChecker;
 import com.ultikits.ultitools.commands.*;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.listener.*;
@@ -15,6 +15,7 @@ import com.ultikits.ultitools.utils.YamlFileUtils;
 import com.ultikits.utils.DatabaseUtils;
 import com.ultikits.utils.MessagesUtils;
 import com.ultikits.utils.VersionAdaptor;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.WorldCreator;
@@ -155,7 +156,6 @@ public final class UltiTools extends JavaPlugin {
             CommandRegister.registerCommand(plugin, new SetHomeCommands(), "ultikits.tools.sethome", languageUtils.getString("sethome_function"), "sethome");
             CommandRegister.registerCommand(plugin, new DeleteHomeCommands(), "ultikits.tools.delhome", languageUtils.getString("delhome_function"), "delhome");
             CommandRegister.registerCommand(plugin, new HomeListCommands(), "ultikits.tools.homelist", languageUtils.getString("listhome_function"), "homelist");
-            getServer().getPluginManager().registerEvents(new HomeCommands(), this);
         }
         if (this.getConfig().getBoolean("enable_white_list")) {
             CommandRegister.registerCommand(plugin, new WhitelistCommands(), "ultikits.tools.whitelist", languageUtils.getString("whitelist_function"), "wl");
@@ -197,6 +197,12 @@ public final class UltiTools extends JavaPlugin {
             CommandRegister.registerCommand(plugin, new WarpCommands(), "ultikits.tools.warp", languageUtils.getString("warp_function"), "warps");
             CommandRegister.registerCommand(plugin, new WarpCommands(), "ultikits.tools.warp", languageUtils.getString("warp_function"), "delwarp");
             CommandRegister.registerCommand(plugin, new WarpCommands(), "ultikits.tools.warp", languageUtils.getString("warp_function"), "setwarp");
+        }
+        if (this.getConfig().getBoolean("enable_back")) {
+            CommandRegister.registerCommand(plugin, new BackCommands(), "ultikits.tools.back", languageUtils.getString("back_function"), "back");
+        }
+        if (this.getConfig().getBoolean("enable_spawn")) {
+            CommandRegister.registerCommand(plugin, new SpawnCommands(), "ultikits.tools.back", languageUtils.getString("back_function"), "spawn");
         }
 
 
