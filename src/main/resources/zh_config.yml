@@ -101,9 +101,6 @@ enable_spawn: true
 '注释19请勿修改': '开启自动回复功能'
 enable_auto-reply: true
 
-'注释41请勿修改': '(chat) 自定义聊天前缀'
-chat_prefix: '§e[§a%player_world%§e][§c%ul_job%§dLv.%ul_level%§e][§b%player_name%§e]'
-
 '注释42请勿修改': '(头衔) 自定义头顶显示前缀'
 name_prefix: '§e[§c%ul_job%§dLv.%ul_level%§e]'
 
