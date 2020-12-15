@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.views;
 
+import com.ultikits.enums.Colors;
 import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.ViewManager;
 import com.ultikits.inventoryapi.ViewType;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.ultikits.utils.MessagesUtils.unimportant;
+import static com.ultikits.utils.MessagesUtils.warning;
 
 public class KitsView {
 
@@ -47,7 +49,14 @@ public class KitsView {
         int s = 0;
         for (String kitItem : kitsConfig.getKeys(false)) {
             ArrayList<String> lore = new ArrayList<>();
-            ItemStack item = new ItemStack(Material.valueOf(kitsConfig.getString(kitItem + ".item")));
+            ItemStack item = new ItemStack(UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.RED));
+            try {
+                item = new ItemStack(Material.valueOf(kitsConfig.getString(kitItem + ".item")));
+            }catch (IllegalArgumentException e){
+                if (player.hasPermission("ultikits.tools.admin")) {
+                    lore.add(warning(String.format(UltiTools.languageUtils.getString("kits_no_such_item_name"), kitItem + ".item")));
+                }
+            }
             ItemMeta itemMeta = item.getItemMeta();
             lore.add(unimportant(kitsConfig.getString(kitItem + ".description")));
             lore.add(ChatColor.AQUA + UltiTools.languageUtils.getString("kits_page_description_level")+"    " + ChatColor.GOLD + kitsConfig.getInt(kitItem + ".level"));

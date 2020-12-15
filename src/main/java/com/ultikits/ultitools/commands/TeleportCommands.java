@@ -34,6 +34,10 @@ public class TeleportCommands extends AbstractTabExecutor {
                         return true;
                     case "reject":
                         Player teleporter2 = TpTimerTask.tpTemp.get(player);
+                        if (teleporter2 == null) {
+                            player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("tpa_no_request")));
+                            return true;
+                        }
                         teleporter2.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("tpa_teleport_rejected")));
                         player.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("tpa_rejected")));
                         TpTimerTask.tpTemp.put(player, null);

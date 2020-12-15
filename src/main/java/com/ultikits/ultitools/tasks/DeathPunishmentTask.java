@@ -3,25 +3,25 @@ package com.ultikits.ultitools.tasks;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.DeathPunishUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class DeathPunishmentTask {
-    protected static List<Player> punishQueue = new ArrayList<>();
+    protected static List<UUID> punishQueue = new ArrayList<>();
 
     static {
         new Timer().runTaskTimerAsynchronously(UltiTools.getInstance(), 0, 20);
     }
 
     public static void addPlayerToQueue(Player player) {
-        if (punishQueue.contains(player)){
+        if (punishQueue.contains(player.getUniqueId())){
             return;
         }
-        punishQueue.add(player);
+        punishQueue.add(player.getUniqueId());
     }
 
     public static boolean isEnableMoneyDrop() {
@@ -45,19 +45,19 @@ public class DeathPunishmentTask {
     }
 
     public static List<String> getPunishCommands() {
-        return (List<String>) ConfigController.getValue("punish_command");
+        return ConfigController.getStringList("punish_command");
     }
 
     public static List<String> getWorldsEnabledItemDrop() {
-        return (List<String>) ConfigController.getValue("worlds_enabled_item_drop");
+        return ConfigController.getStringList("worlds_enabled_item_drop");
     }
 
     public static List<String> getWorldsEnabledMoneyDrop() {
-        return (List<String>) ConfigController.getValue("worlds_enabled_money_drop");
+        return ConfigController.getStringList("worlds_enabled_money_drop");
     }
 
     public static List<String> getWorldsEnabledPunishCommand() {
-        return (List<String>) ConfigController.getValue("worlds_enabled_punish_commands");
+        return ConfigController.getStringList("worlds_enabled_punish_commands");
     }
 }
 
@@ -65,7 +65,18 @@ class Timer extends BukkitRunnable{
 
     @Override
     public void run() {
-        for (Player player : DeathPunishmentTask.punishQueue){
+        Iterator<UUID> iterator = DeathPunishmentTask.punishQueue.iterator();
+        while (iterator.hasNext()){
+            UUID uuid;
+            try {
+                uuid = iterator.next();
+            }catch (ConcurrentModificationException e){
+                continue;
+            }
+            Player player = Bukkit.getPlayer(uuid);
+            if (player==null){
+                continue;
+            }
             String world = player.getWorld().getName();
             List<String> list;
             if (DeathPunishmentTask.isEnableItemDrop()) {
@@ -96,6 +107,7 @@ class Timer extends BukkitRunnable{
                     }
                 }
             }
+            DeathPunishmentTask.punishQueue.remove(uuid);
         }
     }
 }

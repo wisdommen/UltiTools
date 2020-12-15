@@ -1,7 +1,6 @@
 package com.ultikits.ultitools.tasks;
 
 import com.google.common.collect.Lists;
-import com.minecraft.Ultilevel.utils.checkLevel;
 import com.ultikits.beans.EmailContentBean;
 import com.ultikits.ultitools.beans.ArmorsBean;
 import com.ultikits.ultitools.config.ConfigController;
@@ -83,7 +82,7 @@ public class SideBarTask extends BukkitRunnable {
 
         if (isPAPILoaded && UltiTools.getInstance().getConfig().getBoolean("enable_PAPI")) {
             name = setPlaceholderString(player, "name");
-            onLinePlayers = setPlaceholderString(player, "onLinePlayers");
+            onLinePlayers = setPlaceholderString(player, "online_player");
             CDq = setPlaceholderString(player, "CDq");
             CDw = setPlaceholderString(player, "CDw");
             CDe = setPlaceholderString(player, "CDe");

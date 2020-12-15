@@ -46,18 +46,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                     player.openInventory(inventory);
                     return true;
             }
-            if (blockedWorlds.contains("world_the_end")) {
-                blockedWorlds.remove("world_the_end");
-                blockedWorlds.add("End");
-            }
-            if (blockedWorlds.contains("world_nether")) {
-                blockedWorlds.remove("world_nether");
-                blockedWorlds.add("Nether");
-            }
-            if (blockedWorlds.contains("world")) {
-                blockedWorlds.remove("world");
-                blockedWorlds.add("World");
-            }
+            replaceOriginalWorldName(blockedWorlds);
             if (blockedWorlds.contains(strings[0]) && !player.hasPermission("ultikits.tools.admin")) {
                 player.sendMessage(warning(UltiTools.languageUtils.getString("world_not_allow_enter")));
                 return true;
@@ -169,6 +158,21 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
             multiWorldsHelp(player);
         }
         return false;
+    }
+
+    public static void replaceOriginalWorldName(List<String> blockedWorlds) {
+        if (blockedWorlds.contains("world_the_end")) {
+            blockedWorlds.remove("world_the_end");
+            blockedWorlds.add("End");
+        }
+        if (blockedWorlds.contains("world_nether")) {
+            blockedWorlds.remove("world_nether");
+            blockedWorlds.add("Nether");
+        }
+        if (blockedWorlds.contains("world")) {
+            blockedWorlds.remove("world");
+            blockedWorlds.add("World");
+        }
     }
 
     @Override

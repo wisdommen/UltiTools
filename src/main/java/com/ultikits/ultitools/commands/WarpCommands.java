@@ -20,7 +20,10 @@ public class WarpCommands extends AbstractPlayerCommandExecutor {
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
         switch (command.getName()) {
             case "warp":
-                if (!(player.hasPermission("ultitools.warp.use") || player.hasPermission("ultikits.tools.admin"))){
+                if (strings.length != 1) {
+                    return false;
+                }
+                if (!(player.hasPermission("ultitools.warp.use") || player.hasPermission("ultikits.tools.admin"))) {
                     player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("no_permission")));
                     return true;
                 }
@@ -42,7 +45,7 @@ public class WarpCommands extends AbstractPlayerCommandExecutor {
                 player.sendMessage(MessagesUtils.info(String.format(UltiTools.languageUtils.getString("warp_teleport_successfully"), name)));
                 return true;
             case "warps":
-                if (!(player.hasPermission("ultitools.warp.use") || player.hasPermission("ultikits.tools.admin"))){
+                if (!(player.hasPermission("ultitools.warp.use") || player.hasPermission("ultikits.tools.admin"))) {
                     player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("no_permission")));
                     return true;
                 }
@@ -50,11 +53,11 @@ public class WarpCommands extends AbstractPlayerCommandExecutor {
                 player.openInventory(inventory);
                 return true;
             case "setwarp":
-                if (!(player.hasPermission("ultitools.warp.admin") || player.hasPermission("ultikits.tools.admin"))){
+                if (!(player.hasPermission("ultitools.warp.admin") || player.hasPermission("ultikits.tools.admin"))) {
                     player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("no_permission")));
                     return true;
                 }
-                if (strings.length != 1){
+                if (strings.length != 1) {
                     player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("warp_name_shall_not_empty")));
                     return false;
                 }
@@ -88,11 +91,11 @@ public class WarpCommands extends AbstractPlayerCommandExecutor {
                 player.sendMessage(MessagesUtils.info(String.format(UltiTools.languageUtils.getString("warp_set_successfully"), newName)));
                 return true;
             case "delwarp":
-                if (!(player.hasPermission("ultitools.warp.admin") || player.hasPermission("ultikits.tools.admin"))){
+                if (!(player.hasPermission("ultitools.warp.admin") || player.hasPermission("ultikits.tools.admin"))) {
                     player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("no_permission")));
                     return true;
                 }
-                if (strings.length != 1){
+                if (strings.length != 1) {
                     player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("warp_name_shall_not_empty")));
                     return false;
                 }

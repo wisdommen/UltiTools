@@ -4,6 +4,7 @@ import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.ViewManager;
 import com.ultikits.inventoryapi.ViewType;
 import com.ultikits.manager.ItemStackManager;
+import com.ultikits.ultitools.commands.MultiWorldsCommands;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.listener.WorldsListListener;
 import com.ultikits.ultitools.ultitools.UltiTools;
@@ -53,18 +54,7 @@ public class WorldsListView {
         }
 
         List<String> blockedWorlds = config.getStringList("blocked_worlds");
-        if (blockedWorlds.contains("world_the_end")){
-            blockedWorlds.remove("world_the_end");
-            blockedWorlds.add("End");
-        }
-        if (blockedWorlds.contains("world_nether")){
-            blockedWorlds.remove("world_nether");
-            blockedWorlds.add("Nether");
-        }
-        if (blockedWorlds.contains("world")){
-            blockedWorlds.remove("world");
-            blockedWorlds.add("World");
-        }
+        MultiWorldsCommands.replaceOriginalWorldName(blockedWorlds);
         for (String world : worlds){
             ArrayList<String> lore = new ArrayList<>();
             lore.add(ChatColor.YELLOW+config.getString("world."+world+".describe"));

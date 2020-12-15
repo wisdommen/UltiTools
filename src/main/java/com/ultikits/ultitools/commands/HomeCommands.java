@@ -84,7 +84,7 @@ public class HomeCommands extends AbstractTabExecutor {
             public void run() {
                 if (!teleportingPlayers.get(player.getUniqueId())) {
                     player.sendTitle(ChatColor.RED + UltiTools.languageUtils.getString("home_teleport_failed"), UltiTools.languageUtils.getString("do_not_move"), 10, 50, 20);
-                    Task.playerLocationMap.put(player, null);
+                    Task.playerLocationMap.put(player.getUniqueId(), null);
                     this.cancel();
                     return;
                 }
@@ -93,7 +93,7 @@ public class HomeCommands extends AbstractTabExecutor {
                     player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.ENTITY_ENDERMAN_TELEPORT), 1, 0);
                     player.sendTitle(ChatColor.GREEN + UltiTools.languageUtils.getString("home_teleport_success"), "", 10, 50, 20);
                     teleportingPlayers.put(player.getUniqueId(), false);
-                    Task.playerLocationMap.put(player, null);
+                    Task.playerLocationMap.put(player.getUniqueId(), null);
                     this.cancel();
                     return;
                 }
@@ -107,12 +107,13 @@ public class HomeCommands extends AbstractTabExecutor {
 }
 
 class Task extends BukkitRunnable {
-    public static Map<Player, String> playerLocationMap = new HashMap<>();
+    public static Map<UUID, String> playerLocationMap = new HashMap<>();
 
     @Override
     public void run() {
         for (UUID playerUUID : HomeCommands.teleportingPlayers.keySet()) {
             if (!HomeCommands.teleportingPlayers.get(playerUUID)){
+                playerLocationMap.put(playerUUID, null);
                 continue;
             }
             Player player = Bukkit.getPlayer(playerUUID);
@@ -121,10 +122,10 @@ class Task extends BukkitRunnable {
             }
             Location location = player.getLocation();
             String currentLocation = location.getX() + "" + location.getY() + "" + location.getZ();
-            if (playerLocationMap.get(player) == null) {
-                playerLocationMap.put(player, currentLocation);
+            if (playerLocationMap.get(playerUUID) == null) {
+                playerLocationMap.put(playerUUID, currentLocation);
             } else {
-                String lastLocation = playerLocationMap.get(player);
+                String lastLocation = playerLocationMap.get(playerUUID);
                 if (!currentLocation.equals(lastLocation)) {
                     HomeCommands.teleportingPlayers.put(playerUUID, false);
                 }
