@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 public class BackCommands extends AbstractPlayerCommandExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
-        Location location = BackListener.getPlayerLastDeathLocation(player);
+        Location location = BackListener.getPlayerLastDeathLocation(player.getUniqueId());
         if (location != null){
             player.teleport(location);
         }else {

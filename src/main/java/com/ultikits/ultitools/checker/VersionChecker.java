@@ -57,7 +57,7 @@ public class VersionChecker {
                                     downloadNewVersion();
                                 } else {
                                     UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("download_url"));
-                                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("join_send_update_tip"));
+                                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + String.format("[UltiTools] "+UltiTools.languageUtils.getString("join_send_update_tip"), "[UltiTools]"));
                                 }
                             }
                             if (!isOutDate) {

@@ -35,10 +35,7 @@ public class KitsConfig extends AbstractConfig{
         config.set("xinshou.job", UltiTools.languageUtils.getString("kits_config_job"));
         config.set("xinshou.description", UltiTools.languageUtils.getString("kits_config_description"));
         config.set("xinshou.price", 0);
-        List<String> list = Arrays.asList("WOODEN_PICKAXE", "WOODEN_AXE", "WOODEN_SHOVEL", "WOODEN_SWORD", "WOODEN_HOE");
-        for (String item : list){
-            config.set("xinshou.contain."+item+".quantity", 1);
-        }
+        config.set("xinshou.contain", new ArrayList<>());
         List<String> playerCommands = new ArrayList<>();
         config.set("xinshou.playerCommands",playerCommands);
         List<String> console = Arrays.asList(UltiTools.languageUtils.getString("kits_config_commands"), "givemoney {PLAYER} 100");

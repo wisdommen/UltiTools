@@ -55,6 +55,10 @@ public class ConfigController {
         return configMap.get(config.get(key)).map.get(key);
     }
 
+    public static Map<String, Object> getConfigSection(String name){
+        return configMap.get(name).map;
+    }
+
     public static void setValue(String key, Object value) {
         configMap.get(config.get(key)).map.put(key, value);
     }

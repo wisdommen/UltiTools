@@ -15,7 +15,6 @@ import com.ultikits.ultitools.utils.YamlFileUtils;
 import com.ultikits.utils.DatabaseUtils;
 import com.ultikits.utils.MessagesUtils;
 import com.ultikits.utils.VersionAdaptor;
-import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.WorldCreator;
@@ -199,10 +198,11 @@ public final class UltiTools extends JavaPlugin {
             CommandRegister.registerCommand(plugin, new WarpCommands(), "ultikits.tools.warp", languageUtils.getString("warp_function"), "setwarp");
         }
         if (this.getConfig().getBoolean("enable_back")) {
+            getServer().getPluginManager().registerEvents(new BackListener(), this);
             CommandRegister.registerCommand(plugin, new BackCommands(), "ultikits.tools.back", languageUtils.getString("back_function"), "back");
         }
         if (this.getConfig().getBoolean("enable_spawn")) {
-            CommandRegister.registerCommand(plugin, new SpawnCommands(), "ultikits.tools.back", languageUtils.getString("back_function"), "spawn");
+            CommandRegister.registerCommand(plugin, new SpawnCommands(), "ultikits.tools.back", languageUtils.getString("back_function"), "spawn", "setspawn");
         }
 
 

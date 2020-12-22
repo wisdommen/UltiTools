@@ -33,8 +33,8 @@ ulticore_download: 请下载最新版本的UltiCoreAPI!
 checking_update: 正在检查更新...
 downloading: 正在下载更新...
 download_successfully: 下载完成, 重启服务器以应用更新！
-download_failed: '下载失败，请前往 %s 手动下载！'
-download_url: 下载地址：https://www.mcbbs.net/thread-1062730-1-1.html
+download_failed: '[UltiTools] 下载失败，请前往 %s 手动下载！'
+download_url: '[UltiTools] 下载地址：https://www.mcbbs.net/thread-1062730-1-1.html'
 plugin_up_to_date: 太棒了！你的插件是最新的！保持最新的版本可以为你带来最好的体验！
 initializing_database: 正在初始化数据库...
 database_connected: 接入数据库成功！
@@ -303,4 +303,5 @@ warp_name_shall_not_empty: '[格式错误]地标必须有一个名字!'
 warp_set_successfully: '成功创建地标 %s'
 warp_deleted: '地标 %s 删除成功!'
 back_function: 死亡返回功能
-back_havent_dead: 无法找到死亡地点！\n这可能是因为插件重载或者你还没死过哩。
+back_havent_dead: 无法找到死亡地点！这可能是因为插件重载或者你还没死过哩。
+spawn_new_spawn_set: 新的世界出生点已设置！
