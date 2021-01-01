@@ -42,13 +42,15 @@ public final class UltiTools extends JavaPlugin {
     public static boolean isProVersion;
     public static boolean isDatabaseEnabled;
     public static DatabaseUtils databaseUtils;
+    private static boolean isUltiCoreUpToDate;
 
     @Override
     public void onEnable() {
         plugin = this;
-        if (!DependencyChecker.isUltiCoreUpToDate()){
-            this.getServer().getConsoleSender().sendMessage(MessagesUtils.warning(languageUtils.getString("ulticore_version_old")));
-            this.getServer().getConsoleSender().sendMessage(MessagesUtils.warning(languageUtils.getString("ulticore_download")));
+        isUltiCoreUpToDate = DependencyChecker.isUltiCoreUpToDate();
+        if (!isUltiCoreUpToDate){
+            this.getServer().getConsoleSender().sendMessage(MessagesUtils.warning("The version of UltiCoreAPI is too old to enable UltiTools!"));
+            this.getServer().getConsoleSender().sendMessage(MessagesUtils.warning("Please download the newest version of UltiCoreAPI!"));
             this.getServer().getPluginManager().disablePlugin(plugin);
             return;
         }
@@ -202,7 +204,8 @@ public final class UltiTools extends JavaPlugin {
             CommandRegister.registerCommand(plugin, new BackCommands(), "ultikits.tools.back", languageUtils.getString("back_function"), "back");
         }
         if (this.getConfig().getBoolean("enable_spawn")) {
-            CommandRegister.registerCommand(plugin, new SpawnCommands(), "ultikits.tools.back", languageUtils.getString("back_function"), "spawn", "setspawn");
+            CommandRegister.registerCommand(plugin, new SpawnCommands(), "ultikits.tools.back", languageUtils.getString("back_function"), "spawn");
+            CommandRegister.registerCommand(plugin, new SpawnCommands(), "ultikits.tools.back", languageUtils.getString("back_function"), "setspawn");
         }
 
 
@@ -247,6 +250,9 @@ public final class UltiTools extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (!isUltiCoreUpToDate){
+            return;
+        }
         for (String player : LoginListener.playerLoginStatus.keySet()) {
             if (Bukkit.getPlayerExact(player) != null) {
                 Player player1 = Bukkit.getPlayerExact(player);

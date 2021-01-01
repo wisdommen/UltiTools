@@ -4,16 +4,15 @@ import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
-import static com.ultikits.ultitools.checker.ConfigFileChecker.deleteOldVersion;
-import static com.ultikits.ultitools.checker.ConfigFileChecker.downloadNewVersion;
+import static com.ultikits.ultitools.utils.Utils.getFiles;
 
 public class VersionChecker {
 
@@ -27,8 +26,11 @@ public class VersionChecker {
             @Override
             public void run() {
                 try {
-                    //连接
-                    HttpURLConnection connection = (HttpURLConnection) new URL("https://wisdommen.github.io").openConnection();
+                    String url = "https://wisdommen.github.io";
+                    if (UltiTools.language.equals("zh")) {
+                        url = "https://download.ultikits.com/index.markdown";
+                    }
+                    HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
                     connection.setDoInput(true);
                     connection.setRequestMethod("GET");
                     connection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
@@ -57,7 +59,7 @@ public class VersionChecker {
                                     downloadNewVersion();
                                 } else {
                                     UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("download_url"));
-                                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + String.format("[UltiTools] "+UltiTools.languageUtils.getString("join_send_update_tip"), "[UltiTools]"));
+                                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + String.format("[UltiTools] " + UltiTools.languageUtils.getString("join_send_update_tip"), "UltiTools"));
                                 }
                             }
                             if (!isOutDate) {
@@ -76,7 +78,7 @@ public class VersionChecker {
                     streamReader.close();
                     input.close();
                     connection.disconnect();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -88,5 +90,67 @@ public class VersionChecker {
             version = version.replace(".", "");
         }
         return Integer.parseInt(version);
+    }
+
+    private static void downloadNewVersion() {
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + UltiTools.languageUtils.getString("downloading"));
+                if (startDownload()) {
+                    UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + UltiTools.languageUtils.getString("download_successfully"));
+                    this.cancel();
+                    return;
+                }
+                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GREEN + String.format("[UltiTools] " + UltiTools.languageUtils.getString("download_failed"), "https://www.mcbbs.net/thread-1062730-1-1.html"));
+            }
+
+        }.runTaskAsynchronously(UltiTools.getInstance());
+    }
+
+    private static boolean startDownload() {
+        if (!downloadFromGitHub()) {
+            return downloadFromOwnServer();
+        }
+        return true;
+    }
+
+    private static boolean downloadFromOwnServer() {
+        try {
+            String urlString = "https://download.ultikits.com/collections/Ultitools/UltiTools-" + version + ".jar";
+            return download(urlString, "UltiTools-" + version + ".jar");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private static boolean downloadFromGitHub() {
+        try {
+            String urlString = "https://raw.githubusercontent.com/wisdommen/wisdommen.github.io/master/collections/Ultitools/UltiTools-" + version + ".jar";
+            return download(urlString, "UltiTools-" + version + ".jar");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean download(String urlString, String outputName) throws IOException {
+        URL url = new URL(urlString);
+        ReadableByteChannel rbc = Channels.newChannel(url.openStream());
+        FileOutputStream fos = new FileOutputStream(UltiTools.getInstance().getDataFolder().getPath().replace(File.separator + "UltiTools", "") + File.separator + outputName);
+        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+        fos.close();
+        return true;
+    }
+
+    private static void deleteOldVersion() {
+        List<File> files = getFiles(UltiTools.getInstance().getDataFolder().getPath().replace(File.separator + "UltiTools", ""));
+        for (File file : files) {
+            if (file.getName().contains("UltiTools-") && !file.getName().equals("UltiTools-" + version + ".jar")) {
+                file.delete();
+            }
+        }
     }
 }

@@ -237,6 +237,8 @@ kits_page_description_job: 可领取职业：
 kits_page_description_price: 价格：
 kits_page_description_content: 内含物：
 kits_no_such_item_name: '错误的物品名，请检查kits.yml/%s！'
+kits_no_such_kit: '没有叫 %s 的礼包！'
+kits_title_edit: '编辑页面'
 sidebar_config_title: 欢迎加入服务器
 sidebar_config_line_1: 这是自定义的内容
 sidebar_config_line_2: 可以在配置文件里改

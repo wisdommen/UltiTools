@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.listener;
 
+import com.ultikits.beans.CancelResult;
 import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.PagesListener;
 import com.ultikits.ultitools.ultitools.UltiTools;
@@ -10,10 +11,12 @@ import org.bukkit.inventory.ItemStack;
 
 public class HomeListPageListener extends PagesListener {
     @Override
-    public void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
+    public CancelResult onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
         if (inventoryManager.getTitle().contains(player.getName()+ UltiTools.languageUtils.getString("home_'s_home_list"))) {
             String homeName = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName());
             player.performCommand("home " + homeName);
+            return CancelResult.TRUE;
         }
+        return CancelResult.NONE;
     }
 }

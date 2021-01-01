@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.listener;
 
+import com.ultikits.beans.CancelResult;
 import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.PagesListener;
 import com.ultikits.ultitools.enums.ConfigsEnum;
@@ -19,22 +20,21 @@ import java.util.Objects;
 public class EmailPageListener extends PagesListener {
 
     @Override
-    public void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
+    public CancelResult onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
         if (!event.getView().getTitle().contains(String.format(UltiTools.languageUtils.getString("email_page_title"), player.getName()))) {
-            return;
+            return CancelResult.NONE;
         }
         ItemStack clicked = event.getCurrentItem();
         File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player.getName() + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
         if (clicked != null) {
-            event.setCancelled(true);
             if (Objects.requireNonNull(clicked.getItemMeta()).getDisplayName().contains(UltiTools.languageUtils.getString("email_item_description_from"))) {
                 for (String lore : Objects.requireNonNull(clicked.getItemMeta().getLore())) {
                     if (lore.contains("ID:")) {
                         String uuid = lore.split(":")[1];
                         if (config.getBoolean(uuid + ".isRead")) {
-                            return;
+                            return CancelResult.TRUE;
                         }
                         if (config.getString(uuid + ".item") == null) {
                             config.set(uuid + ".isRead", true);
@@ -59,6 +59,8 @@ public class EmailPageListener extends PagesListener {
                     }
                 }
             }
+            return CancelResult.TRUE;
         }
+        return CancelResult.TRUE;
     }
 }

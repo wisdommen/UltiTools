@@ -1,12 +1,12 @@
 package com.ultikits.ultitools.listener;
 
+import com.ultikits.beans.CancelResult;
 import com.ultikits.enums.Sounds;
 import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.PagesListener;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.Utils;
 import com.ultikits.utils.EconomyUtils;
 import com.ultikits.utils.MessagesUtils;
 import com.ultikits.utils.SerializationUtils;
@@ -89,13 +89,12 @@ public class ChestPageListener extends PagesListener {
     }
 
     @Override
-    public void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clicked) {
+    public CancelResult onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clicked) {
         if (event.getView().getTitle().contains((String.format(UltiTools.languageUtils.getString("bag_main_page_title"), player.getName())))) {
             File chestFile = new File(ConfigsEnum.PLAYER_CHEST.toString(), player.getName() + ".yml");
             YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestFile);
 
             if (clicked != null && clicked.getItemMeta() != null) {
-                event.setCancelled(true);
                 if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getString("bag_number"))) {
                     String chestName = player.getName() + UltiTools.languageUtils.getString("bag_s") + ChatColor.stripColor(clicked.getItemMeta().getDisplayName());
                     loadBag(chestName, player, player);
@@ -108,8 +107,11 @@ public class ChestPageListener extends PagesListener {
                         player.sendMessage(not_enough_money);
                     }
                 }
+                return CancelResult.TRUE;
             }
+            return CancelResult.TRUE;
         }
+        return CancelResult.NONE;
     }
 
     public static int getBagPrice(int bagNumber){

@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.listener;
 
+import com.ultikits.beans.CancelResult;
 import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.PagesListener;
 import com.ultikits.ultitools.ultitools.UltiTools;
@@ -10,11 +11,12 @@ import org.bukkit.inventory.ItemStack;
 
 public class WarpListener extends PagesListener {
     @Override
-    public void onItemClick(InventoryClickEvent inventoryClickEvent, Player player, InventoryManager inventoryManager, ItemStack itemStack) {
+    public CancelResult onItemClick(InventoryClickEvent inventoryClickEvent, Player player, InventoryManager inventoryManager, ItemStack itemStack) {
         if (!inventoryManager.getTitle().contains("地标")){
-            return;
+            return CancelResult.NONE;
         }
         String name = ChatColor.stripColor(itemStack.getItemMeta().getDisplayName()).replace(UltiTools.languageUtils.getString("sidebar_name"), "").trim();
         player.performCommand("warp " + name);
+        return CancelResult.TRUE;
     }
 }

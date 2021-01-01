@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.listener;
 
 import com.minecraft.Ultilevel.utils.checkLevel;
+import com.ultikits.beans.CancelResult;
 import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.PagesListener;
 import com.ultikits.ultitools.enums.ConfigsEnum;
@@ -26,9 +27,9 @@ public class KitsPageListener extends PagesListener {
     private static final YamlConfiguration kitsConfig = YamlConfiguration.loadConfiguration(kits);
 
     @Override
-    public void onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
+    public CancelResult onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
         if (!inventoryManager.getTitle().contains(UltiTools.languageUtils.getString("kits_page_title"))){
-            return;
+            return CancelResult.NONE;
         }
         File kit_file = new File(ConfigsEnum.DATA_KIT.toString());
         YamlConfiguration kit_config = YamlConfiguration.loadConfiguration(kit_file);
@@ -37,7 +38,7 @@ public class KitsPageListener extends PagesListener {
         for (String item : kitsConfig.getKeys(false)) {
             String kitName = kitsConfig.getString(item + ".name");
             if (!clickedItemName.equals(kitName)) continue;
-            if (!isPlayerCanBuy(player, item)) return;
+            if (!isPlayerCanBuy(player, item)) return CancelResult.TRUE;
             if (!Objects.requireNonNull(kitsConfig.getConfigurationSection(item + ".contain").getKeys(false)).isEmpty()) {
                 for (String i : Objects.requireNonNull(kitsConfig.getConfigurationSection(item + ".contain").getKeys(false))) {
                     player.getInventory().addItem(new ItemStack(Material.valueOf(i), kitsConfig.getInt(item + ".contain." + i + ".quantity")));
@@ -71,6 +72,7 @@ public class KitsPageListener extends PagesListener {
             int price = kitsConfig.getInt(item + ".price");
             if (price > 0) EconomyUtils.withdraw(player, price);
         }
+        return CancelResult.TRUE;
     }
 
     private boolean isPlayerCanBuy(Player player, String item){
