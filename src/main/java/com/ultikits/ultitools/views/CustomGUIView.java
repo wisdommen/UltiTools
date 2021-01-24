@@ -2,9 +2,12 @@ package com.ultikits.ultitools.views;
 
 import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.ViewManager;
+import com.ultikits.main.UltiCore;
 import com.ultikits.manager.ItemStackManager;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.listener.CustomGUIListener;
+import com.ultikits.ultitools.ultitools.UltiTools;
+import com.ultikits.utils.MessagesUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -64,8 +67,13 @@ public class CustomGUIView {
                 each = PlaceholderAPI.setPlaceholders(player, each);
                 lore.add(each);
             }
-            Material type = Material.valueOf(item);
-            ItemStack itemStack = new ItemStack(type);
+            ItemStack itemStack = UltiCore.versionAdaptor.getGrassBlock();
+            try {
+                Material type = Material.valueOf(item);
+                itemStack = new ItemStack(type);
+            } catch (IllegalArgumentException e) {
+                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(MessagesUtils.warning("[WARNING] [Custom GUI] Item type under " + path + "item '" + item + "' is not acceptable! Used grass block instead!"));
+            }
             ItemStackManager itemStackManager = new ItemStackManager(itemStack, lore, name);
             itemStacks.put(btn, itemStackManager);
         }

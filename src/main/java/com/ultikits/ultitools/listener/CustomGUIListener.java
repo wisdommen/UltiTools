@@ -19,7 +19,7 @@ public class CustomGUIListener extends PagesListener {
 
     @Override
     public CancelResult onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
-        if (!inventoryManager.getTitle().contains("guis." + signature + ".title - " + player.getName())) {
+        if (!inventoryManager.getTitle().equals(ConfigController.getConfig("customergui").getString("guis." + signature + ".title") + " - " + player.getName())) {
             return CancelResult.NONE;
         }
         if (clickedItem != null) {
