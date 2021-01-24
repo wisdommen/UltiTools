@@ -48,7 +48,7 @@ public class ChestLockListener implements Listener {
             Map<Direction, Block> blockMap = getBlocksBesides(placedBlock);
             Block right = blockMap.get(Direction.RIGHT);
             Block left = blockMap.get(Direction.LEFT);
-            List<String> chests = (List<String>) ConfigController.getValue("locked");
+            List<String> chests = ConfigController.getConfig("chestConfig").getStringList("locked");
             if (!(right.getType() == Material.CHEST || left.getType() == Material.CHEST)) {
                 Random random = new Random();
                 int i = random.nextInt(3);
@@ -78,7 +78,7 @@ public class ChestLockListener implements Listener {
             Location chestLocation = event.getClickedBlock().getLocation();
             File playerFile = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
             YamlConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
-            List<String> chests = (List<String>) ConfigController.getValue("locked");
+            List<String> chests = ConfigController.getConfig("chestConfig").getStringList("locked");
 
             String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
             double x = chestLocation.getX();
@@ -162,7 +162,7 @@ public class ChestLockListener implements Listener {
         if (event.getBlock().getType() == Material.CHEST) {
             Location chestLocation = event.getBlock().getLocation();
             Player player = event.getPlayer();
-            List<String> chests = (List<String>) ConfigController.getValue("locked");
+            List<String> chests = ConfigController.getConfig("chestConfig").getStringList("locked");
             int sizeBefore = chests.size();
 
             String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
@@ -187,7 +187,7 @@ public class ChestLockListener implements Listener {
     @EventHandler
     public void onItemRemovedByHopper(@NotNull InventoryMoveItemEvent event) {
         Location chestLocation = event.getSource().getLocation();
-        List<String> chests = (List<String>) ConfigController.getValue("locked");
+        List<String> chests = ConfigController.getConfig("chestConfig").getStringList("locked");
 
         String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
         double x = chestLocation.getX();
@@ -207,7 +207,7 @@ public class ChestLockListener implements Listener {
         if ((event.getEntity() instanceof Creeper) || (event.getEntity() instanceof TNTPrimed)) {
             for (Block block : event.blockList().toArray(new Block[event.blockList().size()])) {
                 if (block.getType() == Material.CHEST) {
-                    List<String> chests = (List<String>) ConfigController.getValue("locked");
+                    List<String> chests = ConfigController.getConfig("chestConfig").getStringList("locked");
                     Location chestLocation = block.getLocation();
                     String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
                     double x = chestLocation.getX();

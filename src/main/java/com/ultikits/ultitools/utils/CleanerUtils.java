@@ -58,7 +58,7 @@ public class CleanerUtils {
                 if (entity instanceof LivingEntity) {
                     if (!(entity instanceof Player)) {
                         if (canMobBeClean((LivingEntity) entity)) {
-                            List<String> list = (List<String>) ConfigController.getValue("clean_whitelist");
+                            List<String> list = ConfigController.getConfig("cleaner").getStringList("clean_whitelist");
                             boolean doClean = true;
                             if (!(list == null || list.size() == 0)) {
                                 for (String whiteListEntity : list) {
@@ -121,7 +121,7 @@ public class CleanerUtils {
                 return false;
             }
         }
-        List<String> list = (List<String>) ConfigController.getValue("clean_whitelist");
+        List<String> list = ConfigController.getConfig("cleaner").getStringList("clean_whitelist");
         if (!(list == null || list.size() == 0)) {
             for (String whiteListEntity : list) {
                 if (entity.getType() == EntityType.valueOf(whiteListEntity)) {

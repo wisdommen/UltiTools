@@ -1,0 +1,32 @@
+# GUI Main Body
+guis:
+  # setup a page
+  main:
+    # gui size
+    size: 54
+    # gui title
+    title: Main page
+    # command argument to open this gui (don't include ultitools, and only one word)
+    command: gui
+    # the permission to open this gui (set to null is no permission needed)
+    premission: null
+
+# all buttons those belong to its page please write under the page name
+main:
+  # sample button
+  up:
+    # item type
+    item: LOG
+    # item position(0-53 depends on your page size)
+    position: 0
+    # display name
+    name: click to open upgrade page
+    # item lore
+    lore:
+      - you can uograde here
+    # player commands
+    player-commands:
+      - pharmacist up
+    # console commands
+    console-commands:
+      - say {PLAYER} TEST SUCCESS

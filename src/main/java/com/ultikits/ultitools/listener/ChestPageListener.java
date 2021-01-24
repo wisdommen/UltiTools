@@ -114,10 +114,10 @@ public class ChestPageListener extends PagesListener {
         return CancelResult.NONE;
     }
 
-    public static int getBagPrice(int bagNumber){
-        int price = (int) ConfigController.getValue("price_of_create_a_remote_chest");
-        if ((Boolean) ConfigController.getValue("enable_price_increase")) {
-            price = price + Math.toIntExact(Math.round((float) ((int) ConfigController.getValue("price_of_create_a_remote_chest")) * (((double) ConfigController.getValue("price_increase_rate"))*bagNumber)));
+    public static int getBagPrice(int bagNumber) {
+        int price = ConfigController.getConfig("bag").getInt("price_of_create_a_remote_chest");
+        if (ConfigController.getConfig("bag").getBoolean("enable_price_increase")) {
+            price = price + Math.toIntExact(Math.round((float) price * (ConfigController.getConfig("bag").getDouble("price_increase_rate") * bagNumber)));
         }
         return price;
     }

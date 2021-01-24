@@ -1,0 +1,48 @@
+# GUI主体设置
+guis:
+  # 配置一个界面
+  main:
+    # 界面大小
+    size: 54
+    # 界面标题
+    title: 主菜单
+    # 打开界面的命令（省略开头的ultitools，且只支持一个单词）
+    command: gui
+    # 打开此界面需要的权限（null为无需权限）
+    premission: null
+
+# 所有的main的按钮请都放在main下
+main:
+  # 示例按钮
+  up:
+    # 物品材质
+    item: LOG
+    # 物品位置(0-53取决于你的界面大小)
+    position: 0
+    # 显示名称
+    name: 点击打开升级页面
+    # 物品的lore
+    lore:
+      - 在这里升级
+    # 玩家执行的命令
+    player-commands:
+      - pharmacist up
+    # 控制台执行的命令
+    console-commands:
+      - say {PLAYER} TEST SUCCESS
+  info:
+    # 物品材质
+    item: PAPER
+    # 物品位置
+    position: 53
+    # 显示名称
+    name: 点击打开升级页面
+    # 物品的lore
+    lore:
+      - 在这里升级
+    # 玩家执行的命令
+    player-commands:
+      - pharmacist up
+    # 控制台执行的命令
+    console-commands:
+      - say {PLAYER} TEST SUCCESS

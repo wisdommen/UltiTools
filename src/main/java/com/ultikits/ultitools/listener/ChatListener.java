@@ -27,7 +27,7 @@ public class ChatListener implements Listener {
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        String prefixes_str = ((String)ConfigController.getValue("chat_prefix")).replace("%player_name%", player.getName()).replace("%player_world%", player.getLocation().getWorld().getName());
+        String prefixes_str = ConfigController.getConfig("chat").getString("chat_prefix").replaceAll("%player_name%", player.getName()).replaceAll("%player_world%", player.getLocation().getWorld().getName()).replaceAll("&", "§");
         if (UltiTools.getInstance().getServer().getPluginManager().getPlugin("UltiLevel") == null) {
             prefixes_str = validateUltiLevelVariable(prefixes_str);
         }
@@ -38,7 +38,7 @@ public class ChatListener implements Listener {
 
     @EventHandler
     public void onPlayerChatReply(AsyncPlayerChatEvent event) {
-        if ((Boolean) ConfigController.getValue("enable_auto-reply") && UltiTools.isProVersion) {
+        if (ConfigController.getConfig("chat").getBoolean("enable_auto-reply") && UltiTools.isProVersion) {
             String message = event.getMessage().replace(" ", "_");
             File file = new File(ConfigsEnum.CHAT.toString());
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);

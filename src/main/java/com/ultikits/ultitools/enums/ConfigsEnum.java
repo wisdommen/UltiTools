@@ -26,7 +26,8 @@ public enum ConfigsEnum {
     DEATH(UltiTools.getInstance().getDataFolder()+"/death.yml"),
     WARPS(UltiTools.getInstance().getDataFolder()+"/warps"),
     BAG(UltiTools.getInstance().getDataFolder()+"/bag.yml"),
-    CHAT(UltiTools.getInstance().getDataFolder()+"/chat.yml");
+    CHAT(UltiTools.getInstance().getDataFolder()+"/chat.yml"),
+    CUSTOMERGUI(UltiTools.getInstance().getDataFolder()+"/customgui.yml");
 
     private final String path;
 

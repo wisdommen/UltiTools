@@ -25,7 +25,7 @@ public abstract class AbstractConfigReviewable extends AbstractConfig{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        config = YamlConfiguration.loadConfiguration(file);
         doInit(config);
         try {
             config.save(file);
@@ -36,7 +36,7 @@ public abstract class AbstractConfigReviewable extends AbstractConfig{
     }
 
     public void review(){
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        config = YamlConfiguration.loadConfiguration(file);
         if (config.getDouble("config_version") < (double) map.get("config_version")) {
             doInit(config);
             try {

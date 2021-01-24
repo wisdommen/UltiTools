@@ -44,7 +44,7 @@ public class SideBarTask extends BukkitRunnable {
             //创建一个计分板对象
             String title="Welcome!";
             try {
-                title = (String) ConfigController.getValue("scoreBoardTitle");
+                title = ConfigController.getConfig("sidebar").getString("scoreBoardTitle");
             }catch (NullPointerException ignored){
             }
             Objective information = UltiTools.versionAdaptor.registerNewObjective(scoreboard, "侧边栏", "", ChatColor.DARK_AQUA + title);
@@ -196,7 +196,7 @@ public class SideBarTask extends BukkitRunnable {
 
     public String setPlaceholderString(Player player, String string) {
         try {
-            return Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, (String) ConfigController.getValue(string)));
+            return Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, ConfigController.getConfig("sidebar").getString(string)));
         } catch (Exception e) {
             return "";
         }
@@ -221,7 +221,7 @@ public class SideBarTask extends BukkitRunnable {
     public void setCustomLine(Objective scoreboard, Player player){
         List<String> tempList = new ArrayList<>();
         try {
-            tempList = (List<String>) ConfigController.getValue("customerline");
+            tempList = ConfigController.getConfig("sidebar").getStringList("customerline");
         }catch (NullPointerException ignored){
         }
         List<String> customer_line = Lists.reverse(tempList);

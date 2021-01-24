@@ -25,39 +25,39 @@ public class DeathPunishmentTask {
     }
 
     public static boolean isEnableMoneyDrop() {
-        return (boolean) ConfigController.getValue("enable_money_drop");
+        return ConfigController.getConfig("death").getBoolean("enable_money_drop");
     }
 
     public static boolean isEnablePunishCommands() {
-        return (boolean) ConfigController.getValue("enable_punish_commands");
+        return ConfigController.getConfig("death").getBoolean("enable_punish_commands");
     }
 
     public static boolean isEnableItemDrop() {
-        return (boolean) ConfigController.getValue("enable_item_drop");
+        return ConfigController.getConfig("death").getBoolean("enable_item_drop");
     }
 
     public static int getMoneyDrop() {
-        return (int) ConfigController.getValue("money_dropped_ondeath");
+        return ConfigController.getConfig("death").getInt("money_dropped_ondeath");
     }
 
     public static int getItemDrop() {
-        return (int) ConfigController.getValue("item_dropped_ondeath");
+        return ConfigController.getConfig("death").getInt("item_dropped_ondeath");
     }
 
     public static List<String> getPunishCommands() {
-        return ConfigController.getStringList("punish_command");
+        return ConfigController.getConfig("death").getStringList("punish_command");
     }
 
     public static List<String> getWorldsEnabledItemDrop() {
-        return ConfigController.getStringList("worlds_enabled_item_drop");
+        return ConfigController.getConfig("death").getStringList("worlds_enabled_item_drop");
     }
 
     public static List<String> getWorldsEnabledMoneyDrop() {
-        return ConfigController.getStringList("worlds_enabled_money_drop");
+        return ConfigController.getConfig("death").getStringList("worlds_enabled_money_drop");
     }
 
     public static List<String> getWorldsEnabledPunishCommand() {
-        return ConfigController.getStringList("worlds_enabled_punish_commands");
+        return ConfigController.getConfig("death").getStringList("worlds_enabled_punish_commands");
     }
 }
 

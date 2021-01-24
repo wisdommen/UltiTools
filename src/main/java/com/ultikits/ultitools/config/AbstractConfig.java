@@ -13,6 +13,7 @@ abstract class AbstractConfig {
     String filePath;
     Map<String, Object> map = new LinkedHashMap<>();
     File file;
+    YamlConfiguration config;
 
     public AbstractConfig() {
     }
@@ -21,6 +22,7 @@ abstract class AbstractConfig {
         this.name = name;
         this.filePath = filePath;
         this.file = new File(filePath);
+        config = YamlConfiguration.loadConfiguration(file);
     }
 
     public void init() {
@@ -30,7 +32,7 @@ abstract class AbstractConfig {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+            config = YamlConfiguration.loadConfiguration(file);
             doInit(config);
             try {
                 config.save(file);
@@ -43,7 +45,7 @@ abstract class AbstractConfig {
 
     public void reload() {
         this.file = new File(filePath);
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        config = YamlConfiguration.loadConfiguration(file);
         for (String key : config.getKeys(true)) {
             if (key.equals("config_version")){
                 continue;
@@ -53,7 +55,7 @@ abstract class AbstractConfig {
     }
 
     public void save() {
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        config = YamlConfiguration.loadConfiguration(file);
         for (String key : map.keySet()) {
             if (config.getKeys(true).contains(key)) {
                 config.set(key, map.get(key));
@@ -64,6 +66,10 @@ abstract class AbstractConfig {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public YamlConfiguration getConfig(){
+        return config;
     }
 
     abstract public void load();

@@ -2,11 +2,14 @@ package com.ultikits.ultitools.commands;
 
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.ultitools.UltiTools;
+import com.ultikits.ultitools.utils.CustomGuiUtils;
 import com.ultikits.ultitools.utils.FunctionUtils;
+import com.ultikits.ultitools.views.CustomGUIView;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -21,8 +24,9 @@ public class ToolsCommands implements TabExecutor {
         if (!(command.getName().equalsIgnoreCase("ultitools"))) {
             return false;
         }
+        Player player = null;
         if (sender instanceof Player) {
-            Player player = (Player) sender;
+            player = (Player) sender;
             if (!(player.isOp() || player.hasPermission("ultitools.tools.commands"))) {
                 sender.sendMessage(warning(UltiTools.languageUtils.getString("no_permission")));
                 return false;
@@ -30,12 +34,23 @@ public class ToolsCommands implements TabExecutor {
         }
         switch (strings.length){
             case 1:
-                if (strings[0].equals("reload")){
-                    ConfigController.reloadAll();
-                    sender.sendMessage(warning(UltiTools.languageUtils.getString("config_reloaded")));
-                    return true;
+                switch (strings[0]){
+                    case "reload":
+                        ConfigController.reloadAll();
+                        sender.sendMessage(warning(UltiTools.languageUtils.getString("config_reloaded")));
+                        return true;
+                    default:
+                        if (player == null) {
+                            return false;
+                        }
+                        String signature = CustomGuiUtils.getSignature(strings[0]);
+                        if (signature == null) {
+                            return false;
+                        }
+                        Inventory customGui = CustomGUIView.setUp(signature, player);
+                        player.openInventory(customGui);
+                        return true;
                 }
-                return false;
             case 2:
                 switch (strings[0]){
                     case "enable":
