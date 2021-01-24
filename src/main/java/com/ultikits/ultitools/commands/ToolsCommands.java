@@ -40,6 +40,9 @@ public class ToolsCommands implements TabExecutor {
                         sender.sendMessage(warning(UltiTools.languageUtils.getString("config_reloaded")));
                         return true;
                     default:
+                        if (!UltiTools.isProVersion){
+                            return false;
+                        }
                         if (player == null) {
                             return false;
                         }
