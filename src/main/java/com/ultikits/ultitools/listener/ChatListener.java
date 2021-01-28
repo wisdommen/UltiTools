@@ -38,7 +38,7 @@ public class ChatListener implements Listener {
 
     @EventHandler
     public void onPlayerChatReply(AsyncPlayerChatEvent event) {
-        if (ConfigController.getConfig("chat").getBoolean("enable_auto-reply") && UltiTools.isProVersion) {
+        if (ConfigController.getConfig("main").getBoolean("enable_auto-reply") && UltiTools.isProVersion) {
             String message = event.getMessage().replace(" ", "_");
             File file = new File(ConfigsEnum.CHAT.toString());
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
