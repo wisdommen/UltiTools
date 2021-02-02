@@ -177,7 +177,7 @@ public class EmailCommands extends AbstractTabExecutor {
             return;
         }
         Player receiverPlayer = Bukkit.getPlayer(receiver);
-        receiverPlayer.sendMessage(info(UltiTools.languageUtils.getString("email_received_new_email")));
+        receiverPlayer.sendMessage(info(UltiTools.languageUtils.getString("email_received_new_email").replace("\\n", "\n")));
         receiverPlayer.playSound(receiverPlayer.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_CHIME), 10, 1);
     }
 

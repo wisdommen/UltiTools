@@ -108,7 +108,7 @@ public class ChestLockListener implements Listener {
                 ConfigController.getConfig("chestData").set("locked", chests);
                 ConfigController.saveConfig("chestData");
                 player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("lock_successfully"));
-                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_tip_after_lock"));
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_tip_after_lock").replace("\\n", "\n"));
                 player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_CHEST_LOCKED), 10, 1);
                 return;
             } else if (playerData.getBoolean("unlock")) {
@@ -125,7 +125,7 @@ public class ChestLockListener implements Listener {
                     ConfigController.getConfig("chestData").set("locked", chests);
                     ConfigController.saveConfig("chestData");
                     player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("unlock_successfully"));
-                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("unlock_tip_after_unlock"));
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("unlock_tip_after_unlock").replace("\\n", "\n"));
                     player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_CHEST_LOCKED), 10, 1);
                     return;
                 } else {
@@ -270,12 +270,12 @@ public class ChestLockListener implements Listener {
         double z = blockLocation.getZ();
         String location = getFormattedChestLocation(player, blockLocation);
         if (registeredChests.contains(location)) {
-            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_auto_lock"));
+            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_auto_lock").replace("\\n", "\n"));
             return true;
         } else {
             for (String each : registeredChests) {
                 if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
-                    player.sendMessage(info(UltiTools.languageUtils.getString("lock_locked_chest_besides")));
+                    player.sendMessage(info(UltiTools.languageUtils.getString("lock_locked_chest_besides").replace("\\n", "\n")));
                     return false;
                 }
             }
