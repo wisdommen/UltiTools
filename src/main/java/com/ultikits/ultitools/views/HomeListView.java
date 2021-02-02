@@ -13,6 +13,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,9 +33,14 @@ public class HomeListView {
         inventoryManager.presetPage(ViewType.PREVIOUS_QUIT_NEXT);
         inventoryManager.create();
         ViewManager.registerView(inventoryManager, new HomeListPageListener());
-        for (ItemStackManager home : setUpItems(player)){
-            inventoryManager.addItem(home);
-        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (ItemStackManager home : setUpItems(player)){
+                    inventoryManager.addItem(home);
+                }
+            }
+        }.runTaskAsynchronously(UltiTools.getInstance());
         return inventoryManager.getInventory();
     }
 

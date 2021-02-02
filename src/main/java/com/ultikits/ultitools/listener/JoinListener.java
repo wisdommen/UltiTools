@@ -2,6 +2,7 @@ package com.ultikits.ultitools.listener;
 
 import com.ultikits.ultitools.checker.VersionChecker;
 import com.ultikits.ultitools.enums.ConfigsEnum;
+import com.ultikits.ultitools.tasks.SideBarTask;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
@@ -39,9 +40,9 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-
         String vanillaJoinMessage = event.getJoinMessage() == null ? "" : event.getJoinMessage();
         event.setJoinMessage(null);
+        SideBarTask.registerPlayer(player.getUniqueId());
         if (player.isOp()) {
             if (VersionChecker.isOutDate) {
                 new BukkitRunnable() {

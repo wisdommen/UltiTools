@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,9 +29,14 @@ public class WarpsView {
         inventoryManager.presetPage(ViewType.PREVIOUS_QUIT_NEXT);
         inventoryManager.create();
         ViewManager.registerView(inventoryManager, new WarpListener());
-        for (ItemStack itemStack : setUpItems()) {
-            inventoryManager.addItem(itemStack);
-        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (ItemStack itemStack : setUpItems()) {
+                    inventoryManager.addItem(itemStack);
+                }
+            }
+        }.runTaskAsynchronously(UltiTools.getInstance());
         return inventoryManager.getInventory();
     }
 

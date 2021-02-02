@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,9 +36,14 @@ public class KitsView {
         inventoryManager.presetPage(ViewType.PREVIOUS_QUIT_NEXT);
         inventoryManager.create();
         ViewManager.registerView(inventoryManager, new KitsPageListener());
-        for (ItemStack itemStack : setUpItems(player)) {
-            inventoryManager.addItem(itemStack);
-        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (ItemStack itemStack : setUpItems(player)) {
+                    inventoryManager.addItem(itemStack);
+                }
+            }
+        }.runTaskAsynchronously(UltiTools.getInstance());
         return inventoryManager.getInventory();
     }
 

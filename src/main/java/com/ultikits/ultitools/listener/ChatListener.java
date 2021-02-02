@@ -26,6 +26,7 @@ public class ChatListener implements Listener {
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
+        System.out.println(1);
         Player player = event.getPlayer();
         String prefixes_str = ConfigController.getConfig("chat").getString("chat_prefix").replaceAll("%player_name%", player.getName()).replaceAll("%player_world%", player.getLocation().getWorld().getName()).replaceAll("&", "§");
         if (UltiTools.getInstance().getServer().getPluginManager().getPlugin("UltiLevel") == null) {
@@ -33,12 +34,13 @@ public class ChatListener implements Listener {
         }
         String papiMassage = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, prefixes_str));
         String message = papiMassage + ChatColor.WHITE + " %2$s";
-        event.setFormat(message);
+        event.setFormat(message.replaceAll("&", "§"));
     }
 
     @EventHandler
     public void onPlayerChatReply(AsyncPlayerChatEvent event) {
-        if (ConfigController.getConfig("main").getBoolean("enable_auto-reply") && UltiTools.isProVersion) {
+        System.out.println(2);
+        if (ConfigController.getConfig("config").getBoolean("enable_auto-reply") && UltiTools.isProVersion) {
             String message = event.getMessage().replace(" ", "_");
             File file = new File(ConfigsEnum.CHAT.toString());
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
@@ -57,7 +59,7 @@ public class ChatListener implements Listener {
             }
             String reply = config.getString("auto-reply."+bestMatch);
             if (reply != null) {
-                Bukkit.broadcastMessage(reply);
+                Bukkit.broadcastMessage(reply.replaceAll("&", "§"));
             }
         }
     }

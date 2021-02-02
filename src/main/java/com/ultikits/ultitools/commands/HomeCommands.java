@@ -34,30 +34,34 @@ public class HomeCommands extends AbstractTabExecutor {
         File file = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         if (file.exists()) {
-            try {
-                if (args.length == 0 || (args.length == 1 && args[0].equals(UltiTools.languageUtils.getString("default")))) {
-                    World world = Bukkit.getServer().getWorld(Objects.requireNonNull(config.getString(player.getName() + ".Def.world")));
-                    int x = config.getInt(player.getName() + ".Def.x");
-                    int y = config.getInt(player.getName() + ".Def.y");
-                    int z = config.getInt(player.getName() + ".Def.z");
-                    Location location = new Location(world, x, y, z);
-                    teleportingPlayers.put(player.getUniqueId(), true);
-                    teleportPlayer(player, location);
-                } else if (args.length == 1) {
-                    World world = Bukkit.getServer().getWorld(Objects.requireNonNull(config.getString(player.getName() + "." + args[0] + ".world")));
-                    int x = config.getInt(player.getName() + "." + args[0] + ".x");
-                    int y = config.getInt(player.getName() + "." + args[0] + ".y");
-                    int z = config.getInt(player.getName() + "." + args[0] + ".z");
-                    Location location = new Location(world, x, y, z);
-                    teleportingPlayers.put(player.getUniqueId(), true);
-                    teleportPlayer(player, location);
-                } else {
-                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("home_usage"));
-                    return false;
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    try {
+                        if (args.length == 0 || (args.length == 1 && args[0].equals(UltiTools.languageUtils.getString("default")))) {
+                            World world = Bukkit.getServer().getWorld(Objects.requireNonNull(config.getString(player.getName() + ".Def.world")));
+                            int x = config.getInt(player.getName() + ".Def.x");
+                            int y = config.getInt(player.getName() + ".Def.y");
+                            int z = config.getInt(player.getName() + ".Def.z");
+                            Location location = new Location(world, x, y, z);
+                            teleportingPlayers.put(player.getUniqueId(), true);
+                            teleportPlayer(player, location);
+                        } else if (args.length == 1) {
+                            World world = Bukkit.getServer().getWorld(Objects.requireNonNull(config.getString(player.getName() + "." + args[0] + ".world")));
+                            int x = config.getInt(player.getName() + "." + args[0] + ".x");
+                            int y = config.getInt(player.getName() + "." + args[0] + ".y");
+                            int z = config.getInt(player.getName() + "." + args[0] + ".z");
+                            Location location = new Location(world, x, y, z);
+                            teleportingPlayers.put(player.getUniqueId(), true);
+                            teleportPlayer(player, location);
+                        } else {
+                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("home_usage"));
+                        }
+                    } catch (NullPointerException e) {
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("home_dont_have"));
+                    }
                 }
-            } catch (NullPointerException e) {
-                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("home_dont_have"));
-            }
+            }.runTaskAsynchronously(UltiTools.getInstance());
         } else {
             player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("home_have_no_home"));
         }

@@ -1,34 +1,46 @@
-# 配置文件版本，请勿修改
-config_version: 1.0
+# config version, please do not change
+config_version: 1.2
 
-# 清道夫名称
-cleaner_name: 扫地娘
+# the name of the cleaner
+cleaner_name: cleaner
 
-# 开关定时清理（智能清理开启时不生效）
+# if enable the cleaning task (When enable smart cleaning, this will have no be enable)
 clean_entity_task_enable: false
 
-# 开关卸载闲置区块
-unload_chunk_task_enable: true
+# if enable unload chunks that is idle
+unload_chunk_task_enable: false
 
-# 开关智能清理
+# if enable smart cleaning
 enable_smart_clean: true
 
-# 定时清理间隔
-clean_period: 6000
+# the time between cleaning
+clean_period: 3000
 
-#需要清理的种类（all代表全部，items代表掉落物，mobs代表生物）
+# type of entity that needs to be cleaned (all-All types, items-Dropped items, mobs-living entities)
 clean_type:
   - all
 
-# 需要清理的世界（all代表全部）
+# the world needs to be cleaned (all-All worlds)
 clean_worlds:
   - all
 
-#智能清理掉落物上限
+# the maximum dropped item which will cause a cleaning
 item_max: 2000
 
-#智能清理生物上限
+# the maximum mobs which will cause a cleaning
 mob_max: 1000
 
-#智能清理实体上限
+# the maximum entities which will cause a cleaning
 total_entity_max: 2500
+
+# the maximum distance between a player and a chunk which will make the system mark the chunk as idle
+max_chunk_distance: 320
+
+# the maximum chunks which will cause a cleaning
+max_unused_chunks: 100
+
+# the maximum chunks that will be cleaned per minute
+unload_chunks_per_minute: 10
+
+# the white list of entity which will not be cleaned
+clean_whitelist: []

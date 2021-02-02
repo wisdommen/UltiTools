@@ -1,9 +1,6 @@
 package com.ultikits.ultitools.config;
 
 import com.ultikits.ultitools.enums.ConfigsEnum;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import java.io.IOException;
 
 public class LoginConfig extends AbstractConfigReviewable{
 
@@ -15,36 +12,6 @@ public class LoginConfig extends AbstractConfigReviewable{
 
     private LoginConfig(String name, String filePath) {
         super(name, filePath);
-        map.put("configVersion", 1.0);
-        map.put("playerLimitForOneIP", 1);
-    }
-
-    @Override
-    public void load() {
-        reload();
-        ConfigController.registerConfig(name, loginConfig);
-    }
-
-    @Override
-    void doInit(YamlConfiguration config) {
-        for (String key : map.keySet()) {
-            if (!key.equals("configVersion") && config.getKeys(false).contains(key)){
-                continue;
-            }
-            config.set(key, map.get(key));
-        }
-    }
-
-    @Override
-    public void review() {
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        if (config.getDouble("configVersion") < (double) map.get("configVersion")) {
-            doInit(config);
-            try {
-                config.save(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        version = 1.0;
     }
 }

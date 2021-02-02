@@ -1,7 +1,6 @@
 package com.ultikits.ultitools.config;
 
 import com.ultikits.ultitools.enums.ConfigsEnum;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 
 public class GlobuleGroupsConfig extends AbstractConfig{
@@ -15,16 +14,4 @@ public class GlobuleGroupsConfig extends AbstractConfig{
     private GlobuleGroupsConfig(String name, String filePath) {
         super(name, filePath);
     }
-
-    @Override
-    public void load() {
-        reload();
-        ConfigController.registerConfig("globuleGroupsConfig", globuleGroupsConfig);
-    }
-
-    @Override
-    void doInit(YamlConfiguration config) {
-        config.set("groups", null);
-    }
-
 }

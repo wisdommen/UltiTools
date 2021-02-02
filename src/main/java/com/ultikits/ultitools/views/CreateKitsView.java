@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,7 +35,12 @@ public class CreateKitsView {
         inventoryManager.presetPage(ViewType.OK_CANCEL);
         inventoryManager.create();
         inventoryManager.clearBackGround();
-        setUpItems(name, inventoryManager.getInventory());
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                setUpItems(name, inventoryManager.getInventory());
+            }
+        }.runTaskAsynchronously(UltiTools.getInstance());
         ViewManager.registerView(inventoryManager, new CreateKitsViewListener());
 
         Inventory inventory = inventoryManager.getInventory();
@@ -44,8 +50,8 @@ public class CreateKitsView {
 
     private static void setUpItems(String name, Inventory inventory) {
         List<ItemStack> itemStackList = setUpItem(name);
-        for (int i = 0; i < itemStackList.size(); i++) {
-            inventory.setItem(i, itemStackList.get(i));
+        for (ItemStack itemStack : itemStackList) {
+            inventory.addItem(itemStack);
         }
     }
 

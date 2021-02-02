@@ -16,26 +16,20 @@ import java.util.Objects;
 public class EmailManager {
 
     private final File file;
-    private final YamlConfiguration config;
     private final String playerName;
 
     public EmailManager(@NotNull File playerFile) {
         file = playerFile;
         playerName = playerFile.getName().replace(".yml", "");
-        config = YamlConfiguration.loadConfiguration(file);
     }
 
     public File getFile() {
         return file;
     }
 
-    public YamlConfiguration getConfig() {
-        return config;
-    }
-
     public Map<String, EmailContentBean> getEmails() {
         Map<String, EmailContentBean> emails = new HashMap<>();
-
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         for (String uuid : config.getKeys(false)) {
             if (config.getConfigurationSection(uuid).getKeys(false).contains("item")) {
                 ItemStack itemStack = setupItemStack(uuid);
@@ -75,6 +69,7 @@ public class EmailManager {
     }
 
     private void saveEmail(String uuid, String sender, String message) {
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         config.set(uuid + ".sender", sender);
         config.set(uuid + ".message", message);
         config.set(uuid + ".isRead", false);
@@ -86,6 +81,7 @@ public class EmailManager {
     }
 
     private void saveEmail(String uuid, String sender, String message, @NotNull ItemStack itemStack) {
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         config.set(uuid + ".sender", sender);
         config.set(uuid + ".message", message);
         config.set(uuid + ".isRead", false);
@@ -100,11 +96,13 @@ public class EmailManager {
 
     @NotNull
     private ItemStack setupItemStack(String uuid) {
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         String itemStackSerialized = config.getString(uuid + ".item");
         return Objects.requireNonNull(SerializationUtils.encodeToItem(itemStackSerialized));
     }
 
     public Boolean deleteHistoryEmails() {
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         if (config.getKeys(false).size() != 0) {
             if (file.delete()) {
                 try {

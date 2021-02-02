@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.commands;
 
+import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.DatabasePlayerTools;
 import org.bukkit.ChatColor;
@@ -16,8 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WhitelistCommands implements TabExecutor {
-    static File file = new File(UltiTools.getInstance().getDataFolder(), "whitelist.yml");
-    static YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
@@ -34,7 +33,8 @@ public class WhitelistCommands implements TabExecutor {
         }
     }
 
-    private void addPlayerToWhitelist(File file, String name) {
+    private void addPlayerToWhitelist(String name) {
+        YamlConfiguration config = ConfigController.getConfig("whitelist");
         List<String> whitelist = config.getStringList("whitelist");
         if (UltiTools.isDatabaseEnabled) {
             if (DatabasePlayerTools.isPlayerExist(name, "userinfo") && DatabasePlayerTools.getPlayerData(name, "userinfo", "whitelisted").equals("false")) {
@@ -43,16 +43,13 @@ public class WhitelistCommands implements TabExecutor {
         } else {
             whitelist.add(name);
             config.set("whitelist", whitelist);
-            try {
-                config.save(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            ConfigController.saveConfig("whitelist");
         }
 
     }
 
-    private void removePlayerFromWhitelist(File file, String name) {
+    private void removePlayerFromWhitelist(String name) {
+        YamlConfiguration config = ConfigController.getConfig("whitelist");
         List<String> whitelist = config.getStringList("whitelist");
         if (UltiTools.isDatabaseEnabled) {
             if (DatabasePlayerTools.isPlayerExist(name, "userinfo") && DatabasePlayerTools.getPlayerData(name, "userinfo", "whitelisted").equals("true")) {
@@ -62,11 +59,7 @@ public class WhitelistCommands implements TabExecutor {
             if (whitelist.contains(name)) {
                 whitelist.remove(name);
                 config.set("whitelist", whitelist);
-                try {
-                    config.save(file);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                ConfigController.saveConfig("whitelist");
             }
         }
     }
@@ -80,6 +73,7 @@ public class WhitelistCommands implements TabExecutor {
     }
 
     private boolean whiteListCommands(CommandSender sender, Command command, String[] args) {
+        YamlConfiguration config = ConfigController.getConfig("whitelist");
         if ("wl".equalsIgnoreCase(command.getName())) {
             if (args.length == 1) {
                 switch (args[0]) {
@@ -98,11 +92,11 @@ public class WhitelistCommands implements TabExecutor {
                 }
             } else if (args.length == 2) {
                 if ("add".equalsIgnoreCase(args[0])) {
-                    addPlayerToWhitelist(file, args[1]);
+                    addPlayerToWhitelist(args[1]);
                     sender.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("whitelist_added"), args[1]));
                     return true;
                 } else if ("remove".equalsIgnoreCase(args[0])) {
-                    removePlayerFromWhitelist(file, args[1]);
+                    removePlayerFromWhitelist(args[1]);
                     sender.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("whitelist_removed"), args[1]));
                     return true;
                 }

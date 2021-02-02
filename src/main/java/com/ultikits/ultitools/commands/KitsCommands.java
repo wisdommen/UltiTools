@@ -1,6 +1,5 @@
 package com.ultikits.ultitools.commands;
 
-import com.ultikits.abstracts.AbstractPlayerCommandExecutor;
 import com.ultikits.abstracts.AbstractTabExecutor;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
@@ -18,7 +17,6 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class KitsCommands extends AbstractTabExecutor {
 
@@ -34,8 +32,7 @@ public class KitsCommands extends AbstractTabExecutor {
                     return false;
                 }
                 if (player.hasPermission("ultikits.tools.admin")){
-                    Map<String, Object> map = ConfigController.getConfigSection("kits");
-                    if (map.get(strings[1]) == null){
+                    if (ConfigController.getConfig("kits").getConfigurationSection(strings[1]) == null){
                         player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("kits_no_such_kit")));
                         return true;
                     }

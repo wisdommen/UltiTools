@@ -13,6 +13,7 @@ import com.ultikits.ultitools.utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -28,12 +29,18 @@ public class EmailView {
         inventoryManager.presetPage(ViewType.PREVIOUS_QUIT_NEXT);
         inventoryManager.create();
         ViewManager.registerView(inventoryManager, new EmailPageListener());
-        File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player.getName() + ".yml");
-        EmailManager emailManager = new EmailManager(file);
-        Map<String, EmailContentBean> emailContentManagers = emailManager.getEmails();
-        for (ItemStackManager itemStackManager : setUpItems(emailContentManagers)) {
-            inventoryManager.addItem(itemStackManager);
-        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player.getName() + ".yml");
+                EmailManager emailManager = new EmailManager(file);
+                Map<String, EmailContentBean> emailContentManagers = emailManager.getEmails();
+                for (ItemStackManager itemStackManager : setUpItems(emailContentManagers)) {
+                    inventoryManager.addItem(itemStackManager);
+                }
+            }
+        }.runTaskAsynchronously(UltiTools.getInstance());
+
         return inventoryManager.getInventory();
     }
 

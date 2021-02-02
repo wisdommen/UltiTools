@@ -29,7 +29,7 @@ public class CustomGUIView {
     }
 
     public static Inventory setUp(String signature, Player player) {
-        YamlConfiguration config = ConfigController.getConfig("customergui");
+        YamlConfiguration config = ConfigController.getConfig("customgui");
         if (inventoryMap.get(player.getUniqueId()) != null) {
             setUpItems(player, config, inventoryMap.get(player.getUniqueId()));
             return inventoryMap.get(player.getUniqueId()).getInventory();
@@ -57,7 +57,7 @@ public class CustomGUIView {
 
     private static Map<String, ItemStackManager> setUpItems(Player player) {
         Map<String, ItemStackManager> itemStacks = new HashMap<>();
-        YamlConfiguration config = ConfigController.getConfig("customergui");
+        YamlConfiguration config = ConfigController.getConfig("customgui");
         for (String btn : config.getConfigurationSection("main").getKeys(false)) {
             String path = "main." + btn + ".";
             String item = config.getString(path + "item");

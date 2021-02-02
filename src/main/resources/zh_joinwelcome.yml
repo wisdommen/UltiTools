@@ -8,7 +8,6 @@ sendMessageDelay: 4
 welcome_message:
   - §b欢迎加入服务器，§e%player_name%§b!
   - §b请友善对待他人，游戏愉快！
-  - '     ---可以在配置文件在修改此提醒'
 
 # op入服提示语
 op_join: §c[管理员] §e%player_name% §c已上线

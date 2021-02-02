@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,9 +37,14 @@ public class RemoteBagView {
         lore.add(unimportant(UltiTools.languageUtils.getString("kits_page_description_price") + price));
         ItemStackManager newBag = new ItemStackManager(new ItemStack(Material.MINECART), lore, UltiTools.languageUtils.getString("bag_button_create_bag"));
         inventoryManager.setItem(44, newBag.getItem());
-        for (ItemStackManager each : setUpItems(playerName)) {
-            inventoryManager.addItem(each.getItem());
-        }
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                for (ItemStackManager each : setUpItems(playerName)) {
+                    inventoryManager.addItem(each.getItem());
+                }
+            }
+        }.runTaskAsynchronously(UltiTools.getInstance());
         return inventoryManager.getInventory();
     }
 

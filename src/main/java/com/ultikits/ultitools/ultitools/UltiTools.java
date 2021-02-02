@@ -7,7 +7,7 @@ import com.ultikits.ultitools.checker.DependencyChecker;
 import com.ultikits.ultitools.checker.ProChecker;
 import com.ultikits.ultitools.checker.VersionChecker;
 import com.ultikits.ultitools.commands.*;
-import com.ultikits.ultitools.config.ConfigController;
+import com.ultikits.ultitools.config.*;
 import com.ultikits.ultitools.listener.*;
 import com.ultikits.ultitools.register.CommandRegister;
 import com.ultikits.ultitools.tasks.*;
@@ -27,6 +27,7 @@ import java.io.File;
 import java.util.*;
 
 import static com.ultikits.ultitools.listener.LoginListener.savePlayerLoginStatus;
+import static com.ultikits.ultitools.tasks.SideBarTask.clearScoreboards;
 import static com.ultikits.ultitools.utils.DatabasePlayerTools.getIsLogin;
 
 public final class UltiTools extends JavaPlugin {
@@ -50,7 +51,7 @@ public final class UltiTools extends JavaPlugin {
         isUltiCoreUpToDate = DependencyChecker.isUltiCoreUpToDate();
         if (!isUltiCoreUpToDate){
             this.getServer().getConsoleSender().sendMessage(MessagesUtils.warning("The version of UltiCoreAPI is too old to enable UltiTools!"));
-            this.getServer().getConsoleSender().sendMessage(MessagesUtils.warning("Please download the newest version of UltiCoreAPI!"));
+            this.getServer().getConsoleSender().sendMessage(MessagesUtils.warning("Use [/ulticore upgrade] to download the newest version of UltiCoreAPI!"));
             this.getServer().getPluginManager().disablePlugin(plugin);
             return;
         }
@@ -70,6 +71,7 @@ public final class UltiTools extends JavaPlugin {
         yaml.saveYamlFile(getDataFolder().getPath() + File.separator + "lang", language + ".yml", language + ".yml", true);
 
         List<File> folders = new ArrayList<>();
+        folders.add(new File(getDataFolder().getPath()));
         folders.add(new File(getDataFolder() + "/playerData"));
         folders.add(new File(getDataFolder() + "/chestData"));
         folders.add(new File(getDataFolder() + "/loginData"));
@@ -83,7 +85,27 @@ public final class UltiTools extends JavaPlugin {
         File langFile = new File(getDataFolder().getPath() + File.separator + "lang", language + ".yml");
         languageUtils = YamlConfiguration.loadConfiguration(langFile);
 
-        ConfigController.initFiles();
+        Arrays.asList(
+                new KitsConfig(),
+                new CleanerConfig(),
+//                new GroupPermissionConfig(),
+//                new UserPermissionConfig(),
+//                new GlobuleGroupsConfig(),
+                new LoginConfig(),
+                new JoinWelcomeConfig(),
+                new SideBarConfig(),
+                new SideBarDataConfig(),
+                new ChestLockConfig(),
+                new HomeConfig(),
+                new ChestDataConfig(),
+                new MultiworldsConfig(),
+                new DeathPunishConfig(),
+                new MainConfig(),
+                new WhiteListConfig(),
+                new BagConfig(),
+                new ChatConfig(),
+                new CustomerGUIConfig()
+        );
 
         isDatabaseEnabled = getConfig().getBoolean("enableDataBase");
 
@@ -150,7 +172,7 @@ public final class UltiTools extends JavaPlugin {
 
         Objects.requireNonNull(this.getCommand("ultitools")).setExecutor(new ToolsCommands());
         if (this.getConfig().getBoolean("enable_email")) {
-            CommandRegister.registerCommand(plugin, new EmailCommands(), "ultikits.tools.email", languageUtils.getString("email_function"), "email");
+            CommandRegister.registerCommand(plugin, new EmailCommands(), "ultikits.tools.email", languageUtils.getString("email_function"), "email", "ultimail", "mail", "mails");
         }
         if (this.getConfig().getBoolean("enable_home")) {
             CommandRegister.registerCommand(plugin, new HomeCommands(), "ultikits.tools.home", languageUtils.getString("home_function"), "home");
@@ -164,7 +186,7 @@ public final class UltiTools extends JavaPlugin {
         }
         if (this.getConfig().getBoolean("enable_scoreboard")) {
             CommandRegister.registerCommand(plugin, new SbCommands(), "ultikits.tools.scoreboard", languageUtils.getString("sidebar_function"), "sb");
-            new SideBarTask().runTaskTimer(this, 0, 20L);
+            new SideBarTask().runTaskTimerAsynchronously(this, 0, 20L);
         }
         if (this.getConfig().getBoolean("enable_lock")) {
             CommandRegister.registerCommand(plugin, new UnlockCommands(), "ultikits.tools.lock", languageUtils.getString("lock_chest_function"), "unlock");
@@ -184,10 +206,10 @@ public final class UltiTools extends JavaPlugin {
         if (this.getConfig().getBoolean("enable_cleaner")) {
             CommandRegister.registerCommand(plugin, new CleanerCommands(), "ultikits.tools.clean", languageUtils.getString("cleaner_function"), "clean");
         }
-        if (this.getConfig().getBoolean("enable_permission")) {
-            CommandRegister.registerCommand(plugin, new PermissionCommands(), "ultikits.tools.permission", languageUtils.getString("permission_function"), "pers");
-            getServer().getPluginManager().registerEvents(new PermissionAddOnJoinListener(), this);
-        }
+//        if (this.getConfig().getBoolean("enable_permission")) {
+//            CommandRegister.registerCommand(plugin, new PermissionCommands(), "ultikits.tools.permission", languageUtils.getString("permission_function"), "pers");
+//            getServer().getPluginManager().registerEvents(new PermissionAddOnJoinListener(), this);
+//        }
         if (this.getConfig().getBoolean("enable_tpa")) {
             CommandRegister.registerCommand(plugin, new TeleportCommands(), "ultikits.tools.tpa", languageUtils.getString("tpa_function"), "tpa");
             CommandRegister.registerCommand(plugin, new TpaHereCommands(), "ultikits.tools.tpa", languageUtils.getString("tpa_function"), "tphere");
@@ -220,6 +242,7 @@ public final class UltiTools extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new LoginListener(), this);
             getServer().getPluginManager().registerEvents(new LoginGUIListener(), this);
             getServer().getPluginManager().registerEvents(new ValidationPageListener(), this);
+            new LoginLimitTask().runTaskTimer(UltiTools.getInstance(), 0L, 20L);
             LoginListener.checkPlayerAlreadyLogin();
             CommandRegister.registerCommand(plugin, new LoginRegisterCommands(), "ultikits.tools.login", languageUtils.getString("login_function"), "reg", "regs", "re");
         }
@@ -262,6 +285,8 @@ public final class UltiTools extends JavaPlugin {
                 }
             }
         }
+        clearScoreboards();
+        ConfigController.saveConfigs();
         savePlayerLoginStatus();
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("plugin_disabled"));
     }

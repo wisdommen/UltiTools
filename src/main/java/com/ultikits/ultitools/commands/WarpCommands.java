@@ -10,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -27,22 +28,27 @@ public class WarpCommands extends AbstractPlayerCommandExecutor {
                     player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("no_permission")));
                     return true;
                 }
-                File file = new File(UltiTools.getInstance().getDataFolder() + "/warps", strings[0] + ".yml");
-                if (!file.exists()) {
-                    player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("warp_not_exists")));
-                    return true;
-                }
-                YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-                String world = config.getString("world");
-                double x = config.getDouble("x");
-                double y = config.getDouble("y");
-                double z = config.getDouble("z");
-                float yaw = (float) config.getDouble("yaw");
-                float pitch = (float) config.getDouble("pitch");
-                String name = config.getString("name");
-                Location location = new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
-                player.teleport(location);
-                player.sendMessage(MessagesUtils.info(String.format(UltiTools.languageUtils.getString("warp_teleport_successfully"), name)));
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        File file = new File(UltiTools.getInstance().getDataFolder() + "/warps", strings[0] + ".yml");
+                        if (!file.exists()) {
+                            player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("warp_not_exists")));
+                            return;
+                        }
+                        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+                        String world = config.getString("world");
+                        double x = config.getDouble("x");
+                        double y = config.getDouble("y");
+                        double z = config.getDouble("z");
+                        float yaw = (float) config.getDouble("yaw");
+                        float pitch = (float) config.getDouble("pitch");
+                        String name = config.getString("name");
+                        Location location = new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
+                        player.teleport(location);
+                        player.sendMessage(MessagesUtils.info(String.format(UltiTools.languageUtils.getString("warp_teleport_successfully"), name)));
+                    }
+                }.runTaskAsynchronously(UltiTools.getInstance());
                 return true;
             case "warps":
                 if (!(player.hasPermission("ultitools.warp.use") || player.hasPermission("ultikits.tools.admin"))) {

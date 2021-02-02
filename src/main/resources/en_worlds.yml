@@ -1,0 +1,19 @@
+worlds: []
+blocked_worlds: []
+world:
+  # Name of world folder
+  World:
+    # Alias name for display
+    alias: World
+    # Item shows in world list
+    type: GRASS_BLOCK
+    # World description shows in world list
+    describe: None
+  Nether:
+    alias: Nether
+    type: GRASS_BLOCK
+    describe: None
+  End:
+    alias: End
+    type: GRASS_BLOCK
+    describe: None

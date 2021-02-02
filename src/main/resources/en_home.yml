@@ -1,14 +1,14 @@
-# 配置文件版本，请勿修改
+# config version, please do not change
 config_version: 1.0
 
-# 普通玩家可以设置的最大家数量
+# the amount that a normal player can set
 home_normal: 3
 
-# 中级玩家可以设置的最大家数量，权限：ultikits.tools.level1
+# the amount that a Pro player can set. Permission: ultikits.tools.level1
 home_pro: 5
 
-# 高级玩家可以设置的最大家数量，权限：ultikits.tools.level2
+# the amount that a Ultimate player can set. Permission: ultikits.tools.level2
 home_ultimate: 10
 
-# 家传送前摇
+# time (seconds) that needs to be wait before teleporting
 home_tpwait: 3

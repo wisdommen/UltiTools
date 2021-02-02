@@ -1,54 +1,53 @@
-# 配置文件版本，请勿修改
+# config version, please do not change
 config_version: 1.0
 
-# 侧边栏标题
-scoreBoardTitle: 欢迎加入服务器
+# SideBar Title
+scoreBoardTitle: Welcome
 
-# 以下配置填写PAPI变量，需要在config.yml中打开使用PAPI变量（enable_papi: true)
-# 玩家名变量
+# You need to enable the PAPI in the config.yml to take any effect below
+# player name papi
 name: '%player_name%'
 
-# 在线人数变量
+# online players papi
 online_player: ''
 
-# 技能冷却变量
+# skill cooldown papi (require extra plugin support)
 CDq: ''
 CDw: ''
 CDe: ''
 CDr: ''
 
-# 现金数变量
+# money papi
 money: ''
 
-# 存款数变量
+# deposit papi
 deposit: ''
 
-# 等级变量
+# level papi
 level: ''
 
-# 目前经验值变量
+# exp papi
 exp: ''
 
-# 升级到下一级所需经验值
+# max exp papi
 max_exp: ''
 
-# 法力值变量
+# magic point papi
 mp: ''
 
-# 最大法力值变量
+# max magic point papi
 max_mp: ''
 
-# 当前生命值变量
+# health point papi
 hp: ''
 
-# 最大生命值变量
+# max health point papi
 max_hp: ''
 
-# 职业变量
+# job papi
 occupation: ''
 
-# 自定义内容
+# Custom content line
 customerline:
-  - 这是自定义的内容
-  - 可以在配置文件里改
-  - 支持PAPI变量
+  - Here is the custom content
+  - You can change it in config

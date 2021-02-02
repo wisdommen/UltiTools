@@ -37,9 +37,6 @@ import static com.ultikits.utils.MessagesUtils.info;
  */
 public class ChestLockListener implements Listener {
 
-    static File chestConfigFile = new File(ConfigsEnum.CHEST_LOCK.toString());
-    static YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(chestConfigFile);
-
     @EventHandler
     public void onPlacePlaceChest(BlockPlaceEvent event) {
         Block placedBlock = event.getBlock();
@@ -48,7 +45,7 @@ public class ChestLockListener implements Listener {
             Map<Direction, Block> blockMap = getBlocksBesides(placedBlock);
             Block right = blockMap.get(Direction.RIGHT);
             Block left = blockMap.get(Direction.LEFT);
-            List<String> chests = ConfigController.getConfig("chestConfig").getStringList("locked");
+            List<String> chests = ConfigController.getConfig("chestData").getStringList("locked");
             if (!(right.getType() == Material.CHEST || left.getType() == Material.CHEST)) {
                 Random random = new Random();
                 int i = random.nextInt(3);
@@ -73,12 +70,13 @@ public class ChestLockListener implements Listener {
 
     @EventHandler
     public void onPlayerOpenChest(@NotNull PlayerInteractEvent event) {
+
         if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.CHEST) {
             Player player = event.getPlayer();
             Location chestLocation = event.getClickedBlock().getLocation();
             File playerFile = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
             YamlConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
-            List<String> chests = ConfigController.getConfig("chestConfig").getStringList("locked");
+            List<String> chests = ConfigController.getConfig("chestData").getStringList("locked");
 
             String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
             double x = chestLocation.getX();
@@ -107,7 +105,7 @@ public class ChestLockListener implements Listener {
                     }
                 }
                 chests.add(local);
-                ConfigController.setValue("locked", chests);
+                ConfigController.getConfig("chestData").set("locked", chests);
                 ConfigController.saveConfig("chestData");
                 player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("lock_successfully"));
                 player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_tip_after_lock"));
@@ -124,7 +122,7 @@ public class ChestLockListener implements Listener {
                 }
                 if (chests.contains(local)) {
                     chests.remove(local);
-                    ConfigController.setValue("locked", chests);
+                    ConfigController.getConfig("chestData").set("locked", chests);
                     ConfigController.saveConfig("chestData");
                     player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("unlock_successfully"));
                     player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("unlock_tip_after_unlock"));
@@ -144,6 +142,7 @@ public class ChestLockListener implements Listener {
             if (!chests.contains(local)) {
                 for (String each : chests) {
                     if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
+                        YamlConfiguration chestConfig = ConfigController.getConfig("chestlock");
                         if ((chestConfig.getBoolean("op_unlock") && player.isOp() && event.getAction() == Action.RIGHT_CLICK_BLOCK) || (chestConfig.getBoolean("op_break_locked") && player.isOp() && event.getAction() == Action.LEFT_CLICK_BLOCK)) {
                             player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("lock_op_warning"));
                             return;
@@ -162,7 +161,7 @@ public class ChestLockListener implements Listener {
         if (event.getBlock().getType() == Material.CHEST) {
             Location chestLocation = event.getBlock().getLocation();
             Player player = event.getPlayer();
-            List<String> chests = ConfigController.getConfig("chestConfig").getStringList("locked");
+            List<String> chests = ConfigController.getConfig("chestData").getStringList("locked");
             int sizeBefore = chests.size();
 
             String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
@@ -177,7 +176,7 @@ public class ChestLockListener implements Listener {
                 chests.remove(local);
             }
             if (sizeBefore > chests.size()) {
-                ConfigController.setValue("locked", chests);
+                ConfigController.getConfig("chestData").set("locked", chests);
                 ConfigController.saveConfig("chestData");
                 player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_chest_deleted"));
             }
@@ -187,7 +186,7 @@ public class ChestLockListener implements Listener {
     @EventHandler
     public void onItemRemovedByHopper(@NotNull InventoryMoveItemEvent event) {
         Location chestLocation = event.getSource().getLocation();
-        List<String> chests = ConfigController.getConfig("chestConfig").getStringList("locked");
+        List<String> chests = ConfigController.getConfig("chestData").getStringList("locked");
 
         String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
         double x = chestLocation.getX();
@@ -200,6 +199,7 @@ public class ChestLockListener implements Listener {
                 event.setCancelled(true);
             }
         }
+
     }
 
     @EventHandler
@@ -207,7 +207,7 @@ public class ChestLockListener implements Listener {
         if ((event.getEntity() instanceof Creeper) || (event.getEntity() instanceof TNTPrimed)) {
             for (Block block : event.blockList().toArray(new Block[event.blockList().size()])) {
                 if (block.getType() == Material.CHEST) {
-                    List<String> chests = ConfigController.getConfig("chestConfig").getStringList("locked");
+                    List<String> chests = ConfigController.getConfig("chestData").getStringList("locked");
                     Location chestLocation = block.getLocation();
                     String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
                     double x = chestLocation.getX();
@@ -285,8 +285,9 @@ public class ChestLockListener implements Listener {
 
     private void saveNewChestLocation(Player player, Block placedBlock, List<String> chests) {
         String loc = getFormattedChestLocation(player, placedBlock.getLocation());
-        chests.add(loc);
-        ConfigController.setValue("locked", chests);
+        List<String> temp = new ArrayList<>(chests);
+        temp.add(loc);
+        ConfigController.getConfig("chestData").set("locked", temp);
         ConfigController.saveConfig("chestData");
     }
 

@@ -31,8 +31,6 @@ import static com.ultikits.utils.MessagesUtils.warning;
 
 public class EmailCommands extends AbstractTabExecutor {
 
-    public static Map<String, EmailContentBean> emailContentManagerMap;
-
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
         File senderFile = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player.getName() + ".yml");
@@ -65,12 +63,22 @@ public class EmailCommands extends AbstractTabExecutor {
                 switch (strings[0].toLowerCase()) {
                     case "sendall":
                         if (player.isOp()) {
-                            sendAllMessage(player, emailManager, strings[1]);
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    sendAllMessage(player, emailManager, strings[1]);
+                                }
+                            }.runTaskAsynchronously(UltiTools.getInstance());
                             return true;
                         }
                         return false;
                     case "senditem":
-                        sendMessage(file, emailManager, player, strings[1]);
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                sendMessage(file, emailManager, player, strings[1]);
+                            }
+                        }.runTaskAsynchronously(UltiTools.getInstance());
                         return true;
                     default:
                         player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("wrong_format"));
@@ -91,17 +99,23 @@ public class EmailCommands extends AbstractTabExecutor {
                         player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("wrong_format"));
                         return false;
                 }
-                StringBuilder stringBuilder = new StringBuilder();
-                for (int i = 2; i < strings.length; i++) {
-                    String s = " " + strings[i] + " ";
-                    if (i == 2) {
-                        s = strings[i] + " ";
-                    } else if (i == strings.length - 1) {
-                        s = " " + strings[i];
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (int i = 2; i < strings.length; i++) {
+                            String s = " " + strings[i] + " ";
+                            if (i == 2) {
+                                s = strings[i] + " ";
+                            } else if (i == strings.length - 1) {
+                                s = " " + strings[i];
+                            }
+                            stringBuilder.append(s);
+                        }
+                        sendMessage(file2, emailManager, player, strings[1], stringBuilder.toString(), hasContent);
                     }
-                    stringBuilder.append(s);
-                }
-                sendMessage(file2, emailManager, player, strings[1], stringBuilder.toString(), hasContent);
+                }.runTaskAsynchronously(UltiTools.getInstance());
                 return true;
             } else {
                 player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("wrong_format"));
@@ -177,14 +191,18 @@ public class EmailCommands extends AbstractTabExecutor {
             for (OfflinePlayer player1 : UltiTools.getInstance().getServer().getOfflinePlayers()) {
                 File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player1.getName() + ".yml");
                 emailManager.sendTo(file, receiver, itemStack);
-                pushToReceiver(player1.getName());
+                if (player1.isOnline()) {
+                    pushToReceiver(player1.getName());
+                }
             }
-            return;
-        }
-        for (OfflinePlayer player2 : UltiTools.getInstance().getServer().getOfflinePlayers()) {
-            File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player2.getName() + ".yml");
-            emailManager.sendTo(file, receiver);
-            pushToReceiver(player2.getName());
+        }else {
+            for (OfflinePlayer player2 : UltiTools.getInstance().getServer().getOfflinePlayers()) {
+                File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player2.getName() + ".yml");
+                emailManager.sendTo(file, receiver);
+                if (player2.isOnline()) {
+                    pushToReceiver(player2.getName());
+                }
+            }
         }
         player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("email_send_successfully"));
         player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.UI_TOAST_OUT), 15, 1);

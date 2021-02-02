@@ -39,7 +39,7 @@ public class WorldsListView {
     }
 
     private static List<ItemStackManager> setUpItem() {
-        YamlConfiguration config = ConfigController.getConfig("multiworlds");
+        YamlConfiguration config = ConfigController.getConfig("worlds");
 
         List<ItemStackManager> itemStackManagers = new ArrayList<>();
         List<String> worlds = new ArrayList<>();

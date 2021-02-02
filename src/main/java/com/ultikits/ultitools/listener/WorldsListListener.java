@@ -16,7 +16,7 @@ public class WorldsListListener extends PagesListener {
     public CancelResult onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
         if (inventoryManager.getTitle().contains(UltiTools.languageUtils.getString("world_page_title"))) {
             String aliasName = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName());
-            YamlConfiguration config = ConfigController.getConfig("multiworlds");
+            YamlConfiguration config = ConfigController.getConfig("worlds");
             for (String each : config.getConfigurationSection("world").getKeys(false)){
                 if (aliasName.equals(config.getString("world."+each+".alias"))){
                     player.performCommand("mw " + each);

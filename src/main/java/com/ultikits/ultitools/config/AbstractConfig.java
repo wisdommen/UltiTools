@@ -1,78 +1,64 @@
 package com.ultikits.ultitools.config;
 
+import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
-abstract class AbstractConfig {
-
+public abstract class AbstractConfig {
     String name;
     String filePath;
-    Map<String, Object> map = new LinkedHashMap<>();
+    String resourcePath;
     File file;
+    String folder;
     YamlConfiguration config;
 
-    public AbstractConfig() {
+    AbstractConfig() {
     }
 
     public AbstractConfig(String name, String filePath) {
         this.name = name;
+        this.folder = String.valueOf(UltiTools.getInstance().getDataFolder());
         this.filePath = filePath;
+        this.resourcePath = UltiTools.language + "_" + name + ".yml";
+        this.file = new File(filePath);
+        config = YamlConfiguration.loadConfiguration(file);
+    }
+
+    public AbstractConfig(String name, String folder, String filePath, String resourcePath) {
+        this.name = name;
+        this.folder = folder;
+        this.filePath = filePath;
+        this.resourcePath = resourcePath;
         this.file = new File(filePath);
         config = YamlConfiguration.loadConfiguration(file);
     }
 
     public void init() {
         if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            config = YamlConfiguration.loadConfiguration(file);
-            doInit(config);
-            try {
-                config.save(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            UltiTools.yaml.saveYamlFile(folder, name + ".yml", resourcePath);
         }
-        load();
+        config = YamlConfiguration.loadConfiguration(file);
+        if (!ConfigController.getConfigMap().containsKey(name)){
+            ConfigController.registerConfig(name, this);
+        }
     }
 
     public void reload() {
-        this.file = new File(filePath);
         config = YamlConfiguration.loadConfiguration(file);
-        for (String key : config.getKeys(true)) {
-            if (key.equals("config_version")){
-                continue;
-            }
-            map.put(key, config.get(key));
-        }
     }
 
     public void save() {
-        config = YamlConfiguration.loadConfiguration(file);
-        for (String key : map.keySet()) {
-            if (config.getKeys(true).contains(key)) {
-                config.set(key, map.get(key));
-            }
-        }
         try {
             config.save(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        reload();
     }
 
-    public YamlConfiguration getConfig(){
+    public YamlConfiguration getConfig() {
         return config;
     }
-
-    abstract public void load();
-
-    abstract void doInit(YamlConfiguration config);
 }

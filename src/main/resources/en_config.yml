@@ -1,7 +1,7 @@
 config_version: 3.22
 
 'comment0': 'Language: zh_cn(简体中文), en_us(English)'
-language: en_US
+language: en_us
 
 'comment52': 'if enable PRO version'
 enable_pro: false

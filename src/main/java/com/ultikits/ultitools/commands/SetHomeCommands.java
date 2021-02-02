@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -27,14 +28,24 @@ public class SetHomeCommands extends AbstractPlayerCommandExecutor {
             return true;
         }
         if (args.length == 0) {
-            setHome(player, "Def");
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    setHome(player, "Def");
+                }
+            }.runTaskAsynchronously(UltiTools.getInstance());
             return true;
         } else if (args.length == 1) {
-            if (Utils.getHomeList(player).contains(args[0])) {
-                player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("sethome_home_already_have")));
-                return true;
-            }
-            setHome(player, args[0]);
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (Utils.getHomeList(player).contains(args[0])) {
+                        player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("sethome_home_already_have")));
+                        return;
+                    }
+                    setHome(player, args[0]);
+                }
+            }.runTaskAsynchronously(UltiTools.getInstance());
             return true;
         } else {
             player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("sethome_usage"));

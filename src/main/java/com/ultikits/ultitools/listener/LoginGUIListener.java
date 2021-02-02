@@ -10,8 +10,10 @@ import com.ultikits.ultitools.utils.DatabasePlayerTools;
 import com.ultikits.utils.MD5Utils;
 import com.ultikits.utils.MessagesUtils;
 import com.ultikits.utils.SendEmailUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -192,14 +194,6 @@ public class LoginGUIListener implements Listener {
         Player player = event.getPlayer();
         if (getIsLogin(player)) {
             setIsLogin(player, false);
-        }
-    }
-
-
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-        if (!getIsLogin(event.getPlayer())) {
-            event.setCancelled(true);
         }
     }
 

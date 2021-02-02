@@ -1,0 +1,19 @@
+worlds: []
+blocked_worlds: []
+world:
+  # 世界文件夹的名字
+  World:
+    # 世界别名
+    alias: World
+    # 世界列表中的材质
+    type: GRASS_BLOCK
+    # 世界列表中显示的描述
+    describe: None
+  Nether:
+    alias: Nether
+    type: GRASS_BLOCK
+    describe: None
+  End:
+    alias: End
+    type: GRASS_BLOCK
+    describe: None

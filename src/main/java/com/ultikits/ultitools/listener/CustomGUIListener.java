@@ -19,12 +19,12 @@ public class CustomGUIListener extends PagesListener {
 
     @Override
     public CancelResult onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
-        if (!inventoryManager.getTitle().equals(ConfigController.getConfig("customergui").getString("guis." + signature + ".title") + " - " + player.getName())) {
+        if (!inventoryManager.getTitle().equals(ConfigController.getConfig("customgui").getString("guis." + signature + ".title") + " - " + player.getName())) {
             return CancelResult.NONE;
         }
         if (clickedItem != null) {
             int position = event.getSlot();
-            YamlConfiguration config = ConfigController.getConfig("customergui");
+            YamlConfiguration config = ConfigController.getConfig("customgui");
             for (String key : config.getConfigurationSection(signature).getKeys(false)) {
                 if (position == config.getInt(signature + "." + key + ".position")) {
                     for (String playerCommand : config.getStringList(signature + "." + key + ".player-commands")) {
