@@ -68,7 +68,7 @@ public class CleanerCommands implements TabExecutor {
                             break;
                     }
                 }
-            }.runTaskAsynchronously(UltiTools.getInstance());
+            }.runTask(UltiTools.getInstance());
         }
         return true;
     }

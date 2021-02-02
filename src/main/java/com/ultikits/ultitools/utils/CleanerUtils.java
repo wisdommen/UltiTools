@@ -8,7 +8,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.entity.*;
 
-import java.io.File;
 import java.util.List;
 
 public class CleanerUtils {

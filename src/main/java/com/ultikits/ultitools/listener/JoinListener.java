@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -37,12 +38,12 @@ public class JoinListener implements Listener {
     String playerQuitMessage = config.getString("player_quit");
     int sendMessageDelay = config.getInt("send_message_delay");
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        SideBarTask.registerPlayer(player.getUniqueId());
         String vanillaJoinMessage = event.getJoinMessage() == null ? "" : event.getJoinMessage();
         event.setJoinMessage(null);
-        SideBarTask.registerPlayer(player.getUniqueId());
         if (player.isOp()) {
             if (VersionChecker.isOutDate) {
                 new BukkitRunnable() {

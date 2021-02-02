@@ -34,6 +34,7 @@ public class SideBarTask extends BukkitRunnable {
         for (Player player : Bukkit.getOnlinePlayers()) {
             scoreboardMap.put(player.getUniqueId(), sb.getNewScoreboard());
         }
+        scoreboardMap.put(null, sb.getNewScoreboard());
     }
 
     public static void registerPlayer(UUID playerId) {
@@ -53,7 +54,7 @@ public class SideBarTask extends BukkitRunnable {
                         setUpPlayerSideBar(player);
                         player.setScoreboard(scoreboardMap.get(player.getUniqueId()));
                     } else {
-                        player.setScoreboard(sb.getNewScoreboard());
+                        player.setScoreboard(scoreboardMap.get(null));
                     }
                 }
             }.runTaskAsynchronously(UltiTools.getInstance());
