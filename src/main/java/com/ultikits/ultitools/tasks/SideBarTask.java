@@ -31,12 +31,12 @@ public class SideBarTask extends BukkitRunnable {
     static Map<UUID, Map<Integer, String>> boardMap = new HashMap<>();
 
     static {
-        for (Player player:Bukkit.getOnlinePlayers()){
+        for (Player player : Bukkit.getOnlinePlayers()) {
             scoreboardMap.put(player.getUniqueId(), sb.getNewScoreboard());
         }
     }
 
-    public static void registerPlayer(UUID playerId){
+    public static void registerPlayer(UUID playerId) {
         scoreboardMap.put(playerId, sb.getNewScoreboard());
     }
 
@@ -50,7 +50,7 @@ public class SideBarTask extends BukkitRunnable {
                 @Override
                 public void run() {
                     if (!players.contains(player.getName())) {
-                        setUpPlayerSideBar( player);
+                        setUpPlayerSideBar(player);
                         player.setScoreboard(scoreboardMap.get(player.getUniqueId()));
                     } else {
                         player.setScoreboard(sb.getNewScoreboard());
@@ -227,7 +227,11 @@ public class SideBarTask extends BukkitRunnable {
             } catch (NullPointerException ignored) {
             }
             if (player.getScoreboard().getObjective(DisplaySlot.SIDEBAR) == null) {
-                information = UltiTools.versionAdaptor.registerNewObjective(scoreboard, player.getName() + "的侧边栏", "", ChatColor.DARK_AQUA + title);
+                String name = player.getName();
+                while (name.length() > 16) {
+                    name = name.substring(0, 15);
+                }
+                information = UltiTools.versionAdaptor.registerNewObjective(scoreboard, name, "", ChatColor.DARK_AQUA + title);
                 information.setDisplaySlot(DisplaySlot.SIDEBAR);
             }
         }
