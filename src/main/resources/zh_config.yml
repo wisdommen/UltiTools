@@ -1,4 +1,4 @@
-config_version: 3.22
+config_version: 3.23
 
 '注释0请勿修改': '语言: zh_cn(简体中文), en_us(English)'
 language: zh_cn
@@ -9,8 +9,8 @@ enable_pro: false
 '注释53请勿修改': 'PRO版本注册账号名称'
 pro_name: xxxxxxxxxxxxxx
 
-'注释54请勿修改': 'PRO版本密钥'
-pro_key: xxxxxxxxxxxxxx
+'注释54请勿修改': 'PRO版本注册账号密码'
+pro_password: xxxxxxxxxxxxxx
 
 '注释1请勿修改': '设置true为使用mysql数据库，设置false为使用yml储存数据'
 enableDataBase: false

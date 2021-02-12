@@ -1,10 +1,9 @@
 package com.ultikits.ultitools.ultitools;
 
 import com.ultikits.api.VersionWrapper;
-import com.ultikits.beans.CheckResponse;
 import com.ultikits.main.UltiCoreAPI;
 import com.ultikits.ultitools.checker.DependencyChecker;
-import com.ultikits.ultitools.checker.ProChecker;
+import com.ultikits.ultitools.checker.NewProChecker;
 import com.ultikits.ultitools.checker.VersionChecker;
 import com.ultikits.ultitools.commands.*;
 import com.ultikits.ultitools.config.*;
@@ -68,7 +67,17 @@ public final class UltiTools extends JavaPlugin {
             yaml.saveYamlFile(getDataFolder().getPath(), "config.yml", language + "_config.yml");
         }
         language = getConfig().getString("language").split("_")[0];
+        String cusLang = getConfig().getString("language").split("_")[1];
         yaml.saveYamlFile(getDataFolder().getPath() + File.separator + "lang", language + ".yml", language + ".yml", true);
+
+        if (cusLang.equalsIgnoreCase("cn")||cusLang.equalsIgnoreCase("us")) {
+            File langFile = new File(getDataFolder().getPath() + File.separator + "lang", language + ".yml");
+            languageUtils = YamlConfiguration.loadConfiguration(langFile);
+        }else {
+            File langFile = new File(getDataFolder().getPath() + File.separator + "lang", cusLang + ".yml");
+            languageUtils = YamlConfiguration.loadConfiguration(langFile);
+            getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("using_customized_language"));
+        }
 
         List<File> folders = new ArrayList<>();
         folders.add(new File(getDataFolder().getPath()));
@@ -82,8 +91,6 @@ public final class UltiTools extends JavaPlugin {
         folders.add(new File(getDataFolder() + "/warps"));
 
         makedirs(folders);
-        File langFile = new File(getDataFolder().getPath() + File.separator + "lang", language + ".yml");
-        languageUtils = YamlConfiguration.loadConfiguration(langFile);
 
         Arrays.asList(
                 new KitsConfig(),
@@ -134,16 +141,29 @@ public final class UltiTools extends JavaPlugin {
                 @Override
                 public void run() {
                     if (UltiTools.getInstance().getConfig().getBoolean("enable_pro")) {
+//                        try {
+//                            CheckResponse res = ProChecker.run();
+//                            if (res.code.equals("200")) {
+//                                UltiTools.isProVersion = true;
+//                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools] " + languageUtils.getString("pro_validated"));
+//                            } else {
+//                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] " + languageUtils.getString("pro_validation_failed"));
+//                            }
+//                            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] " + res.msg);
+//                        } catch (Exception e) {
+//                            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] " + languageUtils.getString("pro_validation_failed"));
+//                        }
                         try {
-                            CheckResponse res = ProChecker.run();
-                            if (res.code.equals("200")) {
+                            String res = NewProChecker.validatePro();
+                            if (res.equals("Pro Version Activated!")) {
                                 UltiTools.isProVersion = true;
                                 UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools] " + languageUtils.getString("pro_validated"));
                             } else {
                                 UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] " + languageUtils.getString("pro_validation_failed"));
                             }
-                            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] " + res.msg);
+                            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools] " + res);
                         } catch (Exception e) {
+                            e.printStackTrace();
                             UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] " + languageUtils.getString("pro_validation_failed"));
                         }
                     }
@@ -286,7 +306,7 @@ public final class UltiTools extends JavaPlugin {
             }
         }
         clearScoreboards();
-        ConfigController.saveConfigs();
+//        ConfigController.saveConfigs();
         savePlayerLoginStatus();
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("plugin_disabled"));
     }

@@ -22,6 +22,7 @@ do_not_move: 'Please do not move!'
 none: 'None'
 feng: ''
 ge: ''
+using_customized_language: 'Enabled customized language, please always check the newest official language file in case any change. Any problem due to the change of language file will not be accepted by customer service!'
 world_name: 'world name'
 processing: 'Processing...Please wait'
 no_permission: "You don't have permission to do that!"

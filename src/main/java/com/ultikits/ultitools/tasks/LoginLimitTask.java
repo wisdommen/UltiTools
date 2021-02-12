@@ -21,10 +21,15 @@ public class LoginLimitTask extends BukkitRunnable {
             if (!getIsLogin(player)) {
                 String location = notLoggedInMap.get(player.getUniqueId());
                 Location location1 = player.getLocation();
-                String location1Str = location1.getYaw()+location1.getX()+location1.getY()+location1.getZ()+location1.getWorld().getName();
+                String location1Str = location1.getX()+location1.getY()+location1.getZ()+location1.getWorld().getName();
                 if (location != null) {
                     if (!location.equals(location1Str)) {
-                        player.teleport(stringLocationMap.get(location));
+                        if (player.isOnGround()) {
+                            player.teleport(stringLocationMap.get(location));
+                        }else {
+                            notLoggedInMap.put(player.getUniqueId(), location1Str);
+                            stringLocationMap.put(location1Str, player.getLocation());
+                        }
                     }
                 } else {
                     notLoggedInMap.put(player.getUniqueId(), location1Str);

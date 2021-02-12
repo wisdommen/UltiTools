@@ -1,4 +1,4 @@
-config_version: 3.22
+config_version: 3.23
 
 'comment0': 'Language: zh_cn(简体中文), en_us(English)'
 language: en_us
@@ -6,11 +6,11 @@ language: en_us
 'comment52': 'if enable PRO version'
 enable_pro: false
 
-'comment53': 'PRO version name for register (You cannot change it after registration)'
+'comment53': 'PRO version registered username (You cannot change it after registration)'
 pro_name: xxxxxxxxxxxxxx
 
-'comment54': 'PRO version Activation Key'
-pro_key: xxxxxxxxxxxxxx
+'comment54': 'PRO version registered password'
+pro_password: xxxxxxxxxxxxxx
 
 'comment1': 'set true to use mysql database, set false to use YAML store data'
 enableDataBase: false

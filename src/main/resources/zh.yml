@@ -22,6 +22,7 @@ do_not_move: 请勿移动！
 none: 无
 feng: 封
 ge: 个
+using_customized_language: '正在启用自定义语言文件，请务必经常检查比对官方语言文件，否则可能会报错。任何因为修改语言文件导致的报错均不在客服接受范围，需自行解决！'
 world_name: 世界名
 processing: 处理中...请耐心等待
 no_permission: 你没有权限！

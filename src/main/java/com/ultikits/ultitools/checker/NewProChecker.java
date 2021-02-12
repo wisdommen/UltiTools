@@ -1,95 +1,102 @@
 package com.ultikits.ultitools.checker;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
+import com.ultikits.ultitools.ultitools.UltiTools;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
 public class NewProChecker {
-//    private static final String name = UltiTools.getInstance().getConfig().getString("pro_name");
-//    private static final String password = UltiTools.getInstance().getConfig().getString("pro_password");
-//
-//    public static CheckResponse run() throws IOException {
-//        HttpURLConnection connection = (HttpURLConnection) new URL("http://api.ultikits.com:8080/UltikitsServer/validate.api?name="+name+"&key="+ password).openConnection();
-//        connection.setRequestMethod("GET");
-//        connection.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
-//        String data;
-//        CheckResponse response = new CheckResponse();
-//        try {
-//            InputStream input2 = connection.getInputStream();
-//            InputStreamReader streamReader = new InputStreamReader(input2, StandardCharsets.UTF_8);
-//            BufferedReader br = new BufferedReader(streamReader);
-//            data = br.readLine();
-//            JSONObject userJson = JSONObject.parseObject(data);
-//            response = JSON.toJavaObject(userJson,CheckResponse.class);
-//
-//            br.close();
-//            streamReader.close();
-//        } catch (IOException ignored) {
-//        } finally {
-//            connection.disconnect();
-//        }
-//        return response;
-//    }
+    private static final String name = UltiTools.getInstance().getConfig().getString("pro_name");
+    private static final String password = UltiTools.getInstance().getConfig().getString("pro_password");
+    private static String id;
 
-    private static final String tokenUrl = "http://panel.ultikits.com:8082/user/getToken";
-    private static final String refreshTokenUrl = "http://panel.ultikits.com:8082/user/refreshToken";
+    public static String doPost(String url) {
+        return doPost(url, null, null);
+    }
 
-    public static String getToken(String userName, String password) {
-        BufferedReader reader = null;
-        HttpURLConnection connection = null;
-        String returnValue = "";
+    public static String doPost(String url, String token, Map<String, String> body) {
+        //创建httpClient对象
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpResponse response = null;
+        String result = "";
         try {
-            URL url = new URL(tokenUrl+"?username="+userName+"&password="+password);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line;
-            StringWriter out = new StringWriter(connection.getContentLength() > 0 ? connection.getContentLength() : 2048);
-            while ((line = reader.readLine()) != null) {
-                out.append(line);
+            //创建http请求
+            HttpPost httpPost = new HttpPost(url);
+            httpPost.addHeader("Content-Type", "application/json");
+            if (token != null) httpPost.addHeader("Authorization", "Bearer " + token);
+            //创建请求内容
+            if (body != null) {
+                String jsonStr = JSON.toJSONString(body);
+                StringEntity entity = new StringEntity(jsonStr);
+                httpPost.setEntity(entity);
             }
-            returnValue = out.toString();
+            response = httpClient.execute(httpPost);
+            result = EntityUtils.toString(response.getEntity(), "utf-8");
+//            System.out.println(result);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (reader != null) {
+            //关闭资源
+            if (response != null) {
                 try {
-                    reader.close();
-                } catch (IOException e) {
+                    response.close();
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
                 }
             }
-            connection.disconnect();
-        }
-        return returnValue;
-    }
-
-    public static String refreshToken(String refreshToken) {
-        BufferedReader reader = null;
-        HttpURLConnection connection = null;
-        String returnValue = "";
-        try {
-            URL url = new URL(refreshTokenUrl+"?refresh_token="+refreshToken);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("POST");
-            reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line = null;
-            StringWriter out = new StringWriter(connection.getContentLength() > 0 ? connection.getContentLength() : 2048);
-            while ((line = reader.readLine()) != null) {
-                out.append(line);
-            }
-            returnValue = out.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
+            if (httpClient != null) {
                 try {
-                    reader.close();
-                } catch (IOException e) {
+                    httpClient.close();
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
                 }
             }
-            connection.disconnect();
         }
-        return returnValue;
+        return result;
     }
 
+    private static String getToken() {
+        String res = doPost("https://panel.ultikits.com:4433/user/getToken?username=" + name + "&password=" + password);
+        Map<String, Object> map = JSON.parseObject(res, new TypeReference<Map<String, Object>>() {
+        });
+        if (map.containsKey("access_token")) {
+            id = String.valueOf(map.get("id"));
+            return (String) map.get("access_token");
+        }
+        return null;
+    }
+
+    public static String validatePro() {
+        String token = getToken();
+        if (token == null) {
+            return "Login Failed!";
+        }
+        String result = doPost("https://panel.ultikits.com:4433/user/" + id + "?field=pro", token, null);
+        Map<String, Object> map = JSON.parseObject(result, new TypeReference<Map<String, Object>>() {
+        });
+        boolean isPro = map.get("msg").equals("true");
+        if (isPro){
+            String ipAddress = doPost("https://panel.ultikits.com:4433/check/getip");
+            String activatedServerString = doPost("https://panel.ultikits.com:4433/user/" + id + "/activatedservers", token, null);
+            List<String> activatedServerList = JSONObject.parseObject(activatedServerString, new TypeReference<List<String>>() {});
+            for (String each : activatedServerList){
+                Map<String, Object> map2 = JSON.parseObject(each, new TypeReference<Map<String, Object>>() {});
+                String serverIp = (String) map2.get("serverIp");
+                if (serverIp.equals(ipAddress)){
+                    return "Pro Version Activated!";
+                }
+            }
+        }
+        return "Pro Activate Failed!";
+    }
 }

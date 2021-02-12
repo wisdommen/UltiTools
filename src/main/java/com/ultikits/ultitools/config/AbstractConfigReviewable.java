@@ -52,6 +52,7 @@ public abstract class AbstractConfigReviewable extends AbstractConfig {
                     config.set(each, resourceConfig.get(each));
                 }
             }
+            config.set("config_version", version);
             try {
                 config.save(file);
             } catch (IOException e) {
