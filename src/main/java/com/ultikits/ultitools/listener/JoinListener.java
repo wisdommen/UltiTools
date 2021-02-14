@@ -41,34 +41,38 @@ public class JoinListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        SideBarTask.registerPlayer(player.getUniqueId());
-        String vanillaJoinMessage = event.getJoinMessage() == null ? "" : event.getJoinMessage();
-        event.setJoinMessage(null);
-        if (player.isOp()) {
-            if (VersionChecker.isOutDate) {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("join_send_update_reminding"), version, current_version));
-                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("join_send_update_tip"));
-                    }
-                }.runTaskLaterAsynchronously(UltiTools.getInstance(), 80L);
-            }
-            Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, opJoinMessage == null ? vanillaJoinMessage : opJoinMessage.replace("%player_name%", player.getName())));
-        } else {
-            Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, playerJoinMessage == null ? vanillaJoinMessage : playerJoinMessage.replace("%player_name%", player.getName())));
+        if (UltiTools.getInstance().getConfig().getBoolean("enable_scoreboard")) {
+            SideBarTask.registerPlayer(player.getUniqueId());
         }
-
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                for (String each : welcomeMessage) {
-                    player.sendMessage(PlaceholderAPI.setPlaceholders(player, each));
+        if (UltiTools.getInstance().getConfig().getBoolean("enable_onjoin")) {
+            String vanillaJoinMessage = event.getJoinMessage() == null ? "" : event.getJoinMessage();
+            event.setJoinMessage(null);
+            if (player.isOp()) {
+                if (VersionChecker.isOutDate) {
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("join_send_update_reminding"), version, current_version));
+                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("join_send_update_tip"));
+                        }
+                    }.runTaskLaterAsynchronously(UltiTools.getInstance(), 80L);
                 }
+                Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, opJoinMessage == null ? vanillaJoinMessage : opJoinMessage.replace("%player_name%", player.getName())));
+            } else {
+                Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, playerJoinMessage == null ? vanillaJoinMessage : playerJoinMessage.replace("%player_name%", player.getName())));
             }
 
-        }.runTaskLater(UltiTools.getInstance(), sendMessageDelay * 20L);
+            new BukkitRunnable() {
+
+                @Override
+                public void run() {
+                    for (String each : welcomeMessage) {
+                        player.sendMessage(PlaceholderAPI.setPlaceholders(player, each));
+                    }
+                }
+
+            }.runTaskLater(UltiTools.getInstance(), sendMessageDelay * 20L);
+        }
     }
 
     @EventHandler

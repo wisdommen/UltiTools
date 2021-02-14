@@ -4,10 +4,12 @@ import com.minecraft.Ultilevel.utils.checkLevel;
 import com.ultikits.beans.CancelResult;
 import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.PagesListener;
+import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.utils.EconomyUtils;
 import com.ultikits.utils.MessagesUtils;
+import com.ultikits.utils.SerializationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -23,11 +25,9 @@ import java.util.Objects;
 
 public class KitsPageListener extends PagesListener {
 
-    private static final File kits = new File(ConfigsEnum.KIT.toString());
-    private static final YamlConfiguration kitsConfig = YamlConfiguration.loadConfiguration(kits);
-
     @Override
     public CancelResult onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
+        YamlConfiguration kitsConfig = ConfigController.getConfig("kits");
         if (!inventoryManager.getTitle().contains(UltiTools.languageUtils.getString("kits_page_title"))){
             return CancelResult.NONE;
         }
@@ -39,9 +39,9 @@ public class KitsPageListener extends PagesListener {
             String kitName = kitsConfig.getString(item + ".name");
             if (!clickedItemName.equals(kitName)) continue;
             if (!isPlayerCanBuy(player, item)) return CancelResult.TRUE;
-            if (!Objects.requireNonNull(kitsConfig.getConfigurationSection(item + ".contain").getKeys(false)).isEmpty()) {
-                for (String i : Objects.requireNonNull(kitsConfig.getConfigurationSection(item + ".contain").getKeys(false))) {
-                    player.getInventory().addItem(new ItemStack(Material.valueOf(i), kitsConfig.getInt(item + ".contain." + i + ".quantity")));
+            if (!kitsConfig.getStringList(item + ".contain").isEmpty()) {
+                for (String i : kitsConfig.getStringList(item + ".contain")) {
+                    player.getInventory().addItem(SerializationUtils.encodeToItem(i));
                 }
             }
             if (!kitsConfig.getStringList(item + ".playerCommands").isEmpty()) {
@@ -76,6 +76,7 @@ public class KitsPageListener extends PagesListener {
     }
 
     private boolean isPlayerCanBuy(Player player, String item){
+        YamlConfiguration kitsConfig = ConfigController.getConfig("kits");
         File kit_file = new File(UltiTools.getInstance().getDataFolder() + "/kitData", "kit.yml");
         YamlConfiguration kit_config = YamlConfiguration.loadConfiguration(kit_file);
 

@@ -252,9 +252,7 @@ public final class UltiTools extends JavaPlugin {
 
 
         //注册监听器
-        if (getConfig().getBoolean("enable_onjoin")) {
-            Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
-        }
+        Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
         if (getConfig().getBoolean("enable_chat")) {
             getServer().getPluginManager().registerEvents(new ChatListener(), this);
         }
