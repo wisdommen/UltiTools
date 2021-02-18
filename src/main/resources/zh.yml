@@ -259,8 +259,8 @@ sidebar_E_countdown: E技能CD还剩
 sidebar_R_countdown: R技能CD还剩
 sidebar_magic: 魔力值：
 login_login_page_title: 登录界面-请点击输入你的密码来登录
-login_register_page_tile: 注册界面-请点击输入你的密码来注册
-login_validation_page_title: 验证界面-请输入你收到的验证码
+login_register_page_tile: §b注册界面-§0请点击输入你的密码来注册
+login_validation_page_title: §6验证界面-§0请输入你收到的验证码
 login_ip_limit_warning: 此IP已达到注册上限，无法登入！
 login_keyboard_button_label: 点按输入数字
 login_number_limit_warning: 不可以超过9个数字！

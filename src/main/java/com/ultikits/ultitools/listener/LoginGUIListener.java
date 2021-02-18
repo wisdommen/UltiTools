@@ -149,10 +149,10 @@ public class LoginGUIListener implements Listener {
                 } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getString("button_clear"))) {
                     clearTheFirstLine(currentInventory);
                 } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getString("button_quit"))) {
-                    if(tempPlayerPassword.get(player.getUniqueId())!=null){
+                    if (tempPlayerPassword.get(player.getUniqueId()) != null) {
                         tempPlayerPassword.remove(player.getUniqueId());
                     }
-                    if (isRegisteringNewPassword.get(player.getUniqueId())!=null &&isRegisteringNewPassword.get(player.getUniqueId())) {
+                    if (isRegisteringNewPassword.get(player.getUniqueId()) != null && isRegisteringNewPassword.get(player.getUniqueId())) {
                         isRegisteringNewPassword.put(player.getUniqueId(), false);
                         return;
                     }
@@ -172,9 +172,9 @@ public class LoginGUIListener implements Listener {
                 @Override
                 public void run() {
                     boolean isValidating;
-                    if (playerIsValidating.get(player.getUniqueId())==null){
+                    if (playerIsValidating.get(player.getUniqueId()) == null) {
                         isValidating = false;
-                    }else {
+                    } else {
                         isValidating = playerIsValidating.get(player.getUniqueId());
                     }
                     if (event.getView().getTitle().equals(UltiTools.languageUtils.getString("login_login_page_title")) && !isValidating) {
@@ -198,10 +198,10 @@ public class LoginGUIListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event){
+    public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         if (!getIsLogin(player)) {
-            if (event.getFrom() != event.getTo()){
+            if (event.getFrom() != event.getTo()) {
                 event.setCancelled(true);
             }
         }

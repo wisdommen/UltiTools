@@ -293,18 +293,22 @@ public final class UltiTools extends JavaPlugin {
         if (!isUltiCoreUpToDate){
             return;
         }
-        for (String player : LoginListener.playerLoginStatus.keySet()) {
-            if (Bukkit.getPlayerExact(player) != null) {
-                Player player1 = Bukkit.getPlayerExact(player);
-                assert player1 != null;
-                if (!getIsLogin(player1)) {
-                    player1.kickPlayer(ChatColor.AQUA + "[UltiTools Login] " + languageUtils.getString("login_plugin_reloaded"));
+        if (getConfig().getBoolean("enable_login")) {
+            for (String player : LoginListener.playerLoginStatus.keySet()) {
+                if (Bukkit.getPlayerExact(player) != null) {
+                    Player player1 = Bukkit.getPlayerExact(player);
+                    assert player1 != null;
+                    if (!getIsLogin(player1)) {
+                        player1.kickPlayer(ChatColor.AQUA + "[UltiTools Login] " + languageUtils.getString("login_plugin_reloaded"));
+                    }
                 }
             }
+            savePlayerLoginStatus();
         }
-        clearScoreboards();
+        if (this.getConfig().getBoolean("enable_scoreboard")) {
+            clearScoreboards();
+        }
 //        ConfigController.saveConfigs();
-        savePlayerLoginStatus();
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("plugin_disabled"));
     }
 

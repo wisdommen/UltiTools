@@ -6,7 +6,7 @@
 
     <groupId>com.ultikits</groupId>
     <artifactId>UltiTools</artifactId>
-    <version>5.0.2</version>
+    <version>5.0.3</version>
     <packaging>jar</packaging>
 
     <name>UltiTools</name>
@@ -84,7 +84,7 @@
             <groupId>com.github.wisdommen</groupId>
             <artifactId>UltiCoreAPI</artifactId>
             <version>1.1.0</version>
-            <systemPath>${basedir}/lib/UltiCoreAPI-1.1.6.jar</systemPath>
+            <systemPath>${basedir}/lib/UltiCoreAPI-1.1.7.jar</systemPath>
             <scope>system</scope>
         </dependency>
         <dependency>
@@ -99,12 +99,6 @@
             <artifactId>placeholderapi</artifactId>
             <version>2.10.6</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

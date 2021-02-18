@@ -48,7 +48,7 @@ public class WarpCommands extends AbstractPlayerCommandExecutor {
                         player.teleport(location);
                         player.sendMessage(MessagesUtils.info(String.format(UltiTools.languageUtils.getString("warp_teleport_successfully"), name)));
                     }
-                }.runTaskAsynchronously(UltiTools.getInstance());
+                }.runTask(UltiTools.getInstance());
                 return true;
             case "warps":
                 if (!(player.hasPermission("ultitools.warp.use") || player.hasPermission("ultikits.tools.admin"))) {

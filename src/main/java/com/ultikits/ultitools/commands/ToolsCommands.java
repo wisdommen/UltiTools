@@ -24,18 +24,14 @@ public class ToolsCommands implements TabExecutor {
         if (!(command.getName().equalsIgnoreCase("ultitools"))) {
             return false;
         }
-        Player player = null;
-        if (sender instanceof Player) {
-            player = (Player) sender;
-            if (!(player.isOp() || player.hasPermission("ultitools.tools.commands"))) {
-                sender.sendMessage(warning(UltiTools.languageUtils.getString("no_permission")));
-                return false;
-            }
-        }
         switch (strings.length){
             case 1:
                 switch (strings[0]){
                     case "reload":
+                        if (!sender.hasPermission("ultitools.tools.commands")){
+                            sender.sendMessage(warning(UltiTools.languageUtils.getString("no_permission")));
+                            return false;
+                        }
                         ConfigController.reloadAll();
                         sender.sendMessage(warning(UltiTools.languageUtils.getString("config_reloaded")));
                         return true;
@@ -43,9 +39,10 @@ public class ToolsCommands implements TabExecutor {
                         if (!UltiTools.isProVersion){
                             return false;
                         }
-                        if (player == null) {
+                        if (!(sender instanceof Player)) {
                             return false;
                         }
+                        Player player = (Player) sender;
                         String signature = CustomGuiUtils.getSignature(strings[0]);
                         if (signature == null) {
                             return false;
@@ -55,6 +52,10 @@ public class ToolsCommands implements TabExecutor {
                         return true;
                 }
             case 2:
+                if (!sender.hasPermission("ultitools.tools.commands")){
+                    sender.sendMessage(warning(UltiTools.languageUtils.getString("no_permission")));
+                    return false;
+                }
                 switch (strings[0]){
                     case "enable":
                         FunctionUtils.functionSwitch(strings[1], true);
