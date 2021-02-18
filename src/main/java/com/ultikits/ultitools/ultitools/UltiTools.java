@@ -260,7 +260,6 @@ public final class UltiTools extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new LoginListener(), this);
             getServer().getPluginManager().registerEvents(new LoginGUIListener(), this);
             getServer().getPluginManager().registerEvents(new ValidationPageListener(), this);
-            new LoginLimitTask().runTaskTimer(UltiTools.getInstance(), 0L, 20L);
             LoginListener.checkPlayerAlreadyLogin();
             CommandRegister.registerCommand(plugin, new LoginRegisterCommands(), "ultikits.tools.login", languageUtils.getString("login_function"), "reg", "regs", "re");
         }

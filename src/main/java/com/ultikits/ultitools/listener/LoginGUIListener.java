@@ -198,6 +198,16 @@ public class LoginGUIListener implements Listener {
     }
 
     @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event){
+        Player player = event.getPlayer();
+        if (!getIsLogin(player)) {
+            if (event.getFrom() != event.getTo()){
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (!getIsLogin(event.getPlayer())) {
             event.setCancelled(true);
