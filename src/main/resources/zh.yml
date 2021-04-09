@@ -101,6 +101,7 @@ clean_clean_report: '[+%s+] 本次清理共清理了 %s 个 %s！'
 email_help_header: -------------邮件系统帮助------------
 email_help_read: 打开收件箱
 email_help_delhistory: 删除所有邮件
+email_help_delread: 删除所有已读邮件
 email_help_send: 给某人发送只包含文本的邮件
 email_help_senditem: 手持需要发送的物品，发送一个带有附件的邮件
 email_help_senditem_with_text: 手持需要发送的物品，发送一个带有附件的文本邮件
@@ -111,6 +112,7 @@ email_send_successfully: 发送成功！
 email_send_failed: 发送失败！
 email_not_received_any_email: 你还没有收到过任何邮件！
 email_all_email_deleted: 所有历史邮件都已删除！
+email_all_read_email_deleted: 已删除所有已读邮件！
 email_receiver_not_found: 未找到指定的收件人！
 email_sending: 正在发送邮件...
 email_hand_item: 请手持需要发送的物品！

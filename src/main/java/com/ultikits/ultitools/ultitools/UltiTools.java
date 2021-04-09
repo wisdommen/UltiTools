@@ -141,18 +141,6 @@ public final class UltiTools extends JavaPlugin {
                 @Override
                 public void run() {
                     if (UltiTools.getInstance().getConfig().getBoolean("enable_pro")) {
-//                        try {
-//                            CheckResponse res = ProChecker.run();
-//                            if (res.code.equals("200")) {
-//                                UltiTools.isProVersion = true;
-//                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools] " + languageUtils.getString("pro_validated"));
-//                            } else {
-//                                UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] " + languageUtils.getString("pro_validation_failed"));
-//                            }
-//                            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] " + res.msg);
-//                        } catch (Exception e) {
-//                            UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] " + languageUtils.getString("pro_validation_failed"));
-//                        }
                         try {
                             String res = NewProChecker.validatePro();
                             if (res.equals("Pro Version Activated!")) {
@@ -232,7 +220,7 @@ public final class UltiTools extends JavaPlugin {
 //        }
         if (this.getConfig().getBoolean("enable_tpa")) {
             CommandRegister.registerCommand(plugin, new TeleportCommands(), "ultikits.tools.tpa", languageUtils.getString("tpa_function"), "tpa");
-            CommandRegister.registerCommand(plugin, new TpaHereCommands(), "ultikits.tools.tpa", languageUtils.getString("tpa_function"), "tphere");
+            CommandRegister.registerCommand(plugin, new TpaHereCommands(), "ultikits.tools.tpa", languageUtils.getString("tpa_function"), "tpahere");
             getServer().getPluginManager().registerEvents(new TpaAcceptListener(), this);
         }
         if (this.getConfig().getBoolean("enable_warp")) {

@@ -115,6 +115,17 @@ public class EmailManager {
         return false;
     }
 
+    public Boolean deleteEmail(String uuid){
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        config.set(uuid, null);
+        try {
+            config.save(file);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
     public void sendTeamInvitation() {
 
     }

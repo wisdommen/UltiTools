@@ -7,7 +7,6 @@ import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.manager.EmailManager;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.views.EmailView;
-import com.ultikits.utils.MessagesUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -23,7 +22,6 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static com.ultikits.utils.MessagesUtils.info;
 import static com.ultikits.utils.MessagesUtils.warning;
@@ -42,11 +40,19 @@ public class EmailCommands extends AbstractTabExecutor {
                     case "read":
                         readEmails(player);
                         return true;
-                    case "delhistory":
+                    case "delall":
                         new BukkitRunnable() {
                             @Override
                             public void run() {
                                 deleteHistoryEmail(emailManager, player);
+                            }
+                        }.runTaskAsynchronously(UltiTools.getInstance());
+                        return true;
+                    case "delread":
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                deleteReadEmails(emailManager, player);
                             }
                         }.runTaskAsynchronously(UltiTools.getInstance());
                         return true;
@@ -127,7 +133,8 @@ public class EmailCommands extends AbstractTabExecutor {
     }
 
     @Override
-    protected @Nullable List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] args, @NotNull Player player) {
+    protected @Nullable
+    List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] args, @NotNull Player player) {
         List<String> tabCommands = new ArrayList<>();
 
         switch (args.length) {
@@ -163,6 +170,7 @@ public class EmailCommands extends AbstractTabExecutor {
         player.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("email_help_header"));
         player.sendMessage(ChatColor.GREEN + "/email read " + ChatColor.GRAY + UltiTools.languageUtils.getString("email_help_read"));
         player.sendMessage(ChatColor.GREEN + "/email delhistory " + ChatColor.GRAY + UltiTools.languageUtils.getString("email_help_delhistory"));
+        player.sendMessage(ChatColor.GREEN + "/email delread " + ChatColor.GRAY + UltiTools.languageUtils.getString("email_help_delread"));
         player.sendMessage(ChatColor.GREEN + "/email send [" + UltiTools.languageUtils.getString("player_name") + "] [" + UltiTools.languageUtils.getString("text_content") + "] " + ChatColor.GRAY + UltiTools.languageUtils.getString("email_help_send"));
         player.sendMessage(ChatColor.GREEN + "/email senditem [" + UltiTools.languageUtils.getString("player_name") + "] " + ChatColor.GRAY + UltiTools.languageUtils.getString("email_help_senditem"));
         player.sendMessage(ChatColor.GREEN + "/email senditem [" + UltiTools.languageUtils.getString("player_name") + "] [" + UltiTools.languageUtils.getString("text_content") + "] " + ChatColor.GRAY + UltiTools.languageUtils.getString("email_help_senditem_with_text"));
@@ -195,7 +203,7 @@ public class EmailCommands extends AbstractTabExecutor {
                     pushToReceiver(player1.getName());
                 }
             }
-        }else {
+        } else {
             for (OfflinePlayer player2 : UltiTools.getInstance().getServer().getOfflinePlayers()) {
                 File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player2.getName() + ".yml");
                 emailManager.sendTo(file, receiver);
@@ -206,6 +214,15 @@ public class EmailCommands extends AbstractTabExecutor {
         }
         player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("email_send_successfully"));
         player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.UI_TOAST_OUT), 15, 1);
+    }
+
+    public void deleteReadEmails(@NotNull EmailManager emailManager, Player player) {
+        for (EmailContentBean emailContentBean : emailManager.getEmails().values()) {
+            if (emailContentBean.getRead()) {
+                emailManager.deleteEmail(emailContentBean.getUuid());
+            }
+        }
+        player.sendMessage(warning(UltiTools.languageUtils.getString("email_all_read_email_deleted")));
     }
 
     public void deleteHistoryEmail(@NotNull EmailManager emailManager, Player player) {
