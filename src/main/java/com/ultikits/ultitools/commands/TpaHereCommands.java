@@ -46,6 +46,7 @@ public class TpaHereCommands extends AbstractTabExecutor {
                     }
                     TpTimerTask.tphereTemp.put(target, player);
                     TpTimerTask.tphereTimer.put(target, 20);
+                    player.sendMessage(MessagesUtils.info(String.format(UltiTools.languageUtils.getString("tpa_tp_send_successfully"), target.getName())));
                     target.sendMessage(MessagesUtils.info(String.format(UltiTools.languageUtils.getString("tpahere_enquire"), player.getName())));
                     target.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("tpahere_accept_tip")));
                     target.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("tpahere_reject_tip")));

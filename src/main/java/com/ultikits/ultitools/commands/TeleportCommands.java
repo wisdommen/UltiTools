@@ -51,6 +51,7 @@ public class TeleportCommands extends AbstractTabExecutor {
                         }
                         TpTimerTask.tpTemp.put(target, player);
                         TpTimerTask.tpTimer.put(target, 20);
+                        player.sendMessage(MessagesUtils.info(String.format(UltiTools.languageUtils.getString("tpa_tp_send_successfully"), target.getName())));
                         target.sendMessage(MessagesUtils.info(String.format(UltiTools.languageUtils.getString("tpa_tp_enquire"), player.getName())));
                         target.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("tpa_accept_tip")));
                         target.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("tpa_reject_tip")));

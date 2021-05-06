@@ -7,6 +7,7 @@ import com.ultikits.ultitools.ultitools.UltiTools;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,11 +39,25 @@ public class JoinListener implements Listener {
     String playerQuitMessage = config.getString("player_quit");
     int sendMessageDelay = config.getInt("send_message_delay");
 
+    File loginFile = new File(ConfigsEnum.LOGIN.toString());
+    YamlConfiguration loginConfig = YamlConfiguration.loadConfiguration(loginFile);
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         if (UltiTools.getInstance().getConfig().getBoolean("enable_scoreboard")) {
             SideBarTask.registerPlayer(player.getUniqueId());
+        }
+        if (loginConfig.getBoolean("enableFixPointLogin")){
+            try {
+                String worldName = loginConfig.getString("loginPoint.world");
+                double x = loginConfig.getDouble("loginPoint.x");
+                double y = loginConfig.getDouble("loginPoint.y");
+                double z = loginConfig.getDouble("loginPoint.z");
+                Location loginLocation = new Location(Bukkit.getWorld(worldName), x, y, z);
+                player.teleport(loginLocation);
+            }catch (Exception ignored){
+            }
         }
         if (UltiTools.getInstance().getConfig().getBoolean("enable_onjoin")) {
             String vanillaJoinMessage = event.getJoinMessage() == null ? "" : event.getJoinMessage();

@@ -289,6 +289,7 @@ punish_money_dropped: '[死亡惩罚]你因为死亡而扣除了%d个金币！'
 tpa_function: TPA功能
 tpa_player_not_found: 未找到目标，无法请求传送！
 tpa_rejected: 已拒绝！
+tpa_tp_send_successfully: '你已向%s发送TP请求！'
 tpa_tp_enquire: '%s请求传送到您的位置'
 tpa_accept_tip: §7输入§c/tpa accept §b接受§7传送，或者按下§c[shift+左键]§b接受
 tpa_reject_tip: §7输入§c/tpa reject §b拒绝§7传送，或者按下§c[shift+右键]§b拒绝
