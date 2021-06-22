@@ -29,6 +29,8 @@ main:
       - spawn
     # 控制台执行的命令
     console-commands: []
+    # 执行这个功能需要的金币数量
+    price: 0
   suicide:
     # 物品材质
     item: PAPER
@@ -45,3 +47,5 @@ main:
     console-commands:
       - say {PLAYER} 自杀了！
       - kill {PLAYER}
+    # 执行这个功能需要的金币数量
+    price: 0

@@ -181,12 +181,14 @@ public final class UltiTools extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("ultitools")).setExecutor(new ToolsCommands());
         if (this.getConfig().getBoolean("enable_email")) {
             CommandRegister.registerCommand(plugin, new EmailCommands(), "ultikits.tools.email", languageUtils.getString("email_function"), "email", "ultimail", "mail", "mails");
+            getServer().getPluginManager().registerEvents(new EmailPageListener(), this);
         }
         if (this.getConfig().getBoolean("enable_home")) {
             CommandRegister.registerCommand(plugin, new HomeCommands(), "ultikits.tools.home", languageUtils.getString("home_function"), "home", "h");
             CommandRegister.registerCommand(plugin, new SetHomeCommands(), "ultikits.tools.sethome", languageUtils.getString("sethome_function"), "sethome");
             CommandRegister.registerCommand(plugin, new DeleteHomeCommands(), "ultikits.tools.delhome", languageUtils.getString("delhome_function"), "delhome");
             CommandRegister.registerCommand(plugin, new HomeListCommands(), "ultikits.tools.homelist", languageUtils.getString("listhome_function"), "homelist");
+            getServer().getPluginManager().registerEvents(new HomeListPageListener(), this);
         }
         if (this.getConfig().getBoolean("enable_white_list")) {
             CommandRegister.registerCommand(plugin, new WhitelistCommands(), "ultikits.tools.whitelist", languageUtils.getString("whitelist_function"), "wl");
@@ -204,12 +206,16 @@ public final class UltiTools extends JavaPlugin {
         if (this.getConfig().getBoolean("enable_remote_chest")) {
             CommandRegister.registerCommand(plugin, new RemoteBagCommands(), "ultikits.tools.bag", languageUtils.getString("bag_function"), "bag", "b");
             CommandRegister.registerCommand(plugin, new RemoteBagConsoleCommands(), "ultikits.tools.admin", languageUtils.getString("bag_console_function"), "createbag");
+            getServer().getPluginManager().registerEvents(new ChestPageListener(), this);
         }
         if (this.getConfig().getBoolean("enable_multiworlds")) {
             CommandRegister.registerCommand(plugin, new MultiWorldsCommands(), "ultikits.tools.mw", languageUtils.getString("multiworlds_function"), "mw");
+            getServer().getPluginManager().registerEvents(new WorldsListListener(), this);
         }
         if (this.getConfig().getBoolean("enable_kits")) {
             CommandRegister.registerCommand(plugin, new KitsCommands(), "ultikits.tools.kits", languageUtils.getString("kits_function"), "kits");
+            getServer().getPluginManager().registerEvents(new CreateKitsViewListener(), this);
+            getServer().getPluginManager().registerEvents(new KitsPageListener(), this);
         }
         if (this.getConfig().getBoolean("enable_cleaner")) {
             CommandRegister.registerCommand(plugin, new CleanerCommands(), "ultikits.tools.clean", languageUtils.getString("cleaner_function"), "clean");
@@ -228,6 +234,7 @@ public final class UltiTools extends JavaPlugin {
             CommandRegister.registerCommand(plugin, new WarpCommands(), "ultikits.tools.warp", languageUtils.getString("warp_function"), "warps");
             CommandRegister.registerCommand(plugin, new WarpCommands(), "ultikits.tools.warp", languageUtils.getString("warp_function"), "delwarp");
             CommandRegister.registerCommand(plugin, new WarpCommands(), "ultikits.tools.warp", languageUtils.getString("warp_function"), "setwarp");
+            getServer().getPluginManager().registerEvents(new WarpListener(), this);
         }
         if (this.getConfig().getBoolean("enable_back")) {
             getServer().getPluginManager().registerEvents(new BackListener(), this);
@@ -237,9 +244,10 @@ public final class UltiTools extends JavaPlugin {
             CommandRegister.registerCommand(plugin, new SpawnCommands(), "ultikits.tools.back", languageUtils.getString("back_function"), "spawn");
             CommandRegister.registerCommand(plugin, new SpawnCommands(), "ultikits.tools.back", languageUtils.getString("back_function"), "setspawn");
         }
+        if (this.getConfig().getBoolean("enable_random_tp")) {
+            CommandRegister.registerCommand(plugin, new RandomTpCommands(), "ultikits.tools.randomtp", languageUtils.getString("random_tp_function"), "wild");
+        }
 
-
-        //注册监听器
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
         if (getConfig().getBoolean("enable_chat")) {
             getServer().getPluginManager().registerEvents(new ChatListener(), this);
@@ -260,7 +268,7 @@ public final class UltiTools extends JavaPlugin {
             new NamePrefixSuffixTask().runTaskTimer(this, 0, 20L);
         }
         if (this.getConfig().getBoolean("enable_cleaner")) {
-            new CleanerTask().runTaskTimerAsynchronously(this, 10 * 20L, 10 * 20L);
+            new CleanerTask().runTaskTimer(this, 10 * 20L, 10 * 20L);
             new UnloadChunksTask().runTaskTimer(this, 0L, 60 * 20L);
         }
         if (getConfig().getBoolean("enable_pro")) {

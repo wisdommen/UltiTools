@@ -6,7 +6,7 @@
 
     <groupId>com.ultikits</groupId>
     <artifactId>UltiTools</artifactId>
-    <version>5.0.5</version>
+    <version>5.0.6</version>
     <packaging>jar</packaging>
 
     <name>UltiTools</name>
@@ -84,7 +84,7 @@
             <groupId>com.github.wisdommen</groupId>
             <artifactId>UltiCoreAPI</artifactId>
             <version>1.1.0</version>
-            <systemPath>${basedir}/lib/UltiCoreAPI-1.1.7.jar</systemPath>
+            <systemPath>${basedir}/lib/UltiCoreAPI-1.1.9.jar</systemPath>
             <scope>system</scope>
         </dependency>
         <dependency>

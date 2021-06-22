@@ -311,3 +311,7 @@ warp_deleted: '地标 %s 删除成功!'
 back_function: 死亡返回功能
 back_havent_dead: 无法找到死亡地点！这可能是因为插件重载或者你还没死过哩。
 spawn_new_spawn_set: 新的世界出生点已设置！
+random_tp_function: 随机传送功能
+random_tp_searching: 正在搜索安全的传送位置...
+random_tp_success: 成功传送到随机位置！请小心行事。
+custom_gui_not_enough_money: 你的金币不足！

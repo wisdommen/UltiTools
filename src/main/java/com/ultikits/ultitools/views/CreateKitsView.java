@@ -41,7 +41,7 @@ public class CreateKitsView {
                 setUpItems(name, inventoryManager.getInventory());
             }
         }.runTaskAsynchronously(UltiTools.getInstance());
-        ViewManager.registerView(inventoryManager, new CreateKitsViewListener());
+        ViewManager.registerView(inventoryManager);
 
         Inventory inventory = inventoryManager.getInventory();
         inventoryMap.put(name, inventory);
@@ -50,8 +50,8 @@ public class CreateKitsView {
 
     private static void setUpItems(String name, Inventory inventory) {
         List<ItemStack> itemStackList = setUpItem(name);
-        for (ItemStack itemStack : itemStackList) {
-            inventory.addItem(itemStack);
+        for (int i = 0; i < itemStackList.size(); i++) {
+            inventory.setItem(i, itemStackList.get(i));
         }
     }
 

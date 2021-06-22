@@ -5,10 +5,10 @@ import com.ultikits.inventoryapi.ViewManager;
 import com.ultikits.main.UltiCore;
 import com.ultikits.manager.ItemStackManager;
 import com.ultikits.ultitools.config.ConfigController;
-import com.ultikits.ultitools.listener.CustomGUIListener;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.utils.MessagesUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -19,54 +19,47 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class CustomGUIView {
-
-    private static final Map<UUID, InventoryManager> inventoryMap = new HashMap<>();
 
     private CustomGUIView() {
     }
 
     public static Inventory setUp(String signature, Player player) {
         YamlConfiguration config = ConfigController.getConfig("customgui");
-        if (inventoryMap.get(player.getUniqueId()) != null) {
-            setUpItems(player, config, inventoryMap.get(player.getUniqueId()));
-            return inventoryMap.get(player.getUniqueId()).getInventory();
-        }
         String title = config.getString("guis." + signature + ".title") + " - " + player.getName();
         int slot = config.getInt("guis." + signature + ".size");
         InventoryManager inventoryManager = new InventoryManager(null, slot, title, false);
-        setUpItems(player, config, inventoryManager);
-        ViewManager.registerView(inventoryManager, new CustomGUIListener(signature));
-        Inventory inventory = inventoryManager.getInventory();
-        inventoryMap.put(player.getUniqueId(), inventoryManager);
-        return inventory;
+        setUpItems(player, signature, config, inventoryManager);
+        ViewManager.registerView(inventoryManager);
+        return inventoryManager.getInventory();
     }
 
-    private static void setUpItems(Player player, YamlConfiguration config, InventoryManager inventoryManager) {
-        Map<String, ItemStackManager> itemStackManagers = setUpItems(player);
+    private static void setUpItems(Player player, String signature, YamlConfiguration config, InventoryManager inventoryManager) {
+        Map<String, ItemStackManager> itemStackManagers = setUpItems(player, signature);
         for (String btn : itemStackManagers.keySet()) {
             ItemStackManager itemStackManager = itemStackManagers.get(btn);
             ItemStack itemStack = itemStackManager.getItem();
             itemStack.getItemMeta().addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
             itemStack.getItemMeta().addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
-            inventoryManager.forceSetItem(config.getInt("main." + btn + ".position"), itemStack);
+            inventoryManager.forceSetItem(config.getInt(signature + "." + btn + ".position"), itemStack);
         }
     }
 
-    private static Map<String, ItemStackManager> setUpItems(Player player) {
+    private static Map<String, ItemStackManager> setUpItems(Player player, String signature) {
         Map<String, ItemStackManager> itemStacks = new HashMap<>();
         YamlConfiguration config = ConfigController.getConfig("customgui");
-        for (String btn : config.getConfigurationSection("main").getKeys(false)) {
-            String path = "main." + btn + ".";
+        for (String btn : config.getConfigurationSection(signature).getKeys(false)) {
+            String path = signature + "." + btn + ".";
             String item = config.getString(path + "item");
             String name = config.getString(path + "name").replace("&", "§");
+            String price = config.getString(path + "price");
             ArrayList<String> lore = new ArrayList<>();
             for (String each : config.getStringList(path + "lore")) {
                 each = PlaceholderAPI.setPlaceholders(player, each);
                 lore.add(each);
             }
+            lore.add(ChatColor.YELLOW + UltiTools.languageUtils.getString("price") + (price == null ? 0 : price));
             ItemStack itemStack = UltiCore.versionAdaptor.getGrassBlock();
             try {
                 Material type = Material.valueOf(item);

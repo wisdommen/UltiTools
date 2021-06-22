@@ -1,6 +1,6 @@
 month: ''
 day: '/'
-price: 'price='
+price: 'price: '
 money: 'dollar'
 second: 'second'
 mobs: 'mobs'
@@ -311,3 +311,7 @@ warp_deleted: 'Warp %s deleted successfully!'
 back_function: 'Back function'
 back_havent_dead: "Can't find your death location. This might because of the reloading of plugins or you haven't dead yet."
 spawn_new_spawn_set: "New world spawn location has been set!"
+random_tp_function: "Random Teleport Function"
+random_tp_searching: "Searching for safe teleport location..."
+random_tp_success: "Random teleport successfully! Be safe."
+custom_gui_not_enough_money: "You don't have enough money to do this!"

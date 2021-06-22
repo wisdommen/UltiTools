@@ -29,6 +29,8 @@ main:
       - spawn
     # console commands
     console-commands: []
+    # money need to execute this function
+    price: 0
   # sample button
   info:
     # item type
@@ -46,3 +48,5 @@ main:
     console-commands:
       - say {PLAYER} suicided!
       - kill {PLAYER}
+    # money need to execute this function
+    price: 0

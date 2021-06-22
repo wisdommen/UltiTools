@@ -35,7 +35,7 @@ public class KitsView {
         InventoryManager inventoryManager = new InventoryManager(null, 54, UltiTools.languageUtils.getString("kits_page_title"), true);
         inventoryManager.presetPage(ViewType.PREVIOUS_QUIT_NEXT);
         inventoryManager.create();
-        ViewManager.registerView(inventoryManager, new KitsPageListener());
+        ViewManager.registerView(inventoryManager);
         new BukkitRunnable() {
             @Override
             public void run() {

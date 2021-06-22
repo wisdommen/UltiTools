@@ -5,6 +5,8 @@ import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.PagesListener;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.ultitools.UltiTools;
+import com.ultikits.utils.EconomyUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -19,7 +21,8 @@ public class CustomGUIListener extends PagesListener {
 
     @Override
     public CancelResult onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
-        if (!inventoryManager.getTitle().equals(ConfigController.getConfig("customgui").getString("guis." + signature + ".title") + " - " + player.getName())) {
+        String title = ConfigController.getConfig("customgui").getString("guis." + signature + ".title") + " - " + player.getName();
+        if (!inventoryManager.getTitle().equals(title)) {
             return CancelResult.NONE;
         }
         if (clickedItem != null) {
@@ -27,16 +30,25 @@ public class CustomGUIListener extends PagesListener {
             YamlConfiguration config = ConfigController.getConfig("customgui");
             for (String key : config.getConfigurationSection(signature).getKeys(false)) {
                 if (position == config.getInt(signature + "." + key + ".position")) {
+                    if (EconomyUtils.checkMoney(player) < config.getInt(signature + "." + key + ".price")){
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("custom_gui_not_enough_money"));
+                        return CancelResult.TRUE;
+                    }
                     for (String playerCommand : config.getStringList(signature + "." + key + ".player-commands")) {
                         player.performCommand(playerCommand);
                     }
                     for (String consoleCommand : config.getStringList(signature + "." + key + ".console-commands")) {
                         UltiTools.getInstance().getServer().dispatchCommand(player, consoleCommand.replace("{PLAYER}", player.getName()));
                     }
+                    EconomyUtils.withdraw(player, config.getInt(signature + "." + key + ".price"));
                     return CancelResult.TRUE;
                 }
             }
         }
         return CancelResult.TRUE;
+    }
+
+    public String getSignature() {
+        return signature;
     }
 }

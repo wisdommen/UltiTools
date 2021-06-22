@@ -32,6 +32,7 @@ public class FunctionUtils {
         commandMap.put("warp", "enable_wrap");
         commandMap.put("papi", "enable_PAPI");
         commandMap.put("social-system", "enable_social_system");
+        commandMap.put("random-tp", "enable_random_tp");
         commandMap.put("auto-version-check", "enable_version_check");
         commandMap.put("auto-update", "enable_auto_update");
     }

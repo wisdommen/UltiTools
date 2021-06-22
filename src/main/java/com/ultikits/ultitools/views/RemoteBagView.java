@@ -31,7 +31,7 @@ public class RemoteBagView {
         InventoryManager inventoryManager = new InventoryManager(null, 54, String.format(UltiTools.languageUtils.getString("bag_main_page_title"),playerName), true);
         inventoryManager.presetPage(ViewType.PREVIOUS_QUIT_NEXT);
         inventoryManager.create();
-        ViewManager.registerView(inventoryManager, new ChestPageListener());
+        ViewManager.registerView(inventoryManager);
         ArrayList<String> lore = new ArrayList<>();
         int price = ChestPageListener.getBagPrice(chestConfig.getKeys(false).size()+1);
         lore.add(unimportant(UltiTools.languageUtils.getString("kits_page_description_price") + price));

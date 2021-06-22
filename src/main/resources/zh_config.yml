@@ -1,4 +1,4 @@
-config_version: 3.23
+config_version: 3.24
 
 '注释0请勿修改': '语言: zh_cn(简体中文), en_us(English)'
 language: zh_cn
@@ -100,6 +100,9 @@ enable_spawn: true
 
 '注释19请勿修改': '开启自动回复功能'
 enable_auto-reply: true
+
+'注释20请勿修改': '开启随机传送功能（感谢 侵晓 大佬的建议）'
+enable_random_tp: true
 
 '注释42请勿修改': '(头衔) 自定义头顶显示前缀'
 name_prefix: '§e[§c%ul_job%§dLv.%ul_level%§e]'

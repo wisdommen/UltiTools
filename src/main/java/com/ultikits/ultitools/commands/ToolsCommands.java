@@ -1,24 +1,32 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.ultitools.config.ConfigController;
+import com.ultikits.ultitools.listener.CustomGUIListener;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.CustomGuiUtils;
 import com.ultikits.ultitools.utils.FunctionUtils;
 import com.ultikits.ultitools.views.CustomGUIView;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.plugin.RegisteredListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.ultikits.utils.MessagesUtils.warning;
+import static org.bukkit.Bukkit.getServer;
 
 
 public class ToolsCommands implements TabExecutor {
+    List<String> listeners = new ArrayList<>();
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] strings) {
         if (!(command.getName().equalsIgnoreCase("ultitools"))) {
@@ -48,6 +56,11 @@ public class ToolsCommands implements TabExecutor {
                             return false;
                         }
                         Inventory customGui = CustomGUIView.setUp(signature, player);
+                        CustomGUIListener listener = new CustomGUIListener(signature);
+                        if (!listeners.contains(listener.getSignature())){
+                            getServer().getPluginManager().registerEvents(new CustomGUIListener(signature), UltiTools.getInstance());
+                            listeners.add(listener.getSignature());
+                        }
                         player.openInventory(customGui);
                         return true;
                 }

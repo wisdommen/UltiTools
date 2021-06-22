@@ -28,7 +28,7 @@ public class EmailView {
         InventoryManager inventoryManager = new InventoryManager(null, 54, String.format(UltiTools.languageUtils.getString("email_page_title"), player.getName()), true);
         inventoryManager.presetPage(ViewType.PREVIOUS_QUIT_NEXT);
         inventoryManager.create();
-        ViewManager.registerView(inventoryManager, new EmailPageListener());
+        ViewManager.registerView(inventoryManager);
         new BukkitRunnable() {
             @Override
             public void run() {

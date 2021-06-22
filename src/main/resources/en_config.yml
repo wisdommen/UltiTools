@@ -1,4 +1,4 @@
-config_version: 3.23
+config_version: 3.24
 
 'comment0': 'Language: zh_cn(简体中文), en_us(English)'
 language: en_us
@@ -100,6 +100,9 @@ enable_spawn: true
 
 'comment19': 'enable auto-reply function'
 enable_auto-reply: true
+
+'comment20': 'enable random_tp function'
+enable_random_tp: true
 
 'comment42': 'customize above-head display prefix'
 name_prefix: '§e[§c%ul_job%§dLv.%ul_level%§e]'

@@ -32,7 +32,7 @@ public class HomeListView {
         InventoryManager inventoryManager = new InventoryManager(null, 36, player.getName() + UltiTools.languageUtils.getString("home_'s_home_list"), true);
         inventoryManager.presetPage(ViewType.PREVIOUS_QUIT_NEXT);
         inventoryManager.create();
-        ViewManager.registerView(inventoryManager, new HomeListPageListener());
+        ViewManager.registerView(inventoryManager);
         new BukkitRunnable() {
             @Override
             public void run() {

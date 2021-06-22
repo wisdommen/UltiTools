@@ -31,7 +31,7 @@ public class WorldsListView {
         InventoryManager inventoryManager = new InventoryManager(null, 27, UltiTools.languageUtils.getString("world_page_title"), true);
         inventoryManager.presetPage(ViewType.PREVIOUS_QUIT_NEXT);
         inventoryManager.create();
-        ViewManager.registerView(inventoryManager, new WorldsListListener());
+        ViewManager.registerView(inventoryManager);
         for (ItemStackManager itemStackManager : setUpItem()) {
             inventoryManager.addItem(itemStackManager);
         }
