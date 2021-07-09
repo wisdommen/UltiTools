@@ -1,0 +1,8 @@
+# config version, please do not change
+config_version: 1.0
+
+# if OP can open the locked chest
+op_unlock: true
+
+# if OP can break locked chest
+op_break_locked: true

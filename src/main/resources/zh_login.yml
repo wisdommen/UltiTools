@@ -1,0 +1,15 @@
+# 配置文件版本，请勿修改
+configVersion: 1.1
+
+# 同一个ip可以注册的账号数量
+playerLimitForOneIP: 1
+
+# 是否开启玩家定点登录
+enableFixPointLogin: false
+
+# 定点登录坐标
+loginPoint:
+  world: World
+  x: 100
+  y: 70
+  z: 60

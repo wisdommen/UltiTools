@@ -1,0 +1,38 @@
+# config version, please do not change
+config_version: 1.0
+
+# if enable item drop after death
+enable_item_drop: false
+
+# if enable money drop after death
+enable_money_drop: true
+
+# if enable command execute after death
+enable_punish_commands: true
+
+# Money dropped after death
+money_dropped_ondeath: 100
+
+# Item dropped after death
+item_dropped_ondeath: 3
+
+# Console commands executed after death ({PLAYER} means the player name)
+punish_command: []
+
+# worlds enabled item drop
+worlds_enabled_item_drop:
+  - world
+  - world_nether
+  - world_the_end
+
+# worlds enabled money drop
+worlds_enabled_money_drop:
+  - world
+  - world_nether
+  - world_the_end
+
+# worlds enabled punish commands
+worlds_enabled_punish_commands:
+  - world
+  - world_nether
+  - world_the_end

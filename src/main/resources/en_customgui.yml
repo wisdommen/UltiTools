@@ -1,0 +1,52 @@
+# GUI Main Body
+guis:
+  # setup a page
+  main:
+    # gui size
+    size: 54
+    # gui title
+    title: Main page
+    # command argument to open this gui (don't include ultitools, and only one word)
+    command: gui
+    # the permission to open this gui (set to null is no permission needed)
+    premission: null
+
+# all buttons those belong to its page please write under the page name
+main:
+  # sample button
+  up:
+    # item type
+    item: LOG
+    # item position(0-53 depends on your page size)
+    position: 0
+    # display name
+    name: click to back to spawn
+    # item lore
+    lore:
+      - go back to spawn point
+    # player commands
+    player-commands:
+      - spawn
+    # console commands
+    console-commands: []
+    # money need to execute this function
+    price: 0
+  # sample button
+  info:
+    # item type
+    item: PAPER
+    # item position(0-53 depends on your page size)
+    position: 53
+    # display name
+    name: click to suicide
+    # item lore
+    lore:
+      - suicide if you want
+    # player commands
+    player-commands: []
+    # console commands
+    console-commands:
+      - say {PLAYER} suicided!
+      - kill {PLAYER}
+    # money need to execute this function
+    price: 0

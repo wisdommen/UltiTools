@@ -1,0 +1,12 @@
+name: UltiTools
+version: ${project.version}
+main: com.ultikits.ultitools.ultitools.UltiTools
+api-version: 1.13
+depend: [ PlaceholderAPI, Vault, UltiCore ]
+authors: [ wisdomme, qianmo ]
+website: ultikits.com
+
+commands:
+  ultitools:
+    description: UltiTools Commands
+    usage: /ultitools help

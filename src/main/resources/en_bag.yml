@@ -1,0 +1,8 @@
+# config version, please do not change
+config_version: 1.0
+# the price of creating a remote chest
+price_of_create_a_remote_chest: 10000
+# if enable increase the price of a remote chest after each purchasing
+enable_price_increase: true
+# the rate of increasing the price
+price_increase_rate: 0.1

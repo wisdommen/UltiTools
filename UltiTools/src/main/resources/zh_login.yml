@@ -1,5 +1,0 @@
-# 配置文件版本，请勿修改
-configVersion: 1.0
-
-# 同一个ip可以注册的账号数量
-playerLimitForOneIP: 1

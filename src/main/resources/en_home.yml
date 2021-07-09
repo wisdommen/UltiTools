@@ -1,0 +1,14 @@
+# config version, please do not change
+config_version: 1.0
+
+# the amount that a normal player can set
+home_normal: 3
+
+# the amount that a Pro player can set. Permission: ultikits.tools.level1
+home_pro: 5
+
+# the amount that a Ultimate player can set. Permission: ultikits.tools.level2
+home_ultimate: 10
+
+# time (seconds) that needs to be wait before teleporting
+home_tpwait: 3

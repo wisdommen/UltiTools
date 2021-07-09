@@ -1,0 +1,15 @@
+# config version, please do not change
+configVersion: 1.1
+
+# number of account that can register for one IP address
+playerLimitForOneIP: 1
+
+# If enable fixed point login for player
+enableFixPointLogin: false
+
+# fixed point login position
+loginPoint:
+  world: World
+  x: 100
+  y: 70
+  z: 60

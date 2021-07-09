@@ -1,0 +1,46 @@
+# config version, please do not change
+config_version: 1.2
+
+# the name of the cleaner
+cleaner_name: cleaner
+
+# if enable the cleaning task (When enable smart cleaning, this will have no be enable)
+clean_entity_task_enable: false
+
+# if enable unload chunks that is idle
+unload_chunk_task_enable: false
+
+# if enable smart cleaning
+enable_smart_clean: true
+
+# the time between cleaning
+clean_period: 3000
+
+# type of entity that needs to be cleaned (all-All types, items-Dropped items, mobs-living entities)
+clean_type:
+  - all
+
+# the world needs to be cleaned (all-All worlds)
+clean_worlds:
+  - all
+
+# the maximum dropped item which will cause a cleaning
+item_max: 2000
+
+# the maximum mobs which will cause a cleaning
+mob_max: 1000
+
+# the maximum entities which will cause a cleaning
+total_entity_max: 2500
+
+# the maximum distance between a player and a chunk which will make the system mark the chunk as idle
+max_chunk_distance: 320
+
+# the maximum chunks which will cause a cleaning
+max_unused_chunks: 100
+
+# the maximum chunks that will be cleaned per minute
+unload_chunks_per_minute: 10
+
+# the white list of entity which will not be cleaned
+clean_whitelist: []

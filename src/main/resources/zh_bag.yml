@@ -1,0 +1,8 @@
+# 配置版本号，请勿更改
+config_version: 1.0
+# 创建一个远程背包需要的价格
+price_of_create_a_remote_chest: 10000
+# 是否开启每购买一个背包增加价格
+enable_price_increase: true
+# 每次增加价格的比率（百分比）
+price_increase_rate: 0.1

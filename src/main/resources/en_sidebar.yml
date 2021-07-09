@@ -1,0 +1,53 @@
+# config version, please do not change
+config_version: 1.0
+
+# SideBar Title
+scoreBoardTitle: Welcome
+
+# You need to enable the PAPI in the config.yml to take any effect below
+# player name papi
+name: '%player_name%'
+
+# online players papi
+online_player: ''
+
+# skill cooldown papi (require extra plugin support)
+CDq: ''
+CDw: ''
+CDe: ''
+CDr: ''
+
+# money papi
+money: ''
+
+# deposit papi
+deposit: ''
+
+# level papi
+level: ''
+
+# exp papi
+exp: ''
+
+# max exp papi
+max_exp: ''
+
+# magic point papi
+mp: ''
+
+# max magic point papi
+max_mp: ''
+
+# health point papi
+hp: ''
+
+# max health point papi
+max_hp: ''
+
+# job papi
+occupation: ''
+
+# Custom content line
+customerline:
+  - Here is the custom content
+  - You can change it in config

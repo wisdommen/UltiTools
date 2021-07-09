@@ -1,0 +1,317 @@
+month: 月
+day: 日
+price: 价格：
+money: 金币
+second: 秒
+mobs: 生物
+dropped_item: 掉落物
+entity: 实体
+default: 默认
+config_reloaded: 配置文件已重载！
+no_such_player: 未找到此玩家！
+economy_dependency_not_found: 未找到经济前置！
+inherited_permission_group: 继承的权限组
+permission_group_name: 权限组名
+permission: 权限
+player_not_online_or_not_exits: 玩家不在线/不存在这个玩家
+removed: 已移除！
+added: 已添加！
+deleted: 已删除！
+created: 已创建！
+do_not_move: 请勿移动！
+none: 无
+feng: 封
+ge: 个
+using_customized_language: '正在启用自定义语言文件，请务必经常检查比对官方语言文件，否则可能会报错。任何因为修改语言文件导致的报错均不在客服接受范围，需自行解决！'
+world_name: 世界名
+processing: 处理中...请耐心等待
+no_permission: 你没有权限！
+player_name: 玩家名
+text_content: 文本内容
+wrong_format: 格式错误！
+ulticore_version_old: UltiCoreAPI的版本过低，无法启动UltiTools!
+ulticore_download: 请下载最新版本的UltiCoreAPI!
+checking_update: 正在检查更新...
+downloading: 正在下载更新...
+download_successfully: 下载完成, 重启服务器以应用更新！
+download_failed: '[UltiTools] 下载失败，请前往 %s 手动下载！'
+download_url: '[UltiTools] 下载地址：https://www.mcbbs.net/thread-1062730-1-1.html'
+plugin_up_to_date: 太棒了！你的插件是最新的！保持最新的版本可以为你带来最好的体验！
+initializing_database: 正在初始化数据库...
+database_connected: 接入数据库成功！
+database_connect_failed: 接入数据库失败！
+pro_validated: Pro版验证成功！
+pro_validation_failed: Pro版验证失败, 启用免费版！
+papi_not_found: 未找到PAPI前置插件，查找其他可行依赖中...
+economy_dependency_not_found_closing: 未找到经济前置插件，关闭中...
+work_at_least_with_an_economy: 至少需要Vault或者UltiEconomy, 或者安装PAPI才能运行
+ultilevel_not_found: 未找到UltiLevel等级插件，关闭计分板等级相关显示！
+loading_worlds: 正在加载世界中...
+worlds_load_successfully: 世界加载成功！
+email_function: 邮件系统
+home_function: 回到某个家
+sethome_function: 设置家
+delhome_function: 删除家
+listhome_function: 查看家列表
+whitelist_function: 白名单命令
+sidebar_function: 侧边栏开关
+lock_chest_function: 上锁箱子
+unlock_chest_function: 解锁箱子
+bag_function: 远程背包
+bag_console_function: 远程背包后台命令
+multiworlds_function: 多世界系统
+kits_function: 礼包系统
+cleaner_function: 清理系统
+permission_function: 权限系统
+login_function: 登陆系统
+plugin_loaded: 基础插件已加载！
+plugin_disabled: 基础插件已卸载！
+author: 作者：
+player_inventory_full: 你的背包放不下啦，清理一下吧！
+not_enough_money: 你没有这么多钱哦！
+kit_already_claimed: 你已经领取过了！
+claimed: 已领取
+bought: 已购买
+command_can_only_perform_in_game: 只有游戏内可以执行这个指令！
+command_can_only_perform_in_console: 只可以在后台执行这个指令！
+home_usage: '[家插件] 用法：/home [家的名字（不设置则为默认）]'
+home_dont_have: '[家插件] 你没有这个家！'
+home_have_no_home: '[家插件] 你还没有设置家！'
+home_teleport_failed: '[家插件]传送失败'
+home_teleport_success: '[家插件]欢迎回家！'
+home_teleporting: '[家插件]正在传送...'
+home_'s_home_list: 的家列表
+home_page_home_description_in_world: '所在世界:'
+sethome_reached_limit: '[家插件] 你的家数量已经到达上限，删除家或者升级权限获得设置更多的家'
+sethome_home_already_have: 你已经有叫这个名字的家了！
+sethome_usage: '[家插件]用法：/sethome [家的名字（不设置则为默认）]'
+sethome_successfully: '[家插件]设置家成功！'
+delhome_successfully: '[家插件] %s 已被删除！'
+warning_pro_fuction: 这是一个付费版功能，激活付费版之后就可以使用啦！
+clean_name: 服务器清理
+clean_usage_check: 检查所有实体数量
+clean_usage_clean_item: 清理所有/某个世界的掉落物
+clean_usage_mobs: 清理所有/某个世界的生物
+clean_usage_all: 清理所有/某个世界的实体
+clean_usage_help: 查看清理帮助
+clean_start_task_after_30s: '30秒后开始清理%s...'
+clean_start_task_after_10s: '10秒后开始清理%s...'
+clean_check_report: '[+%s+] 本次检查共有 %s 个 %s 可清理！'
+clean_clean_report: '[+%s+] 本次清理共清理了 %s 个 %s！'
+email_help_header: -------------邮件系统帮助------------
+email_help_read: 打开收件箱
+email_help_delhistory: 删除所有邮件
+email_help_delread: 删除所有已读邮件
+email_help_send: 给某人发送只包含文本的邮件
+email_help_senditem: 手持需要发送的物品，发送一个带有附件的邮件
+email_help_senditem_with_text: 手持需要发送的物品，发送一个带有附件的文本邮件
+email_help_sendall: 给所有人发邮件，如果空手则不包含附件，手持物品发送带有物品的邮件，不会扣除你的物品！
+email_received_new_email: 你收到一条新的邮件！\n使用/email read 来查看
+email_sending_all_email: 正在发送全体邮件...
+email_send_successfully: 发送成功！
+email_send_failed: 发送失败！
+email_not_received_any_email: 你还没有收到过任何邮件！
+email_all_email_deleted: 所有历史邮件都已删除！
+email_all_read_email_deleted: 已删除所有已读邮件！
+email_receiver_not_found: 未找到指定的收件人！
+email_sending: 正在发送邮件...
+email_hand_item: 请手持需要发送的物品！
+email_sender_no_message: 对方没有留言哦!
+email_page_title: '%s的收件箱'
+email_item_description_from: 来自：
+email_inventory_space_not_enough: 背包容量不足，无法接受附件，请保证至少有一个空位！
+email_text_content_header: ------邮件内容------
+email_attachment_content_header: ------附件内容------
+email_click_to_claim: 点击领取附件！
+email_click_to_read: 点击来标记为已读！
+email_read: 已读！
+unlock_click_to_unlock: 请点击箱子解锁！
+unlock_file_save_fail_click: 文件保存失败，解锁失败！请再次点击。
+unlock_successfully: 解锁成功！
+unlock_tip_after_unlock: 如果是大箱子，请将另一半也解锁\n如果是共享箱子，请也告知你的同伴
+unlock_you_cannot_unlock_others_chest: 这是别人的箱子，你无法解锁！
+unlock_chest_not_locked: 这个箱子没有上锁哦！
+lock_click_to_lock: 请点击箱子来上锁！
+lock_auto_lock: 检测到旁边有上锁的箱子，此箱子已自动上锁!
+lock_locked_chest_besides: 检测到旁边有他人上锁的箱子，你不可以在此放置箱子!
+lock_tip: 输入/lock后点击这个箱子即可上锁哦！
+lock_file_save_fail_click: 文件保存失败，上锁失败！请再次点击。
+lock_chest_already_locked: 这个箱子已经上锁了！
+lock_you_cannot_lock_others_chest: 这是别人的箱子，你无法上锁！
+lock_successfully: 上锁成功！
+lock_tip_after_lock: 如果是大箱子，请将另一半也锁上\n或者你可以让另一个人锁，即为共享箱子
+lock_op_warning: 虽然你是OP，但是请不要为所欲为哦
+lock_this_is_others_chest: 这是别人的箱子，你无权操作哦
+lock_chest_deleted: 你删除了一个上锁的箱子！
+emailregister_registered: 你已经验证过邮箱了！
+emailregister_sending_code: 正在发送验证码...
+emailregister_email_title: 服务器注册验证码
+emailregister_email_content: '你正在注册我的世界服务器账户，你的验证码是 %s，请勿将验证码告诉他人。'
+emialregister_forget_password_email_content: '你正在找回我的世界服务器账户，你的验证码是 %s，请勿将验证码告诉他人。'
+emailregister_code_sent: '验证码已经发送至 %s ，若未收到请稍等。'
+emailregister_email_send_failed: 验证码发送失败，错误信息：
+emailregister_enter_email_first: 请先输入邮箱！
+emailregister_email_validated: 邮箱验证成功！
+emailregister_code_invalid: 验证码错误，请重新输入验证码！
+emailregister_not_register_email: 你还没有绑定邮箱，不可以找回密码！
+emailregister_not_register_email_description: 未绑定邮箱，无法使用
+emailregister_enter_validation_code: 请输入6位验证码！
+emailregister_password_changed: 已更改此玩家的密码！
+world_not_allow_enter: 此世界已经被禁止进入！
+world_world_not_exits: 不存在这个世界！
+world_world_not_found: 没有找到这个世界！
+world_denied_player_enter: 已禁止玩家使用指令传送进入此世界!
+world_cancel_denied_enter: 已取消禁止玩家使用指令传送进入此世界!
+world_world_does_not_deny_enter: 此世界并没有被禁止进入!
+world_already_exists: 此世界已存在！
+world_world_deleted: 此世界已被删除，请重启服务器以生效！
+world_help_header: ----多世界帮助----
+world_help_help: 打开这个帮助列表
+world_help_teleport: 传送到某个世界
+world_help_list: 打开世界列表
+world_help_block: 禁止玩家进入某个世界
+world_help_unblock: 取消禁止玩家进入某个世界
+world_help_create: 生成一个新的世界
+world_help_load: 加载世界
+world_help_delete: 删除世界
+world_generate_failed: 世界生成失败！
+world_generate_successfully: 世界生成成功！
+world_you_are_in_this_world: 你就在这个世界！
+world_teleport_failed: '[多世界插件]传送失败'
+world_teleport_successfully: '[多世界插件]传送成功！'
+world_teleporting: '[多世界插件]正在传送...'
+world_teleporting_countdown: '离传送还有%d秒'
+world_page_title: 世界列表
+world_page_description_teleport_denied: 已被禁止传送进入！
+permission_help_header: -----权限组管理帮助-----
+permission_help_help: 权限组帮助
+permission_help_give_player: 给玩家添加权限
+permission_help_give_group: 给权限组添加权限
+permission_help_take_player: 移除玩家的权限
+permission_help_take_group: 移除权限组的权限
+permission_help_add_player: 将玩家添加到权限组
+permission_help_remove_player: 将玩家移除权限组
+permission_create_group: 创建权限组
+permission_create_group_inherited: 创建权限组继承自另一个权限组
+permission_delete_group: 删除权限组
+permission_give_page_title: 请分配权限组
+permission_page_is_default_group: 是否为默认权限组：
+permission_page_description_permission_header: ------权限------
+permission_check_page_title: 服务器权限管理
+permission_check_page_main_group: '主权限组:'
+permission_check_page_sub_group: '副权限组:'
+permission_check_page_permission_header: ------拥有的权限------
+bag_no_user: 服务器内没有任何人开通了远程背包！
+bag_player_does_not_have_this_bag: 此玩家没有这个背包！
+bag_enter_number_of_the_bag: 请在玩家名后输入需要打开的背包号！
+bag_title: '%s的%s号背包'
+bag_player_data_not_exists: 此玩家不存在或未开通远程背包
+bag_create_new_bag_for_someone_successfully: '已为%s创建一个新的背包！'
+bag_someone_is_using: 正在查看此背包，你暂时无法使用！
+bag_number: 号背包
+bag_s: 的
+bag_button_create_bag: 创建背包
+bag_main_page_title: '%s的远程背包'
+whitelist_help_header: ----白名单系统帮助----
+whitelist_help_help: 白名单帮助
+whitelist_help_list: 白名单列表
+whitelist_help_add: 添加玩家到白名单
+whitelist_help_remove: 将玩家移出白名单
+whitelist_contains: 白名单列表有：
+whitelist_added: '已将%s加入白名单！'
+whitelist_removed: '已将%s移出白名单！'
+whitelist_not_on: 你不在白名单上哦！
+join_welcome_message_1: '§b欢迎加入服务器，§e%player_name%§b!'
+join_welcome_message_2: §b请友善对待他人，游戏愉快！
+join_welcome_message_3: ---可以在配置文件在修改此提醒
+join_op_join: '§c[管理员] §e%player_name% §c已上线'
+join_op_quit: '§c[管理员] §e%player_name% §c已下线'
+join_player_join: '§c[玩家] §e%player_name% §c已上线'
+join_player_quit: '§c[玩家] §e%player_name% §c已下线'
+join_send_update_reminding: '插件最新版为%s，你的版本是%s！请下载最新版本！'
+join_send_update_tip: '你知道吗？现在%s可以自动更新啦！在配置文件中打开自动更新，更新再也不用麻烦！'
+kits_config_name: 新手礼包
+kits_config_job: 全部
+kits_config_description: 虽然是木头的，但是却很实用
+kits_config_commands: say {PLAYER} 领取了新手礼包
+kits_page_title: 物品包/礼包中心
+kits_page_description_level: 等级要求：
+kits_page_description_job: 可领取职业：
+kits_page_description_price: 价格：
+kits_page_description_content: 内含物：
+kits_no_such_item_name: '错误的物品名，请检查kits.yml/%s！'
+kits_no_such_kit: '没有叫 %s 的礼包！'
+kits_title_edit: '编辑页面'
+sidebar_config_title: 欢迎加入服务器
+sidebar_config_line_1: 这是自定义的内容
+sidebar_config_line_2: 可以在配置文件里改
+sidebar_config_line_3: 支持PAPI变量
+sidebar_money: 金币：
+sidebar_deposit: 存款：
+sidebar_level: 等级：
+sidebar_job: 职业：
+sidebar_name: 名字：
+sidebar_online_player: 在线人数：
+sidebar_health: 生命值：
+sidebar_new_email: 新邮件：
+sidebar_exp: 经验值：
+sidebar_Q_countdown: Q技能CD还剩
+sidebar_W_countdown: W技能CD还剩
+sidebar_E_countdown: E技能CD还剩
+sidebar_R_countdown: R技能CD还剩
+sidebar_magic: 魔力值：
+login_login_page_title: 登录界面-请点击输入你的密码来登录
+login_register_page_tile: §b注册界面-§0请点击输入你的密码来注册
+login_validation_page_title: §6验证界面-§0请输入你收到的验证码
+login_ip_limit_warning: 此IP已达到注册上限，无法登入！
+login_keyboard_button_label: 点按输入数字
+login_number_limit_warning: 不可以超过9个数字！
+login_kick_message: 下次再见！
+login_register_enter_password_again: 请再次输入密码！
+login_register_different_entered_password: 两次输入的密码不同！请重试！
+login_register_successfully: 注册成功！
+login_wrong_password: 密码错误！
+login_successfully: 登录成功！
+login_enter_login_detail: 请输入你的登录信息！
+login_plugin_reloaded: 腐竹重载/关闭了插件，请重新登录！
+button_previous: 上一页
+button_next: 下一页
+button_back: 返回
+button_quit: 退出
+button_ok: 确认
+button_cancel: 取消
+button_clear: 清空
+button_forget_password: 忘记密码
+inventory_manager_title_page_number: '第%d页'
+chat_prefix_downloading_papi: 正在下载PAPI必须的变量中...
+punish_item_dropped: '[死亡惩罚]你因为死亡随机掉落了%d个物品！'
+punish_money_dropped: '[死亡惩罚]你因为死亡而扣除了%d个金币！'
+tpa_function: TPA功能
+tpa_player_not_found: 未找到目标，无法请求传送！
+tpa_rejected: 已拒绝！
+tpa_tp_send_successfully: '你已向%s发送TP请求！'
+tpa_tp_enquire: '%s请求传送到您的位置'
+tpa_accept_tip: §7输入§c/tpa accept §b接受§7传送，或者按下§c[shift+左键]§b接受
+tpa_reject_tip: §7输入§c/tpa reject §b拒绝§7传送，或者按下§c[shift+右键]§b拒绝
+tpa_no_request: 并没有玩家给你发送传送请求！
+tpa_teleport_rejected: '对方拒绝了你的传送请求 :('
+tpa_request_timeout: 对方长时间没有接受你的传送请求，已自动拒绝
+tpa_teleport_success: 传送成功！
+tpahere_enquire: '%s请求您传送至他的位置'
+tpahere_accept_tip: §7输入§c/tpahere accept §b接受§7传送，或者按下§c[shift+左键]§b接受
+tpahere_reject_tip: §7输入§c/tpahere reject §b拒绝§7传送，或者按下§c[shift+右键]§b拒绝
+warp_function: 地标功能
+warp_teleport_successfully: 成功传送至%s!
+warp_page_title: 地标
+warp_not_exists: 不存在这个地标！
+warp_already_exists: 已存在此地标！
+warp_name_shall_not_empty: '[格式错误]地标必须有一个名字!'
+warp_set_successfully: '成功创建地标 %s'
+warp_deleted: '地标 %s 删除成功!'
+back_function: 死亡返回功能
+back_havent_dead: 无法找到死亡地点！这可能是因为插件重载或者你还没死过哩。
+spawn_new_spawn_set: 新的世界出生点已设置！
+random_tp_function: 随机传送功能
+random_tp_searching: 正在搜索安全的传送位置...
+random_tp_success: 成功传送到随机位置！请小心行事。
+custom_gui_not_enough_money: 你的金币不足！
