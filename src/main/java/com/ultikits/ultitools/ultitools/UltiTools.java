@@ -17,6 +17,7 @@ import com.ultikits.utils.VersionAdaptor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.WorldCreator;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -273,6 +274,9 @@ public final class UltiTools extends JavaPlugin {
         }
         if (getConfig().getBoolean("enable_pro")) {
             new ProCheckerTask().runTaskTimerAsynchronously(this, 12000L, 12000L);
+        }
+        if (getConfig().getBoolean("enable_fly_command")) {
+            CommandRegister.registerCommand(plugin,new FlyCommands(),"ultikits.tools.fly",languageUtils.getString("fly_function"),"fly");
         }
 
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("plugin_loaded"));
