@@ -5,77 +5,135 @@ import com.ultikits.ultitools.ultitools.UltiTools;
 /**
  * Tellraw-可点击消息
  * 发送工具类
+ * <br/>
+ * 例子:
+ * <pre>
+ *     new TellrawUtils()
+ *               .player("player")
+ *               .hover("hover")
+ *               .action("run_command")
+ *               .value("/stop")
+ *               .text("text")
+ *               .send();
+ * </pre>
+ *
  * @author qianmo
  */
 public class TellrawUtils {
 
-    /**
-     * @param player 目标玩家
-     * @param hover 鼠标悬停在文字上时显示的文字
-     * @param color 文字颜色
-     * @param text 可点击文字
-     * @param bold 加粗
-     * @param underlined 下划线
-     * @param strikethrough 删除线
-     * @param obfuscated 随机字符串
-     * @param italic 斜体
-     * @param action 点击事件
-     * @param value 执行目标
-     * @param insertion 插入文字
-     */
-    public void sendClickableText(
-            String player,
-            String hover,
-            String color,
-            String text,
-            Boolean bold,
-            Boolean underlined,
-            Boolean strikethrough,
-            Boolean obfuscated,
-            Boolean italic,
-            String action,
-            String value,
-            String insertion
-    ) {
+    String player;
+    String hover = "";
+    String color = "white";
+    String text;
+    Boolean bold = false;
+    Boolean underlined = false;
+    Boolean strikethrough = false;
+    Boolean obfuscated = false;
+    Boolean italic = false;
+    String action;
+    String value;
+    String insertion ="";
+
+    public TellrawUtils player(String player) {
+        this.player = player;
+        return this;
+    }
+
+    public TellrawUtils hover(String hover) {
+        this.hover = hover;
+        return this;
+    }
+
+    public TellrawUtils color(String color) {
+        this.color = color;
+        return this;
+    }
+
+    public TellrawUtils text(String text) {
+        this.text = text;
+        return this;
+    }
+
+    public TellrawUtils bold(Boolean bold) {
+        this.bold = bold;
+        return this;
+    }
+
+    public TellrawUtils underlined(Boolean underlined) {
+        this.underlined = underlined;
+        return this;
+    }
+
+    public TellrawUtils strikethrough(Boolean strikethrough) {
+        this.strikethrough = strikethrough;
+        return this;
+    }
+
+    public TellrawUtils obfuscated(Boolean obfuscated) {
+        this.obfuscated = obfuscated;
+        return this;
+    }
+
+    public TellrawUtils italic(Boolean italic) {
+        this.italic = italic;
+        return this;
+    }
+
+    public TellrawUtils action(String action) {
+        this.action = action;
+        return this;
+    }
+
+    public TellrawUtils value(String value) {
+        this.value = value;
+        return this;
+    }
+
+    public TellrawUtils insertion(String insertion) {
+        this.insertion = insertion;
+        return this;
+    }
+
+    public void send() {
         String json = "tellraw " +
-                player +
+                this.player +
                 "{" +
                 "\"text\": \"" +
-                text +
+                this.text +
                 "\"," +
                 "\"bold\": " +
-                bold +
+                this.bold +
                 "," +
                 "\"italic\": " +
-                italic +
+                this.italic +
                 "," +
                 "\"underlined\": " +
-                underlined +
+                this.underlined +
                 "," +
                 "\"strikethrough\": " +
-                strikethrough +
+                this.strikethrough +
                 "," +
                 "\"obfuscated\": " +
-                obfuscated +
+                this.obfuscated +
                 "," +
                 "\"color\": \"" +
-                color +
+                this.color +
                 "\"," +
                 "\"insertion\": \"" +
-                insertion +
+                this.insertion +
                 "\"," +
                 "\"clickEvent\": {" +
                 "\"action\": \"" +
-                action +
+                this.action +
                 "\"," +
                 "\"value\": \"" +
-                value +
+                this.value +
                 "\"" +
                 "}," +
                 "\"hoverEvent\": {" +
                 "\"action\": \"show_text\"," +
                 "\"contents\": [\"" +
-                hover +
+                this.hover +
                 "\"]" +
                 "}" +
                 "}";
