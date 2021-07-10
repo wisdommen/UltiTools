@@ -97,7 +97,7 @@ public class TellrawUtils {
     public void send() {
         String json = "tellraw " +
                 this.player +
-                "{" +
+                " {" +
                 "\"text\": \"" +
                 this.text +
                 "\"," +
