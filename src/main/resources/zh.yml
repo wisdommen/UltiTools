@@ -64,7 +64,6 @@ kits_function: 礼包系统
 cleaner_function: 清理系统
 permission_function: 权限系统
 login_function: 登陆系统
-fly_function: 飞行指令功能
 plugin_loaded: 基础插件已加载！
 plugin_disabled: 基础插件已卸载！
 author: 作者：
@@ -316,3 +315,6 @@ random_tp_function: 随机传送功能
 random_tp_searching: 正在搜索安全的传送位置...
 random_tp_success: 成功传送到随机位置！请小心行事。
 custom_gui_not_enough_money: 你的金币不足！
+fly_function: 飞行指令功能
+fly_enabled: 已打开飞行
+fly_disabled: 已关闭飞行

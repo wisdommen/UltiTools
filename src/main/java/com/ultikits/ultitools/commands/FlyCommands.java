@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.commands;
 
+import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,18 +12,18 @@ public class FlyCommands implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(!((Player) sender).getAllowFlight()){
-            if(sender.hasPermission("ultikits.tools.fly")) {
+            if(sender.hasPermission("ultikits.tools.command.fly")) {
                 ((Player)sender).setAllowFlight(true);
-                sender.sendMessage(ChatColor.YELLOW + "已打开飞行");
+                sender.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("fly_enabled"));
             } else {
-                sender.sendMessage(ChatColor.RED + "你没有使用该指令的权限");
+                sender.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("no_permission"));
             }
         } else {
-            if(sender.hasPermission("ultikits.tools.fly")) {
+            if(sender.hasPermission("ultikits.tools.command.fly")) {
                 ((Player)sender).setAllowFlight(false);
-                sender.sendMessage(ChatColor.YELLOW + "已关闭飞行");
+                sender.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("fly_disabled"));
             } else {
-                sender.sendMessage(ChatColor.RED + "你没有使用该指令的权限");
+                sender.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("no_permission"));
             }
         }
 

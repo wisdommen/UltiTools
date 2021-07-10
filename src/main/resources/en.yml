@@ -64,7 +64,6 @@ kits_function: 'Kits System'
 cleaner_function: 'GC System'
 permission_function: 'Permission System'
 login_function: 'Login System'
-fly_function: 'Fly Command Function'
 plugin_loaded: 'UltiTools is loaded!'
 plugin_disabled: 'UltiTools is unloaded!'
 author: 'Author:'
@@ -316,3 +315,6 @@ random_tp_function: "Random Teleport Function"
 random_tp_searching: "Searching for safe teleport location..."
 random_tp_success: "Random teleport successfully! Be safe."
 custom_gui_not_enough_money: "You don't have enough money to do this!"
+fly_function: 'Fly Command Function'
+fly_enabled: "Now fly is enabled"
+fly_disabled: "Now fly is disabled"

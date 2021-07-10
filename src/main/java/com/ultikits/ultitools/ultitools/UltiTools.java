@@ -248,7 +248,7 @@ public final class UltiTools extends JavaPlugin {
             CommandRegister.registerCommand(plugin, new RandomTpCommands(), "ultikits.tools.randomtp", languageUtils.getString("random_tp_function"), "wild");
         }
         if (this.getConfig().getBoolean("enable_fly_command")) {
-            CommandRegister.registerCommand(plugin,new FlyCommands(),"ultikits.tools.fly",languageUtils.getString("fly_function"),"fly");
+            CommandRegister.registerCommand(plugin,new FlyCommands(),"ultikits.tools.command.fly",languageUtils.getString("fly_function"),"fly");
         }
 
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
