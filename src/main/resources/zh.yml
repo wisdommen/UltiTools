@@ -64,7 +64,7 @@ kits_function: 礼包系统
 cleaner_function: 清理系统
 permission_function: 权限系统
 login_function: 登陆系统
-fly_function: 飞行指令
+fly_function: 飞行指令功能
 plugin_loaded: 基础插件已加载！
 plugin_disabled: 基础插件已卸载！
 author: 作者：
