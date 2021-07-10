@@ -247,6 +247,9 @@ public final class UltiTools extends JavaPlugin {
         if (this.getConfig().getBoolean("enable_random_tp")) {
             CommandRegister.registerCommand(plugin, new RandomTpCommands(), "ultikits.tools.randomtp", languageUtils.getString("random_tp_function"), "wild");
         }
+        if (this.getConfig().getBoolean("enable_fly_command")) {
+            CommandRegister.registerCommand(plugin,new FlyCommands(),"ultikits.tools.command.fly",languageUtils.getString("fly_function"),"fly");
+        }
 
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
         if (getConfig().getBoolean("enable_chat")) {
@@ -274,6 +277,7 @@ public final class UltiTools extends JavaPlugin {
         if (getConfig().getBoolean("enable_pro")) {
             new ProCheckerTask().runTaskTimerAsynchronously(this, 12000L, 12000L);
         }
+
 
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("plugin_loaded"));
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("author") + "wisdomme");
