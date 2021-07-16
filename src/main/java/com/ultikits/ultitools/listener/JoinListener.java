@@ -1,9 +1,11 @@
 package com.ultikits.ultitools.listener;
 
 import com.ultikits.ultitools.checker.VersionChecker;
+import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.tasks.SideBarTask;
 import com.ultikits.ultitools.ultitools.UltiTools;
+import com.ultikits.utils.YamlFileUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,6 +36,7 @@ public class JoinListener implements Listener {
     YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
     List<String> welcomeMessage = config.getStringList("welcome_message");
+    String firstJoinBroadcast =  UltiTools.languageUtils.getString("first_join_broadcast");
     String opJoinMessage = config.getString("op_join");
     String opQuitMessage = config.getString("op_quit");
     String playerJoinMessage = config.getString("player_join");
@@ -41,6 +45,24 @@ public class JoinListener implements Listener {
 
     File loginFile = new File(ConfigsEnum.LOGIN.toString());
     YamlConfiguration loginConfig = YamlConfiguration.loadConfiguration(loginFile);
+
+    //first_join_broadcast相关准备-----开始
+    static {
+        File playerlistFile = new File(ConfigsEnum.PLAYERLIST.toString());
+        if (!playerlistFile.exists()) {
+            try {
+                playerlistFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+    File playerlistFile = new File(ConfigsEnum.PLAYERLIST.toString());
+    YamlConfiguration playerlistConfig = YamlConfiguration.loadConfiguration(playerlistFile);
+    List<String> playerList = playerlistConfig.getStringList("playerlist");
+
+    //first_join_broadcast相关准备-----结束
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -87,6 +109,20 @@ public class JoinListener implements Listener {
                 }
 
             }.runTaskLater(UltiTools.getInstance(), sendMessageDelay * 20L);
+        }
+
+        //新玩家全服欢迎公告
+        if (UltiTools.getInstance().getConfig().getBoolean("enable_first_join_broadcast")) {
+            if (!playerlistConfig.getStringList("playerlist").contains(player.getName())) {
+                playerList.add(player.getName());
+                playerlistConfig.set("playerlist",playerList);
+                try {
+                    playerlistConfig.save(playerlistFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player,firstJoinBroadcast));
+            }
         }
     }
 

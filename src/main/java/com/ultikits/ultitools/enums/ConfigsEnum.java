@@ -27,7 +27,8 @@ public enum ConfigsEnum {
     WARPS(UltiTools.getInstance().getDataFolder()+"/warps"),
     BAG(UltiTools.getInstance().getDataFolder()+"/bag.yml"),
     CHAT(UltiTools.getInstance().getDataFolder()+"/chat.yml"),
-    CUSTOMERGUI(UltiTools.getInstance().getDataFolder()+"/customgui.yml");
+    CUSTOMERGUI(UltiTools.getInstance().getDataFolder()+"/customgui.yml"),
+    PLAYERLIST(UltiTools.getInstance().getDataFolder() + "/playerData/playerlist/playerlist.yml");
 
     private final String path;
 
