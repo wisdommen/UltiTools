@@ -318,5 +318,6 @@ custom_gui_not_enough_money: 你的金币不足！
 fly_function: 飞行指令功能
 fly_enabled: 已打开飞行
 fly_disabled: 已关闭飞行
+password_function: 密码功能
 pwd_reset_success: 玩家 %s 的密码已重置!
 pwd_player_not_found: 玩家未找到!
