@@ -329,3 +329,6 @@ tpback_success: 成功传送到上一次的传送位置！
 tpback_location_not_found: 找不到上次的传送位置！
 first_join_broadcast: '§a欢迎新玩家 §e%player_name% §a加入服务器！'
 random_tp_banned: 这个世界禁止使用随机传送！
+password_function: 密码功能
+pwd_reset_success: 玩家 %s 的密码已重置!
+pwd_player_not_found: 玩家未找到!

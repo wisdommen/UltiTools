@@ -268,6 +268,7 @@ public final class UltiTools extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new ValidationPageListener(), this);
             LoginListener.checkPlayerAlreadyLogin();
             CommandRegister.registerCommand(plugin, new LoginRegisterCommands(), "ultikits.tools.login", languageUtils.getString("login_function"), "reg", "regs", "re");
+            CommandRegister.registerCommand(plugin, new PasswordCommands(), "ultikits.tools.command.password", languageUtils.getString("password_function"), "password", "pwd");
         }
         if (getConfig().getBoolean("enable_death_punishment")) {
             getServer().getPluginManager().registerEvents(new DeathListener(), this);
