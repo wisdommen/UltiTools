@@ -1,0 +1,4 @@
+# 使用本插件此功能前服务器已有的玩家，可以将其ID按格式手动添加至下方。
+# You can manually add the IDs of players who already joined the server before using this plug-in to the bottom in format .
+playerlist:
+  -
