@@ -121,7 +121,7 @@ public class JoinListener implements Listener {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player,firstJoinBroadcast));
+                Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player,firstJoinBroadcast.replaceAll("%player_name%",player.getName())));
             }
         }
     }
