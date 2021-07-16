@@ -324,3 +324,8 @@ chat_att_errname: '§4@ Failed! Since there is no such player!'
 chat_att_offonline: '§4@ Failed! Since §b%player% is offline!'
 chat_att_beatt: '§b%player% §e@ you!'
 chat_att_succ: '§ayou @ §e%playersize% §a players!'
+tpback_function: "Teleport the player to last teleport location"
+tpback_success: "Successfully teleport to last teleport location!"
+tpback_location_not_found: "Failed to find last teleport location!"
+first_join_broadcast: "§aWelcome §e%player_name% §ato the server for the first time!"
+random_tp_banned: "Random teleport was banned in this world!"

@@ -79,6 +79,8 @@ public final class UltiTools extends JavaPlugin {
             getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("using_customized_language"));
         }
 
+        yaml.saveYamlFile(getDataFolder().getPath() + File.separator + "playerData" + File.separator + "playerlist","playerlist.yml","playerlist.yml");
+
         List<File> folders = new ArrayList<>();
         folders.add(new File(getDataFolder().getPath()));
         folders.add(new File(getDataFolder() + "/playerData"));
@@ -89,6 +91,7 @@ public final class UltiTools extends JavaPlugin {
         folders.add(new File(getDataFolder() + "/sidebar"));
         folders.add(new File(getDataFolder() + "/kitData"));
         folders.add(new File(getDataFolder() + "/warps"));
+        folders.add(new File(getDataFolder() + "/playerData"+"/playerlist"));
 
         makedirs(folders);
 
@@ -249,6 +252,10 @@ public final class UltiTools extends JavaPlugin {
         }
         if (this.getConfig().getBoolean("enable_fly_command")) {
             CommandRegister.registerCommand(plugin,new FlyCommands(),"ultikits.tools.command.fly",languageUtils.getString("fly_function"),"fly");
+        }
+        if (this.getConfig().getBoolean("enable_tpback_command")) {
+            CommandRegister.registerCommand(plugin,new TpbackCommands(),"ultikits.tools.command.tpback,",languageUtils.getString("tpback_function"),"tpback");
+            getServer().getPluginManager().registerEvents(new TeleportListener(),this);
         }
 
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);

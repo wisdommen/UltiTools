@@ -324,3 +324,8 @@ chat_att_errname: '§4艾特失败！玩家错误！'
 chat_att_offonline: '§4艾特失败！玩家 §b%player% §4不在线！！'
 chat_att_beatt: '§e您被玩家 §b%player% §e艾特了!'
 chat_att_succ: '§a您艾特了 §e%playersize% §a名玩家!'
+tpback_function: 让玩家回到上次传送的位置
+tpback_success: 成功传送到上一次的传送位置！
+tpback_location_not_found: 找不到上次的传送位置！
+first_join_broadcast: '§a欢迎新玩家 §e%player_name% §a加入服务器！'
+random_tp_banned: 这个世界禁止使用随机传送！
