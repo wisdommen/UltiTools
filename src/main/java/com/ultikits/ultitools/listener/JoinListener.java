@@ -104,7 +104,7 @@ public class JoinListener implements Listener {
                 @Override
                 public void run() {
                     for (String each : welcomeMessage) {
-                        player.sendMessage(PlaceholderAPI.setPlaceholders(player, each));
+                        player.sendMessage(PlaceholderAPI.setPlaceholders(player, each.replaceAll("%player_name%",player.getName())));
                     }
                 }
 
@@ -121,7 +121,7 @@ public class JoinListener implements Listener {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player,firstJoinBroadcast));
+                Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player,firstJoinBroadcast.replaceAll("%player_name%",player.getName())));
             }
         }
     }
