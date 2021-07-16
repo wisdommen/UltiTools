@@ -281,6 +281,8 @@ button_quit: 'Quit'
 button_ok: 'OK'
 button_cancel: 'Cancel'
 button_clear: 'Clear'
+button_yes: 'YES'
+button_no: 'NO'
 button_forget_password: 'Forgot password'
 inventory_manager_title_page_number: 'page %d'
 chat_prefix_downloading_papi: 'Downloading PAPI required variables...'
@@ -315,6 +317,29 @@ random_tp_function: "Random Teleport Function"
 random_tp_searching: "Searching for safe teleport location..."
 random_tp_success: "Random teleport successfully! Be safe."
 custom_gui_not_enough_money: "You don't have enough money to do this!"
+notification: 'Sever Notification'
+friend_function: 'Social Function'
+firned_apply: ' requests to be friends with you!'
+friend_apply_lore: ' request to add you as a friend. \nClick to process this application'
+friend_apply_accept: 'You have been friend with %s!'
+friend_apply_reject: "You have rejected %s's friend request!"
+friend_apply_sent: 'Friend request has been sent!'
+friend_list: 'Friend list:'
+friend_had: 'You are friends already!'
+friend_not_friend: 'You are not friends yet!'
+friend_deleted: '%s has been deleted from your friend list!'
+friend_processed: 'You have already processed this application!'
+friend_mode: 'Mode: '
+mode_creative: 'Creative'
+mode_survival: 'Survival'
+mode_spectator: 'Spectator'
+mode_adventure: 'Adventure'
+friend_state: 'State: '
+state_offline: 'Offline'
+state_online: 'Online'
+friend_teleport: '[Left click] Teleport'
+friend_tell: '[Right click] Message'
+friend_click_tell: 'Click me to send private message to %s'
 fly_function: 'Fly Command Function'
 fly_enabled: "Now fly is enabled"
 fly_disabled: "Now fly is disabled"

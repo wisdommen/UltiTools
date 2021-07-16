@@ -60,4 +60,8 @@ public class FunctionUtils {
         return new ArrayList<>(commandMap.keySet());
     }
 
+    public static String getFunctionCode(String name){
+        return commandMap.get(name);
+    }
+
 }

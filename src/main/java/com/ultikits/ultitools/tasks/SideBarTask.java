@@ -128,8 +128,10 @@ public class SideBarTask extends BukkitRunnable {
         setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_name") + " " + ChatColor.GOLD, name, 99);
         setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_online_player") + " " + ChatColor.GOLD, onLinePlayers, 0);
         setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_health") + " " + ChatColor.YELLOW + hp + ChatColor.BOLD + " / " + ChatColor.GOLD, max_hp, 93);
-        if (getUnReadEmailNum(player) > 0) {
-            setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_new_email") + " " + ChatColor.GOLD, getUnReadEmailNum(player) + UltiTools.languageUtils.getString("feng"), 92);
+        int unread = getUnReadEmailNum(player);
+        setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_new_email") + " " + ChatColor.GOLD, unread + UltiTools.languageUtils.getString("feng"), 92);
+        if (unread == 0) {
+            setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_new_email") + " " + ChatColor.GOLD, unread + UltiTools.languageUtils.getString("feng"), 92, true);
         }
         if (!max_exp.equals("") && !exp.equals("")) {
             setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_exp") + " " + ChatColor.YELLOW, exp + ChatColor.BOLD + " / " + ChatColor.GOLD + max_exp, 94);
@@ -192,8 +194,12 @@ public class SideBarTask extends BukkitRunnable {
     }
 
     public void setScoreboard(Player player, String prefixString, String content, int score) {
+        setScoreboard(player, prefixString, content, score, false);
+    }
+
+    public void setScoreboard(Player player, String prefixString, String content, int score, boolean reset) {
         if (!content.equals("")) {
-            updatePerLine(player, prefixString + content, score);
+            updatePerLine(player, prefixString + content, score, reset);
         }
     }
 
@@ -216,6 +222,10 @@ public class SideBarTask extends BukkitRunnable {
     }
 
     public void updatePerLine(Player player, String line, int scoreSlot) {
+        updatePerLine(player, line, scoreSlot, false);
+    }
+
+    public void updatePerLine(Player player, String line, int scoreSlot, boolean reset) {
         if (!Bukkit.getOnlinePlayers().contains(player) || (player.getScoreboard() == null)) {
             return;
         }
@@ -246,7 +256,11 @@ public class SideBarTask extends BukkitRunnable {
         }
         scoreMap.put(scoreSlot, line);
         boardMap.put(player.getUniqueId(), scoreMap);
-        information.getScore(line).setScore(scoreSlot);
+        if (reset){
+            player.getScoreboard().resetScores(line);
+        }else {
+            information.getScore(line).setScore(scoreSlot);
+        }
         player.setScoreboard(scoreboard);
     }
 

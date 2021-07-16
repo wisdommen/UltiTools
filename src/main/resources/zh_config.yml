@@ -80,11 +80,8 @@ enable_kits: true
 '注释55请勿修改': '是否开启清理功能  (感谢 绝尘 大佬的意见！)'
 enable_cleaner: true
 
-'注释57请勿修改': '是否开启权限功能  (感谢 绝尘 大佬的意见！)'
-enable_permission: true
-
 '注释12请勿修改': '开启PAPI变量'
-enable_PAPI: false
+enable_PAPI: true
 
 '注释13请勿修改': '开启死亡惩罚功能'
 enable_death_punishment: true
@@ -120,7 +117,7 @@ enable_tpback_command: true
 enable_first_join_broadcast: true
 
 '注释42请勿修改': '(头衔) 自定义头顶显示前缀'
-name_prefix: '§e[§c%ul_job%§dLv.%ul_level%§e]'
+name_prefix: '§e[§dLv.%player_level%§e]'
 
 '注释44请勿修改': '(头衔) 自定义头顶显示后缀'
-name_suffix: '§e[§c%ul_health%§e/§c%ul_max_health%§e]'
+name_suffix: '§e[§c%player_health_rounded%§e/§c%player_max_health_rounded%§e]'

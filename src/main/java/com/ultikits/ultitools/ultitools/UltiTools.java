@@ -10,9 +10,12 @@ import com.ultikits.ultitools.config.*;
 import com.ultikits.ultitools.listener.*;
 import com.ultikits.ultitools.register.CommandRegister;
 import com.ultikits.ultitools.tasks.*;
+import com.ultikits.ultitools.utils.FunctionUtils;
+import com.ultikits.ultitools.utils.LanguageUtils;
 import com.ultikits.ultitools.utils.YamlFileUtils;
 import com.ultikits.utils.DatabaseUtils;
 import com.ultikits.utils.MessagesUtils;
+import com.ultikits.utils.Metrics;
 import com.ultikits.utils.VersionAdaptor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -35,7 +38,7 @@ public final class UltiTools extends JavaPlugin {
     public static boolean isGroupManagerEnabled;
     public static boolean isPAPILoaded;
     private static UltiTools plugin;
-    public static YamlConfiguration languageUtils;
+    public static LanguageUtils languageUtils;
     public static VersionWrapper versionAdaptor = new VersionAdaptor().match();
     public static YamlFileUtils yaml;
     public static String language;
@@ -56,7 +59,16 @@ public final class UltiTools extends JavaPlugin {
         }
         ultiCoreAPI = new UltiCoreAPI(this);
         isPAPILoaded = UltiCoreAPI.isPapiLoaded();
-        ultiCoreAPI.startBStates(8652);
+        Metrics metrics = new Metrics(this, 8652);
+        metrics.addCustomChart(new Metrics.SimplePie("pro_user_count", () -> String.valueOf(isProVersion)));
+        metrics.addCustomChart(new Metrics.AdvancedPie("function_used", () -> {
+            Map<String, Integer> valueMap = new HashMap<>();
+            for (String each : FunctionUtils.getAllFunctions()){
+                boolean enabled = getConfig().getBoolean(FunctionUtils.getFunctionCode(each));
+                valueMap.put(each, enabled ? 1 : 0);
+            }
+            return valueMap;
+        }));
 
         File folder = new File(String.valueOf(getDataFolder()));
         File config_file = new File(getDataFolder(), "config.yml");
@@ -72,10 +84,10 @@ public final class UltiTools extends JavaPlugin {
 
         if (cusLang.equalsIgnoreCase("cn")||cusLang.equalsIgnoreCase("us")) {
             File langFile = new File(getDataFolder().getPath() + File.separator + "lang", language + ".yml");
-            languageUtils = YamlConfiguration.loadConfiguration(langFile);
+            languageUtils = new LanguageUtils(YamlConfiguration.loadConfiguration(langFile));
         }else {
             File langFile = new File(getDataFolder().getPath() + File.separator + "lang", cusLang + ".yml");
-            languageUtils = YamlConfiguration.loadConfiguration(langFile);
+            languageUtils = new LanguageUtils(YamlConfiguration.loadConfiguration(langFile));
             getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("using_customized_language"));
         }
 
@@ -272,6 +284,11 @@ public final class UltiTools extends JavaPlugin {
         }
         if (getConfig().getBoolean("enable_death_punishment")) {
             getServer().getPluginManager().registerEvents(new DeathListener(), this);
+        }
+        if (getConfig().getBoolean("enable_social_system")){
+            CommandRegister.registerCommand(plugin, new SocialSystemCommands(), "ultikits.tools.social", languageUtils.getString("friend_function"), "soc", "friends", "fri");
+            getServer().getPluginManager().registerEvents(new FriendsApplyViewListener(), this);
+            getServer().getPluginManager().registerEvents(new FriendsViewListener(), this);
         }
 
         //注册任务

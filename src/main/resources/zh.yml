@@ -281,6 +281,8 @@ button_quit: 退出
 button_ok: 确认
 button_cancel: 取消
 button_clear: 清空
+button_yes: 好的
+button_no: 拒绝
 button_forget_password: 忘记密码
 inventory_manager_title_page_number: '第%d页'
 chat_prefix_downloading_papi: 正在下载PAPI必须的变量中...
@@ -315,10 +317,33 @@ random_tp_function: 随机传送功能
 random_tp_searching: 正在搜索安全的传送位置...
 random_tp_success: 成功传送到随机位置！请小心行事。
 custom_gui_not_enough_money: 你的金币不足！
+notification: 系统通知
+friend_function: 好友功能
+friend_apply: 请求和你成为好友！
+friend_apply_lore: ' 请求添加你为好友。\n点击处理此申请'
+friend_apply_accept: '你和 %s 成为了好友!'
+friend_apply_reject: "你拒绝了 %s 的好友申请！"
+friend_apply_sent: 已发送好友申请！
+friend_list: 好友列表
+friend_had: 你们已经是好友了！
+friend_not_friend: 你们还不是好友！
+friend_deleted: '已从你的好友列表中删除 %s！'
+friend_processed: 你已经处理过这个申请了！
+friend_mode: 模式：
+mode_creative: 创造
+mode_survival: 生存
+mode_spectator: 观察者
+mode_adventure: 冒险
+friend_state: 状态：
+state_offline: 离线
+state_online: 在线
+friend_teleport: 左键点击请求传送
+friend_click_tell: 点击我给 %s 发送悄悄话
+friend_tell: 右键点击发送悄悄话
 fly_function: 飞行指令功能
 fly_enabled: 已打开飞行
 fly_disabled: 已关闭飞行
-chat_color_nopermission_reply: '§4您未拥有权限"ultikits.tools.chatcolor"因此无法发送彩色字体'
+chat_color_nopermission_reply: '§4您没有权限发送彩色字体'
 chat_att_repeat: '§4艾特失败！玩家重复！'
 chat_att_errname: '§4艾特失败！玩家错误！'
 chat_att_offonline: '§4艾特失败！玩家 §b%player% §4不在线！！'

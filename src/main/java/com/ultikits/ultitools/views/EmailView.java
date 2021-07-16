@@ -73,23 +73,29 @@ public class EmailView {
         List<String> list = new ArrayList<>();
         list.add(ChatColor.GRAY + Utils.convertMillisecondsToRegularTime(Long.valueOf(emailContentBean.getUuid())));
         list.add(ChatColor.GOLD + UltiTools.languageUtils.getString("email_text_content_header"));
-        int strLen = inputString.length();
-        int start = 0;
-        int num = length;
-        String temp;
-        while (true) {
-            try {
-                if (num >= strLen) {
-                    temp = inputString.substring(start, strLen);
-                } else {
-                    temp = inputString.substring(start, num);
+        if (inputString.contains("\\n")){
+            String[] strings = inputString.split("[\\\\n]");
+            list.addAll(Arrays.asList(strings));
+            list.removeIf(each -> each.equals(""));
+        }else {
+            int strLen = inputString.length();
+            int start = 0;
+            int num = length;
+            String temp;
+            while (true) {
+                try {
+                    if (num >= strLen) {
+                        temp = inputString.substring(start, strLen);
+                    } else {
+                        temp = inputString.substring(start, num);
+                    }
+                } catch (Exception e) {
+                    break;
                 }
-            } catch (Exception e) {
-                break;
+                list.add(ChatColor.WHITE + temp);
+                start = num;
+                num = num + length;
             }
-            list.add(ChatColor.WHITE + temp);
-            start = num;
-            num = num + length;
         }
         if (emailContentBean.getItemStack() != null) {
             list.add(ChatColor.GOLD + UltiTools.languageUtils.getString("email_attachment_content_header"));

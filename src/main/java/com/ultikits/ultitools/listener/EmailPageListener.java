@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -49,13 +50,20 @@ public class EmailPageListener extends PagesListener {
                                 player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("email_inventory_space_not_enough"));
                             }
                         }
+                        List<String> commands = config.getStringList(uuid + ".commands");
+                        if (!commands.isEmpty()) {
+                            for (String command : commands) {
+                                player.performCommand(command);
+                            }
+                            config.set(uuid + ".isRead", true);
+                        }else {
+                            player.performCommand("email read");
+                        }
                         try {
                             config.save(file);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        player.closeInventory();
-                        player.performCommand("email read");
                     }
                 }
             }

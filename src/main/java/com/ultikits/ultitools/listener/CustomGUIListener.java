@@ -30,7 +30,7 @@ public class CustomGUIListener extends PagesListener {
             YamlConfiguration config = ConfigController.getConfig("customgui");
             for (String key : config.getConfigurationSection(signature).getKeys(false)) {
                 if (position == config.getInt(signature + "." + key + ".position")) {
-                    if (EconomyUtils.checkMoney(player) < config.getInt(signature + "." + key + ".price")){
+                    if (EconomyUtils.checkMoney(player) < config.getInt(signature + "." + key + ".price")) {
                         player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("custom_gui_not_enough_money"));
                         return CancelResult.TRUE;
                     }
@@ -38,9 +38,13 @@ public class CustomGUIListener extends PagesListener {
                         player.performCommand(playerCommand);
                     }
                     for (String consoleCommand : config.getStringList(signature + "." + key + ".console-commands")) {
-                        UltiTools.getInstance().getServer().dispatchCommand(player, consoleCommand.replace("{PLAYER}", player.getName()));
+                        UltiTools.getInstance().getServer().dispatchCommand(UltiTools.getInstance().getServer().getConsoleSender(), consoleCommand.replace("{PLAYER}", player.getName()));
                     }
                     EconomyUtils.withdraw(player, config.getInt(signature + "." + key + ".price"));
+                    if (config.getConfigurationSection(signature + "." + key + ".keep-open") != null &&
+                            !config.getBoolean(signature + "." + key + ".keep-open")) {
+                        player.closeInventory();
+                    }
                     return CancelResult.TRUE;
                 }
             }

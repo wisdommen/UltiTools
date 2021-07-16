@@ -98,6 +98,14 @@ public class EmailCommands extends AbstractTabExecutor {
                     case "send":
                         hasContent = false;
                         break;
+                    case "sendall":
+                        new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                sendAllMessage(player, emailManager, stripSpaceInCommand(strings, 1));
+                            }
+                        }.runTaskAsynchronously(UltiTools.getInstance());
+                        return true;
                     case "senditem":
                         hasContent = true;
                         break;
@@ -105,21 +113,10 @@ public class EmailCommands extends AbstractTabExecutor {
                         player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("wrong_format"));
                         return false;
                 }
-
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        StringBuilder stringBuilder = new StringBuilder();
-                        for (int i = 2; i < strings.length; i++) {
-                            String s = " " + strings[i] + " ";
-                            if (i == 2) {
-                                s = strings[i] + " ";
-                            } else if (i == strings.length - 1) {
-                                s = " " + strings[i];
-                            }
-                            stringBuilder.append(s);
-                        }
-                        sendMessage(file2, emailManager, player, strings[1], stringBuilder.toString(), hasContent);
+                        sendMessage(file2, emailManager, player, strings[1], stripSpaceInCommand(strings, 2), hasContent);
                     }
                 }.runTaskAsynchronously(UltiTools.getInstance());
                 return true;
@@ -154,7 +151,7 @@ public class EmailCommands extends AbstractTabExecutor {
                 }
                 return tabCommands;
             case 3:
-                tabCommands.add("[邮件内容]");
+                tabCommands.add("[Email Content]");
                 return tabCommands;
         }
         return null;
@@ -178,6 +175,25 @@ public class EmailCommands extends AbstractTabExecutor {
             return;
         }
         player.sendMessage(ChatColor.GREEN + "/email sendall [" + UltiTools.languageUtils.getString("text_content") + "] " + ChatColor.GRAY + UltiTools.languageUtils.getString("email_help_sendall"));
+    }
+
+
+    /**
+     * @param strings 命令
+     * @return 去除开头两个参数剩下的命令部分形成的字符串
+     */
+    private String stripSpaceInCommand(String[] strings, int commandIndex){
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = commandIndex; i < strings.length; i++) {
+            String s = " " + strings[i] + " ";
+            if (i == commandIndex) {
+                s = strings[i] + " ";
+            } else if (i == strings.length - 1) {
+                s = " " + strings[i];
+            }
+            stringBuilder.append(s);
+        }
+        return stringBuilder.toString();
     }
 
     private void pushToReceiver(String receiver) {

@@ -1,10 +1,12 @@
 package com.ultikits.ultitools.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.listener.LoginListener;
 import com.ultikits.ultitools.ultitools.UltiTools;
+import com.ultikits.utils.DatabaseUtils;
 import com.ultikits.utils.MD5Utils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,10 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.ultikits.ultitools.ultitools.UltiTools.isDatabaseEnabled;
 
@@ -232,13 +231,31 @@ public class DatabasePlayerTools {
         }
     }
 
+    public static List<String> getFriendList(OfflinePlayer player){
+        if (isDatabaseEnabled){
+            if (!isPlayerExist(player.getName(), friendTable)) {
+                String friendListJSON = DatabasePlayerTools.getPlayerData(player.getName(), friendTable, "friends");
+                return JSON.parseObject(friendListJSON, new TypeReference<ArrayList<String>>(){});
+            }
+            return Collections.emptyList();
+        }
+        File file = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        return config.getStringList("friends");
+    }
+
     private static List<String> friendsListOperator(List<String> friends, String name, boolean operation) {
         if (operation) {
             friends.add(name);
         } else {
-            if (friends.contains(name)) {
-                friends.remove(name);
-            }
+            friends.remove(name);
         }
         return friends;
     }

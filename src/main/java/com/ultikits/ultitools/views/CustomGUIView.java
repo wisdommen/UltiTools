@@ -59,7 +59,9 @@ public class CustomGUIView {
                 each = PlaceholderAPI.setPlaceholders(player, each);
                 lore.add(each);
             }
-            lore.add(ChatColor.YELLOW + UltiTools.languageUtils.getString("price") + (price == null ? 0 : price));
+            if (price != null && !price.equals("0")) {
+                lore.add(ChatColor.YELLOW + UltiTools.languageUtils.getString("price") + price);
+            }
             ItemStack itemStack = UltiCore.versionAdaptor.getGrassBlock();
             try {
                 Material type = Material.valueOf(item);

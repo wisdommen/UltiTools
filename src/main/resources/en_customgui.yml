@@ -31,6 +31,8 @@ main:
     console-commands: []
     # money need to execute this function
     price: 0
+    # keep the gui open after click
+    keep-open: true
   # sample button
   info:
     # item type
@@ -50,3 +52,5 @@ main:
       - kill {PLAYER}
     # money need to execute this function
     price: 0
+    # keep the gui open after click
+    keep-open: true
