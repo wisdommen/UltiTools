@@ -101,10 +101,10 @@ public class SocialSystemCommands extends AbstractTabExecutor {
     protected List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
         List<String> tabCommands = new ArrayList<>();
         switch (strings.length) {
-            case 1:
+            case 0:
                 tabCommands.add("list");
                 return tabCommands;
-            case 2:
+            case 1:
                 tabCommands.add("add");
                 tabCommands.add("remove");
                 tabCommands.add("accept");
