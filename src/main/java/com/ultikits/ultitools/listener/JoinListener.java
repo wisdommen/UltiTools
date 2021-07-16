@@ -104,7 +104,7 @@ public class JoinListener implements Listener {
                 @Override
                 public void run() {
                     for (String each : welcomeMessage) {
-                        player.sendMessage(PlaceholderAPI.setPlaceholders(player, each));
+                        player.sendMessage(PlaceholderAPI.setPlaceholders(player, each.replaceAll("%player_name%",player.getName())));
                     }
                 }
 
