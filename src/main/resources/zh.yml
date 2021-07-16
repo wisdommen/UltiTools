@@ -318,6 +318,12 @@ custom_gui_not_enough_money: 你的金币不足！
 fly_function: 飞行指令功能
 fly_enabled: 已打开飞行
 fly_disabled: 已关闭飞行
+chat_color_nopermission_reply: '§4您未拥有权限"ultikits.tools.chatcolor"因此无法发送彩色字体'
+chat_att_repeat: '§4艾特失败！玩家重复！'
+chat_att_errname: '§4艾特失败！玩家错误！'
+chat_att_offonline: '§4艾特失败！玩家 §b%player% §4不在线！！'
+chat_att_beatt: '§e您被玩家 §b%player% §e艾特了!'
+chat_att_succ: '§a您艾特了 §e%playersize% §a名玩家!'
 tpback_function: 让玩家回到上次传送的位置
 tpback_success: 成功传送到上一次的传送位置！
 tpback_location_not_found: 找不到上次的传送位置！
