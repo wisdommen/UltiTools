@@ -318,3 +318,9 @@ custom_gui_not_enough_money: "You don't have enough money to do this!"
 fly_function: 'Fly Command Function'
 fly_enabled: "Now fly is enabled"
 fly_disabled: "Now fly is disabled"
+chat_color_nopermission_reply: '§4you without permission "ultikits.tools.chatcolor" so you can not send chat color'
+chat_att_repeat: '§4@ faill！Because player repeat！'
+chat_att_errname: '§4@ faill！Because player name error！'
+chat_att_offonline: '§4@ faill！Because player §b%player% §4offonline！！'
+chat_att_beatt: '§b%player% §e@ you!'
+chat_att_succ: '§ayou @ §e%playersize% §a players!'

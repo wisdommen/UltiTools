@@ -59,6 +59,12 @@ enable_multiworlds: true
 '注释39请勿修改': '是否开启聊天前缀功能'
 enable_chat: true
 
+'注释40请勿修改': '是否开启彩色聊天功能'
+enable_chat_color: true
+
+'注释41请勿修改': '是否开启聊天艾特功能'
+enable_chat_att: true
+
 '注释9请勿修改': '开启白名单'
 enable_white_list: false
 
