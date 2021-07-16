@@ -58,8 +58,8 @@ public class ChatListener implements Listener {
                 //并且取消事件
                 event.setCancelled(true);
                 return;
-            }else if (Linshi.length() <= 3){
-                //如果名字小于3个字母
+            }else if (Linshi.length() <= 1){
+                //如果名字小于1个字母 , 名字错误
                 player.sendMessage(Objects.requireNonNull(UltiTools.languageUtils.getString("chat_att_errname")).replaceAll("%player%",Linshi));
                 //取消事件
                 event.setCancelled(true);
@@ -93,6 +93,11 @@ public class ChatListener implements Listener {
                      * server Server 此服务器队形
                      */
                     Objects.requireNonNull(server.getPlayerExact(toPlayer)).sendMessage(Objects.requireNonNull(UltiTools.languageUtils.getString("chat_att_beatt")).replaceAll("%player%",player.getName()));
+
+
+
+
+
                 }
             }.runTaskAsynchronously(UltiTools.getInstance());
         }
@@ -118,8 +123,8 @@ public class ChatListener implements Listener {
             }else{
                 //提醒玩家没权限
                 player.sendMessage(Objects.requireNonNull(UltiTools.languageUtils.getString("chat_color_nopermission_reply")));
-                //并且撤销发送操作
-                event.setCancelled(true);
+                //撤销发送操作
+                //event.setCancelled(true);
             }
         }//没有使用不操作
     }
