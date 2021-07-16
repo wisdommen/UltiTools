@@ -59,6 +59,12 @@ enable_multiworlds: true
 'comment39': 'if enable chat prefix function'
 enable_chat: true
 
+'comment40': 'if enable chat color function'
+enable_chat_color: true
+
+'comment41': 'if enable chat @ function'
+enable_chat_att: true
+
 'comment9': 'enable whitelist'
 enable_white_list: false
 
