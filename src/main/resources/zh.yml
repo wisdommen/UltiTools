@@ -106,7 +106,9 @@ email_help_send: 给某人发送只包含文本的邮件
 email_help_senditem: 手持需要发送的物品，发送一个带有附件的邮件
 email_help_senditem_with_text: 手持需要发送的物品，发送一个带有附件的文本邮件
 email_help_sendall: 给所有人发邮件，如果空手则不包含附件，手持物品发送带有物品的邮件，不会扣除你的物品！
-email_received_new_email: 你收到一条新的邮件！\n使用/email read 来查看
+email_received_new_email: 你收到一条新的邮件！
+email_message_clickable: '[点击]'
+email_message_clickable_suffix: ' 打开收件箱'
 email_sending_all_email: 正在发送全体邮件...
 email_send_successfully: 发送成功！
 email_send_failed: 发送失败！
@@ -324,11 +326,14 @@ friend_apply_lore: ' 请求添加你为好友。\n点击处理此申请'
 friend_apply_accept: '你和 %s 成为了好友!'
 friend_apply_reject: "你拒绝了 %s 的好友申请！"
 friend_apply_sent: 已发送好友申请！
+friend_apply_reject_re: '%s 拒绝了你的好友申请！'
+friend_no_more_friend: '%s 取消了和你的好友关系！\n你和 %s 已经不再是好友了！'
 friend_list: 好友列表
 friend_had: 你们已经是好友了！
 friend_not_friend: 你们还不是好友！
 friend_deleted: '已从你的好友列表中删除 %s！'
 friend_processed: 你已经处理过这个申请了！
+friend_not_applied: '你没有收到过 %s 的好友申请！'
 friend_mode: 模式：
 mode_creative: 创造
 mode_survival: 生存
@@ -340,6 +345,7 @@ state_online: 在线
 friend_teleport: 左键点击请求传送
 friend_click_tell: 点击我给 %s 发送悄悄话
 friend_tell: 右键点击发送悄悄话
+friend_not_self: 你不能给你自己发送好友申请！
 fly_function: 飞行指令功能
 fly_enabled: 已打开飞行
 fly_disabled: 已关闭飞行

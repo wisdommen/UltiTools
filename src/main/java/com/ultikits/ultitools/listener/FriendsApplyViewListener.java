@@ -30,14 +30,14 @@ public class FriendsApplyViewListener extends PagesListener {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         List<String> friendsApply = config.getStringList("friends_apply");
         String applier = inventoryClickEvent.getView().getTitle().replace(UltiTools.languageUtils.getString("friend_apply"), "");
-        if (!friendsApply.contains(applier)) {
+        if (friendsApply.contains(applier)) {
             if (itemStack.getType() == UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.GREEN).getType()) {
                 player.performCommand("friends accept " + applier);
             } else if (itemStack.getType() == UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.RED).getType()) {
                 player.performCommand("friends reject " + applier);
             }
-        }else {
-            player.sendMessage(ChatColor.RED+UltiTools.languageUtils.getString("friend_processed"));
+        } else {
+            player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("friend_not_applied"), ChatColor.YELLOW + applier + ChatColor.RED));
         }
         player.closeInventory();
         return CancelResult.TRUE;

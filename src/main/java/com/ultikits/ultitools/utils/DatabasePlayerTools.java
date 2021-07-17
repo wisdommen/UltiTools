@@ -251,12 +251,14 @@ public class DatabasePlayerTools {
         return config.getStringList("friends");
     }
 
-    private static List<String> friendsListOperator(List<String> friends, String name, boolean operation) {
+    private static void friendsListOperator(List<String> friends, String name, boolean operation) {
         if (operation) {
+            if (friends.contains(name)){
+                return;
+            }
             friends.add(name);
         } else {
             friends.remove(name);
         }
-        return friends;
     }
 }

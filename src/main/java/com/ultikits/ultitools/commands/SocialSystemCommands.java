@@ -12,12 +12,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,11 +51,17 @@ public class SocialSystemCommands extends AbstractTabExecutor {
                 OfflinePlayer requestPlayer = Bukkit.getOfflinePlayer(strings[1]);
                 switch (strings[0]) {
                     case "add":
+                        if (player.getName().equals(strings[1])) {
+                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("friend_not_self"));
+                            return true;
+                        }
                         if (DatabasePlayerTools.getFriendList(player).contains(requestPlayer.getName())) {
                             player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("friend_had"));
                             return true;
                         }
+                        setApplyList(player.getName(), strings[1], true);
                         EmailManager.sendNotification(receiverFile, player.getName() + UltiTools.languageUtils.getString("friend_apply_lore"), null, Collections.singletonList("friends apply " + player.getName()));
+                        EmailCommands.pushToReceiver(strings[1]);
                         player.sendMessage(ChatColor.AQUA + UltiTools.languageUtils.getString("friend_apply_sent"));
                         return true;
                     case "remove":
@@ -62,26 +70,44 @@ public class SocialSystemCommands extends AbstractTabExecutor {
                             return true;
                         }
                         DatabasePlayerTools.removePlayerFriends(player, requestPlayer);
-                        player.sendMessage(ChatColor.AQUA + UltiTools.languageUtils.getString("friend_deleted") + requestPlayer.getName());
+                        DatabasePlayerTools.removePlayerFriends(requestPlayer, player);
+                        EmailManager.sendNotification(receiverFile, String.format(UltiTools.languageUtils.getString("friend_no_more_friend"), player.getName(), player.getName()), null, null);
+                        player.sendMessage(ChatColor.AQUA + String.format(UltiTools.languageUtils.getString("friend_deleted"), ChatColor.YELLOW + requestPlayer.getName() + ChatColor.AQUA));
                         return true;
                     case "accept":
                         if (DatabasePlayerTools.getFriendList(player).contains(requestPlayer.getName())) {
                             player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("friend_had"));
                             return true;
                         }
+                        setApplyList(strings[1], player.getName(), false);
                         DatabasePlayerTools.addPlayerFriends(player, requestPlayer);
                         DatabasePlayerTools.addPlayerFriends(requestPlayer, player);
+                        if (requestPlayer.isOnline()){
+                            Player player1 = (Player) requestPlayer;
+                            player1.sendMessage(ChatColor.AQUA + String.format(UltiTools.languageUtils.getString("friend_apply_accept"), ChatColor.YELLOW + player.getName() + ChatColor.AQUA));
+                        }
                         player.sendMessage(ChatColor.AQUA + String.format(UltiTools.languageUtils.getString("friend_apply_accept"), ChatColor.YELLOW + strings[1] + ChatColor.AQUA));
                         return true;
                     case "reject":
-                        if (!DatabasePlayerTools.getFriendList(player).contains(requestPlayer.getName())) {
-                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("friend_not_friend"));
+                        if (DatabasePlayerTools.getFriendList(player).contains(requestPlayer.getName())) {
+                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("friend_had"));
                             return true;
                         }
-                        EmailManager.sendNotification(receiverFile, player.getName() + UltiTools.languageUtils.getString("friend_apply_lore"), null, Collections.singletonList("friends apply " + player.getName()));
+                        setApplyList(strings[1], player.getName(), false);
+                        if (requestPlayer.isOnline()){
+                            Player player1 = (Player) requestPlayer;
+                            player1.sendMessage(ChatColor.AQUA + String.format(UltiTools.languageUtils.getString("friend_apply_reject_re"), ChatColor.YELLOW + player.getName() + ChatColor.AQUA));
+                        }
                         player.sendMessage(ChatColor.AQUA + String.format(UltiTools.languageUtils.getString("friend_apply_reject"), ChatColor.YELLOW + strings[1] + ChatColor.AQUA));
                         return true;
                     case "apply":
+                        File file = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
+                        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+                        List<String> friendsApply = config.getStringList("friends_apply");
+                        if (!friendsApply.contains(strings[1])){
+                            player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("friend_not_applied"), ChatColor.YELLOW + strings[1] + ChatColor.RED));
+                            return true;
+                        }
                         Inventory inventory = ApplyView.setUp(strings[1] + UltiTools.languageUtils.getString("friend_apply"));
                         player.openInventory(inventory);
                         return true;
@@ -101,17 +127,47 @@ public class SocialSystemCommands extends AbstractTabExecutor {
     protected List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
         List<String> tabCommands = new ArrayList<>();
         switch (strings.length) {
-            case 0:
-                tabCommands.add("list");
-                return tabCommands;
             case 1:
+                tabCommands.add("list");
                 tabCommands.add("add");
                 tabCommands.add("remove");
                 tabCommands.add("accept");
                 tabCommands.add("reject");
                 tabCommands.add("apply");
                 return tabCommands;
+            case 2:
+                if (strings[0].equals("remove")){
+                    return DatabasePlayerTools.getFriendList(player);
+                }
+                if (strings[0].equals("accept") || strings[0].equals("reject") || strings[0].equals("apply")){
+                    File file = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
+                    YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+                    return config.getStringList("friends_apply");
+                }
+                for (OfflinePlayer player1 : Bukkit.getOfflinePlayers()){
+                    tabCommands.add(player1.getName());
+                }
+                return tabCommands;
         }
         return tabCommands;
+    }
+
+    private static void setApplyList(String applier, String name, boolean operate){
+        File file = new File(ConfigsEnum.PLAYER.toString(), name + ".yml");
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        List<String> friendsApply = config.getStringList("friends_apply");
+        if (operate) {
+            if (!friendsApply.contains(applier)){
+                friendsApply.add(applier);
+            }
+        }else {
+            friendsApply.remove(applier);
+        }
+        config.set("friends_apply", friendsApply);
+        try {
+            config.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

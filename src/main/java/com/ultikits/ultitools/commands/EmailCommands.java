@@ -7,6 +7,11 @@ import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.manager.EmailManager;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.views.EmailView;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Content;
+import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -182,7 +187,7 @@ public class EmailCommands extends AbstractTabExecutor {
      * @param strings 命令
      * @return 去除开头两个参数剩下的命令部分形成的字符串
      */
-    private String stripSpaceInCommand(String[] strings, int commandIndex){
+    private String stripSpaceInCommand(String[] strings, int commandIndex) {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = commandIndex; i < strings.length; i++) {
             String s = " " + strings[i] + " ";
@@ -196,12 +201,17 @@ public class EmailCommands extends AbstractTabExecutor {
         return stringBuilder.toString();
     }
 
-    private void pushToReceiver(String receiver) {
-        if (Bukkit.getPlayer(receiver) == null) {
+    public static void pushToReceiver(String receiver) {
+        Player receiverPlayer = Bukkit.getPlayer(receiver);
+        if (receiverPlayer == null) {
             return;
         }
-        Player receiverPlayer = Bukkit.getPlayer(receiver);
-        receiverPlayer.sendMessage(info(UltiTools.languageUtils.getString("email_received_new_email").replace("\\n", "\n")));
+        receiverPlayer.sendMessage(info(UltiTools.languageUtils.getString("email_received_new_email")));
+        TextComponent textComponent = new TextComponent(ChatColor.RED + UltiTools.languageUtils.getString("email_message_clickable"));
+        TextComponent textComponent_suffix = new TextComponent(ChatColor.AQUA + UltiTools.languageUtils.getString("email_message_clickable_suffix"));
+        textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/email read"));
+        textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(UltiTools.languageUtils.getString("email_message_clickable") + UltiTools.languageUtils.getString("email_message_clickable_suffix"))));
+        receiverPlayer.spigot().sendMessage(textComponent, textComponent_suffix);
         receiverPlayer.playSound(receiverPlayer.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_CHIME), 10, 1);
     }
 
@@ -254,7 +264,7 @@ public class EmailCommands extends AbstractTabExecutor {
         if (!file.exists()) {
             player.sendMessage(warning(UltiTools.languageUtils.getString("email_receiver_not_found")));
         }
-        sendItem(file, emailManager, player, receiver);
+        sendItem(file, emailManager, player, receiver, null);
     }
 
     public void sendMessage(@NotNull File file, EmailManager emailManager, Player player, String receiver, String message, boolean hasContent) {
@@ -283,24 +293,8 @@ public class EmailCommands extends AbstractTabExecutor {
         if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
             ItemStack itemStack = player.getInventory().getItemInMainHand();
             player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("email_sending"));
+            message = message == null ? UltiTools.languageUtils.getString("email_sender_no_message") : message;
             if (emailManager.sendTo(file, message, itemStack)) {
-                player.getInventory().setItemInMainHand(null);
-                player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("email_send_successfully"));
-                player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.UI_TOAST_OUT), 15, 1);
-                pushToReceiver(receiver);
-            } else {
-                player.sendMessage(warning(UltiTools.languageUtils.getString("email_send_failed")));
-            }
-        } else {
-            player.sendMessage(warning(UltiTools.languageUtils.getString("email_hand_item")));
-        }
-    }
-
-    private void sendItem(File file, EmailManager emailManager, @NotNull Player player, String receiver) {
-        if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
-            ItemStack itemStack = player.getInventory().getItemInMainHand();
-            player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("email_sending"));
-            if (emailManager.sendTo(file, UltiTools.languageUtils.getString("email_sender_no_message"), itemStack)) {
                 player.getInventory().setItemInMainHand(null);
                 player.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("email_send_successfully"));
                 player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.UI_TOAST_OUT), 15, 1);
