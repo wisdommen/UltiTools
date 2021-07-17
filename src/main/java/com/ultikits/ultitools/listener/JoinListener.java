@@ -165,6 +165,9 @@ public class JoinListener implements Listener {
         String ip = ipAddress.getHostAddress().replaceAll("\\.", "_");
         File file = new File(ConfigsEnum.LOGIN.toString());
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        if (!config.getBoolean("enablePlayerLimitForOneIP")) {
+            return;
+        }
         if (config.get("ip." + ip + ".players") == null) {
             config.set("ip." + ip + ".players", Collections.singletonList(player.getUniqueId().toString()));
         } else {

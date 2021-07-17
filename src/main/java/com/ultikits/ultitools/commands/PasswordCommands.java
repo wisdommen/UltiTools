@@ -18,6 +18,10 @@ import java.util.Random;
 import static com.ultikits.utils.MessagesUtils.info;
 import static com.ultikits.utils.MessagesUtils.warning;
 
+/**
+ * @author qianmo
+ */
+
 public class PasswordCommands implements TabExecutor {
 
     @Override

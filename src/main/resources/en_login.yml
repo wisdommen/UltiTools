@@ -1,5 +1,8 @@
 # config version, please do not change
-configVersion: 1.1
+configVersion: 1.2
+
+# If enable account limit of the same IP address
+enablePlayerLimitForOneIP: true
 
 # number of account that can register for one IP address
 playerLimitForOneIP: 1
