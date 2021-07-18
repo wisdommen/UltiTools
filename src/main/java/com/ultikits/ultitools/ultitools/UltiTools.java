@@ -12,6 +12,7 @@ import com.ultikits.ultitools.register.CommandRegister;
 import com.ultikits.ultitools.tasks.*;
 import com.ultikits.ultitools.utils.FunctionUtils;
 import com.ultikits.ultitools.utils.LanguageUtils;
+import com.ultikits.ultitools.utils.ScoreBoardUtils;
 import com.ultikits.ultitools.utils.YamlFileUtils;
 import com.ultikits.utils.DatabaseUtils;
 import com.ultikits.utils.MessagesUtils;
@@ -29,7 +30,6 @@ import java.io.File;
 import java.util.*;
 
 import static com.ultikits.ultitools.listener.LoginListener.savePlayerLoginStatus;
-import static com.ultikits.ultitools.tasks.SideBarTask.clearScoreboards;
 import static com.ultikits.ultitools.utils.DatabasePlayerTools.getIsLogin;
 
 public final class UltiTools extends JavaPlugin {
@@ -210,6 +210,9 @@ public final class UltiTools extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new WhitelistListener(), this);
         }
         if (this.getConfig().getBoolean("enable_scoreboard")) {
+            for (Player player : Bukkit.getOnlinePlayers()){
+                ScoreBoardUtils.registerPlayer(player.getUniqueId());
+            }
             CommandRegister.registerCommand(plugin, new SbCommands(), "ultikits.tools.scoreboard", languageUtils.getString("sidebar_function"), "sb");
             new SideBarTask().runTaskTimerAsynchronously(this, 0, 20L);
         }
@@ -331,7 +334,7 @@ public final class UltiTools extends JavaPlugin {
             savePlayerLoginStatus();
         }
         if (this.getConfig().getBoolean("enable_scoreboard")) {
-            clearScoreboards();
+            ScoreBoardUtils.clearScoreboards();
         }
 //        ConfigController.saveConfigs();
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("plugin_disabled"));

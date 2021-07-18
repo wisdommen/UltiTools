@@ -5,6 +5,7 @@ import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.manager.EmailManager;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.DatabasePlayerTools;
+import com.ultikits.ultitools.utils.EmailUtils;
 import com.ultikits.ultitools.views.ApplyView;
 import com.ultikits.ultitools.views.FriendsView;
 import com.ultikits.utils.MessagesUtils;
@@ -47,8 +48,8 @@ public class SocialSystemCommands extends AbstractTabExecutor {
                 }
                 return true;
             case 2:
-                File receiverFile = new File(ConfigsEnum.PLAYER_EMAIL.toString(), strings[1] + ".yml");
                 OfflinePlayer requestPlayer = Bukkit.getOfflinePlayer(strings[1]);
+                EmailManager emailManager = new EmailManager(player);
                 switch (strings[0]) {
                     case "add":
                         if (player.getName().equals(strings[1])) {
@@ -60,8 +61,11 @@ public class SocialSystemCommands extends AbstractTabExecutor {
                             return true;
                         }
                         setApplyList(player.getName(), strings[1], true);
-                        EmailManager.sendNotification(receiverFile, player.getName() + UltiTools.languageUtils.getString("friend_apply_lore"), null, Collections.singletonList("friends apply " + player.getName()));
-                        EmailCommands.pushToReceiver(strings[1]);
+                        emailManager.sendNotification(player.getName() + UltiTools.languageUtils.getString("friend_apply_lore"), null, Collections.singletonList("friends apply " + player.getName()));
+                        Player player2 = Bukkit.getPlayer(strings[1]);
+                        if (player2 != null) {
+                            EmailUtils.pushToReceiver(player2);
+                        }
                         player.sendMessage(ChatColor.AQUA + UltiTools.languageUtils.getString("friend_apply_sent"));
                         return true;
                     case "remove":
@@ -71,7 +75,7 @@ public class SocialSystemCommands extends AbstractTabExecutor {
                         }
                         DatabasePlayerTools.removePlayerFriends(player, requestPlayer);
                         DatabasePlayerTools.removePlayerFriends(requestPlayer, player);
-                        EmailManager.sendNotification(receiverFile, String.format(UltiTools.languageUtils.getString("friend_no_more_friend"), player.getName(), player.getName()), null, null);
+                        emailManager.sendNotification(String.format(UltiTools.languageUtils.getString("friend_no_more_friend"), player.getName(), player.getName()), null, null);
                         player.sendMessage(ChatColor.AQUA + String.format(UltiTools.languageUtils.getString("friend_deleted"), ChatColor.YELLOW + requestPlayer.getName() + ChatColor.AQUA));
                         return true;
                     case "accept":
@@ -82,7 +86,7 @@ public class SocialSystemCommands extends AbstractTabExecutor {
                         setApplyList(strings[1], player.getName(), false);
                         DatabasePlayerTools.addPlayerFriends(player, requestPlayer);
                         DatabasePlayerTools.addPlayerFriends(requestPlayer, player);
-                        if (requestPlayer.isOnline()){
+                        if (requestPlayer.isOnline()) {
                             Player player1 = (Player) requestPlayer;
                             player1.sendMessage(ChatColor.AQUA + String.format(UltiTools.languageUtils.getString("friend_apply_accept"), ChatColor.YELLOW + player.getName() + ChatColor.AQUA));
                         }
@@ -94,7 +98,7 @@ public class SocialSystemCommands extends AbstractTabExecutor {
                             return true;
                         }
                         setApplyList(strings[1], player.getName(), false);
-                        if (requestPlayer.isOnline()){
+                        if (requestPlayer.isOnline()) {
                             Player player1 = (Player) requestPlayer;
                             player1.sendMessage(ChatColor.AQUA + String.format(UltiTools.languageUtils.getString("friend_apply_reject_re"), ChatColor.YELLOW + player.getName() + ChatColor.AQUA));
                         }
@@ -104,7 +108,7 @@ public class SocialSystemCommands extends AbstractTabExecutor {
                         File file = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
                         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
                         List<String> friendsApply = config.getStringList("friends_apply");
-                        if (!friendsApply.contains(strings[1])){
+                        if (!friendsApply.contains(strings[1])) {
                             player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("friend_not_applied"), ChatColor.YELLOW + strings[1] + ChatColor.RED));
                             return true;
                         }
@@ -136,15 +140,15 @@ public class SocialSystemCommands extends AbstractTabExecutor {
                 tabCommands.add("apply");
                 return tabCommands;
             case 2:
-                if (strings[0].equals("remove")){
+                if (strings[0].equals("remove")) {
                     return DatabasePlayerTools.getFriendList(player);
                 }
-                if (strings[0].equals("accept") || strings[0].equals("reject") || strings[0].equals("apply")){
+                if (strings[0].equals("accept") || strings[0].equals("reject") || strings[0].equals("apply")) {
                     File file = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
                     YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
                     return config.getStringList("friends_apply");
                 }
-                for (OfflinePlayer player1 : Bukkit.getOfflinePlayers()){
+                for (OfflinePlayer player1 : Bukkit.getOfflinePlayers()) {
                     tabCommands.add(player1.getName());
                 }
                 return tabCommands;
@@ -152,15 +156,15 @@ public class SocialSystemCommands extends AbstractTabExecutor {
         return tabCommands;
     }
 
-    private static void setApplyList(String applier, String name, boolean operate){
+    private static void setApplyList(String applier, String name, boolean operate) {
         File file = new File(ConfigsEnum.PLAYER.toString(), name + ".yml");
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         List<String> friendsApply = config.getStringList("friends_apply");
         if (operate) {
-            if (!friendsApply.contains(applier)){
+            if (!friendsApply.contains(applier)) {
                 friendsApply.add(applier);
             }
-        }else {
+        } else {
             friendsApply.remove(applier);
         }
         config.set("friends_apply", friendsApply);

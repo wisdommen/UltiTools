@@ -7,6 +7,7 @@ import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.manager.EmailManager;
 import com.ultikits.ultitools.ultitools.UltiTools;
+import com.ultikits.ultitools.utils.ScoreBoardUtils;
 import com.ultikits.utils.EconomyUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
@@ -21,25 +22,12 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 import static com.minecraft.Ultilevel.utils.checkLevel.*;
+import static com.ultikits.ultitools.utils.ScoreBoardUtils.updateLine;
 
 
 public class SideBarTask extends BukkitRunnable {
 
     boolean isPAPILoaded = UltiTools.isPAPILoaded;
-    static ScoreboardManager sb = Bukkit.getScoreboardManager();
-    static Map<UUID, Scoreboard> scoreboardMap = new HashMap<>();
-    static Map<UUID, Map<Integer, String>> boardMap = new HashMap<>();
-
-    static {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            scoreboardMap.put(player.getUniqueId(), sb.getNewScoreboard());
-        }
-        scoreboardMap.put(null, sb.getNewScoreboard());
-    }
-
-    public static void registerPlayer(UUID playerId) {
-        scoreboardMap.put(playerId, sb.getNewScoreboard());
-    }
 
     @Override
     public void run() {
@@ -52,9 +40,9 @@ public class SideBarTask extends BukkitRunnable {
                 public void run() {
                     if (!players.contains(player.getName())) {
                         setUpPlayerSideBar(player);
-                        player.setScoreboard(scoreboardMap.get(player.getUniqueId()));
+//                        player.setScoreboard(ScoreBoardUtils.scoreboardMap.get(player.getUniqueId()));
                     } else {
-                        player.setScoreboard(scoreboardMap.get(null));
+                        player.setScoreboard(ScoreBoardUtils.scoreboardMap.get(null));
                     }
                 }
             }.runTaskAsynchronously(UltiTools.getInstance());
@@ -121,35 +109,38 @@ public class SideBarTask extends BukkitRunnable {
             }
         }
 
-        setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_money") + " " + ChatColor.GOLD, money, 97);
-        setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_deposit") + " " + ChatColor.GOLD, deposit, 96);
-        setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_level") + " " + ChatColor.GOLD, level_num, 95);
-        setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_job") + " " + ChatColor.GOLD, occupation, 98);
-        setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_name") + " " + ChatColor.GOLD, name, 99);
-        setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_online_player") + " " + ChatColor.GOLD, onLinePlayers, 0);
-        setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_health") + " " + ChatColor.YELLOW + hp + ChatColor.BOLD + " / " + ChatColor.GOLD, max_hp, 93);
+        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_money") + " " + ChatColor.GOLD+ money, 97);
+        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_deposit") + " " + ChatColor.GOLD+ deposit, 96);
+        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_level") + " " + ChatColor.GOLD+ level_num, 95);
+        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_job") + " " + ChatColor.GOLD+ occupation, 98);
+        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_name") + " " + ChatColor.GOLD+ name, 99);
+        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_online_player") + " " + ChatColor.GOLD+ onLinePlayers, 0);
+        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_health") + " " + ChatColor.YELLOW + hp + ChatColor.BOLD + " / " + ChatColor.GOLD+ max_hp, 93);
         int unread = getUnReadEmailNum(player);
-        setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_new_email") + " " + ChatColor.GOLD, unread + UltiTools.languageUtils.getString("feng"), 92);
+//        setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_new_email") + " " + ChatColor.GOLD, unread + UltiTools.languageUtils.getString("feng"), 92);
         if (unread == 0) {
-            setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_new_email") + " " + ChatColor.GOLD, unread + UltiTools.languageUtils.getString("feng"), 92, true);
+            updateLine(player, null, 92);
+//            setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_new_email") + " " + ChatColor.GOLD, unread + UltiTools.languageUtils.getString("feng"), 92, true);
+        }else {
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_new_email") + " " + ChatColor.GOLD+ unread + UltiTools.languageUtils.getString("feng"), 92);
         }
         if (!max_exp.equals("") && !exp.equals("")) {
-            setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_exp") + " " + ChatColor.YELLOW, exp + ChatColor.BOLD + " / " + ChatColor.GOLD + max_exp, 94);
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_exp") + " " + ChatColor.YELLOW+ exp + ChatColor.BOLD + " / " + ChatColor.GOLD + max_exp, 94);
         }
         if (CDq != null && !CDq.equals("") && Integer.parseInt(CDq) > 0) {
-            setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_Q_countdown") + " " + ChatColor.GOLD, CDq + UltiTools.languageUtils.getString("second"), 89);
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_Q_countdown") + " " + ChatColor.GOLD+ CDq + UltiTools.languageUtils.getString("second"), 89);
         }
         if (CDw != null && !CDw.equals("") && Integer.parseInt(CDw) > 0) {
-            setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_W_countdown") + " " + ChatColor.GOLD, CDw + UltiTools.languageUtils.getString("second"), 88);
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_W_countdown") + " " + ChatColor.GOLD+ CDw + UltiTools.languageUtils.getString("second"), 88);
         }
         if (CDe != null && !CDe.equals("") && Integer.parseInt(CDe) > 0) {
-            setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_E_countdown") + " " + ChatColor.GOLD, CDe + UltiTools.languageUtils.getString("second"), 87);
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_E_countdown") + " " + ChatColor.GOLD+ CDe + UltiTools.languageUtils.getString("second"), 87);
         }
         if (CDr != null && !CDr.equals("") && Integer.parseInt(CDr) > 0) {
-            setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_R_countdown") + " " + ChatColor.GOLD, CDr + UltiTools.languageUtils.getString("second"), 86);
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_R_countdown") + " " + ChatColor.GOLD+ CDr + UltiTools.languageUtils.getString("second"), 86);
         }
         if (isWizard && mp != null && max_mp != null && !mp.equals("") && !max_mp.equals("")) {
-            setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_magic") + "" + ChatColor.YELLOW, mp + ChatColor.BOLD + "/" + ChatColor.GOLD + max_mp, 90);
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_magic") + "" + ChatColor.YELLOW+ mp + ChatColor.BOLD + "/" + ChatColor.GOLD + max_mp, 90);
         }
 
         if (UltiTools.getInstance().getConfig().getBoolean("enable_armor_check")) {
@@ -161,9 +152,9 @@ public class SideBarTask extends BukkitRunnable {
             String M = setArmorString(String.valueOf(armorsManager.getMainHandDurability()));
             String O = setArmorString(String.valueOf(armorsManager.getOffHandDurability()));
 
-            updatePerLine(player, ChatColor.GREEN + "H " + H + " C " + C, -1);
-            updatePerLine(player, ChatColor.GREEN + "L " + L + " B " + B, -2);
-            updatePerLine(player, ChatColor.GREEN + "M " + M + " O " + O, -3);
+            updateLine(player, ChatColor.GREEN + "H " + H + " C " + C, -1);
+            updateLine(player, ChatColor.GREEN + "L " + L + " B " + B, -2);
+            updateLine(player, ChatColor.GREEN + "M " + M + " O " + O, -3);
         }
         setCustomLine(player);
     }
@@ -172,8 +163,7 @@ public class SideBarTask extends BukkitRunnable {
         if (!UltiTools.getInstance().getConfig().getBoolean("enable_email")) {
             return 0;
         }
-        File file = new File(UltiTools.getInstance().getDataFolder() + "/emailData", player.getName() + ".yml");
-        EmailManager emailManager = new EmailManager(file);
+        EmailManager emailManager = new EmailManager(player);
         Map<String, EmailContentBean> emailContentManagerMap = emailManager.getEmails();
         int i = 0;
         for (String each : emailContentManagerMap.keySet()) {
@@ -193,15 +183,15 @@ public class SideBarTask extends BukkitRunnable {
         }
     }
 
-    public void setScoreboard(Player player, String prefixString, String content, int score) {
-        setScoreboard(player, prefixString, content, score, false);
-    }
-
-    public void setScoreboard(Player player, String prefixString, String content, int score, boolean reset) {
-        if (!content.equals("")) {
-            updatePerLine(player, prefixString + content, score, reset);
-        }
-    }
+//    public void setScoreboard(Player player, String prefixString, String content, int score) {
+//        setScoreboard(player, prefixString, content, score, false);
+//    }
+//
+//    public void setScoreboard(Player player, String prefixString, String content, int score, boolean reset) {
+//        if (!content.equals("")) {
+//            updateLine(player, prefixString + content, score, reset);
+//        }
+//    }
 
     public String setArmorString(String string) {
         if ("-1".equals(string)) {
@@ -216,57 +206,9 @@ public class SideBarTask extends BukkitRunnable {
         List<String> customer_line = Lists.reverse(ConfigController.getConfig("sidebar").getStringList("customerline"));
         int i = 1;
         for (String each_line : customer_line) {
-            updatePerLine(player, PlaceholderAPI.setPlaceholders(player, each_line), i);
+            updateLine(player, PlaceholderAPI.setPlaceholders(player, each_line), i);
             i++;
         }
     }
 
-    public void updatePerLine(Player player, String line, int scoreSlot) {
-        updatePerLine(player, line, scoreSlot, false);
-    }
-
-    public void updatePerLine(Player player, String line, int scoreSlot, boolean reset) {
-        if (!Bukkit.getOnlinePlayers().contains(player) || (player.getScoreboard() == null)) {
-            return;
-        }
-        Objective information = player.getScoreboard().getObjective(DisplaySlot.SIDEBAR);
-        Scoreboard scoreboard = scoreboardMap.get(player.getUniqueId());
-        if (information == null) {
-            String title = "Welcome!";
-            try {
-                title = ConfigController.getConfig("sidebar").getString("scoreBoardTitle");
-            } catch (NullPointerException ignored) {
-            }
-            if (player.getScoreboard().getObjective(DisplaySlot.SIDEBAR) == null) {
-                String name = player.getName();
-                while (name.length() > 16) {
-                    name = name.substring(0, 15);
-                }
-                information = UltiTools.versionAdaptor.registerNewObjective(scoreboard, name, "", ChatColor.DARK_AQUA + title);
-                information.setDisplaySlot(DisplaySlot.SIDEBAR);
-            }
-        }
-        Map<Integer, String> scoreMap = boardMap.get(player.getUniqueId());
-        if (scoreMap == null) {
-            scoreMap = new HashMap<>();
-        }
-        if (scoreMap.containsKey(scoreSlot)) {
-            String str = scoreMap.get(scoreSlot);
-            player.getScoreboard().resetScores(str);
-        }
-        scoreMap.put(scoreSlot, line);
-        boardMap.put(player.getUniqueId(), scoreMap);
-        if (reset){
-            player.getScoreboard().resetScores(line);
-        }else {
-            information.getScore(line).setScore(scoreSlot);
-        }
-        player.setScoreboard(scoreboard);
-    }
-
-    public static void clearScoreboards() {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.setScoreboard(sb.getNewScoreboard());
-        }
-    }
 }

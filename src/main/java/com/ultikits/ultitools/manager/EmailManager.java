@@ -1,8 +1,12 @@
 package com.ultikits.ultitools.manager;
 
 import com.ultikits.beans.EmailContentBean;
+import com.ultikits.ultitools.apis.EmailAPI;
+import com.ultikits.ultitools.enums.ConfigsEnum;
+import com.ultikits.ultitools.enums.EmailResponse;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.utils.SerializationUtils;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -12,20 +16,36 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class EmailManager {
+public class EmailManager implements EmailAPI {
 
     private final File file;
     private final String playerName;
 
-    public EmailManager(@NotNull File playerFile) {
-        file = playerFile;
-        playerName = playerFile.getName().replace(".yml", "");
+    public EmailManager(@NotNull OfflinePlayer player) {
+        file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player.getName() + ".yml");
+        playerName = player.getName();
     }
 
     public File getFile() {
         return file;
     }
 
+    @Override
+    public EmailContentBean getEmail(String uuid){
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        if (config.getConfigurationSection(uuid) == null){
+            return null;
+        }
+        if (config.getConfigurationSection(uuid).getKeys(false).contains("item")) {
+            ItemStack itemStack = setupItemStack(uuid);
+            return new EmailContentBean(uuid, config.getString(uuid + ".sender"), config.getString(uuid + ".message"), itemStack, config.getBoolean(uuid + ".isRead"), config.getBoolean(uuid + ".isClaimed"));
+        } else {
+            return new EmailContentBean(uuid, config.getString(uuid + ".sender"), config.getString(uuid + ".message"), config.getBoolean(uuid + ".isRead"));
+        }
+    }
+
+    @NotNull
+    @Override
     public Map<String, EmailContentBean> getEmails() {
         Map<String, EmailContentBean> emails = new HashMap<>();
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
@@ -40,105 +60,60 @@ public class EmailManager {
         return emails;
     }
 
-
-    /**
-     * @param receiverFile 发送给某个人
-     * @param message      所要发送的消息
-     * @param itemStack    发送包含的物品
-     * @return 是否发送成功
-     */
-    public Boolean sendTo(@NotNull File receiverFile, String message, ItemStack itemStack) {
-        if (receiverFile.exists()) {
-            EmailManager emailManager = new EmailManager(receiverFile);
-            EmailContentBean emailContentManager = new EmailContentBean(generateUUID(), playerName, message, itemStack, false, false);
-            emailManager.saveEmail(emailContentManager.getUuid(), emailContentManager.getSender(), emailContentManager.getMessage(), emailContentManager.getItemStack());
-            return true;
-        }
-        return false;
-    }
-
-    public Boolean sendTo(@NotNull File receiverFile, String message, ItemStack itemStack, List<String> commands) {
-        if (receiverFile.exists()) {
-            EmailManager emailManager = new EmailManager(receiverFile);
+    @NotNull
+    @Override
+    public EmailResponse sendTo(@NotNull OfflinePlayer receiver, @Nullable String message, @Nullable ItemStack itemStack, @Nullable List<String> commands) {
+        EmailManager emailManager = new EmailManager(receiver);
+        if (emailManager.getFile().exists()) {
             EmailContentBean emailContentManager = new EmailContentBean(generateUUID(), playerName, message, commands, itemStack, false, false);
-            emailManager.saveEmail(emailContentManager.getUuid(), emailContentManager.getSender(), emailContentManager.getMessage(), emailContentManager.getCommands(), emailContentManager.getItemStack());
+            if (emailManager.saveEmail(emailContentManager.getUuid(), emailContentManager.getSender(), emailContentManager.getMessage(), emailContentManager.getCommands(), emailContentManager.getItemStack())){
+                return EmailResponse.SEND_SUCCESS;
+            }
+            return EmailResponse.SEND_FAILED;
+        }
+        return EmailResponse.PLAYER_NOTFOUND;
+    }
+
+    public EmailResponse sendTo(@NotNull OfflinePlayer receiver, ItemStack itemStack) {
+        return sendTo(receiver, null, itemStack, null);
+    }
+
+    public EmailResponse sendTo(@NotNull OfflinePlayer receiver, String message) {
+        return sendTo(receiver, message, null, null);
+    }
+
+    public EmailResponse sendTo(@NotNull OfflinePlayer receiver, String message, List<String> commands) {
+        return sendTo(receiver, message, null, commands);
+    }
+
+    public EmailResponse sendTo(@NotNull OfflinePlayer receiver, String message, ItemStack itemStack) {
+        return sendTo(receiver, message, itemStack, null);
+    }
+
+    @Override
+    public Boolean saveEmail(String uuid, String sender, @Nullable String message, @Nullable List<String> command, @Nullable ItemStack itemStack) {
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        config.set(uuid + ".sender", sender);
+        if (message != null) {
+            config.set(uuid + ".message", message);
+        }else {
+            config.set(uuid + ".message", UltiTools.languageUtils.getString("email_sender_no_message"));
+        }
+        config.set(uuid + ".isRead", false);
+        if (command != null) {
+            config.set(uuid + ".command", command);
+        }
+        if (itemStack != null) {
+            config.set(uuid + ".isClaimed", false);
+            config.set(uuid + ".item", SerializationUtils.serialize(itemStack));
+        }
+        try {
+            config.save(file);
             return true;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return false;
-    }
-
-    public Boolean sendTo(@NotNull File receiverFile, String message) {
-        if (receiverFile.exists()) {
-            EmailManager emailManager = new EmailManager(receiverFile);
-            EmailContentBean emailContentManager = new EmailContentBean(generateUUID(), playerName, message, false);
-            emailManager.saveEmail(emailContentManager.getUuid(), emailContentManager.getSender(), emailContentManager.getMessage());
-            return true;
-        }
-        return false;
-    }
-
-    public Boolean sendTo(@NotNull File receiverFile, String message, List<String> commands) {
-        if (receiverFile.exists()) {
-            EmailManager emailManager = new EmailManager(receiverFile);
-            EmailContentBean emailContentManager = new EmailContentBean(generateUUID(), playerName, message, false, commands);
-            emailManager.saveEmail(emailContentManager.getUuid(), emailContentManager.getSender(), emailContentManager.getMessage(), emailContentManager.getCommands());
-            return true;
-        }
-        return false;
-    }
-
-    private void saveEmail(String uuid, String sender, String message) {
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        config.set(uuid + ".sender", sender);
-        config.set(uuid + ".message", message);
-        config.set(uuid + ".isRead", false);
-        try {
-            config.save(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void saveEmail(String uuid, String sender, String message, List<String> command) {
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        config.set(uuid + ".sender", sender);
-        config.set(uuid + ".message", message);
-        config.set(uuid + ".isRead", false);
-        config.set(uuid + ".command", command);
-        try {
-            config.save(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void saveEmail(String uuid, String sender, String message, @NotNull ItemStack itemStack) {
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        config.set(uuid + ".sender", sender);
-        config.set(uuid + ".message", message);
-        config.set(uuid + ".isRead", false);
-        config.set(uuid + ".isClaimed", false);
-        config.set(uuid + ".item", SerializationUtils.serialize(itemStack));
-        try {
-            config.save(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void saveEmail(String uuid, String sender, String message, List<String> command, @NotNull ItemStack itemStack) {
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        config.set(uuid + ".sender", sender);
-        config.set(uuid + ".message", message);
-        config.set(uuid + ".isRead", false);
-        config.set(uuid + ".command", command);
-        config.set(uuid + ".isClaimed", false);
-        config.set(uuid + ".item", SerializationUtils.serialize(itemStack));
-        try {
-            config.save(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @NotNull
@@ -148,6 +123,7 @@ public class EmailManager {
         return Objects.requireNonNull(SerializationUtils.encodeToItem(itemStackSerialized));
     }
 
+    @Override
     public Boolean deleteHistoryEmails() {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         if (config.getKeys(false).size() != 0) {
@@ -162,14 +138,14 @@ public class EmailManager {
         return false;
     }
 
-    public Boolean deleteEmail(String uuid) {
+    @Override
+    public void deleteEmail(String uuid) {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         config.set(uuid, null);
         try {
             config.save(file);
-            return true;
         } catch (IOException e) {
-            return false;
+            e.printStackTrace();
         }
     }
 
@@ -183,25 +159,24 @@ public class EmailManager {
         return String.valueOf(date.getTime());
     }
 
-    public static void sendNotification(@NotNull File receiverFile,@NotNull String message, @Nullable ItemStack itemStack, @Nullable List<String> commands) {
-        if (receiverFile.exists()) {
-            YamlConfiguration config = YamlConfiguration.loadConfiguration(receiverFile);
-            String uuid = generateUUID();
-            config.set(uuid + ".sender", UltiTools.languageUtils.getString("notification"));
-            config.set(uuid + ".message", message);
-            config.set(uuid + ".isRead", false);
-            if (commands != null) {
-                config.set(uuid + ".commands", commands);
-            }
-            config.set(uuid + ".isClaimed", false);
-            if (itemStack != null) {
-                config.set(uuid + ".item", SerializationUtils.serialize(itemStack));
-            }
-            try {
-                config.save(receiverFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    @Override
+    public void sendNotification(@NotNull String message, @Nullable ItemStack itemStack, @Nullable List<String> commands) {
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        String uuid = generateUUID();
+        config.set(uuid + ".sender", UltiTools.languageUtils.getString("notification"));
+        config.set(uuid + ".message", message);
+        config.set(uuid + ".isRead", false);
+        if (commands != null) {
+            config.set(uuid + ".commands", commands);
+        }
+        config.set(uuid + ".isClaimed", false);
+        if (itemStack != null) {
+            config.set(uuid + ".item", SerializationUtils.serialize(itemStack));
+        }
+        try {
+            config.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

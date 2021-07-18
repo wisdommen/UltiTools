@@ -32,8 +32,7 @@ public class EmailView {
         new BukkitRunnable() {
             @Override
             public void run() {
-                File file = new File(ConfigsEnum.PLAYER_EMAIL.toString(), player.getName() + ".yml");
-                EmailManager emailManager = new EmailManager(file);
+                EmailManager emailManager = new EmailManager(player);
                 Map<String, EmailContentBean> emailContentManagers = emailManager.getEmails();
                 for (ItemStackManager itemStackManager : setUpItems(emailContentManagers)) {
                     inventoryManager.addItem(itemStackManager);
