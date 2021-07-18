@@ -7,6 +7,7 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,6 +21,9 @@ import java.util.*;
 
 
 public class ChatListener implements Listener {
+
+    private static Map<String, String> LatestAtt = new HashMap<>();
+
     private static final List<String> ultilevelStrings = Arrays.asList("%ul_level%", "%ul_job%", "%ul_exp%", "%ul_mp%",
             "%ul_max_mp%", "%ul_max_exp%", "%ul_health%", "%ul_max_health%", "%ul_q_cd%", "%ul_w_cd%", "%ul_e_cd%",
             "%ul_r_cd%");
@@ -92,12 +96,9 @@ public class ChatListener implements Listener {
                      * player Player 发布信息玩家
                      * server Server 此服务器队形
                      */
+                    LatestAtt.put(toPlayer, player.getName());
                     Objects.requireNonNull(server.getPlayerExact(toPlayer)).sendMessage(Objects.requireNonNull(UltiTools.languageUtils.getString("chat_att_beatt")).replaceAll("%player%",player.getName()));
-
-
-
-
-
+                    Objects.requireNonNull(server.getPlayerExact(toPlayer)).playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10, 1);
                 }
             }.runTaskAsynchronously(UltiTools.getInstance());
         }
@@ -172,5 +173,9 @@ public class ChatListener implements Listener {
             string = string.replace(each, "");
         }
         return string;
+    }
+
+    public static Map<String, String> getLatestAtt() {
+        return LatestAtt;
     }
 }

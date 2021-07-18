@@ -5,6 +5,7 @@ import com.ultikits.beans.EmailContentBean;
 import com.ultikits.ultitools.beans.ArmorsBean;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
+import com.ultikits.ultitools.listener.ChatListener;
 import com.ultikits.ultitools.manager.EmailManager;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.utils.EconomyUtils;
@@ -79,6 +80,7 @@ public class SideBarTask extends BukkitRunnable {
         String max_hp = "";
         boolean isWizard = false;
         String occupation = "";
+        String LatestAtt = "";
 
         if (isPAPILoaded && UltiTools.getInstance().getConfig().getBoolean("enable_PAPI")) {
             name = setPlaceholderString(player, "name");
@@ -121,6 +123,12 @@ public class SideBarTask extends BukkitRunnable {
             }
         }
 
+        if(ChatListener.getLatestAtt().containsKey(player.getName())) {
+            LatestAtt = ChatListener.getLatestAtt().get(player.getName());
+        } else {
+            LatestAtt = UltiTools.languageUtils.getString("chat_att_none");
+        }
+
         setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_money") + " " + ChatColor.GOLD, money, 97);
         setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_deposit") + " " + ChatColor.GOLD, deposit, 96);
         setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_level") + " " + ChatColor.GOLD, level_num, 95);
@@ -128,6 +136,7 @@ public class SideBarTask extends BukkitRunnable {
         setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_name") + " " + ChatColor.GOLD, name, 99);
         setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_online_player") + " " + ChatColor.GOLD, onLinePlayers, 0);
         setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_health") + " " + ChatColor.YELLOW + hp + ChatColor.BOLD + " / " + ChatColor.GOLD, max_hp, 93);
+        setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("chat_att_tip") + " " + ChatColor.LIGHT_PURPLE, LatestAtt, 91);
         int unread = getUnReadEmailNum(player);
         setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_new_email") + " " + ChatColor.GOLD, unread + UltiTools.languageUtils.getString("feng"), 92);
         if (unread == 0) {
@@ -193,11 +202,11 @@ public class SideBarTask extends BukkitRunnable {
         }
     }
 
-    public void setScoreboard(Player player, String prefixString, String content, int score) {
+    public static void setScoreboard(Player player, String prefixString, String content, int score) {
         setScoreboard(player, prefixString, content, score, false);
     }
 
-    public void setScoreboard(Player player, String prefixString, String content, int score, boolean reset) {
+    public static void setScoreboard(Player player, String prefixString, String content, int score, boolean reset) {
         if (!content.equals("")) {
             updatePerLine(player, prefixString + content, score, reset);
         }
@@ -221,11 +230,11 @@ public class SideBarTask extends BukkitRunnable {
         }
     }
 
-    public void updatePerLine(Player player, String line, int scoreSlot) {
+    public static void updatePerLine(Player player, String line, int scoreSlot) {
         updatePerLine(player, line, scoreSlot, false);
     }
 
-    public void updatePerLine(Player player, String line, int scoreSlot, boolean reset) {
+    public static void updatePerLine(Player player, String line, int scoreSlot, boolean reset) {
         if (!Bukkit.getOnlinePlayers().contains(player) || (player.getScoreboard() == null)) {
             return;
         }
