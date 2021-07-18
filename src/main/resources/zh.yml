@@ -350,7 +350,6 @@ fly_function: 飞行指令功能
 fly_enabled: 已打开飞行
 fly_disabled: 已关闭飞行
 chat_color_nopermission_reply: '§4您没有权限发送彩色字体'
-chat_att_none: '暂时没有人@你'
 chat_att_tip: '最新@:'
 chat_att_repeat: '§4艾特失败！玩家重复！'
 chat_att_errname: '§4艾特失败！玩家错误！'
