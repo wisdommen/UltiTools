@@ -125,8 +125,6 @@ public class SideBarTask extends BukkitRunnable {
 
         if(ChatListener.getLatestAtt().containsKey(player.getName())) {
             LatestAtt = ChatListener.getLatestAtt().get(player.getName());
-        } else {
-            LatestAtt = UltiTools.languageUtils.getString("chat_att_none");
         }
 
         setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_money") + " " + ChatColor.GOLD, money, 97);
