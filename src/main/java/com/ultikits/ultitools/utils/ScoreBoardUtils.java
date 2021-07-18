@@ -37,6 +37,16 @@ public class ScoreBoardUtils {
         boardMap.remove(playerId);
     }
 
+    /**
+     * 可以使用这个方法非常方便的更新侧边栏内容。
+     * 此方法将侧边栏的分数作为唯一键，分数不可
+     * 重复否则后者覆盖前者。设置line参数为null
+     * 可将此行隐藏。
+     *
+     * @param player 需要更新侧边栏的玩家
+     * @param line 需要更新的内容
+     * @param scoreSlot 需要更新的行数
+     */
     public static void updateLine(Player player, String line, int scoreSlot) {
         if (!Bukkit.getOnlinePlayers().contains(player) || (player.getScoreboard() == null)) {
             return;
