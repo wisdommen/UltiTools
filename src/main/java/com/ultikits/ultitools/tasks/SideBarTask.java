@@ -81,7 +81,9 @@ public class SideBarTask extends BukkitRunnable {
         String occupation = "";
 
         if (isPAPILoaded && UltiTools.getInstance().getConfig().getBoolean("enable_PAPI")) {
+            //如果开启了PAPI变量
             name = setPlaceholderString(player, "name");
+            //获取玩家id
             onLinePlayers = setPlaceholderString(player, "online_player");
             CDq = setPlaceholderString(player, "CDq");
             CDw = setPlaceholderString(player, "CDw");
@@ -99,6 +101,7 @@ public class SideBarTask extends BukkitRunnable {
             occupation = setPlaceholderString(player, "occupation");
             isWizard = true;
         } else {
+            //如果没开启PAPI变量
             name = player.getName();
             onLinePlayers = Bukkit.getOnlinePlayers().size() + "";
             money = EconomyUtils.checkMoney(player) + "";
@@ -160,7 +163,6 @@ public class SideBarTask extends BukkitRunnable {
             String B = setArmorString(String.valueOf(armorsManager.getBootsDurability()));
             String M = setArmorString(String.valueOf(armorsManager.getMainHandDurability()));
             String O = setArmorString(String.valueOf(armorsManager.getOffHandDurability()));
-
             updatePerLine(player, ChatColor.GREEN + "H " + H + " C " + C, -1);
             updatePerLine(player, ChatColor.GREEN + "L " + L + " B " + B, -2);
             updatePerLine(player, ChatColor.GREEN + "M " + M + " O " + O, -3);
@@ -186,8 +188,13 @@ public class SideBarTask extends BukkitRunnable {
     }
 
     public String setPlaceholderString(Player player, String string) {
+        //获取PAPI变量
         try {
-            return Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, ConfigController.getConfig("sidebar").getString(string)));
+            return Objects.requireNonNull(
+                    PlaceholderAPI.setPlaceholders(
+                            player, ConfigController.getConfig("sidebar").getString(string)
+                    )
+            );
         } catch (Exception e) {
             return "";
         }
@@ -198,6 +205,15 @@ public class SideBarTask extends BukkitRunnable {
     }
 
     public void setScoreboard(Player player, String prefixString, String content, int score, boolean reset) {
+        /*
+          方法说明(setScoreboard) --- 更新计分板(前缀+内容)
+          用途：向计分板添加行数
+          参数说明：
+          player --- 添加计分板的玩家
+          prefixString --- 添加计分板的前缀内容
+          content --- 添加计分板的价值内容(内容为空时不添加)
+          score --- 计分板添加的行数(数字越高，越往上)
+         */
         if (!content.equals("")) {
             updatePerLine(player, prefixString + content, score, reset);
         }
@@ -222,6 +238,14 @@ public class SideBarTask extends BukkitRunnable {
     }
 
     public void updatePerLine(Player player, String line, int scoreSlot) {
+        /*
+          方法说明(updatePerLine) --- 更新计分板
+          用途：向计分板添加行数
+          参数说明：
+          player --- 添加计分板的玩家
+          line --- 计分板添加的内容
+          scoreSlot --- 计分板添加的行数(数字越高，越往上)
+         */
         updatePerLine(player, line, scoreSlot, false);
     }
 
@@ -233,16 +257,21 @@ public class SideBarTask extends BukkitRunnable {
         Scoreboard scoreboard = scoreboardMap.get(player.getUniqueId());
         if (information == null) {
             String title = "Welcome!";
+            //设置默认title
             try {
                 title = ConfigController.getConfig("sidebar").getString("scoreBoardTitle");
+                //读取title
             } catch (NullPointerException ignored) {
+                //ignored.printStackTrace();
             }
             if (player.getScoreboard().getObjective(DisplaySlot.SIDEBAR) == null) {
                 String name = player.getName();
+                //获取玩家名字 name
                 while (name.length() > 16) {
                     name = name.substring(0, 15);
                 }
                 information = UltiTools.versionAdaptor.registerNewObjective(scoreboard, name, "", ChatColor.DARK_AQUA + title);
+                //注册计分板 并添加标题到计分板
                 information.setDisplaySlot(DisplaySlot.SIDEBAR);
             }
         }
@@ -252,6 +281,7 @@ public class SideBarTask extends BukkitRunnable {
         }
         if (scoreMap.containsKey(scoreSlot)) {
             String str = scoreMap.get(scoreSlot);
+            //计分板添加的内容 str
             player.getScoreboard().resetScores(str);
         }
         scoreMap.put(scoreSlot, line);

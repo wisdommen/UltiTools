@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.listener;
 
+import com.ultikits.enums.Sounds;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
@@ -84,7 +85,7 @@ public class ChatListener implements Listener {
                 @Override
                 public void run() {
                     //多线程处理
-                    /**
+                    /*
                      * 这里是对被艾特玩家进行操作
                      * 参数说明：
                      * 变量   参数类型    备注
@@ -93,11 +94,56 @@ public class ChatListener implements Listener {
                      * server Server 此服务器队形
                      */
                     Objects.requireNonNull(server.getPlayerExact(toPlayer)).sendMessage(Objects.requireNonNull(UltiTools.languageUtils.getString("chat_att_beatt")).replaceAll("%player%",player.getName()));
+                    //发送消息
+                    Player bePlayer = server.getPlayerExact(toPlayer);
+                    //获取bePlayer 被艾特的玩家
+                    //Sounds.BLOCK_NOTE_BLOCK_BELL 高
+                    //Sounds.BLOCK_NOTE_BLOCK_CHIME  中
+                    //Sounds.BLOCK_NOTE_BLOCK_HAT 低
+                    assert bePlayer != null;
 
 
 
 
 
+
+                    bePlayer.playSound(
+                            bePlayer.getLocation(), UltiTools.versionAdaptor.getSound(
+                                    Sounds.BLOCK_NOTE_BLOCK_BELL
+                            )
+                            , 1, 1);
+                    new BukkitRunnable(){
+                        @Override
+                        public void run() {
+                            bePlayer.playSound(
+                                    bePlayer.getLocation(), UltiTools.versionAdaptor.getSound(
+                                            Sounds.BLOCK_NOTE_BLOCK_BELL
+                                    )
+                                    , 1, 1);
+                            new BukkitRunnable(){
+                                @Override
+                                public void run() {
+                                    bePlayer.playSound(
+                                            bePlayer.getLocation(), UltiTools.versionAdaptor.getSound(
+                                                    Sounds.BLOCK_NOTE_BLOCK_CHIME
+                                            )
+                                            , 1, 1);
+                                    new BukkitRunnable(){
+                                        @Override
+                                        public void run() {
+                                            bePlayer.playSound(
+                                                    bePlayer.getLocation(), UltiTools.versionAdaptor.getSound(
+                                                            Sounds.BLOCK_NOTE_BLOCK_HAT
+                                                    )
+                                                    , 1, 1);
+                                        }
+                                    }.runTaskLaterAsynchronously(UltiTools.getInstance(),10);
+                                }
+                            }.runTaskLaterAsynchronously(UltiTools.getInstance(),10);
+                        }
+                    }.runTaskLaterAsynchronously(UltiTools.getInstance(),5);
+                    //20 kit = 1秒
+                    //}.runTaskAsynchronously(UltiTools.getInstance());
                 }
             }.runTaskAsynchronously(UltiTools.getInstance());
         }
