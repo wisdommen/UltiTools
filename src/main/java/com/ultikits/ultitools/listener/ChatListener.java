@@ -101,12 +101,6 @@ public class ChatListener implements Listener {
                     //Sounds.BLOCK_NOTE_BLOCK_CHIME  中
                     //Sounds.BLOCK_NOTE_BLOCK_HAT 低
                     assert bePlayer != null;
-
-
-
-
-
-
                     bePlayer.playSound(
                             bePlayer.getLocation(), UltiTools.versionAdaptor.getSound(
                                     Sounds.BLOCK_NOTE_BLOCK_BELL
