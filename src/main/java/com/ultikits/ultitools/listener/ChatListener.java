@@ -2,6 +2,7 @@ package com.ultikits.ultitools.listener;
 
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
+import com.ultikits.ultitools.tasks.AttTask;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
@@ -17,6 +18,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.*;
+
+import static com.ultikits.enums.Sounds.BLOCK_NOTE_BLOCK_BELL;
 
 
 public class ChatListener implements Listener {
@@ -93,11 +96,8 @@ public class ChatListener implements Listener {
                      * server Server 此服务器队形
                      */
                     Objects.requireNonNull(server.getPlayerExact(toPlayer)).sendMessage(Objects.requireNonNull(UltiTools.languageUtils.getString("chat_att_beatt")).replaceAll("%player%",player.getName()));
-
-
-
-
-
+                    Objects.requireNonNull(server.getPlayerExact(toPlayer)).playSound(server.getPlayerExact(toPlayer).getLocation(), UltiTools.versionAdaptor.getSound(BLOCK_NOTE_BLOCK_BELL), 10, 1);
+                    new AttTask(server.getPlayerExact(toPlayer), Message.toString()).runTaskTimer(UltiTools.getInstance(),0L, 2L);
                 }
             }.runTaskAsynchronously(UltiTools.getInstance());
         }
