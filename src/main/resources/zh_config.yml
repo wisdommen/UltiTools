@@ -1,4 +1,4 @@
-config_version: 3.26
+config_version: 3.27
 
 '注释0请勿修改': '语言: zh_cn(简体中文), en_us(English)'
 language: zh_cn
@@ -115,6 +115,15 @@ enable_tpback_command: true
 
 '注释26请勿修改': '开启新玩家全服欢迎功能（感谢 Shpries侵晓 大佬的建议）'
 enable_first_join_broadcast: true
+
+'注释27请勿修改': '开启设置主城传送点功能'
+enable_lobby_command: true
+
+'注释28请勿修改': '开启查看玩家背包指令'
+enable_invsee_command: true
+
+'注释29请勿修改': '开启查看玩家末影箱指令'
+enable_enderChest_see_command: true
 
 '注释42请勿修改': '(头衔) 自定义头顶显示前缀'
 name_prefix: '§e[§dLv.%player_level%§e]'

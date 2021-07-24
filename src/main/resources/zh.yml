@@ -363,3 +363,12 @@ random_tp_banned: 这个世界禁止使用随机传送！
 password_function: 密码功能
 pwd_reset_success: 玩家 %s 的密码已重置!
 pwd_player_not_found: 玩家未找到!
+new_lobby_set: 成功设置主城传送点
+lobby_not_found: 找不到主城传送点！
+lobby_teleport_success: 成功传送到主城传送点
+invsee_function: 查看玩家的背包
+enderChest_see_function: 查看玩家的末影箱
+invalid_arguments: 参数不正确
+invsee_success: "成功打开该玩家的背包 "
+enderChest_see_success: "成功打开该玩家的末影箱 "
+player_doesnt_exist_or_offline: 目标玩家不存在或不在线！

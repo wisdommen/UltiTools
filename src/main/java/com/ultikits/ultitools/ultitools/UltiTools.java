@@ -4,6 +4,7 @@ import com.ultikits.api.VersionWrapper;
 import com.ultikits.main.UltiCoreAPI;
 import com.ultikits.ultitools.checker.DependencyChecker;
 import com.ultikits.ultitools.checker.NewProChecker;
+import com.ultikits.ultitools.checker.PlayerlistChecker;
 import com.ultikits.ultitools.checker.VersionChecker;
 import com.ultikits.ultitools.commands.*;
 import com.ultikits.ultitools.config.*;
@@ -91,7 +92,8 @@ public final class UltiTools extends JavaPlugin {
             getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("using_customized_language"));
         }
 
-        yaml.saveYamlFile(getDataFolder().getPath() + File.separator + "playerData" + File.separator + "playerlist","playerlist.yml","playerlist.yml");
+        yaml.saveYamlFile(getDataFolder().getPath(),"lobby.yml","lobby.yml");
+        new PlayerlistChecker().playerlistNewChecker();                                                                 //playerlist.yml文件转换
 
         List<File> folders = new ArrayList<>();
         folders.add(new File(getDataFolder().getPath()));
@@ -271,6 +273,16 @@ public final class UltiTools extends JavaPlugin {
         if (this.getConfig().getBoolean("enable_tpback_command")) {
             CommandRegister.registerCommand(plugin,new TpbackCommands(),"ultikits.tools.command.tpback,",languageUtils.getString("tpback_function"),"tpback");
             getServer().getPluginManager().registerEvents(new TeleportListener(),this);
+        }
+        if (this.getConfig().getBoolean("enable_lobby_command")) {
+            CommandRegister.registerCommand(plugin,new LobbyCommands(),"ultikits.tools.back",languageUtils.getString("back_function"),"setlobby");
+            CommandRegister.registerCommand(plugin,new LobbyCommands(),"ultikits.tools.back",languageUtils.getString("back_function"),"lobby");
+        }
+        if (this.getConfig().getBoolean("enable_invsee_command")) {
+            CommandRegister.registerCommand(plugin,new InvseeCommands(),"ultikits.tools.admin",languageUtils.getString("invsee_function"),"invsee");
+        }
+        if (this.getConfig().getBoolean("enable_enderChest_see_command")) {
+            CommandRegister.registerCommand(plugin,new InvseeCommands(),"ultikits.tools.admin",languageUtils.getString("enderChest_see_function"),"endersee");
         }
 
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
