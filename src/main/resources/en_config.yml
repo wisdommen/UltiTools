@@ -1,4 +1,4 @@
-config_version: 3.26
+config_version: 3.27
 
 'comment0': 'Language: zh_cn(简体中文), en_us(English)'
 language: en_us
@@ -115,6 +115,15 @@ enable_tpback_command: true
 
 'comment26': 'enable first_join_broadcast function'
 enable_first_join_broadcast: true
+
+'comment27': 'enable lobby&setlobby commands'
+enable_lobby_command: true
+
+'comment28': 'enable invsee command'
+enable_invsee_command: true
+
+'comment29': 'enable enderChest_see command'
+enable_enderChest_see_command: true
 
 'comment42': 'customize above-head display prefix'
 name_prefix: '§e[§dLv.%player_level%§e]'

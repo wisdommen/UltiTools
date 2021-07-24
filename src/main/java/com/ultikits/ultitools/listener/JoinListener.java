@@ -1,16 +1,14 @@
 package com.ultikits.ultitools.listener;
 
 import com.ultikits.ultitools.checker.VersionChecker;
-import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
-import com.ultikits.ultitools.tasks.SideBarTask;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.ScoreBoardUtils;
-import com.ultikits.utils.YamlFileUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,9 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static com.ultikits.ultitools.checker.VersionChecker.*;
 
@@ -47,22 +43,19 @@ public class JoinListener implements Listener {
     File loginFile = new File(ConfigsEnum.LOGIN.toString());
     YamlConfiguration loginConfig = YamlConfiguration.loadConfiguration(loginFile);
 
-    //first_join_broadcast相关准备-----开始
-    static {
-        File playerlistFile = new File(ConfigsEnum.PLAYERLIST.toString());
-        if (!playerlistFile.exists()) {
-            try {
-                playerlistFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
+    //first_join_broadcast相关准备-----开始   PLAYERLIST是到 yml文件
     File playerlistFile = new File(ConfigsEnum.PLAYERLIST.toString());
     YamlConfiguration playerlistConfig = YamlConfiguration.loadConfiguration(playerlistFile);
-    List<String> playerList = playerlistConfig.getStringList("playerlist");
+    ConfigurationSection playerlistConfigSection = playerlistConfig.getConfigurationSection("playerlist");    //加载区域
 
+    private void addPlayerlist(String UUID,String playerName) {
+        playerlistConfig.set("playerlist." + UUID,playerName);
+        try {
+            playerlistConfig.save(playerlistFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     //first_join_broadcast相关准备-----结束
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -112,17 +105,17 @@ public class JoinListener implements Listener {
             }.runTaskLater(UltiTools.getInstance(), sendMessageDelay * 20L);
         }
 
-        //新玩家全服欢迎公告
+        //新玩家全服欢迎公告功能
+        String UUID = player.getUniqueId().toString();
+        String playerName = player.getName();
         if (UltiTools.getInstance().getConfig().getBoolean("enable_first_join_broadcast")) {
-            if (!playerlistConfig.getStringList("playerlist").contains(player.getName())) {
-                playerList.add(player.getName());
-                playerlistConfig.set("playerlist",playerList);
-                try {
-                    playerlistConfig.save(playerlistFile);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            if (!playerlistConfigSection.getKeys(false).contains(UUID)) {
+                addPlayerlist(UUID,playerName);
                 Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player,firstJoinBroadcast.replaceAll("%player_name%",player.getName())));
+            }
+        } else {
+            if (!playerlistConfigSection.getKeys(false).contains(UUID)) {
+                addPlayerlist(UUID,playerName);
             }
         }
     }
