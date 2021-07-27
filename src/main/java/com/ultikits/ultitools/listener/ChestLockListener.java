@@ -174,7 +174,6 @@ public class ChestLockListener implements Listener {
         if(chest.getType() != Material.CHEST) return;
 
         if (ChestLockUtils.hasChestData(chest)) {
-            player.sendMessage("onPlayerBreakChest-true");
             if (player.isOp() && ConfigController.getConfig("chestlock").getBoolean("op_break_locked")) {
                 player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_chest_deleted"));
                 player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_op_warning"));
@@ -186,8 +185,6 @@ public class ChestLockListener implements Listener {
                 player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_this_is_others_chest"));
                 event.setCancelled(true);
             }
-        } else {
-            player.sendMessage("onPlayerBreakChest-false");
         }
     }
 
