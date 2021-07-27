@@ -218,7 +218,6 @@ public final class UltiTools extends JavaPlugin {
         if (this.getConfig().getBoolean("enable_lock")) {
             CommandRegister.registerCommand(plugin, new UnlockCommands(), "ultikits.tools.chest.lock", languageUtils.getString("lock_chest_function"), "unlock", "ul");
             CommandRegister.registerCommand(plugin, new LockCommands(), "ultikits.tools.chest.unlock", languageUtils.getString("unlock_chest_function"), "lock", "l");
-            CommandRegister.registerCommand(plugin, new ChestOwnerCommands(), "ultikits.tools.chest.owner", languageUtils.getString("chest_owner_manager_function"), "com", "co");
             Bukkit.getPluginManager().registerEvents(new ChestLockListener(), this);
         }
         if (this.getConfig().getBoolean("enable_remote_chest")) {
