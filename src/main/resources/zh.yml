@@ -57,6 +57,7 @@ whitelist_function: 白名单命令
 sidebar_function: 侧边栏开关
 lock_chest_function: 上锁箱子
 unlock_chest_function: 解锁箱子
+chest_owner_manager_function: 箱子所有者管理
 bag_function: 远程背包
 bag_console_function: 远程背包后台命令
 multiworlds_function: 多世界系统
@@ -130,7 +131,7 @@ email_read: 已读！
 unlock_click_to_unlock: 请点击箱子解锁！
 unlock_file_save_fail_click: 文件保存失败，解锁失败！请再次点击。
 unlock_successfully: 解锁成功！
-unlock_tip_after_unlock: 如果是大箱子，请将另一半也解锁\n如果是共享箱子，请也告知你的同伴
+unlock_tip_after_unlock: 如果是大箱子，请将另一半也解锁\n如果分别被不同人上锁，请也告知他
 unlock_you_cannot_unlock_others_chest: 这是别人的箱子，你无法解锁！
 unlock_chest_not_locked: 这个箱子没有上锁哦！
 lock_click_to_lock: 请点击箱子来上锁！
@@ -141,10 +142,19 @@ lock_file_save_fail_click: 文件保存失败，上锁失败！请再次点击�
 lock_chest_already_locked: 这个箱子已经上锁了！
 lock_you_cannot_lock_others_chest: 这是别人的箱子，你无法上锁！
 lock_successfully: 上锁成功！
-lock_tip_after_lock: 如果是大箱子，请将另一半也锁上\n或者你可以让另一个人锁，即为共享箱子
+lock_tip_after_lock: 如果是大箱子，请将另一半也锁上\n并且你可以发送 /lock add [playerName] 来添加一个可以使用该箱子的玩家
 lock_op_warning: 虽然你是OP，但是请不要为所欲为哦
 lock_this_is_others_chest: 这是别人的箱子，你无权操作哦
 lock_chest_deleted: 你删除了一个上锁的箱子！
+chest_click_add_owner: 请点击箱子来添加拥有者!
+chest_click_remove_owner: 请点击箱子来移除拥有者!
+chest_click_view_info: 请点击箱子来查看详细信息!
+chest_add_owner_successfully: 箱子拥有者添加成功!
+chest_remove_owner_successfully: 箱子拥有者移除成功!
+chest_data_not_found: 没有找到关于该箱子的数据!
+chest_info_location: '箱子位置:'
+chest_info_locked: '上锁状态:'
+chest_info_owner: '拥有者:'
 emailregister_registered: 你已经验证过邮箱了！
 emailregister_sending_code: 正在发送验证码...
 emailregister_email_title: 服务器注册验证码
