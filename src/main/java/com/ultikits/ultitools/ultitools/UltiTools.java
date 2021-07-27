@@ -11,10 +11,7 @@ import com.ultikits.ultitools.config.*;
 import com.ultikits.ultitools.listener.*;
 import com.ultikits.ultitools.register.CommandRegister;
 import com.ultikits.ultitools.tasks.*;
-import com.ultikits.ultitools.utils.FunctionUtils;
-import com.ultikits.ultitools.utils.LanguageUtils;
-import com.ultikits.ultitools.utils.ScoreBoardUtils;
-import com.ultikits.ultitools.utils.YamlFileUtils;
+import com.ultikits.ultitools.utils.*;
 import com.ultikits.utils.DatabaseUtils;
 import com.ultikits.utils.MessagesUtils;
 import com.ultikits.utils.Metrics;
@@ -219,8 +216,9 @@ public final class UltiTools extends JavaPlugin {
             new SideBarTask().runTaskTimerAsynchronously(this, 0, 20L);
         }
         if (this.getConfig().getBoolean("enable_lock")) {
-            CommandRegister.registerCommand(plugin, new UnlockCommands(), "ultikits.tools.lock", languageUtils.getString("lock_chest_function"), "unlock", "ul");
-            CommandRegister.registerCommand(plugin, new LockCommands(), "ultikits.tools.unlock", languageUtils.getString("unlock_chest_function"), "lock", "l");
+            CommandRegister.registerCommand(plugin, new UnlockCommands(), "ultikits.tools.chest.lock", languageUtils.getString("lock_chest_function"), "unlock", "ul");
+            CommandRegister.registerCommand(plugin, new LockCommands(), "ultikits.tools.chest.unlock", languageUtils.getString("unlock_chest_function"), "lock", "l");
+            CommandRegister.registerCommand(plugin, new ChestOwnerCommands(), "ultikits.tools.chest.owner", languageUtils.getString("chest_owner_manager_function"), "com", "co");
             Bukkit.getPluginManager().registerEvents(new ChestLockListener(), this);
         }
         if (this.getConfig().getBoolean("enable_remote_chest")) {
@@ -240,10 +238,12 @@ public final class UltiTools extends JavaPlugin {
         if (this.getConfig().getBoolean("enable_cleaner")) {
             CommandRegister.registerCommand(plugin, new CleanerCommands(), "ultikits.tools.clean", languageUtils.getString("cleaner_function"), "clean");
         }
-//        if (this.getConfig().getBoolean("enable_permission")) {
-//            CommandRegister.registerCommand(plugin, new PermissionCommands(), "ultikits.tools.permission", languageUtils.getString("permission_function"), "pers");
-//            getServer().getPluginManager().registerEvents(new PermissionAddOnJoinListener(), this);
-//        }
+/*
+        if (this.getConfig().getBoolean("enable_permission")) {
+            CommandRegister.registerCommand(plugin, new PermissionCommands(), "ultikits.tools.permission", languageUtils.getString("permission_function"), "pers");
+            getServer().getPluginManager().registerEvents(new PermissionAddOnJoinListener(), this);
+        }
+*/
         if (this.getConfig().getBoolean("enable_tpa")) {
             CommandRegister.registerCommand(plugin, new TeleportCommands(), "ultikits.tools.tpa", languageUtils.getString("tpa_function"), "tpa");
             CommandRegister.registerCommand(plugin, new TpaHereCommands(), "ultikits.tools.tpa", languageUtils.getString("tpa_function"), "tpahere");
@@ -326,6 +326,8 @@ public final class UltiTools extends JavaPlugin {
         if (getConfig().getBoolean("enable_version_check")) {
             VersionChecker.runTask();
         }
+
+        ChestLockUtils.transformOldData();                                                                              //chestData.yml文件转换
     }
 
     @Override

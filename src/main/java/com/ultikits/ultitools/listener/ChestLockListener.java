@@ -2,204 +2,200 @@ package com.ultikits.ultitools.listener;
 
 import com.ultikits.enums.Sounds;
 import com.ultikits.ultitools.config.ConfigController;
-import com.ultikits.ultitools.enums.ConfigsEnum;
+import com.ultikits.ultitools.enums.ChestDirection;
 import com.ultikits.ultitools.ultitools.UltiTools;
+import com.ultikits.ultitools.utils.ChestLockUtils;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.Chest;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import java.util.Map;
+import java.util.Random;
 
 import static com.ultikits.utils.MessagesUtils.info;
 
 /**
- * @author wisdomme
+ * @author wisdomme,qianmo
+ *
+ * Code refactoring by qianmo
  */
+
 public class ChestLockListener implements Listener {
 
     @EventHandler
-    public void onPlacePlaceChest(BlockPlaceEvent event) {
-        Block placedBlock = event.getBlock();
-        if (placedBlock.getType() == Material.CHEST) {
-            Player player = event.getPlayer();
-            Map<Direction, Block> blockMap = getBlocksBesides(placedBlock);
-            Block right = blockMap.get(Direction.RIGHT);
-            Block left = blockMap.get(Direction.LEFT);
-            List<String> chests = ConfigController.getConfig("chestData").getStringList("locked");
-            if (!(right.getType() == Material.CHEST || left.getType() == Material.CHEST)) {
-                Random random = new Random();
-                int i = random.nextInt(3);
-                if (i <= 1) {
-                    player.sendMessage(info(UltiTools.languageUtils.getString("lock_tip")));
-                }
-            } else {
-                BlockData blockData = placedBlock.getBlockData();
-                BlockFace blockFace = ((Directional) blockData).getFacing();
+    public void onPlayerPlaceChest(BlockPlaceEvent event) {
+        Block chest = event.getBlock();
+        Player player = event.getPlayer();
 
-                Location blockLocation = right.getLocation();
-                if (!checkNewChestBlock(right, placedBlock, blockFace, blockLocation, player, chests)) {
-                    event.setCancelled(true);
-                }
-                blockLocation = left.getLocation();
-                if (!checkNewChestBlock(left, placedBlock, blockFace, blockLocation, player, chests)) {
-                    event.setCancelled(true);
-                }
+        Map<ChestDirection, Block> blockMap;
+        BlockData blockData;
+        BlockFace blockFace;
+        Block right;
+        Block left;
+
+        //判断被放置的方块是否为箱子
+        if(chest.getType() != Material.CHEST) return;
+
+        //判断被放置的箱子的旁边是否有上锁的箱子
+        blockMap = ChestLockUtils.getBlocksBesides(chest);
+        right = blockMap.get(ChestDirection.RIGHT);
+        left = blockMap.get(ChestDirection.LEFT);
+
+        if(!(right.getType() == Material.CHEST || left.getType() == Material.CHEST)) {
+            //提示
+            Random random = new Random();
+            int i = random.nextInt(3);
+            if (i <= 1) {
+                player.sendMessage(info(UltiTools.languageUtils.getString("lock_tip")));
             }
+        } else {
+            blockData = chest.getBlockData();
+            blockFace = ((Directional) blockData).getFacing();
+
+            Boolean result = ChestLockUtils.NewChestLocationChecker(chest, left, right, player, blockFace);
+            event.setCancelled(!result);
         }
     }
 
     @EventHandler
-    public void onPlayerOpenChest(@NotNull PlayerInteractEvent event) {
+    public void onPlayerOpenChest(PlayerInteractEvent event) {
+        Block chest = event.getClickedBlock();
+        Player player = event.getPlayer();
 
-        if (event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.CHEST) {
-            Player player = event.getPlayer();
-            Location chestLocation = event.getClickedBlock().getLocation();
-            File playerFile = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
-            YamlConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
-            List<String> chests = ConfigController.getConfig("chestData").getStringList("locked");
+        if (chest == null) return;
 
-            String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
-            double x = chestLocation.getX();
-            double y = chestLocation.getY();
-            double z = chestLocation.getZ();
-            String local = player.getName() + "/" + world + "/" + x + "/" + y + "/" + z;
+        //判断被点击的方块是否为箱子
+        if (chest.getType() != Material.CHEST) return;
 
-            if (playerData.getBoolean("lock")) {
-                event.setCancelled(true);
-                playerData.set("lock", false);
-                try {
-                    playerData.save(playerFile);
-                } catch (IOException e) {
-                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_file_save_fail_click"));
-                    return;
-                }
-                if (chests.contains(local)) {
-                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_chest_already_locked"));
-                    return;
+        //判断玩家是否处于选择模式
+        if (ChestLockUtils.getInAddMode().containsKey(player.getName())) {
+            if (ChestLockUtils.hasChestData(chest)) {
+                if (ChestLockUtils.isChestOwner(chest, player)) {
+                    ChestLockUtils.addChestOwner(chest, ChestLockUtils.getInAddMode().get(player.getName()));
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("chest_add_owner_successfully"));
                 } else {
-                    for (String each : chests) {
-                        if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
-                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_you_cannot_lock_others_chest"));
-                            return;
-                        }
-                    }
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_this_is_others_chest"));
                 }
-                chests.add(local);
-                ConfigController.getConfig("chestData").set("locked", chests);
-                ConfigController.saveConfig("chestData");
-                player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("lock_successfully"));
-                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_tip_after_lock").replace("\\n", "\n"));
+            } else {
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("chest_data_not_found"));
+            }
+            ChestLockUtils.getInAddMode().remove(player.getName());
+            event.setCancelled(true);
+            return;
+        }
+        if (ChestLockUtils.getInRemoveMode().containsKey(player.getName())) {
+            if (ChestLockUtils.hasChestData(chest)) {
+                if (ChestLockUtils.isChestOwner(chest, player)) {
+                    ChestLockUtils.removeChestOwner(chest, ChestLockUtils.getInRemoveMode().get(player.getName()));
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("chest_remove_owner_successfully"));
+                } else {
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_this_is_others_chest"));
+                }
+            } else {
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("chest_data_not_found"));
+            }
+            ChestLockUtils.getInRemoveMode().remove(player.getName());
+            event.setCancelled(true);
+            return;
+        }
+        if (ChestLockUtils.getInLockMode().contains(player.getName())) {
+            if (ChestLockUtils.hasChestData(chest)) {
+                if (ChestLockUtils.isChestOwner(chest, player)) {
+                    if(ChestLockUtils.isChestLocked(chest)) {
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_chest_already_locked"));
+                    } else {
+                        ChestLockUtils.lockChest(chest);
+                        player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_CHEST_LOCKED), 10, 1);
+                        player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("lock_successfully"));
+                    }
+                } else {
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_you_cannot_lock_others_chest"));
+                }
+            } else {
+                ChestLockUtils.addChestData(chest, player, true);
                 player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_CHEST_LOCKED), 10, 1);
-                return;
-            } else if (playerData.getBoolean("unlock")) {
-                event.setCancelled(true);
-                playerData.set("unlock", false);
-                try {
-                    playerData.save(playerFile);
-                } catch (IOException e) {
-                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("unlock_file_save_fail_click"));
-                    return;
-                }
-                if (chests.contains(local)) {
-                    chests.remove(local);
-                    ConfigController.getConfig("chestData").set("locked", chests);
-                    ConfigController.saveConfig("chestData");
-                    player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("unlock_successfully"));
-                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("unlock_tip_after_unlock").replace("\\n", "\n"));
-                    player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_CHEST_LOCKED), 10, 1);
-                    return;
+                player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("lock_successfully"));
+            }
+            ChestLockUtils.getInLockMode().remove(player.getName());
+            event.setCancelled(true);
+            return;
+        }
+        if (ChestLockUtils.getInUnlockMode().contains(player.getName())) {
+            if (ChestLockUtils.hasChestData(chest)) {
+                if (ChestLockUtils.isChestOwner(chest, player)) {
+                    if (ChestLockUtils.isChestLocked(chest)) {
+                        ChestLockUtils.unlockChest(chest);
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("unlock_successfully"));
+                    } else {
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("unlock_chest_not_locked"));
+                    }
                 } else {
-                    for (String each : chests) {
-                        if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
-                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("unlock_you_cannot_unlock_others_chest"));
-                            return;
-                        }
-                    }
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_this_is_others_chest"));
                 }
+            } else {
                 player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("unlock_chest_not_locked"));
+            }
+            ChestLockUtils.getInUnlockMode().remove(player.getName());
+            event.setCancelled(true);
+            return;
+        }
+        if (player.isOp()) {
+            if (ConfigController.getConfig("chestlock").getBoolean("op_unlock")) {
                 return;
             }
-            if (!chests.contains(local)) {
-                for (String each : chests) {
-                    if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
-                        YamlConfiguration chestConfig = ConfigController.getConfig("chestlock");
-                        if ((chestConfig.getBoolean("op_unlock") && player.isOp() && event.getAction() == Action.RIGHT_CLICK_BLOCK) || (chestConfig.getBoolean("op_break_locked") && player.isOp() && event.getAction() == Action.LEFT_CLICK_BLOCK)) {
-                            player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("lock_op_warning"));
-                            return;
-                        }
-                        event.setCancelled(true);
-                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_this_is_others_chest"));
-                        return;
-                    }
-                }
-            }
         }
-    }
-
-    @EventHandler
-    public void onPlayerDestroyChest(@NotNull BlockBreakEvent event) {
-        if (event.getBlock().getType() == Material.CHEST) {
-            Location chestLocation = event.getBlock().getLocation();
-            Player player = event.getPlayer();
-            List<String> chests = ConfigController.getConfig("chestData").getStringList("locked");
-            int sizeBefore = chests.size();
-
-            String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
-            double x = chestLocation.getX();
-            double y = chestLocation.getY();
-            double z = chestLocation.getZ();
-            String local = getFormattedChestLocation(player, chestLocation);
-
-            if (player.isOp()) {
-                chests.removeIf(each -> each.contains("/" + world + "/" + x + "/" + y + "/" + z));
-            } else {
-                chests.remove(local);
-            }
-            if (sizeBefore > chests.size()) {
-                ConfigController.getConfig("chestData").set("locked", chests);
-                ConfigController.saveConfig("chestData");
-                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_chest_deleted"));
-            }
-        }
-    }
-
-    @EventHandler
-    public void onItemRemovedByHopper(@NotNull InventoryMoveItemEvent event) {
-        Location chestLocation = event.getSource().getLocation();
-        List<String> chests = ConfigController.getConfig("chestData").getStringList("locked");
-
-        String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
-        double x = chestLocation.getX();
-        double y = chestLocation.getY();
-        double z = chestLocation.getZ();
-        String local = world + "/" + x + "/" + y + "/" + z;
-
-        for (String each : chests) {
-            if (each.contains(local)) {
+        if(ChestLockUtils.hasChestData(chest)) {
+            if (ChestLockUtils.isChestOwner(chest, player)) return;
+            if (ChestLockUtils.isChestLocked(chest)) {
                 event.setCancelled(true);
             }
         }
+    }
 
+    @EventHandler
+    public void onPlayerBreakChest(BlockBreakEvent event) {
+        Block chest = event.getBlock();
+        Player player = event.getPlayer();
+
+        //判断被破坏的方块是否为箱子
+        if(chest.getType() != Material.CHEST) return;
+
+        if (ChestLockUtils.hasChestData(chest)) {
+            player.sendMessage("onPlayerBreakChest-true");
+            if (player.isOp() && ConfigController.getConfig("chestlock").getBoolean("op_break_locked")) {
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_chest_deleted"));
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_op_warning"));
+                ChestLockUtils.removeChestData(chest);
+            }
+            if(ChestLockUtils.isChestOwner(chest, player) || player.isOp()) {
+                ChestLockUtils.removeChestData(chest);
+            } else {
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_this_is_others_chest"));
+                event.setCancelled(true);
+            }
+        } else {
+            player.sendMessage("onPlayerBreakChest-false");
+        }
+    }
+
+    @EventHandler
+    public void onItemRemovedByHopper(InventoryMoveItemEvent event) {
+        if (ChestLockUtils.isChestLocked(event.getSource().getLocation())) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler
@@ -207,120 +203,11 @@ public class ChestLockListener implements Listener {
         if ((event.getEntity() instanceof Creeper) || (event.getEntity() instanceof TNTPrimed)) {
             for (Block block : event.blockList().toArray(new Block[event.blockList().size()])) {
                 if (block.getType() == Material.CHEST) {
-                    List<String> chests = ConfigController.getConfig("chestData").getStringList("locked");
-                    Location chestLocation = block.getLocation();
-                    String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
-                    double x = chestLocation.getX();
-                    double y = chestLocation.getY();
-                    double z = chestLocation.getZ();
-                    for (String each : chests) {
-                        if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
-                            event.setCancelled(true);
-                        }
+                    if (ChestLockUtils.isChestLocked(block)) {
+                        event.setCancelled(true);
                     }
                 }
             }
         }
     }
-
-    private Map<Direction, Block> getBlocksBesides(Block placedBlock) {
-        Map<Direction, Block> blockMap = new HashMap<>();
-        if (placedBlock.getState() instanceof Chest) {
-            BlockData blockData = placedBlock.getBlockData();
-            BlockFace blockFace = ((Directional) blockData).getFacing();
-
-            Block right = null;
-            Block left = null;
-            switch (blockFace) {
-                case EAST:
-                    right = placedBlock.getRelative(BlockFace.NORTH);
-                    left = placedBlock.getRelative(BlockFace.SOUTH);
-                    break;
-                case SOUTH:
-                    right = placedBlock.getRelative(BlockFace.EAST);
-                    left = placedBlock.getRelative(BlockFace.WEST);
-                    break;
-                case NORTH:
-                    right = placedBlock.getRelative(BlockFace.WEST);
-                    left = placedBlock.getRelative(BlockFace.EAST);
-                    break;
-                case WEST:
-                    right = placedBlock.getRelative(BlockFace.SOUTH);
-                    left = placedBlock.getRelative(BlockFace.NORTH);
-                    break;
-            }
-            blockMap.put(Direction.RIGHT, right);
-            blockMap.put(Direction.LEFT, left);
-        }
-        return blockMap;
-    }
-
-    private String getFormattedChestLocation(Player player, Location chestLocation) {
-        String world = Objects.requireNonNull(chestLocation.getWorld()).getName();
-        double x = chestLocation.getX();
-        double y = chestLocation.getY();
-        double z = chestLocation.getZ();
-        return player.getName() + "/" + world + "/" + x + "/" + y + "/" + z;
-    }
-
-    private boolean checkCanPlaceChest(Location blockLocation, Player player, List<String> registeredChests) {
-        String world = Objects.requireNonNull(blockLocation.getWorld()).getName();
-        double x = blockLocation.getX();
-        double y = blockLocation.getY();
-        double z = blockLocation.getZ();
-        String location = getFormattedChestLocation(player, blockLocation);
-        if (registeredChests.contains(location)) {
-            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_auto_lock").replace("\\n", "\n"));
-            return true;
-        } else {
-            for (String each : registeredChests) {
-                if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
-                    player.sendMessage(info(UltiTools.languageUtils.getString("lock_locked_chest_besides").replace("\\n", "\n")));
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    private void saveNewChestLocation(Player player, Block placedBlock, List<String> chests) {
-        String loc = getFormattedChestLocation(player, placedBlock.getLocation());
-        List<String> temp = new ArrayList<>(chests);
-        temp.add(loc);
-        ConfigController.getConfig("chestData").set("locked", temp);
-        ConfigController.saveConfig("chestData");
-    }
-
-    private void saveNewChest(Location blockLocation, Player player, Block placedBlock, List<String> chests) {
-        String world = Objects.requireNonNull(blockLocation.getWorld()).getName();
-        double x = blockLocation.getX();
-        double y = blockLocation.getY();
-        double z = blockLocation.getZ();
-        for (String each : chests) {
-            if (each.contains("/" + world + "/" + x + "/" + y + "/" + z)) {
-                saveNewChestLocation(player, placedBlock, chests);
-            }
-        }
-    }
-
-    private boolean checkNewChestBlock(Block block, Block placedBlock, BlockFace blockFace, Location blockLocation, Player player, List<String> chests) {
-        if (block.getType() == Material.CHEST) {
-            BlockData leftBlockData = block.getBlockData();
-            BlockFace leftBlockFace = ((Directional) leftBlockData).getFacing();
-            if (leftBlockFace != blockFace) {
-                return true;
-            }
-            if (!checkCanPlaceChest(blockLocation, player, chests)) {
-                return false;
-            } else {
-                saveNewChest(blockLocation, player, placedBlock, chests);
-                return true;
-            }
-        }
-        return true;
-    }
-}
-
-enum Direction {
-    LEFT, RIGHT
 }
