@@ -141,7 +141,7 @@ lock_file_save_fail_click: 'Failed to save file, lock failed. Please click the c
 lock_chest_already_locked: 'This chest has already been locked!'
 lock_you_cannot_lock_others_chest: "You can't lock other's chest!"
 lock_successfully: 'Locked!'
-lock_tip_after_lock: 'If it is a double chest please lock another half as well\nAnd you can send /owner add [playerName] to add another player that can use this chest'
+lock_tip_after_lock: 'If it is a double chest please lock another half as well\nAnd you can send /com add [playerName] to add another player that can use this chest'
 lock_op_warning: 'Even you are OP, please do not do things crazy(or let others crazy). :)'
 lock_this_is_others_chest: "This is other's chest, you have no permission to do anything with it. XD"
 lock_chest_deleted: 'You deleted a locked chest!'
