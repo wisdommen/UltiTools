@@ -3,6 +3,7 @@ package com.ultikits.ultitools.commands;
 import com.ultikits.abstracts.AbstractPlayerCommandExecutor;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.TradeUtils;
+import com.ultikits.utils.MessagesUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
@@ -11,6 +12,10 @@ import org.jetbrains.annotations.NotNull;
 public class TradeCommands extends AbstractPlayerCommandExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
+        if (!UltiTools.isProVersion) {
+            player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("warning_pro_fuction")));
+            return true;
+        }
         if (strings.length == 0) return false;
         if ("accept".equals(strings[0])) {
             if (TradeUtils.isPlayerInRequestMode(player)) {

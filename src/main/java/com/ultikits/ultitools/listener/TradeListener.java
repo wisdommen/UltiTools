@@ -4,6 +4,7 @@ import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.TradeUtils;
 import com.ultikits.utils.EconomyUtils;
+import com.ultikits.utils.MessagesUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,6 +23,7 @@ public class TradeListener implements Listener {
 
     @EventHandler
     public void onPlayerClickPlayer (PlayerInteractAtEntityEvent event) {
+        if (!UltiTools.isProVersion) return;
         if (!ConfigController.getConfig("trade").getBoolean("enable_shift_click_apply")) return;
         Player From = event.getPlayer();
         if (event.getRightClicked() instanceof Player) {
