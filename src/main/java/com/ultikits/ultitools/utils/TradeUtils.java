@@ -1,0 +1,427 @@
+package com.ultikits.ultitools.utils;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.ultikits.enums.Colors;
+import com.ultikits.ultitools.config.ConfigController;
+import com.ultikits.ultitools.enums.ConfigsEnum;
+import com.ultikits.ultitools.tasks.TradeTask;
+import com.ultikits.ultitools.ultitools.UltiTools;
+import com.ultikits.ultitools.views.TradeView;
+import com.ultikits.utils.EconomyUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
+
+public class TradeUtils {
+
+    private static BiMap<String, String> InTradeMode = HashBiMap.create();
+    private static BiMap<String, String> InRequestMode = HashBiMap.create();
+    private static Map<String, Integer> TradeMoney = new HashMap<>();
+    private static Map<String, Integer> TradeExp = new HashMap<>();
+    private static List<String> TradeConfirm = new ArrayList<>();
+
+    public static BiMap<String, String> getInTradeMode() {
+        return InTradeMode;
+    }
+
+    public static void setInTradeMode(BiMap<String, String> inTradeMode) {
+        InTradeMode = inTradeMode;
+    }
+
+    public static BiMap<String, String> getInRequestMode() {
+        return InRequestMode;
+    }
+
+    public static void setInRequestMode(BiMap<String, String> inRequestMode) {
+        InRequestMode = inRequestMode;
+    }
+
+    public static Map<String, Integer> getTradeMoney() {
+        return TradeMoney;
+    }
+
+    public static void setTradeMoney(Map<String, Integer> tradeMoney) {
+        TradeMoney = tradeMoney;
+    }
+
+    public static Map<String, Integer> getTradeExp() {
+        return TradeExp;
+    }
+
+    public static void setTradeExp(Map<String, Integer> tradeExp) {
+        TradeExp = tradeExp;
+    }
+
+    public static List<String> getTradeConfirm() {
+        return TradeConfirm;
+    }
+
+    public static void setTradeConfirm(List<String> tradeConfirm) {
+        TradeConfirm = tradeConfirm;
+    }
+
+    public static void requestTrade(Player From, Player To) {
+        InRequestMode.put(From.getName(), To.getName());
+        To.sendMessage(UltiTools.languageUtils.getString("trade_request").replace("%s", From.getName()));
+        To.sendMessage(UltiTools.languageUtils.getString("trade_request_tip"));
+        new TradeTask(From, To).runTaskTimerAsynchronously(UltiTools.getInstance(), 0L, 2L);
+    }
+
+    public static void acceptTrade(Player To) {
+        Player From = UltiTools.getInstance().getServer().getPlayerExact(InRequestMode.inverse().get(To.getName()));
+        InRequestMode.remove(Objects.requireNonNull(From).getName());
+        InTradeMode.put(From.getName(), To.getName());
+
+        TradeMoney.put(From.getName(), 0);
+        TradeMoney.put(To.getName(), 0);
+
+        TradeExp.put(From.getName(), 0);
+        TradeExp.put(To.getName(), 0);
+
+        Inventory TradeGUIA = TradeView.setUp(From);
+        Inventory TradeGUIB = TradeView.setUp(To);
+
+        From.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_player_accepted"));
+        To.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_you_accepted"));
+        From.openInventory(TradeGUIA);
+        To.openInventory(TradeGUIB);
+    }
+
+    public static void rejectTrade(Player To) {
+        Player From = UltiTools.getInstance().getServer().getPlayerExact(InRequestMode.inverse().get(To.getName()));
+        InTradeMode.remove(Objects.requireNonNull(From).getName());
+        From.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("trade_player_rejected"));
+        To.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_you_rejected"));
+    }
+
+    public static void closeTrade(Player From, Player To) {
+        new BukkitRunnable() {
+            final Inventory i1 = From.getOpenInventory().getTopInventory();
+            final Inventory i2 = To.getOpenInventory().getTopInventory();
+            final List<Integer> l1 = getItemPlacementArea(From);
+            final List<Integer> l2 = getItemPlacementArea(To);
+            @Override
+            public void run() {
+                for (int i : l1) {
+                    if (i1.getItem(i) != null) {
+                        From.getInventory().addItem(i1.getItem(i));
+                    }
+                }
+                for (int n : l2) {
+                    if (i2.getItem(n) != null) {
+                        To.getInventory().addItem(i2.getItem(n));
+                    }
+                }
+            }
+        }.runTaskAsynchronously(UltiTools.getInstance());
+        InTradeMode.remove(From.getName());
+        if (From.isOnline()) {
+            From.closeInventory();
+            From.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("trade_closed"));
+        }
+        if (To.isOnline()) {
+            To.closeInventory();
+            To.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("trade_closed"));
+        }
+    }
+
+    public static void confirmTrade(Player From, Player To) {
+        new BukkitRunnable() {
+            final Inventory i1 = From.getOpenInventory().getTopInventory();
+            final Inventory i2 = To.getOpenInventory().getTopInventory();
+            final List<Integer> l1 = getItemPlacementArea(From);
+            final List<Integer> l2 = getItemPlacementArea(To);
+            @Override
+            public void run() {
+                int t1 = 0;
+                int t2 = 0;
+
+                for (int i : l1) {
+                    if (i1.getItem(i) != null) {
+                        To.getInventory().addItem(i1.getItem(i));
+                        t1 = t1+ 1;
+                    }
+                }
+                for (int i : l2) {
+                    if (i2.getItem(i) != null) {
+                        From.getInventory().addItem(i2.getItem(i));
+                        t2 = t2 +1;
+                    }
+                }
+
+                if (isMoneyTradeAllowed()) {
+                    EconomyUtils.deposit(From, TradeMoney.get(To.getName()));
+                    EconomyUtils.deposit(To, TradeMoney.get(From.getName()));
+                    EconomyUtils.withdraw(From, TradeMoney.get(From.getName()));
+                    EconomyUtils.withdraw(To, TradeMoney.get(To.getName()));
+                }
+
+                if (isExpTradeAllowed()) {
+                    From.setTotalExperience(From.getTotalExperience() - TradeExp.get(From.getName()));
+                    To.setTotalExperience(To.getTotalExperience() - TradeExp.get(To.getName()));
+                    From.setTotalExperience(From.getTotalExperience() + TradeExp.get(To.getName()));
+                    To.setTotalExperience(To.getTotalExperience() + TradeExp.get(From.getName()));
+                }
+
+                InTradeMode.remove(From.getName());
+                TradeConfirm.remove(From.getName());
+                TradeConfirm.remove(To.getName());
+
+                From.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_success"));
+                From.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("trade_money_you_get").replace("%s", TradeMoney.get(To.getName()).toString()));
+                From.sendMessage(ChatColor.LIGHT_PURPLE+ UltiTools.languageUtils.getString("trade_exp_you_get").replace("%s", TradeExp.get(To.getName()).toString()));
+                From.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("trade_item_you_get").replace("%s", Integer.toString(t1)));
+
+                To.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_success"));
+                To.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("trade_money_you_get").replace("%s", TradeMoney.get(From.getName()).toString()));
+                To.sendMessage(ChatColor.LIGHT_PURPLE+ UltiTools.languageUtils.getString("trade_exp_you_get").replace("%s", TradeExp.get(From.getName()).toString()));
+                To.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("trade_item_you_get").replace("%s", Integer.toString(t2)));
+            }
+        }.runTaskAsynchronously(UltiTools.getInstance());
+
+        From.closeInventory();
+        To.closeInventory();
+    }
+
+    public static List<String> getMoneyLore(Player player) {
+        List<String> list = new ArrayList<>();
+
+        list.add(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_money_now") + " " + ChatColor.YELLOW + TradeMoney.get(player.getName()));
+        list.add(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_your_money") + " " + ChatColor.YELLOW + EconomyUtils.checkMoney(player));
+        if (InTradeMode.containsKey(player.getName())) {
+            list.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("trade_player_money") + " " + ChatColor.YELLOW + TradeMoney.get(InTradeMode.get(player.getName())));
+        }
+        if (InTradeMode.containsValue(player.getName())) {
+            list.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("trade_player_money") + " " + ChatColor.YELLOW + TradeMoney.get(InTradeMode.inverse().get(player.getName())));
+        }
+        return getLore(list);
+    }
+
+    public static List<String> getExpLore(Player player) {
+        List<String> list = new ArrayList<>();
+
+        list.add(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_exp_now") + " " + ChatColor.YELLOW + TradeExp.get(player.getName()));
+        list.add(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_your_exp") + " " + ChatColor.YELLOW + player.getTotalExperience());
+        if (InTradeMode.containsKey(player.getName())) {
+            list.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("trade_player_exp") + " " + ChatColor.YELLOW + TradeExp.get(InTradeMode.get(player.getName())));
+        }
+        if (InTradeMode.containsValue(player.getName())) {
+            list.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("trade_player_exp") + " " + ChatColor.YELLOW + TradeExp.get(InTradeMode.inverse().get(player.getName())));
+        }
+        return getLore(list);
+    }
+
+    public static List<String> getConfirmLore(Player player, boolean changed) {
+        List<String> list = new ArrayList<>();
+        if (TradeConfirm.contains(player.getName())) {
+            list.add(ChatColor.GREEN + "√" + UltiTools.languageUtils.getString("trade_you_confirmed"));
+        } else {
+            list.add(ChatColor.RED + "×" + UltiTools.languageUtils.getString("trade_you_not_confirm"));
+        }
+        if (TradeConfirm.contains(getOtherParty(player).getName())) {
+            list.add(ChatColor.GREEN + "√" + UltiTools.languageUtils.getString("trade_player_confirmed"));
+        } else {
+            list.add(ChatColor.RED + "×" + UltiTools.languageUtils.getString("trade_player_not_confirm"));
+        }
+        if (changed) {
+            list.add(UltiTools.languageUtils.getString("trade_changed_need_reconfirm"));
+        } else {
+            list.add(UltiTools.languageUtils.getString("trade_if_changed"));
+        }
+        return list;
+    }
+
+    public static void updateMoneyLore(Player player, Inventory inventory, ItemStack itemStack) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        Objects.requireNonNull(itemMeta).setLore(getMoneyLore(player));
+        itemStack.setItemMeta(itemMeta);
+        inventory.setItem(48, itemStack);
+    }
+
+    public static void updateExpLore(Player player, Inventory inventory, ItemStack itemStack) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        Objects.requireNonNull(itemMeta).setLore(getExpLore(player));
+        itemStack.setItemMeta(itemMeta);
+        inventory.setItem(50, itemStack);
+    }
+
+    public static void updateConfirmLore(Player player, Inventory inventory, ItemStack itemStack, boolean changed) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        Objects.requireNonNull(itemMeta).setLore(getConfirmLore(player, changed));
+        itemStack.setItemMeta(itemMeta);
+        inventory.setItem(53, itemStack);
+    }
+
+    public static List<Integer> getBannedPosition() {
+        return Arrays.asList(4, 13, 22, 31, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53);
+    }
+
+    public static List<Integer> getItemPlacementArea(Player player) {
+        if (InTradeMode.containsKey(player.getName())) {
+            return Arrays.asList(0, 1, 2, 3, 9, 10, 11, 12, 18, 19, 20, 21, 27, 28, 29, 30);
+        } else {
+            return Arrays.asList(5, 6, 7, 8, 14, 15, 16, 17, 23, 24, 25, 26, 32, 33, 34, 35);
+        }
+    }
+
+    public static boolean isPlayerInRequestMode(Player player) {
+        return InRequestMode.containsKey(player.getName()) || InRequestMode.containsValue(player.getName());
+    }
+
+    public static boolean isPlayerInTradeMode(Player player) {
+        return InTradeMode.containsKey(player.getName()) || InTradeMode.containsValue(player.getName());
+    }
+
+    public static Player getOtherParty(Player player) {
+        if (getInTradeMode().containsKey(player.getName())) {
+            return Bukkit.getPlayerExact(getInTradeMode().get(player.getName()));
+        } else if (getInTradeMode().containsValue(player.getName())) {
+            return Bukkit.getPlayerExact(getInTradeMode().inverse().get(player.getName()));
+        } else if (getInRequestMode().containsKey(player.getName())) {
+            return Bukkit.getPlayerExact(getInTradeMode().get(player.getName()));
+        } else if (getInRequestMode().containsValue(player.getName())) {
+            return Bukkit.getPlayerExact(getInTradeMode().inverse().get(player.getName()));
+        } else {
+            return null;
+        }
+    }
+
+    public static boolean isAllConfirmed(Player player) {
+        return TradeConfirm.contains(player.getName()) && TradeConfirm.contains(TradeUtils.getOtherParty(player).getName());
+    }
+
+    public static void refreshConfirmation(Player player, Inventory inventory, ItemStack itemStack, boolean reset) {
+        if (reset) {
+            TradeUtils.getTradeConfirm().remove(player.getName());
+            TradeUtils.getTradeConfirm().remove(TradeUtils.getOtherParty(player).getName());
+        }
+        TradeUtils.updateConfirmLore(player, inventory, itemStack, reset);
+        TradeUtils.updateConfirmLore(
+                TradeUtils.getOtherParty(player),
+                TradeUtils.getOtherParty(player).getOpenInventory().getTopInventory(),
+                itemStack,
+                reset
+        );
+    }
+
+    public static void refreshItem(Player player, int slot) {
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                ItemStack itemStack = getOtherParty(player).getOpenInventory().getItem(slot);
+                if (itemStack == null) {
+                    ItemStack i = new ItemStack(UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.BROWN));
+                    ItemMeta itemMeta = i.getItemMeta();
+                    Objects.requireNonNull(itemMeta).setDisplayName(" ");
+                    i.setItemMeta(itemMeta);
+                    player.getOpenInventory().setItem(slot, i);
+                } else {
+                    player.getOpenInventory().setItem(slot, itemStack);
+                }
+            }
+        }.runTaskAsynchronously(UltiTools.getInstance());
+
+    }
+
+    public static boolean isCrossWorldTradeAllowed() {
+        return ConfigController.getConfig("trade").getBoolean("allow_cross_world_trade");
+    }
+
+    public static boolean isMoneyTradeAllowed() {
+        return ConfigController.getConfig("trade").getBoolean("enable_money_trade");
+    }
+
+    public static boolean isExpTradeAllowed() {
+        return ConfigController.getConfig("trade").getBoolean("enable_exp_trade");
+    }
+
+    public static void toggleTrade(Player player) {
+        File playerFile = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
+        YamlConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
+        boolean toggle;
+        if (playerData.isSet("trade")) {
+            toggle = !playerData.getBoolean("trade");
+        } else {
+            toggle = false;
+        }
+        playerData.set("trade", toggle);
+        try {
+            playerData.save(playerFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean isEnableTrade(Player player) {
+        File playerFile = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
+        YamlConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
+
+        if (playerData.isSet("trade")) {
+            return playerData.getBoolean("trade");
+        } else {
+            return true;
+        }
+    }
+
+    public static boolean isBannedPlayer(Player master, Player player) {
+        File playerFile = new File(ConfigsEnum.PLAYER.toString(), master.getName() + ".yml");
+        YamlConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
+
+        if (playerData.isSet("trade_banned")) {
+            return false;
+        } else {
+            return playerData.getStringList("trade_banned").contains(player.getName());
+        }
+    }
+
+    public static void addBannedPlayer(Player master, String player) {
+        File playerFile = new File(ConfigsEnum.PLAYER.toString(), master.getName() + ".yml");
+        YamlConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
+        List<String> list;
+        if (playerData.isSet("trade_banned")) {
+            list = playerData.getStringList("trade_banned");
+        } else {
+            list = new ArrayList<>();
+        }
+        list.add(player);
+        playerData.set("trade_banned", list);
+        try {
+            playerData.save(playerFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void removeBannedPlayer(Player master, String player) {
+        File playerFile = new File(ConfigsEnum.PLAYER.toString(), master.getName() + ".yml");
+        YamlConfiguration playerData = YamlConfiguration.loadConfiguration(playerFile);
+        if (playerData.isSet("trade_banned")) {
+            List<String> list = playerData.getStringList("trade_banned");
+            list.remove(player);
+            try {
+                playerData.save(playerFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static List<String> getLore(List<String> list) {
+        list.add(ChatColor.WHITE + UltiTools.languageUtils.getString("trade_left_click_add"));
+        list.add(ChatColor.WHITE + UltiTools.languageUtils.getString("trade_right_click_reduce"));
+        list.add(ChatColor.WHITE + UltiTools.languageUtils.getString("trade_shift_left_click_add"));
+        list.add(ChatColor.WHITE + UltiTools.languageUtils.getString("trade_shift_right_click_reduce"));
+
+        return list;
+    }
+}

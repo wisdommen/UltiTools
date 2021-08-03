@@ -97,7 +97,7 @@ public class ChatListener implements Listener {
                      */
                     Objects.requireNonNull(server.getPlayerExact(toPlayer)).sendMessage(Objects.requireNonNull(UltiTools.languageUtils.getString("chat_att_beatt")).replaceAll("%player%",player.getName()));
                     Objects.requireNonNull(server.getPlayerExact(toPlayer)).playSound(server.getPlayerExact(toPlayer).getLocation(), UltiTools.versionAdaptor.getSound(BLOCK_NOTE_BLOCK_BELL), 10, 1);
-                    new AttTask(server.getPlayerExact(toPlayer), Message.toString()).runTaskTimer(UltiTools.getInstance(),0L, 2L);
+                    new AttTask(server.getPlayerExact(toPlayer), Message.toString()).runTaskTimerAsynchronously(UltiTools.getInstance(),0L, 2L);
                 }
             }.runTaskAsynchronously(UltiTools.getInstance());
         }

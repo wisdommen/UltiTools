@@ -1,0 +1,12 @@
+# 配置文件版本，请勿修改
+config_version: 1.0
+
+#是否启用Shift+右键玩家发送交易请求
+enable_shift_click_apply: true
+#是否允许跨世界交易
+allow_cross_world_trade: true
+
+#是否启用货币交易
+enable_money_trade: true
+#是否启用经验交易
+enable_exp_trade: true

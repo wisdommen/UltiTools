@@ -382,3 +382,44 @@ invalid_arguments: 参数不正确
 invsee_success: "成功打开该玩家的背包 "
 enderChest_see_success: "成功打开该玩家的末影箱 "
 player_doesnt_exist_or_offline: 目标玩家不存在或不在线！
+trade_function: 交易功能
+trade_title: 玩家交易
+trade_close: 关闭交易
+trade_money: 货币交易
+trade_exp: 经验交易
+trade_confirm: 确认交易
+trade_request: "§e玩家 %s 请求和你交易"
+trade_request_tip: "§2输入 /t accept 来同意\n§4输入 /t reject 来拒绝"
+trade_player_accepted: 对方已同意交易
+trade_you_accepted: 你同意了交易
+trade_player_rejected: 对方拒绝了交易
+trade_you_rejected: 你拒绝了交易
+trade_closed: 交易已关闭
+trade_money_now: "你目前提供的金钱:"
+trade_your_money: "你拥有的金钱:"
+trade_player_money: "对方目前提供的金钱:"
+trade_exp_now: "你目前提供的经验:"
+trade_your_exp: "你拥有的经验:"
+trade_player_exp: "对方目前提供的经验:"
+trade_left_click_add: 左键增加
+trade_right_click_reduce: 右键减少
+trade_shift_left_click_add: Shift + 左键增加10倍
+trade_shift_right_click_reduce: Shift + 右键减少10倍
+trade_player_in_trading: 玩家已被请求或正在进行交易
+trade_player_confirmed: 对方已确认交易
+trade_you_confirmed: 你已确认交易
+trade_you_not_confirm: 你还没有确认
+trade_player_not_confirm: 对方还没有确认
+trade_changed_need_reconfirm: 交易项目发生改变,需要重新确认
+trade_if_changed: 若交易项目发生改变且有一方已确认，则需要重新确认
+trade_all_confirmed: 双方均已确认,交易项目已锁定
+trade_success: ==========交易成功==========
+trade_cannot_in_different_worlds: 不允许跨世界交易
+trade_player_disabled: 对方拒绝收到任何请求
+trade_you_have_no_request: 你还没有任何交易请求
+trade_you_banned: "你已禁止 %s 与你进行交易"
+trade_you_un_banned: "你已解禁 %s 与你进行交易"
+trade_you_cannot_do: "你不能和 %s 交易"
+trade_exp_you_get: "你得到了 %s 点经验"
+trade_money_you_get: "你得到了 %s 金钱"
+trade_item_you_get: "你得到了 %s 个物品"

@@ -130,3 +130,6 @@ name_prefix: '§e[§dLv.%player_level%§e]'
 
 '注释44请勿修改': '(头衔) 自定义头顶显示后缀'
 name_suffix: '§e[§c%player_health_rounded%§e/§c%player_max_health_rounded%§e]'
+
+'注释45请勿修改': '开启交易功能'
+enable_trade: true

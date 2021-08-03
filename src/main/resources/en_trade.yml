@@ -1,0 +1,12 @@
+# config version, please do not change
+config_version: 1.0
+
+#Enable Shift + right click player to send trade request
+enable_shift_click_apply: true
+#Allow cross world trade
+allow_cross_world_trade: true
+
+#Enabe money trade
+enable_money_trade: true
+#Enable exp trade
+enable_exp_trade: true

@@ -5,7 +5,6 @@ import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.ViewManager;
 import com.ultikits.inventoryapi.ViewType;
 import com.ultikits.ultitools.enums.ConfigsEnum;
-import com.ultikits.ultitools.listener.KitsPageListener;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.utils.MessagesUtils;
 import com.ultikits.utils.SerializationUtils;
