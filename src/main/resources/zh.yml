@@ -423,3 +423,4 @@ trade_you_cannot_do: "你不能和 %s 交易"
 trade_exp_you_get: "你得到了 %s 点经验"
 trade_money_you_get: "你得到了 %s 金钱"
 trade_item_you_get: "你得到了 %s 个物品"
+trade_you_cannot_request_two_player: 你不能同时请求两个玩家
