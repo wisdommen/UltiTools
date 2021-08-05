@@ -34,30 +34,33 @@ public class TradeListener implements Listener {
 
         if (TradeUtils.isPlayerInRequestMode(To) || TradeUtils.isPlayerInTradeMode(To)) {
             From.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("trade_player_in_trading"));
-        } else if (TradeUtils.isEnableTrade(To)) {
-            if (TradeUtils.isPlayerInRequestMode(From)) {
-                From.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("trade_you_cannot_request_two_player"));
-            } else {
-                TradeUtils.requestTrade(From, To);
-            }
-        } else {
-            From.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("trade_player_disabled"));
+            return;
         }
+
+        if (!TradeUtils.isEnableTrade(To)) {
+            From.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("trade_player_disabled"));
+            return;
+        }
+
+        if (TradeUtils.isPlayerInRequestMode(From)) {
+            From.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("trade_you_cannot_request_two_player"));
+            return;
+        }
+
+        TradeUtils.requestTrade(From, To);
         event.setCancelled(true);
     }
 
     @EventHandler
     public void onPlayerQuit (PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        if (!TradeUtils.isPlayerInTradeMode(player)) return;
+
         if (TradeUtils.isPlayerInTradeMode(player)) {
             TradeUtils.closeTrade(player, TradeUtils.getOtherParty(player));
-        } else if (TradeUtils.isPlayerInRequestMode(player)) {
-            if (TradeUtils.getInRequestMode().containsKey(player.getName())) {
-                TradeUtils.getInRequestMode().remove(player.getName());
-            } else {
-                TradeUtils.getInRequestMode().inverse().remove(player.getName());
-            }
+        }
+
+        if (TradeUtils.isPlayerInRequestMode(player)) {
+            TradeUtils.removeRequest(player);
         }
     }
 
@@ -86,24 +89,22 @@ public class TradeListener implements Listener {
     public void onPlayerClickItem (InventoryClickEvent event) {
         if (!event.getView().getTitle().equalsIgnoreCase(UltiTools.languageUtils.getString("trade_title"))) return;
         if (event.getClickedInventory() == null) return;
+        if (event.getClickedInventory().getHolder() != null) return;
 
         Inventory inventory = event.getClickedInventory();
         Player player = (Player) event.getWhoClicked();
         ItemStack itemStack = event.getCurrentItem();
         int slot = event.getSlot();
 
-        if (inventory.getHolder() == null) return;
-
         if (TradeUtils.getBannedPosition().contains(slot)) {
             event.setCancelled(true);
             if (TradeUtils.isAllConfirmed(player)) return;
             switch (slot) {
                 case closeBtn:
-                    TradeUtils.refreshConfirmation(player, inventory, inventory.getItem(53), true);
+                    TradeUtils.refreshConfirmation(player, inventory, inventory.getItem(confirmBtn), true);
                     TradeUtils.closeTrade(player);
                     break;
                 case moneyBtn:
-                    TradeUtils.refreshConfirmation(player, inventory, inventory.getItem(53), true);
                     if (event.isLeftClick()) {
                         TradeUtils.addTradeMoney(player, event.isShiftClick());
                     }
@@ -111,34 +112,34 @@ public class TradeListener implements Listener {
                         TradeUtils.reduceTradeMoney(player, event.isShiftClick());
                     }
                     TradeUtils.updateAllMoneyLore(player, inventory, itemStack);
+                    TradeUtils.refreshConfirmation(player, inventory, inventory.getItem(confirmBtn), true);
                     break;
                 case expBtn:
-                    TradeUtils.refreshConfirmation(player, inventory, inventory.getItem(53), true);
                     if (event.isLeftClick()) {
                         TradeUtils.addTradeExp(player, event.isShiftClick());
                     }
                     if (event.isRightClick()) {
                         TradeUtils.reduceTradeExp(player, event.isShiftClick());
                     }
+                    TradeUtils.refreshConfirmation(player, inventory, inventory.getItem(confirmBtn), true);
                     TradeUtils.updateAllExpLore(player, inventory, itemStack);
                     break;
                 case confirmBtn:
                     TradeUtils.getTradeConfirm().add(player.getName());
                     TradeUtils.refreshConfirmation(player, inventory, itemStack, false);
-                    if (TradeUtils.isAllConfirmed(player)) {
-                        TradeUtils.confirmTrade(player);
-                    }
+                    if (!TradeUtils.isAllConfirmed(player)) return;
+                    TradeUtils.confirmTrade(player);
                     break;
             }
         } else if (TradeUtils.getItemPlacementArea(player).contains(slot)) {
             if (TradeUtils.isAllConfirmed(player)) {
                 event.setCancelled(true);
-            } else {
-                if (TradeUtils.isAnyConfirmed(player)) {
-                    TradeUtils.refreshConfirmation(player, inventory, inventory.getItem(53), true);
-                }
-                TradeUtils.refreshItem(TradeUtils.getOtherParty(player), slot);
+                return;
             }
+            if (TradeUtils.isAnyConfirmed(player)) {
+                TradeUtils.refreshConfirmation(player, inventory, inventory.getItem(confirmBtn), true);
+            }
+            TradeUtils.refreshItem(TradeUtils.getOtherParty(player), slot);
         } else {
             event.setCancelled(true);
         }

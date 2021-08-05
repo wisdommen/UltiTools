@@ -78,9 +78,9 @@ public class TradeUtils {
     }
 
     public static void acceptTrade(Player To) {
-        Player From = UltiTools.getInstance().getServer().getPlayerExact(inRequestMode.inverse().get(To.getName()));
-        inRequestMode.remove(Objects.requireNonNull(From).getName());
+        Player From = getOtherParty(To);
         inTradeMode.put(From.getName(), To.getName());
+        inRequestMode.remove(Objects.requireNonNull(From).getName());
 
         tradeMoney.put(From.getName(), 0);
         tradeMoney.put(To.getName(), 0);
@@ -98,10 +98,15 @@ public class TradeUtils {
     }
 
     public static void rejectTrade(Player To) {
-        Player From = UltiTools.getInstance().getServer().getPlayerExact(inRequestMode.inverse().get(To.getName()));
-        inTradeMode.remove(Objects.requireNonNull(From).getName());
+        Player From = getOtherParty(To);
+        removeRequest(From);
         From.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("trade_player_rejected"));
         To.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_you_rejected"));
+    }
+
+    public static void removeRequest(Player player) {
+        inRequestMode.remove(player.getName());
+        inRequestMode.inverse().remove(player.getName());
     }
 
     public static void closeTrade(Player From, Player To) {
@@ -181,21 +186,21 @@ public class TradeUtils {
                     To.setTotalExperience(To.getTotalExperience() + tradeExp.get(From.getName()));
                 }
 
-                inTradeMode.remove(From.getName());
-                tradeConfirm.remove(From.getName());
-                tradeConfirm.remove(To.getName());
-
                 From.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_success"));
                 From.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("trade_money_you_get").replace("%s", tradeMoney.get(To.getName()).toString()));
                 From.sendMessage(ChatColor.LIGHT_PURPLE+ UltiTools.languageUtils.getString("trade_exp_you_get").replace("%s", tradeExp.get(To.getName()).toString()));
-                From.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("trade_item_you_get").replace("%s", Integer.toString(t1)));
+                From.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("trade_item_you_get").replace("%s", Integer.toString(t2)));
 
                 To.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_success"));
                 To.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("trade_money_you_get").replace("%s", tradeMoney.get(From.getName()).toString()));
                 To.sendMessage(ChatColor.LIGHT_PURPLE+ UltiTools.languageUtils.getString("trade_exp_you_get").replace("%s", tradeExp.get(From.getName()).toString()));
-                To.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("trade_item_you_get").replace("%s", Integer.toString(t2)));
+                To.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("trade_item_you_get").replace("%s", Integer.toString(t1)));
             }
         }.runTaskAsynchronously(UltiTools.getInstance());
+
+        inTradeMode.remove(From.getName());
+        tradeConfirm.remove(From.getName());
+        tradeConfirm.remove(To.getName());
 
         From.closeInventory();
         To.closeInventory();
@@ -310,13 +315,13 @@ public class TradeUtils {
 
     public static Player getOtherParty(Player player) {
         if (getInTradeMode().containsKey(player.getName())) {
-            return Bukkit.getPlayerExact(getInTradeMode().get(player.getName()));
+            return Bukkit.getPlayerExact(inTradeMode.get(player.getName()));
         } else if (getInTradeMode().containsValue(player.getName())) {
-            return Bukkit.getPlayerExact(getInTradeMode().inverse().get(player.getName()));
+            return Bukkit.getPlayerExact(inTradeMode.inverse().get(player.getName()));
         } else if (getInRequestMode().containsKey(player.getName())) {
-            return Bukkit.getPlayerExact(getInTradeMode().get(player.getName()));
+            return Bukkit.getPlayerExact(inRequestMode.get(player.getName()));
         } else if (getInRequestMode().containsValue(player.getName())) {
-            return Bukkit.getPlayerExact(getInTradeMode().inverse().get(player.getName()));
+            return Bukkit.getPlayerExact(inRequestMode.inverse().get(player.getName()));
         } else {
             return null;
         }
