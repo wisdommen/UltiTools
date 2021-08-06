@@ -109,9 +109,9 @@ public final class UltiTools extends JavaPlugin {
         Arrays.asList(
                 new KitsConfig(),
                 new CleanerConfig(),
-//                new GroupPermissionConfig(),
-//                new UserPermissionConfig(),
-//                new GlobuleGroupsConfig(),
+//              new GroupPermissionConfig(),
+//              new UserPermissionConfig(),
+//              new GlobuleGroupsConfig(),
                 new LoginConfig(),
                 new JoinWelcomeConfig(),
                 new SideBarConfig(),
@@ -125,7 +125,8 @@ public final class UltiTools extends JavaPlugin {
                 new WhiteListConfig(),
                 new BagConfig(),
                 new ChatConfig(),
-                new CustomerGUIConfig()
+                new CustomerGUIConfig(),
+                new TradeConfig()
         );
 
         isDatabaseEnabled = getConfig().getBoolean("enableDataBase");
@@ -303,6 +304,10 @@ public final class UltiTools extends JavaPlugin {
             CommandRegister.registerCommand(plugin, new SocialSystemCommands(), "ultikits.tools.social", languageUtils.getString("friend_function"), "soc", "friends", "fri");
             getServer().getPluginManager().registerEvents(new FriendsApplyViewListener(), this);
             getServer().getPluginManager().registerEvents(new FriendsViewListener(), this);
+        }
+        if (getConfig().getBoolean("enable_trade")) {
+            CommandRegister.registerCommand(plugin, new TradeCommands(),"ultikits.tools.trade", languageUtils.getString("trade_function"), "t", "trade");
+            getServer().getPluginManager().registerEvents(new TradeListener(), this);
         }
 
         //注册任务

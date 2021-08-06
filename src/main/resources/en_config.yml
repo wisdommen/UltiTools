@@ -130,3 +130,6 @@ name_prefix: '§e[§dLv.%player_level%§e]'
 
 'comment44': 'customize above-head display suffix'
 name_suffix: '§e[§c%player_health_rounded%§e/§c%player_max_health_rounded%§e]'
+
+'comment45': 'enable trade function'
+enable_trade: true
