@@ -1,4 +1,4 @@
-config_version: 3.27
+config_version: 3.28
 
 'comment0': 'Language: zh_cn(简体中文), en_us(English)'
 language: en_us
@@ -133,3 +133,6 @@ name_suffix: '§e[§c%player_health_rounded%§e/§c%player_max_health_rounded%§
 
 'comment45': 'enable trade function'
 enable_trade: true
+
+'comment48': 'enable announcement function'
+enable_announcement: true

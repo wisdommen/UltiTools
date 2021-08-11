@@ -90,6 +90,7 @@ public final class UltiTools extends JavaPlugin {
         }
 
         yaml.saveYamlFile(getDataFolder().getPath(),"lobby.yml","lobby.yml");
+        yaml.saveYamlFile(getDataFolder().getPath(),"announcement.yml",language + "_announcement.yml");
         new PlayerlistChecker().playerlistNewChecker();                                                                 //playerlist.yml文件转换
 
         List<File> folders = new ArrayList<>();
@@ -308,6 +309,9 @@ public final class UltiTools extends JavaPlugin {
         if (getConfig().getBoolean("enable_trade")) {
             CommandRegister.registerCommand(plugin, new TradeCommands(),"ultikits.tools.trade", languageUtils.getString("trade_function"), "t", "trade");
             getServer().getPluginManager().registerEvents(new TradeListener(), this);
+        }
+        if (getConfig().getBoolean("enable_announcement")) {
+            new BroadcastTask().run();
         }
 
         //注册任务

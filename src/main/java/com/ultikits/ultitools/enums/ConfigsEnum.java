@@ -30,7 +30,8 @@ public enum ConfigsEnum {
     CUSTOMERGUI(UltiTools.getInstance().getDataFolder()+"/customgui.yml"),
     PLAYERLIST(UltiTools.getInstance().getDataFolder() + "/playerData/playerlist/playerlist.yml"),
     LOBBY(UltiTools.getInstance().getDataFolder() + "/lobby.yml"),
-    TRADE(UltiTools.getInstance().getDataFolder() + "/trade.yml");
+    TRADE(UltiTools.getInstance().getDataFolder() + "/trade.yml"),
+    ANNOUNCEMENT(UltiTools.getInstance().getDataFolder() + "/announcement.yml");
 
     private final String path;
 

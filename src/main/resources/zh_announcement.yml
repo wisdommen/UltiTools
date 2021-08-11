@@ -1,0 +1,54 @@
+announcement:
+  #聊天栏公告
+  message:
+    #设置为true则启用这种类型的公告
+    enable: true
+    #公告发送周期，单位是秒
+    period: 1200
+    #message通知，支持§颜色代码
+    broadcast:
+      - "§6这是第一条测试message通知"
+      - "这是第二条测试message通知"
+
+#bossbar血条公告
+  bossbar:
+    #设置为true则启用这种类型的公告
+    enable: true
+    #提示：“period”需要大于“stay”
+    #bossbar通知切换的时间,单位是秒
+    period: 1800
+    #每个bossbar停留的时间
+    stay: 5
+    #bossbar通知，支持§颜色代码
+    broadcast:
+      - "§a这是第一条测试bossbar通知"
+      - "这是第二条测试bossbar通知"
+
+#title message标题公告
+  title:
+    #设置为true则启用这种类型的公告
+    enable: true
+    #公告发送周期
+    #提示：20tick = 1秒
+    #peroid应当大于fade-in,stay,fade-out的总和
+    #period的单位是秒
+    period: 48
+    #公告淡入时间
+    #单位是 tick
+    fade-in: 10
+    #公告显示时间
+    #单位是 tick
+    stay: 40
+    #公告淡出时间
+    #单位是 tick
+    fade-out: 10
+    #标题title和小标题subtitle的数量应当相等
+    #相同行数的title和subtitle是对应成组的
+    #title通知，支持§颜色代码
+    broadcast:
+      title:
+        - "§b这是第一条测试title通知"
+        - "这是第二条测试title通知"
+      subtitle:
+        - "§d这是与第一条测试title对应的subtitle通知"
+        - "这是与第二条测试title对应的subtitle通知"
