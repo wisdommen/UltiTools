@@ -1,4 +1,4 @@
-config_version: 3.27
+config_version: 3.28
 
 '注释0请勿修改': '语言: zh_cn(简体中文), en_us(English)'
 language: zh_cn
@@ -133,3 +133,6 @@ name_suffix: '§e[§c%player_health_rounded%§e/§c%player_max_health_rounded%§
 
 '注释45请勿修改': '开启交易功能'
 enable_trade: true
+
+'注释48请勿修改': '开启公告功能'
+enable_announcement: true

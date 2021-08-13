@@ -1,0 +1,54 @@
+announcement:
+  #announcement in chat bar
+  message:
+    #set it to true to enable this kind of announcement
+    enable: true
+    #message announcement switchover time,measured in SECONDS
+    peroid: 1200
+    #message announcement,you can ues § to set their colors
+    broadcast:
+      - "§6The first test message announcement"
+      - "The second test message announcement"
+
+#announcement through bossbar
+  bossbar:
+    #set it to true to enable this kind of announcement
+    enable: true
+    #"period" should be greater than "stay"
+    #bossbar announcement switchover time,measured in SECONDS
+    period: 1800
+    #Time for each bossbar announcement to stay,measured in SECONDS
+    stay: 5
+    #bossbar announcement,you can ues § to set their colors
+    broadcast:
+      - "§aThe first test bossbar announcement"
+      - "The second test bossbar announcement"
+
+#announcement through title message
+  title:
+    #set it to true to enable this kind of announcement
+    enable: true
+    #title announcement switchover time
+    #tips:20 ticks equals to 1 second
+    #period should be greater than the summary of fade-in,stay and fade-out
+    #period is measured in SECONDS
+    peroid: 48000
+    #time for the title to fade in
+    #measured in TICKS
+    fade-in: 10
+    #time for the title to stay
+    #measured in TICKS
+    stay: 40
+    #time for the title to stay
+    #measured in TICKS
+    fade-out: 10
+    #the amount of titles should equal to that of the subtitle
+    #the title and subtitle of the same line correspond to each other and of a same group
+    #title announcement,you can ues § to set their colors
+    broadcast:
+      title:
+        - "§bThe first test title announcement"
+        - "The second test title announcement"
+      subtitle:
+        - "§dThe subtitle belongs to the first test title announcement"
+        - "The subtitle belongs to the second test title announcement"
