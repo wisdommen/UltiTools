@@ -7,8 +7,8 @@ announcement:
     period: 1200
     #message通知，支持§颜色代码
     broadcast:
-      - "§6这是第一条测试message通知"
-      - "这是第二条测试message通知"
+      - "§6欢迎来到服务器"
+      - "请友善对待他人"
 
 #bossbar血条公告
   bossbar:
@@ -21,13 +21,13 @@ announcement:
     stay: 5
     #bossbar通知，支持§颜色代码
     broadcast:
-      - "§a这是第一条测试bossbar通知"
-      - "这是第二条测试bossbar通知"
+      - "§6欢迎来到服务器"
+      - "请友善对待他人"
 
 #title message标题公告
   title:
     #设置为true则启用这种类型的公告
-    enable: true
+    enable: false
     #公告发送周期
     #提示：20tick = 1秒
     #peroid应当大于fade-in,stay,fade-out的总和

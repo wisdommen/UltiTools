@@ -7,8 +7,8 @@ announcement:
     peroid: 1200
     #message announcement,you can ues § to set their colors
     broadcast:
-      - "§6The first test message announcement"
-      - "The second test message announcement"
+      - "§6Welcome to the server"
+      - "Please be kind to others"
 
 #announcement through bossbar
   bossbar:
@@ -21,13 +21,13 @@ announcement:
     stay: 5
     #bossbar announcement,you can ues § to set their colors
     broadcast:
-      - "§aThe first test bossbar announcement"
-      - "The second test bossbar announcement"
+      - "§6Welcome to the server"
+      - "Please be kind to others"
 
 #announcement through title message
   title:
     #set it to true to enable this kind of announcement
-    enable: true
+    enable: false
     #title announcement switchover time
     #tips:20 ticks equals to 1 second
     #period should be greater than the summary of fade-in,stay and fade-out
