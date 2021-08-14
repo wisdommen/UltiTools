@@ -32,7 +32,7 @@ announcement:
     #提示：20tick = 1秒
     #peroid应当大于fade-in,stay,fade-out的总和
     #period的单位是秒
-    period: 48
+    period: 48000
     #公告淡入时间
     #单位是 tick
     fade-in: 10
@@ -42,13 +42,8 @@ announcement:
     #公告淡出时间
     #单位是 tick
     fade-out: 10
-    #标题title和小标题subtitle的数量应当相等
-    #相同行数的title和subtitle是对应成组的
     #title通知，支持§颜色代码
+    #格式："标题": "副标题"
     broadcast:
-      title:
-        - "§b这是第一条测试title通知"
-        - "这是第二条测试title通知"
-      subtitle:
-        - "§d这是与第一条测试title对应的subtitle通知"
-        - "这是与第二条测试title对应的subtitle通知"
+      "§b遵守规定，友好相处": "相遇是缘分"
+      "欢迎来到本服务器": "玩得开心"

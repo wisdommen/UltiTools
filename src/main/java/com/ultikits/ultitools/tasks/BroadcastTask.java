@@ -7,11 +7,14 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class BroadcastTask {
     public static YamlConfiguration config = BossbarBroadcastTask.announcementConfig;
@@ -88,19 +91,27 @@ class MessageBroadcastTask extends BukkitRunnable {
 
 class TitleBroadcastTask extends BukkitRunnable {
     int i = 0;
+    List<String> titlesList = new ArrayList<>();
     YamlConfiguration config = BossbarBroadcastTask.announcementConfig;
+    ConfigurationSection section = config.getConfigurationSection("announcement.title.broadcast");
+
     private int getLines() {
         int lines = BossbarBroadcastTask.announcementConfig.getStringList("announcement.title.broadcast.title").size();
         return lines;
     }
+    List<Object> onlinePlayerList = (List) Bukkit.getOnlinePlayers();
+    Set<String> titlesSet = section.getKeys(false);
+
     @Override
     public void run() {
+        titlesList.addAll(titlesSet);
         int count = getLines();
-        List<Object> onlinePlayerList = (List) Bukkit.getOnlinePlayers();
+        String title = titlesList.get(i);
+        String subtitle = config.getString("announcement.title.broadcast." + title);
+
         for(Object player : onlinePlayerList) {
             Player onlinePlayer = (Player) player;
-            onlinePlayer.sendTitle(config.getStringList("announcement.title.broadcast.title").get(i),config.getStringList("announcement.title.broadcast.subtitle").get(i),
-                    config.getInt("announcement.title.fade-in"),config.getInt("announcement.title.stay"),config.getInt("announcement.title.fade-out"));
+            onlinePlayer.sendTitle(title,subtitle,config.getInt("announcement.title.fade-in"),config.getInt("announcement.title.stay"),config.getInt("announcement.title.fade-out"));
         }
         i++;
         if(i == count) {

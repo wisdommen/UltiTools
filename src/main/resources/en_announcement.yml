@@ -42,13 +42,8 @@ announcement:
     #time for the title to stay
     #measured in TICKS
     fade-out: 10
-    #the amount of titles should equal to that of the subtitle
-    #the title and subtitle of the same line correspond to each other and of a same group
     #title announcement,you can ues § to set their colors
+    #format: "Title": "Subtitle"
     broadcast:
-      title:
-        - "§bThe first test title announcement"
-        - "The second test title announcement"
-      subtitle:
-        - "§dThe subtitle belongs to the first test title announcement"
-        - "The subtitle belongs to the second test title announcement"
+      "§bPlease obey the server rules": "Happy to meet you!"
+      "Welcome to this server": "Have a good time!"
