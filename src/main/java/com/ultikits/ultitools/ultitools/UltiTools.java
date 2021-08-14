@@ -8,6 +8,7 @@ import com.ultikits.ultitools.checker.PlayerlistChecker;
 import com.ultikits.ultitools.checker.VersionChecker;
 import com.ultikits.ultitools.commands.*;
 import com.ultikits.ultitools.config.*;
+import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.listener.*;
 import com.ultikits.ultitools.register.CommandRegister;
 import com.ultikits.ultitools.tasks.*;
@@ -89,8 +90,12 @@ public final class UltiTools extends JavaPlugin {
             getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("using_customized_language"));
         }
 
-        yaml.saveYamlFile(getDataFolder().getPath(),"lobby.yml","lobby.yml");
-        yaml.saveYamlFile(getDataFolder().getPath(),"announcement.yml",language + "_announcement.yml");
+        if(!new File(ConfigsEnum.LOBBY.toString()).exists()) {
+            yaml.saveYamlFile(getDataFolder().getPath(),"lobby.yml","lobby.yml");
+        }
+        if(!new File(ConfigsEnum.ANNOUNCEMENT.toString()).exists()) {
+            yaml.saveYamlFile(getDataFolder().getPath(),"announcement.yml",language + "_announcement.yml");
+        }
         new PlayerlistChecker().playerlistNewChecker();                                                                 //playerlist.yml文件转换
 
         List<File> folders = new ArrayList<>();
