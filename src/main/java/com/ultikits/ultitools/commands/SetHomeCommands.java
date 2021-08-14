@@ -4,7 +4,6 @@ import com.ultikits.abstracts.AbstractPlayerCommandExecutor;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.Utils;
-import com.ultikits.utils.MessagesUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,8 +12,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
+
+import static com.ultikits.ultitools.utils.HomeUtils.setHome;
 
 public class SetHomeCommands extends AbstractPlayerCommandExecutor {
 
@@ -39,10 +38,6 @@ public class SetHomeCommands extends AbstractPlayerCommandExecutor {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (Utils.getHomeList(player).contains(args[0])) {
-                        player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("sethome_home_already_have")));
-                        return;
-                    }
                     setHome(player, args[0]);
                 }
             }.runTaskAsynchronously(UltiTools.getInstance());
@@ -51,29 +46,6 @@ public class SetHomeCommands extends AbstractPlayerCommandExecutor {
             player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("sethome_usage"));
             return false;
         }
-    }
-
-    private void setHome(Player player, String homeName) {
-        File file = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-
-        List<String> homelist = config.getStringList(player.getName() + ".homelist");
-        config.set(player.getName() + "." + homeName + ".world", player.getWorld().getName());
-        config.set(player.getName() + "." + homeName + ".x", player.getLocation().getBlockX());
-        config.set(player.getName() + "." + homeName + ".y", player.getLocation().getBlockY());
-        config.set(player.getName() + "." + homeName + ".z", player.getLocation().getBlockZ());
-        if (homeName.equals("Def")) {
-            homeName = UltiTools.languageUtils.getString("default");
-            homelist.remove(homeName);
-        }
-        homelist.add(homeName);
-        config.set(player.getName() + ".homelist", homelist);
-        try {
-            config.save(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        player.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("sethome_successfully"));
     }
 
     private static boolean isPlayerCanSetHome(Player player) {

@@ -1,9 +1,12 @@
 package com.ultikits.ultitools.listener;
 
 import com.ultikits.ultitools.checker.VersionChecker;
+import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
+import com.ultikits.ultitools.tasks.SideBarTask;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.ScoreBoardUtils;
+import com.ultikits.utils.YamlFileUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -33,7 +36,7 @@ public class JoinListener implements Listener {
     YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
     List<String> welcomeMessage = config.getStringList("welcome_message");
-    String firstJoinBroadcast =  UltiTools.languageUtils.getString("first_join_broadcast");
+    String firstJoinBroadcast = UltiTools.languageUtils.getString("first_join_broadcast");
     String opJoinMessage = config.getString("op_join");
     String opQuitMessage = config.getString("op_quit");
     String playerJoinMessage = config.getString("player_join");
@@ -64,7 +67,7 @@ public class JoinListener implements Listener {
         if (UltiTools.getInstance().getConfig().getBoolean("enable_scoreboard")) {
             ScoreBoardUtils.registerPlayer(player.getUniqueId());
         }
-        if (loginConfig.getBoolean("enableFixPointLogin")){
+        if (loginConfig.getBoolean("enableFixPointLogin")) {
             try {
                 String worldName = loginConfig.getString("loginPoint.world");
                 double x = loginConfig.getDouble("loginPoint.x");
@@ -72,7 +75,7 @@ public class JoinListener implements Listener {
                 double z = loginConfig.getDouble("loginPoint.z");
                 Location loginLocation = new Location(Bukkit.getWorld(worldName), x, y, z);
                 player.teleport(loginLocation);
-            }catch (Exception ignored){
+            } catch (Exception ignored) {
             }
         }
         if (UltiTools.getInstance().getConfig().getBoolean("enable_onjoin")) {
@@ -98,7 +101,7 @@ public class JoinListener implements Listener {
                 @Override
                 public void run() {
                     for (String each : welcomeMessage) {
-                        player.sendMessage(PlaceholderAPI.setPlaceholders(player, each.replaceAll("%player_name%",player.getName())));
+                        player.sendMessage(PlaceholderAPI.setPlaceholders(player, each.replaceAll("%player_name%", player.getName())));
                     }
                 }
 
@@ -147,7 +150,9 @@ public class JoinListener implements Listener {
         } else {
             Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, playerQuitMessage == null ? vanillaQuitMessage : playerQuitMessage.replace("%player_name%", player.getName())));
         }
-        ScoreBoardUtils.unregisterPlayer(player.getUniqueId());
+        if (UltiTools.getInstance().getConfig().getBoolean("enable_scoreboard")) {
+            ScoreBoardUtils.unregisterPlayer(player.getUniqueId());
+        }
     }
 
     @EventHandler

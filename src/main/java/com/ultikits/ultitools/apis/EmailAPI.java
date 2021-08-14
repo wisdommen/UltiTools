@@ -19,14 +19,16 @@ public interface EmailAPI {
      * @param uuid 邮件ID
      * @return 一个邮件对象，如果未找到则返回null
      */
-    @Nullable EmailContentBean getEmail(String uuid);
+    @Nullable
+    EmailContentBean getEmail(String uuid);
 
     /**
      * 获取此玩家的所有Email
      *
      * @return 此玩家所有的Email，键为Email ID，值为EmailContentBean
      */
-    @NotNull Map<String, EmailContentBean> getEmails();
+    @NotNull
+    Map<String, EmailContentBean> getEmails();
 
     /**
      * 发送一封邮件
@@ -37,7 +39,8 @@ public interface EmailAPI {
      * @param commands  发送的邮件在点击时执行的命令
      * @return EmailResponse 邮件发送后的返回状态
      */
-    @NotNull EmailResponse sendTo(@NotNull OfflinePlayer receiver, @Nullable String message, @Nullable ItemStack itemStack, @Nullable List<String> commands);
+    @NotNull
+    EmailResponse sendTo(@NotNull OfflinePlayer receiver, @Nullable String message, @Nullable ItemStack itemStack, @Nullable List<String> commands);
 
     /**
      * 删除一封邮件

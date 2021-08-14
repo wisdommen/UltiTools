@@ -40,7 +40,8 @@ public class DeleteHomeCommands extends AbstractTabExecutor {
     }
 
     @Override
-    protected @Nullable List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
+    protected @Nullable
+    List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
         return Utils.getHomeList(player);
     }
 
@@ -56,18 +57,14 @@ public class DeleteHomeCommands extends AbstractTabExecutor {
         if (homeName.equals(UltiTools.languageUtils.getString("default"))) {
             homeNameNew = "Def";
         }
-        if (config.get(player.getName() + "." + homeNameNew) != null) {
-            config.set(player.getName() + "." + homeNameNew, "");
-            config.set(player.getName() + ".homelist", homeList);
-            player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("delhome_successfully"), homeName));
-            try {
-                config.save(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("home_dont_have"));
+        config.set(player.getName() + "." + homeNameNew, null);
+        config.set(player.getName() + ".homelist", homeList);
+        try {
+            config.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("delhome_successfully"), homeName));
         return false;
     }
 }

@@ -49,6 +49,10 @@ public class TeleportCommands extends AbstractTabExecutor {
                             player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("tpa_player_not_found")));
                             return true;
                         }
+                        if (TpTimerTask.tpTemp.get(target) != null) {
+                            player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("tpa_target_busy")));
+                            return true;
+                        }
                         TpTimerTask.tpTemp.put(target, player);
                         TpTimerTask.tpTimer.put(target, 20);
                         player.sendMessage(MessagesUtils.info(String.format(UltiTools.languageUtils.getString("tpa_tp_send_successfully"), target.getName())));

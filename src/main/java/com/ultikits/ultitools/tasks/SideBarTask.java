@@ -1,11 +1,9 @@
 package com.ultikits.ultitools.tasks;
 
 import com.google.common.collect.Lists;
-import com.ultikits.beans.EmailContentBean;
 import com.ultikits.ultitools.beans.ArmorsBean;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
-import com.ultikits.ultitools.manager.EmailManager;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.ScoreBoardUtils;
 import com.ultikits.utils.EconomyUtils;
@@ -15,13 +13,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scoreboard.*;
 
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.*;
 
 import static com.minecraft.Ultilevel.utils.checkLevel.*;
+import static com.ultikits.ultitools.utils.EmailUtils.getUnReadEmailNum;
 import static com.ultikits.ultitools.utils.ScoreBoardUtils.updateLine;
 
 
@@ -109,38 +107,36 @@ public class SideBarTask extends BukkitRunnable {
             }
         }
 
-        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_money") + " " + ChatColor.GOLD+ money, 97);
-        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_deposit") + " " + ChatColor.GOLD+ deposit, 96);
-        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_level") + " " + ChatColor.GOLD+ level_num, 95);
-        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_job") + " " + ChatColor.GOLD+ occupation, 98);
-        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_name") + " " + ChatColor.GOLD+ name, 99);
-        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_online_player") + " " + ChatColor.GOLD+ onLinePlayers, 0);
-        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_health") + " " + ChatColor.YELLOW + hp + ChatColor.BOLD + " / " + ChatColor.GOLD+ max_hp, 93);
+        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_money") + " " + ChatColor.GOLD + money, 97);
+        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_deposit") + " " + ChatColor.GOLD + deposit, 96);
+        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_level") + " " + ChatColor.GOLD + level_num, 95);
+        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_job") + " " + ChatColor.GOLD + occupation, 98);
+        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_name") + " " + ChatColor.GOLD + name, 99);
+        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_online_player") + " " + ChatColor.GOLD + onLinePlayers, 0);
+        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_health") + " " + ChatColor.YELLOW + hp + ChatColor.BOLD + " / " + ChatColor.GOLD + max_hp, 93);
         int unread = getUnReadEmailNum(player);
-//        setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_new_email") + " " + ChatColor.GOLD, unread + UltiTools.languageUtils.getString("feng"), 92);
         if (unread == 0) {
             updateLine(player, null, 92);
-//            setScoreboard(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_new_email") + " " + ChatColor.GOLD, unread + UltiTools.languageUtils.getString("feng"), 92, true);
-        }else {
-            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_new_email") + " " + ChatColor.GOLD+ unread + UltiTools.languageUtils.getString("feng"), 92);
+        } else {
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_new_email") + " " + ChatColor.GOLD + unread + UltiTools.languageUtils.getString("feng"), 92);
         }
         if (!max_exp.equals("") && !exp.equals("")) {
-            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_exp") + " " + ChatColor.YELLOW+ exp + ChatColor.BOLD + " / " + ChatColor.GOLD + max_exp, 94);
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_exp") + " " + ChatColor.YELLOW + exp + ChatColor.BOLD + " / " + ChatColor.GOLD + max_exp, 94);
         }
         if (CDq != null && !CDq.equals("") && Integer.parseInt(CDq) > 0) {
-            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_Q_countdown") + " " + ChatColor.GOLD+ CDq + UltiTools.languageUtils.getString("second"), 89);
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_Q_countdown") + " " + ChatColor.GOLD + CDq + UltiTools.languageUtils.getString("second"), 89);
         }
         if (CDw != null && !CDw.equals("") && Integer.parseInt(CDw) > 0) {
-            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_W_countdown") + " " + ChatColor.GOLD+ CDw + UltiTools.languageUtils.getString("second"), 88);
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_W_countdown") + " " + ChatColor.GOLD + CDw + UltiTools.languageUtils.getString("second"), 88);
         }
         if (CDe != null && !CDe.equals("") && Integer.parseInt(CDe) > 0) {
-            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_E_countdown") + " " + ChatColor.GOLD+ CDe + UltiTools.languageUtils.getString("second"), 87);
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_E_countdown") + " " + ChatColor.GOLD + CDe + UltiTools.languageUtils.getString("second"), 87);
         }
         if (CDr != null && !CDr.equals("") && Integer.parseInt(CDr) > 0) {
-            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_R_countdown") + " " + ChatColor.GOLD+ CDr + UltiTools.languageUtils.getString("second"), 86);
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_R_countdown") + " " + ChatColor.GOLD + CDr + UltiTools.languageUtils.getString("second"), 86);
         }
         if (isWizard && mp != null && max_mp != null && !mp.equals("") && !max_mp.equals("")) {
-            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_magic") + "" + ChatColor.YELLOW+ mp + ChatColor.BOLD + "/" + ChatColor.GOLD + max_mp, 90);
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_magic") + "" + ChatColor.YELLOW + mp + ChatColor.BOLD + "/" + ChatColor.GOLD + max_mp, 90);
         }
 
         if (UltiTools.getInstance().getConfig().getBoolean("enable_armor_check")) {
@@ -159,22 +155,6 @@ public class SideBarTask extends BukkitRunnable {
         setCustomLine(player);
     }
 
-    public static Integer getUnReadEmailNum(Player player) {
-        if (!UltiTools.getInstance().getConfig().getBoolean("enable_email")) {
-            return 0;
-        }
-        EmailManager emailManager = new EmailManager(player);
-        Map<String, EmailContentBean> emailContentManagerMap = emailManager.getEmails();
-        int i = 0;
-        for (String each : emailContentManagerMap.keySet()) {
-            EmailContentBean emailContentManager = emailContentManagerMap.get(each);
-            if (!emailContentManager.getRead()) {
-                i++;
-            }
-        }
-        return i;
-    }
-
     public String setPlaceholderString(Player player, String string) {
         try {
             return Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, ConfigController.getConfig("sidebar").getString(string)));
@@ -182,16 +162,6 @@ public class SideBarTask extends BukkitRunnable {
             return "";
         }
     }
-
-//    public void setScoreboard(Player player, String prefixString, String content, int score) {
-//        setScoreboard(player, prefixString, content, score, false);
-//    }
-//
-//    public void setScoreboard(Player player, String prefixString, String content, int score, boolean reset) {
-//        if (!content.equals("")) {
-//            updateLine(player, prefixString + content, score, reset);
-//        }
-//    }
 
     public String setArmorString(String string) {
         if ("-1".equals(string)) {

@@ -18,6 +18,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
+
 import static com.ultikits.utils.MessagesUtils.info;
 import static com.ultikits.utils.MessagesUtils.warning;
 
@@ -183,5 +185,27 @@ public class EmailUtils {
         } else {
             player.sendMessage(warning(UltiTools.languageUtils.getString("email_hand_item")));
         }
+    }
+
+    /**
+     * 获取玩家未读邮件数量
+     *
+     * @param player 玩家
+     * @return 未读邮件数量
+     */
+    public static Integer getUnReadEmailNum(Player player) {
+        if (!UltiTools.getInstance().getConfig().getBoolean("enable_email")) {
+            return 0;
+        }
+        EmailManager emailManager = new EmailManager(player);
+        Map<String, EmailContentBean> emailContentManagerMap = emailManager.getEmails();
+        int i = 0;
+        for (String each : emailContentManagerMap.keySet()) {
+            EmailContentBean emailContentManager = emailContentManagerMap.get(each);
+            if (!emailContentManager.getRead()) {
+                i++;
+            }
+        }
+        return i;
     }
 }

@@ -4,6 +4,7 @@ import com.ultikits.abstracts.AbstractTabExecutor;
 import com.ultikits.enums.Sounds;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
+import com.ultikits.ultitools.utils.DelayTeleportUtils;
 import com.ultikits.ultitools.utils.Utils;
 import com.ultikits.ultitools.views.WorldsListView;
 import org.bukkit.*;
@@ -153,7 +154,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
                     player.sendMessage(warning(UltiTools.languageUtils.getString("world_world_not_found")));
                     return true;
             }
-        }else {
+        } else {
             player.sendMessage(warning(UltiTools.languageUtils.getString("wrong_format")));
             multiWorldsHelp(player);
         }
@@ -176,7 +177,8 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
     }
 
     @Override
-    protected @Nullable List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] args, @NotNull Player player) {
+    protected @Nullable
+    List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] args, @NotNull Player player) {
         if (args.length == 1) {
             List<String> tabCommands = new ArrayList<>();
             tabCommands.add("help");
@@ -259,51 +261,19 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
     private void teleportPlayer(Player player, String world) {
         Location location = UltiTools.getInstance().getServer().getWorld(world).getSpawnLocation();
         if (!player.getWorld().getName().equalsIgnoreCase(world)) {
-            teleport(player, location);
+            DelayTeleportUtils.delayTeleport(player, location, 3);
         } else {
             player.sendMessage(warning(UltiTools.languageUtils.getString("world_you_are_in_this_world")));
         }
     }
 
-    private void teleport(Player player, Location location) {
-        HomeCommands.teleportingPlayers.put(player.getUniqueId(), true);
-        Chunk chunk = location.getChunk();
-        if (!chunk.isLoaded()) {
-            chunk.load();
-        }
-        new BukkitRunnable() {
-            float time = 3;
-
-            @Override
-            public void run() {
-                if (!HomeCommands.teleportingPlayers.get(player.getUniqueId())) {
-                    player.sendTitle(ChatColor.RED + UltiTools.languageUtils.getString("world_teleport_failed"), UltiTools.languageUtils.getString("do_not_move"), 10, 50, 20);
-                    this.cancel();
-                    return;
-                }
-                if (time == 0) {
-                    player.teleport(location);
-                    player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.ENTITY_ENDERMAN_TELEPORT), 1, 0);
-                    player.sendTitle(ChatColor.GREEN + UltiTools.languageUtils.getString("world_teleport_successfully"), "", 10, 50, 20);
-                    HomeCommands.teleportingPlayers.put(player.getUniqueId(), false);
-                    this.cancel();
-                    return;
-                }
-                if ((time / 0.5 % 2) == 0) {
-                    player.sendTitle(ChatColor.GREEN + UltiTools.languageUtils.getString("world_teleporting"), String.format(UltiTools.languageUtils.getString("world_teleporting_countdown"), (int) time), 10, 70, 20);
-                }
-                time -= 0.5;
-            }
-        }.runTaskTimer(UltiTools.getInstance(), 0, 10L);
-    }
-
     private void reviewOldVersionConfig(YamlConfiguration newConfig, YamlConfiguration oldConfig) {
-        if (newConfig.get("blocked_worlds") == null) {
+        if (newConfig.get("blocked_worlds") == null && oldConfig.get("blocked_worlds") != null) {
             newConfig.set("blocked_worlds", oldConfig.getStringList("blocked_worlds"));
 
             for (String world : getWorlds()) {
                 newConfig.set("world." + world + ".type", "GRASS_BLOCK");
-                newConfig.set("world." + world + ".describe", "无");
+                newConfig.set("world." + world + ".describe", "None");
             }
             try {
                 newConfig.save(worldsFile);

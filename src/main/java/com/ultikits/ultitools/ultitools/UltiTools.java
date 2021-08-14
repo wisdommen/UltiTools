@@ -11,6 +11,7 @@ import com.ultikits.ultitools.config.*;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.listener.*;
 import com.ultikits.ultitools.register.CommandRegister;
+import com.ultikits.ultitools.register.PapiRegister;
 import com.ultikits.ultitools.tasks.*;
 import com.ultikits.ultitools.utils.*;
 import com.ultikits.utils.DatabaseUtils;
@@ -45,12 +46,22 @@ public final class UltiTools extends JavaPlugin {
     public static boolean isDatabaseEnabled;
     public static DatabaseUtils databaseUtils;
     private static boolean isUltiCoreUpToDate;
+    private static final String banner = "\n" +
+            "§b§n==================================================§f\n" +
+            "§b§l   __  __ __ __   _  ______               __     §f\n" +
+            "§b§l  / / / // // /_ (_)/_  __/____   ____   / /_____§f\n" +
+            "§b§l / / / // // __// /  / /  / __ \\ / __ \\ / // ___/§f\n" +
+            "§b§l/ /_/ // // /_ / /  / /  / /_/ // /_/ // /(__  ) §f\n" +
+            "§b§l\\____//_/ \\__//_/  /_/   \\____/ \\____//_//____/  §f\n" +
+            "§f                                                 §f\n" +
+            "§b§n==================================================§f\n";
 
     @Override
     public void onEnable() {
         plugin = this;
+        this.getServer().getConsoleSender().sendMessage(banner);
         isUltiCoreUpToDate = DependencyChecker.isUltiCoreUpToDate();
-        if (!isUltiCoreUpToDate){
+        if (!isUltiCoreUpToDate) {
             this.getServer().getConsoleSender().sendMessage(MessagesUtils.warning("The version of UltiCoreAPI is too old to enable UltiTools!"));
             this.getServer().getConsoleSender().sendMessage(MessagesUtils.warning("Use [/ulticore upgrade] to download the newest version of UltiCoreAPI!"));
             this.getServer().getPluginManager().disablePlugin(plugin);
@@ -62,7 +73,7 @@ public final class UltiTools extends JavaPlugin {
         metrics.addCustomChart(new Metrics.SimplePie("pro_user_count", () -> String.valueOf(isProVersion)));
         metrics.addCustomChart(new Metrics.AdvancedPie("function_used", () -> {
             Map<String, Integer> valueMap = new HashMap<>();
-            for (String each : FunctionUtils.getAllFunctions()){
+            for (String each : FunctionUtils.getAllFunctions()) {
                 boolean enabled = getConfig().getBoolean(FunctionUtils.getFunctionCode(each));
                 valueMap.put(each, enabled ? 1 : 0);
             }
@@ -81,10 +92,10 @@ public final class UltiTools extends JavaPlugin {
         String cusLang = getConfig().getString("language").split("_")[1];
         yaml.saveYamlFile(getDataFolder().getPath() + File.separator + "lang", language + ".yml", language + ".yml", true);
 
-        if (cusLang.equalsIgnoreCase("cn")||cusLang.equalsIgnoreCase("us")) {
+        if (cusLang.equalsIgnoreCase("cn") || cusLang.equalsIgnoreCase("us")) {
             File langFile = new File(getDataFolder().getPath() + File.separator + "lang", language + ".yml");
             languageUtils = new LanguageUtils(YamlConfiguration.loadConfiguration(langFile));
-        }else {
+        } else {
             File langFile = new File(getDataFolder().getPath() + File.separator + "lang", cusLang + ".yml");
             languageUtils = new LanguageUtils(YamlConfiguration.loadConfiguration(langFile));
             getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("using_customized_language"));
@@ -108,7 +119,7 @@ public final class UltiTools extends JavaPlugin {
         folders.add(new File(getDataFolder() + "/sidebar"));
         folders.add(new File(getDataFolder() + "/kitData"));
         folders.add(new File(getDataFolder() + "/warps"));
-        folders.add(new File(getDataFolder() + "/playerData"+"/playerlist"));
+        folders.add(new File(getDataFolder() + "/playerData" + "/playerlist"));
 
         makedirs(folders);
 
@@ -185,6 +196,8 @@ public final class UltiTools extends JavaPlugin {
             if (getServer().getPluginManager().getPlugin("UltiLevel") == null) {
                 getLogger().warning("[UltiTools] " + languageUtils.getString("ultilevel_not_found"));
             }
+        } else {
+            new PapiRegister().register();
         }
 
         //加载世界
@@ -216,7 +229,7 @@ public final class UltiTools extends JavaPlugin {
             Bukkit.getPluginManager().registerEvents(new WhitelistListener(), this);
         }
         if (this.getConfig().getBoolean("enable_scoreboard")) {
-            for (Player player : Bukkit.getOnlinePlayers()){
+            for (Player player : Bukkit.getOnlinePlayers()) {
                 ScoreBoardUtils.registerPlayer(player.getUniqueId());
             }
             CommandRegister.registerCommand(plugin, new SbCommands(), "ultikits.tools.scoreboard", languageUtils.getString("sidebar_function"), "sb");
@@ -274,11 +287,11 @@ public final class UltiTools extends JavaPlugin {
             CommandRegister.registerCommand(plugin, new RandomTpCommands(), "ultikits.tools.randomtp", languageUtils.getString("random_tp_function"), "wild");
         }
         if (this.getConfig().getBoolean("enable_fly_command")) {
-            CommandRegister.registerCommand(plugin,new FlyCommands(),"ultikits.tools.command.fly",languageUtils.getString("fly_function"),"fly");
+            CommandRegister.registerCommand(plugin, new FlyCommands(), "ultikits.tools.command.fly", languageUtils.getString("fly_function"), "fly");
         }
         if (this.getConfig().getBoolean("enable_tpback_command")) {
-            CommandRegister.registerCommand(plugin,new TpbackCommands(),"ultikits.tools.command.tpback,",languageUtils.getString("tpback_function"),"tpback");
-            getServer().getPluginManager().registerEvents(new TeleportListener(),this);
+            CommandRegister.registerCommand(plugin, new TpbackCommands(), "ultikits.tools.command.tpback,", languageUtils.getString("tpback_function"), "tpback");
+            getServer().getPluginManager().registerEvents(new TeleportListener(), this);
         }
         if (this.getConfig().getBoolean("enable_lobby_command")) {
             CommandRegister.registerCommand(plugin,new LobbyCommands(),"ultikits.tools.back",languageUtils.getString("back_function"),"setlobby");
@@ -306,7 +319,7 @@ public final class UltiTools extends JavaPlugin {
         if (getConfig().getBoolean("enable_death_punishment")) {
             getServer().getPluginManager().registerEvents(new DeathListener(), this);
         }
-        if (getConfig().getBoolean("enable_social_system")){
+        if (getConfig().getBoolean("enable_social_system")) {
             CommandRegister.registerCommand(plugin, new SocialSystemCommands(), "ultikits.tools.social", languageUtils.getString("friend_function"), "soc", "friends", "fri");
             getServer().getPluginManager().registerEvents(new FriendsApplyViewListener(), this);
             getServer().getPluginManager().registerEvents(new FriendsViewListener(), this);
@@ -345,7 +358,7 @@ public final class UltiTools extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (!isUltiCoreUpToDate){
+        if (!isUltiCoreUpToDate) {
             return;
         }
         if (getConfig().getBoolean("enable_login")) {

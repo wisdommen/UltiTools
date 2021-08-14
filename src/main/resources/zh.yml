@@ -19,6 +19,10 @@ added: 已添加！
 deleted: 已删除！
 created: 已创建！
 do_not_move: 请勿移动！
+teleporting: '正在传送...'
+teleport_succeed: '传送成功！'
+teleport_failed: '传送失败！'
+teleporting_countdown: '离传送还有%d秒'
 none: 无
 feng: 封
 ge: 个
@@ -311,6 +315,7 @@ tpa_no_request: 并没有玩家给你发送传送请求！
 tpa_teleport_rejected: '对方拒绝了你的传送请求 :('
 tpa_request_timeout: 对方长时间没有接受你的传送请求，已自动拒绝
 tpa_teleport_success: 传送成功！
+tpa_target_busy: 对方正在处理另一个传送请求！
 tpahere_enquire: '%s请求您传送至他的位置'
 tpahere_accept_tip: §7输入§c/tpahere accept §b接受§7传送，或者按下§c[shift+左键]§b接受
 tpahere_reject_tip: §7输入§c/tpahere reject §b拒绝§7传送，或者按下§c[shift+右键]§b拒绝
