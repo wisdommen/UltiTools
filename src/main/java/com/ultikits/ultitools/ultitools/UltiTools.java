@@ -329,7 +329,7 @@ public final class UltiTools extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new TradeListener(), this);
         }
         if (getConfig().getBoolean("enable_announcement")) {
-            new BroadcastTask().run();
+            BroadcastTask.run();
         }
 
         //注册任务
