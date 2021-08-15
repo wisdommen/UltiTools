@@ -107,13 +107,27 @@ public class SideBarTask extends BukkitRunnable {
             }
         }
 
-        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_money") + " " + ChatColor.GOLD + money, 97);
-        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_deposit") + " " + ChatColor.GOLD + deposit, 96);
-        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_level") + " " + ChatColor.GOLD + level_num, 95);
-        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_job") + " " + ChatColor.GOLD + occupation, 98);
-        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_name") + " " + ChatColor.GOLD + name, 99);
-        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_online_player") + " " + ChatColor.GOLD + onLinePlayers, 0);
-        updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_health") + " " + ChatColor.YELLOW + hp + ChatColor.BOLD + " / " + ChatColor.GOLD + max_hp, 93);
+        if (money != null && !money.equals("")) {
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_money") + " " + ChatColor.GOLD + money, 97);
+        }
+        if (deposit != null && !deposit.equals("")) {
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_deposit") + " " + ChatColor.GOLD + deposit, 96);
+        }
+        if (level_num != null && !level_num.equals("")) {
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_level") + " " + ChatColor.GOLD + level_num, 95);
+        }
+        if (occupation != null && !occupation.equals("")) {
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_job") + " " + ChatColor.GOLD + occupation, 98);
+        }
+        if (name != null && !name.equals("")) {
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_name") + " " + ChatColor.GOLD + name, 99);
+        }
+        if (onLinePlayers != null && !onLinePlayers.equals("")) {
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_online_player") + " " + ChatColor.GOLD + onLinePlayers, 0);
+        }
+        if (hp != null && max_hp != null && !hp.equals("") && !max_hp.equals("")) {
+            updateLine(player, ChatColor.WHITE + UltiTools.languageUtils.getString("sidebar_health") + " " + ChatColor.YELLOW + hp + ChatColor.BOLD + " / " + ChatColor.GOLD + max_hp, 93);
+        }
         int unread = getUnReadEmailNum(player);
         if (unread == 0) {
             updateLine(player, null, 92);
