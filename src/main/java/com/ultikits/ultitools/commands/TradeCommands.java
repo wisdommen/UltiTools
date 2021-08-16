@@ -42,7 +42,7 @@ public class TradeCommands extends AbstractPlayerCommandExecutor {
             }
             return true;
         } else {
-            if (player.getName().equals(strings[1])) {
+            if (player.getName().equals(strings[0])) {
                 player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("trade_you_cannot_trade_with_yourself"));
                 return true;
             }
