@@ -9,11 +9,11 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class AttTask extends BukkitRunnable {
+public class AtTask extends BukkitRunnable {
 
     private final BossBar bossBar;
 
-    public AttTask (Player To, String Message) {
+    public AtTask (Player To, String Message) {
         bossBar = Bukkit.createBossBar(ChatColor.BOLD + Message, BarColor.YELLOW, BarStyle.SOLID, BarFlag.CREATE_FOG);
         bossBar.setProgress(1.00);
         bossBar.addPlayer(To);

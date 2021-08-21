@@ -2,107 +2,104 @@ package com.ultikits.ultitools.listener;
 
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
-import com.ultikits.ultitools.tasks.AttTask;
+import com.ultikits.ultitools.tasks.AtTask;
 import com.ultikits.ultitools.ultitools.UltiTools;
+import com.ultikits.utils.MessagesUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Server;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.permissions.Permission;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.util.*;
 
 import static com.ultikits.enums.Sounds.BLOCK_NOTE_BLOCK_BELL;
 
-
+/**
+ * @author wisdomme,qianmo,Shpries
+ */
 public class ChatListener implements Listener {
     private static final List<String> ultilevelStrings = Arrays.asList("%ul_level%", "%ul_job%", "%ul_exp%", "%ul_mp%",
             "%ul_max_mp%", "%ul_max_exp%", "%ul_health%", "%ul_max_health%", "%ul_q_cd%", "%ul_w_cd%", "%ul_e_cd%",
             "%ul_r_cd%");
 
-    @EventHandler
-    public void onPlayerChatAtt(AsyncPlayerChatEvent event){
-        //玩家 @ 玩家 处理
-        // 不能多线程处理
-        if(!ConfigController.getConfig("config").getBoolean("enable_chat_att")) return;
-        //不启用
-        Player player = event.getPlayer();
-        StringBuilder Message = new StringBuilder(event.getMessage());
-        Server server = UltiTools.getInstance().getServer();
-        //玩家说的内容
-        int AttHand = Message.indexOf("@");
-        if (AttHand == -1 || event.isCancelled()) return;
-        //没有@玩家 , 或者事件已经被取消
-        List<String> Name = new ArrayList<>();
-        //name 是被@的所有玩家
-        while (AttHand != -1){
-            //如果有玩家
-            //提取玩家名字
-            int AttEnd = Message.indexOf(";" , AttHand);
-            if (AttEnd == -1){
-                //找不到 ;
-                AttEnd = Message.length();
-                //且末尾增加;
-                Message.append(";");
-            }
-            //获取末尾索引
-            String Linshi = Message.substring(AttHand + 1 , AttEnd);
-            //提取玩家名字，正常大小写
-            if (Name.contains(Linshi)){
-                //如果有重复名字
-                player.sendMessage(Objects.requireNonNull(UltiTools.languageUtils.getString("chat_att_repeat")).replaceAll("%player%",Linshi));
-                //并且取消事件
-                event.setCancelled(true);
-                return;
-            }else if (Linshi.length() <= 1){
-                //如果名字小于1个字母 , 名字错误
-                player.sendMessage(Objects.requireNonNull(UltiTools.languageUtils.getString("chat_att_errname")).replaceAll("%player%",Linshi));
-                //取消事件
-                event.setCancelled(true);
-                return;
-            }
-            //判断玩家是否在线
-            if (server.getPlayerExact(Linshi) == null){
-                //玩家不在线
-                player.sendMessage(Objects.requireNonNull(UltiTools.languageUtils.getString("chat_att_offonline")).replaceAll("%player%",Linshi));
-                //取消事件
-                event.setCancelled(true);
-                return;
-            }
-            Name.add(Linshi);
-            AttHand = Message.indexOf("@" , AttEnd);
-        }
-        event.setMessage(Message.toString());
-        //更新玩家说话信息
-        //发布信息给玩家
-        for (String toPlayer : Name){
-            new BukkitRunnable(){
-                @Override
-                public void run() {
-                    //多线程处理
-                    /**
-                     * 这里是对被艾特玩家进行操作
-                     * 参数说明：
-                     * 变量   参数类型    备注
-                     * toPlayer String 被艾特玩家ID
-                     * player Player 发布信息玩家
-                     * server Server 此服务器队形
-                     */
-                    Objects.requireNonNull(server.getPlayerExact(toPlayer)).sendMessage(Objects.requireNonNull(UltiTools.languageUtils.getString("chat_att_beatt")).replaceAll("%player%",player.getName()));
-                    Objects.requireNonNull(server.getPlayerExact(toPlayer)).playSound(server.getPlayerExact(toPlayer).getLocation(), UltiTools.versionAdaptor.getSound(BLOCK_NOTE_BLOCK_BELL), 10, 1);
-                    new AttTask(server.getPlayerExact(toPlayer), Message.toString()).runTaskTimerAsynchronously(UltiTools.getInstance(),0L, 2L);
-                }
-            }.runTaskAsynchronously(UltiTools.getInstance());
-        }
-        player.sendMessage(Objects.requireNonNull(UltiTools.languageUtils.getString("chat_att_succ")).replaceAll("%playersize%",Name.size() + ""));
+/*
+* at玩家功能
+* Code rewritten by Shpries
+*/
+    private void atNotification (Player player,Player sender) {
+        player.sendMessage(MessagesUtils.info(Objects.requireNonNull(UltiTools.languageUtils.getString("chat_atted")).replaceAll("%player%",sender.getName())));
+        player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(BLOCK_NOTE_BLOCK_BELL), 10, 1);
+        new AtTask(player,MessagesUtils.info(UltiTools.languageUtils.getString("chat_atted").replaceAll("%player%",sender.getName()))).runTaskTimerAsynchronously(UltiTools.getInstance(),0,2L);
     }
+    @EventHandler
+    public void onPlayerAt(AsyncPlayerChatEvent e) {
+        if (ConfigController.getConfig("config").getBoolean("enable_chat_att")) {
+            String msg = e.getMessage();
+            Player sender = e.getPlayer();
+            if(msg.contains("@")) {
+                if(msg.toLowerCase().contains("@" + UltiTools.languageUtils.getString("chat_at_all")) || msg.toLowerCase().contains("@ " + UltiTools.languageUtils.getString("chat_at_all"))) {
+                    if(sender.hasPermission("ultikits.tools.atall") || sender.isOp() || sender.hasPermission("ultitools.tools.admin")) {
+                        String msg0 = msg.replace("@",ChatColor.DARK_GREEN + "@" + ChatColor.RESET);
+                        sender.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("chat_at_you_at_all")));
+                        e.setMessage(msg0.replace(UltiTools.languageUtils.getString("chat_at_all"),ChatColor.DARK_GREEN + "" + ChatColor.BOLD + UltiTools.languageUtils.getString("chat_at_all") + ChatColor.RESET));
+                        for(Player player : Bukkit.getOnlinePlayers()) {
+                            atNotification(player,sender);
+                        }
+                        return;
+                    } else {
+                        sender.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("no_permission")));
+                        e.setCancelled(true);
+                        return;
+                    }
+                }
+                //被@的玩家的列表
+                List<Player> atedPlayer = new ArrayList();
+                int sum = 0;
+                for(Player player : Bukkit.getOnlinePlayers()) {
+                    //无视大小写比较
+                    if(msg.toLowerCase().contains("@" + player.getName().toLowerCase()) || msg.toLowerCase().contains("@ " + player.getName().toLowerCase())) {
+                        atNotification(player,sender);
+                        atedPlayer.add(player);
+                        sum++;
+                    }
+                }
+                if(sum != 0) {
+                    //@成功
+                    String msg1 = msg.replace("@",ChatColor.DARK_GREEN + "@" + ChatColor.RESET);
+                    msg1 += " ";
+                    for(Player player: atedPlayer) {
+                         String playerName = player.getName();
+                         //校正大小写的玩家名字
+                         String name = "";
+                         int nameLength = playerName.length();
+                         int msg1Length = msg1.length();
+                         //读取到需要校正大小写的玩家名字
+                        for(int i = 0; i < msg1Length - nameLength ;i++) {
+                            name = msg1.substring(i, i + nameLength);
+                            if (name.equalsIgnoreCase(playerName)) {
+                                break;
+                            }
+                        }
+                        msg1 = msg1.replace(name,ChatColor.DARK_GREEN + "" + ChatColor.BOLD + playerName + ChatColor.RESET);
+                    }
+                    e.setMessage(msg1);
+                    sender.sendMessage(Objects.requireNonNull(MessagesUtils.info(UltiTools.languageUtils.getString("chat_at_success")).replaceAll("%num%", String.valueOf(sum))));
+                } else {
+                    //@不成功
+                    sender.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("chat_at_error")));
+                    String msg2 = msg.replace("@",ChatColor.RED + "@" + ChatColor.RESET);
+                    e.setMessage(msg2);
+                }
+            }
+        }
+    }
+
 
     @EventHandler
     public void onPlayerChatColor(AsyncPlayerChatEvent event){
