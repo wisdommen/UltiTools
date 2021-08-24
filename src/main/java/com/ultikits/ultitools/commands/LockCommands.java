@@ -18,21 +18,24 @@ public class LockCommands extends AbstractPlayerCommandExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
         if ("lock".equalsIgnoreCase(command.getName())) {
+            if (strings.length == 0) {
+                ChestLockUtils.cleanMode(player);
+                ChestLockUtils.getInLockMode().add(player.getName());
+                player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("lock_click_to_lock"));
+                return true;
+            }
             if ("add".equalsIgnoreCase(strings[0])) {
                 ChestLockUtils.cleanMode(player);
                 ChestLockUtils.getInAddMode().put(player.getName(), strings [1]);
                 player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("chest_click_add_owner"));
                 return true;
-            } else if("remove".equalsIgnoreCase(strings[0])) {
+            }
+            if("remove".equalsIgnoreCase(strings[0])) {
                 ChestLockUtils.cleanMode(player);
                 ChestLockUtils.getInRemoveMode().put(player.getName(), strings[1]);
                 player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("chest_click_remove_owner"));
                 return true;
             }
-            ChestLockUtils.cleanMode(player);
-            ChestLockUtils.getInLockMode().add(player.getName());
-            player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("lock_click_to_lock"));
-            return true;
         }
         return false;
     }
