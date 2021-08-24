@@ -6,6 +6,7 @@ import com.ultikits.ultitools.enums.ChestDirection;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.ChestLockUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -173,26 +174,26 @@ public class ChestLockListener implements Listener {
         //判断被破坏的方块是否为箱子
         if(chest.getType() != Material.CHEST) return;
 
-        if (ChestLockUtils.hasChestData(chest)) {
-            if (player.isOp() && ConfigController.getConfig("chestlock").getBoolean("op_break_locked")) {
-                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_chest_deleted"));
-                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_op_warning"));
-                ChestLockUtils.removeChestData(chest);
-            }
-            if(ChestLockUtils.isChestOwner(chest, player) || player.isOp()) {
-                ChestLockUtils.removeChestData(chest);
-            } else {
-                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_this_is_others_chest"));
-                event.setCancelled(true);
-            }
+        if (!ChestLockUtils.hasChestData(chest)) return;
+
+        if (player.isOp() && ConfigController.getConfig("chestlock").getBoolean("op_break_locked")) {
+            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_chest_deleted"));
+            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_op_warning"));
+            ChestLockUtils.removeChestData(chest);
+        }
+        if(ChestLockUtils.isChestOwner(chest, player) || player.isOp()) {
+            ChestLockUtils.removeChestData(chest);
+        } else {
+            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_this_is_others_chest"));
+            event.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onItemRemovedByHopper(InventoryMoveItemEvent event) {
-        if (ChestLockUtils.isChestLocked(event.getSource().getLocation())) {
-            event.setCancelled(true);
-        }
+        Location location = event.getSource().getLocation();
+        if (location == null) return;
+        if (ChestLockUtils.isChestLocked(location)) event.setCancelled(true);
     }
 
     @EventHandler
