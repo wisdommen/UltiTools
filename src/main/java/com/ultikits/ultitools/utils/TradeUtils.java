@@ -72,6 +72,7 @@ public class TradeUtils {
 
     public static void requestTrade(Player From, Player To) {
         inRequestMode.put(From.getName(), To.getName());
+        From.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("trade_you_requested").replace("%s", To.getName()));
         To.sendMessage(UltiTools.languageUtils.getString("trade_request").replace("%s", From.getName()));
         To.sendMessage(UltiTools.languageUtils.getString("trade_request_tip"));
         new TradeTask(From, To).runTaskTimerAsynchronously(UltiTools.getInstance(), 0L, 2L);
@@ -118,14 +119,10 @@ public class TradeUtils {
             @Override
             public void run() {
                 for (int i : l1) {
-                    if (i1.getItem(i) != null) {
-                        From.getInventory().addItem(i1.getItem(i));
-                    }
+                    if (i1.getItem(i) != null) From.getInventory().addItem(i1.getItem(i));
                 }
                 for (int n : l2) {
-                    if (i2.getItem(n) != null) {
-                        To.getInventory().addItem(i2.getItem(n));
-                    }
+                    if (i2.getItem(n) != null) To.getInventory().addItem(i2.getItem(n));
                 }
             }
         }.runTaskAsynchronously(UltiTools.getInstance());
@@ -143,7 +140,9 @@ public class TradeUtils {
     public static void closeTrade(Player player) {
         if (getInTradeMode().containsKey(player.getName())) {
             closeTrade(player, getOtherParty(player));
-        } else if (getInTradeMode().containsValue(player.getName())) {
+            return;
+        }
+        if (getInTradeMode().containsValue(player.getName())) {
             closeTrade(getOtherParty(player), player);
         }
     }
@@ -180,10 +179,8 @@ public class TradeUtils {
                 }
 
                 if (isExpTradeAllowed()) {
-                    From.setTotalExperience(From.getTotalExperience() - tradeExp.get(From.getName()));
-                    To.setTotalExperience(To.getTotalExperience() - tradeExp.get(To.getName()));
-                    From.setTotalExperience(From.getTotalExperience() + tradeExp.get(To.getName()));
-                    To.setTotalExperience(To.getTotalExperience() + tradeExp.get(From.getName()));
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "xp add " + From.getName() + " " + (tradeExp.get(To.getName()) - tradeExp.get(From.getName())) + " points");
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "xp add " + To.getName() + " " + (tradeExp.get(From.getName()) - tradeExp.get(To.getName())) + " points");
                 }
 
                 From.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_success"));
@@ -209,36 +206,28 @@ public class TradeUtils {
     public static void confirmTrade(Player player) {
         if (getInTradeMode().containsKey(player.getName())) {
             confirmTrade(player, getOtherParty(player));
-        } else if (getInTradeMode().containsValue(player.getName())){
+            return;
+        }
+        if (getInTradeMode().containsValue(player.getName())){
             confirmTrade(getOtherParty(player), player);
         }
     }
 
     public static List<String> getMoneyLore(Player player) {
         List<String> list = new ArrayList<>();
-
         list.add(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_money_now") + " " + ChatColor.YELLOW + tradeMoney.get(player.getName()));
         list.add(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_your_money") + " " + ChatColor.YELLOW + EconomyUtils.checkMoney(player));
-        if (inTradeMode.containsKey(player.getName())) {
-            list.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("trade_player_money") + " " + ChatColor.YELLOW + tradeMoney.get(inTradeMode.get(player.getName())));
-        }
-        if (inTradeMode.containsValue(player.getName())) {
-            list.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("trade_player_money") + " " + ChatColor.YELLOW + tradeMoney.get(inTradeMode.inverse().get(player.getName())));
-        }
+        if (inTradeMode.containsKey(player.getName())) list.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("trade_player_money") + " " + ChatColor.YELLOW + tradeMoney.get(inTradeMode.get(player.getName())));
+        if (inTradeMode.containsValue(player.getName())) list.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("trade_player_money") + " " + ChatColor.YELLOW + tradeMoney.get(inTradeMode.inverse().get(player.getName())));
         return getBaseLore(list);
     }
 
     public static List<String> getExpLore(Player player) {
         List<String> list = new ArrayList<>();
-
         list.add(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_exp_now") + " " + ChatColor.YELLOW + tradeExp.get(player.getName()));
         list.add(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_your_exp") + " " + ChatColor.YELLOW + player.getTotalExperience());
-        if (inTradeMode.containsKey(player.getName())) {
-            list.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("trade_player_exp") + " " + ChatColor.YELLOW + tradeExp.get(inTradeMode.get(player.getName())));
-        }
-        if (inTradeMode.containsValue(player.getName())) {
-            list.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("trade_player_exp") + " " + ChatColor.YELLOW + tradeExp.get(inTradeMode.inverse().get(player.getName())));
-        }
+        if (inTradeMode.containsKey(player.getName())) list.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("trade_player_exp") + " " + ChatColor.YELLOW + tradeExp.get(inTradeMode.get(player.getName())));
+        if (inTradeMode.containsValue(player.getName())) list.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("trade_player_exp") + " " + ChatColor.YELLOW + tradeExp.get(inTradeMode.inverse().get(player.getName())));
         return getBaseLore(list);
     }
 
