@@ -33,9 +33,9 @@ public class ChatListener implements Listener {
 * Code rewritten by Shpries
 */
     private void atNotification (Player player,Player sender) {
-        player.sendMessage(MessagesUtils.info(Objects.requireNonNull(UltiTools.languageUtils.getString("chat_atted")).replaceAll("%player%",sender.getName())));
+        player.sendMessage(Objects.requireNonNull(UltiTools.languageUtils.getString("chat_atted")).replaceAll("%player%",sender.getName()));
         player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(BLOCK_NOTE_BLOCK_BELL), 10, 1);
-        new AtTask(player,MessagesUtils.info(UltiTools.languageUtils.getString("chat_atted").replaceAll("%player%",sender.getName()))).runTaskTimerAsynchronously(UltiTools.getInstance(),0,2L);
+        new AtTask(player,UltiTools.languageUtils.getString("chat_atted").replaceAll("%player%",sender.getName())).runTaskTimerAsynchronously(UltiTools.getInstance(),0,2L);
     }
     @EventHandler
     public void onPlayerAt(AsyncPlayerChatEvent e) {
@@ -46,7 +46,7 @@ public class ChatListener implements Listener {
                 if(msg.toLowerCase().contains("@" + UltiTools.languageUtils.getString("chat_at_all")) || msg.toLowerCase().contains("@ " + UltiTools.languageUtils.getString("chat_at_all"))) {
                     if(sender.hasPermission("ultikits.tools.atall") || sender.isOp() || sender.hasPermission("ultitools.tools.admin")) {
                         String msg0 = msg.replace("@",ChatColor.DARK_GREEN + "@" + ChatColor.RESET);
-                        sender.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("chat_at_you_at_all")));
+                        sender.sendMessage(UltiTools.languageUtils.getString("chat_at_you_at_all"));
                         e.setMessage(msg0.replace(UltiTools.languageUtils.getString("chat_at_all"),ChatColor.DARK_GREEN + "" + ChatColor.BOLD + UltiTools.languageUtils.getString("chat_at_all") + ChatColor.RESET));
                         for(Player player : Bukkit.getOnlinePlayers()) {
                             atNotification(player,sender);
@@ -89,7 +89,7 @@ public class ChatListener implements Listener {
                         msg1 = msg1.replace(name,ChatColor.DARK_GREEN + "" + ChatColor.BOLD + playerName + ChatColor.RESET);
                     }
                     e.setMessage(msg1);
-                    sender.sendMessage(Objects.requireNonNull(MessagesUtils.info(UltiTools.languageUtils.getString("chat_at_success")).replaceAll("%num%", String.valueOf(sum))));
+                    sender.sendMessage(Objects.requireNonNull(UltiTools.languageUtils.getString("chat_at_success")).replaceAll("%num%", String.valueOf(sum)));
                 } else {
                     //@不成功
                     sender.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("chat_at_error")));

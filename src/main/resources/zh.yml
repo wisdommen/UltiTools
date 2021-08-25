@@ -366,9 +366,9 @@ fly_enabled: 已打开飞行
 fly_disabled: 已关闭飞行
 chat_color_nopermission_reply: '§4您没有权限发送彩色字体'
 chat_at_error: '艾特失败！玩家不在线或不存在'
-chat_atted: '你被玩家§b%player%§e艾特了'
-chat_at_success: '你艾特了§e%num%§a名玩家'
-chat_at_you_at_all: '你艾特了全体玩家'
+chat_atted: '§e你被玩家§b%player%§e艾特了'
+chat_at_success: '§a你艾特了§e%num%§a名玩家'
+chat_at_you_at_all: '§a你艾特了全体玩家'
 chat_at_all: 所有人
 tpback_function: 让玩家回到上次传送的位置
 tpback_success: 成功传送到上一次的传送位置！

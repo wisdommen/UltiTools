@@ -10,6 +10,8 @@ guis:
     command: gui
     # 打开此界面需要的权限（null为无需权限）
     premission: null
+    # 右击含有该lore的物品即可打开该GUI页面 (null为菜单不进行物品绑定)
+    bind-lore: "§右击打开菜单"
 
 # 所有的main的按钮请都放在main下
 main:

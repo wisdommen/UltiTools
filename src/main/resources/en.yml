@@ -364,9 +364,9 @@ fly_enabled: "Now fly is enabled"
 fly_disabled: "Now fly is disabled"
 chat_color_nopermission_reply: '§4You do not have permission to send coloured chat messages!'
 chat_at_error: "@ Failed! Since there is no such player or it's offline!"
-chat_atted_beatt: '%player%§e@you!'
-chat_at_success: 'you@§e%num% §a player(s)!'
-chat_at_you_at_all: 'you at ALL players'
+chat_atted_beatt: '§e%player%§e@you!'
+chat_at_success: '§ayou@§e%num% §a player(s)!'
+chat_at_you_at_all: '§ayou at ALL players'
 chat_at_all: all
 tpback_function: "Teleport the player to last teleport location"
 tpback_success: "Successfully teleport to last teleport location!"
