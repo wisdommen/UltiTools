@@ -16,7 +16,7 @@ import java.util.List;
 public class TradeCommands extends AbstractTabExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
-        if (UltiTools.isProVersion) {
+        if (!UltiTools.isProVersion) {
             player.sendMessage(UltiTools.languageUtils.getString("warning_pro_fuction"));
             return true;
         }
@@ -84,9 +84,6 @@ public class TradeCommands extends AbstractTabExecutor {
     @Nullable
     @Override
     protected List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
-        if (!player.hasPermission("ultikits.tools.commands")) {
-            return null;
-        }
         switch (strings.length) {
             case 1:
                 return Arrays.asList("accept", "reject", "toggle", "ban");

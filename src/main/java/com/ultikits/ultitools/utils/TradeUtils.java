@@ -9,6 +9,10 @@ import com.ultikits.ultitools.tasks.TradeTask;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.views.TradeView;
 import com.ultikits.utils.EconomyUtils;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -73,8 +77,21 @@ public class TradeUtils {
     public static void requestTrade(Player From, Player To) {
         inRequestMode.put(From.getName(), To.getName());
         From.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("trade_you_requested").replace("%s", To.getName()));
-        To.sendMessage(UltiTools.languageUtils.getString("trade_request").replace("%s", From.getName()));
-        To.sendMessage(UltiTools.languageUtils.getString("trade_request_tip"));
+        To.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("trade_request").replace("%s", From.getName()));
+        To.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("trade_request_tip"));
+        To.sendMessage(ChatColor.GOLD + "================================");
+        To.spigot().sendMessage(
+                new ComponentBuilder(UltiTools.languageUtils.getString("trade_accept_btn"))
+                        .color(net.md_5.bungee.api.ChatColor.GREEN)
+                        .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/trade accept"))
+                        .getCurrentComponent(),
+                new ComponentBuilder("           ").getCurrentComponent(),
+                new ComponentBuilder(UltiTools.languageUtils.getString("trade_reject_btn"))
+                        .color(net.md_5.bungee.api.ChatColor.RED)
+                        .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/trade reject"))
+                        .getCurrentComponent()
+        );
+        To.sendMessage(ChatColor.GOLD + "================================");
         new TradeTask(From, To).runTaskTimerAsynchronously(UltiTools.getInstance(), 0L, 2L);
     }
 
