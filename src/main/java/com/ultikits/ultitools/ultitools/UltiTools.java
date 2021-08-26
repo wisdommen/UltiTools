@@ -332,8 +332,6 @@ public final class UltiTools extends JavaPlugin {
             BroadcastTask.run();
         }
 
-        //菜单绑定物品lore
-        Bukkit.getServer().getPluginManager().registerEvents(new RightClickListener(),this);
 
         //注册任务
         if (this.getConfig().getBoolean("enable_name_prefix")) {

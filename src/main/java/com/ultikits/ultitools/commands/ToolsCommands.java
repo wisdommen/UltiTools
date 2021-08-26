@@ -2,6 +2,7 @@ package com.ultikits.ultitools.commands;
 
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.listener.CustomGUIListener;
+import com.ultikits.ultitools.listener.RightClickListener;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.CustomGuiUtils;
 import com.ultikits.ultitools.utils.FunctionUtils;
@@ -58,6 +59,8 @@ public class ToolsCommands implements TabExecutor {
                         Inventory customGui = CustomGUIView.setUp(signature, player);
                         CustomGUIListener listener = new CustomGUIListener(signature);
                         if (!listeners.contains(listener.getSignature())){
+                            //菜单绑定物品lore
+                            Bukkit.getServer().getPluginManager().registerEvents(new RightClickListener(),UltiTools.getInstance());
                             getServer().getPluginManager().registerEvents(new CustomGUIListener(signature), UltiTools.getInstance());
                             listeners.add(listener.getSignature());
                         }
