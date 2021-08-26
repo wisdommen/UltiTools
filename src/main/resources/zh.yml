@@ -394,7 +394,9 @@ trade_money: 货币交易
 trade_exp: 经验交易
 trade_confirm: 确认交易
 trade_request: "§e玩家 %s 请求和你交易"
-trade_request_tip: "§2输入 /t accept 来同意\n§4输入 /t reject 来拒绝"
+trade_request_tip: "点击下方按钮来同意/拒绝"
+trade_accept_btn: "[ 同意 ]"
+trade_reject_btn: "[ 拒绝 ]"
 trade_player_accepted: 对方已同意交易
 trade_you_accepted: 你同意了交易
 trade_player_rejected: 对方拒绝了交易
@@ -430,3 +432,4 @@ trade_money_you_get: "你得到了 %s 金钱"
 trade_item_you_get: "你得到了 %s 个物品"
 trade_you_cannot_request_two_player: 你不能同时请求两个玩家
 trade_you_cannot_trade_with_yourself: 你不能和自己交易
+trade_you_requested: "你已请求和 %s 进行交易,等待对方回应"
