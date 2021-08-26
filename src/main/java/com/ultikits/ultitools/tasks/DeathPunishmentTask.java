@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.*;
+import java.util.concurrent.Callable;
 
 public class DeathPunishmentTask {
     protected static List<UUID> punishQueue = new ArrayList<>();
@@ -61,6 +62,18 @@ public class DeathPunishmentTask {
     }
 }
 
+class CommandExec implements Callable<Object> {
+    private final Player player;
+    public CommandExec (Player Player) {
+        player = Player;
+    }
+    @Override
+    public Object call() throws Exception {
+        DeathPunishUtils.Exec(DeathPunishmentTask.getPunishCommands(), player.getName());
+        return null;
+    }
+}
+
 class Timer extends BukkitRunnable{
 
     @Override
@@ -103,7 +116,7 @@ class Timer extends BukkitRunnable{
                 list = DeathPunishmentTask.getWorldsEnabledPunishCommand();
                 for (String s : list) {
                     if (s.equals(world)) {
-                        DeathPunishUtils.Exec(DeathPunishmentTask.getPunishCommands(), player.getName());
+                        UltiTools.getInstance().getServer().getScheduler().callSyncMethod(UltiTools.getInstance(), new CommandExec(player));
                     }
                 }
             }
