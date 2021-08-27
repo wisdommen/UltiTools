@@ -83,7 +83,7 @@
         <dependency>
             <groupId>com.github.wisdommen</groupId>
             <artifactId>UltiCoreAPI</artifactId>
-            <version>1.1.0</version>
+            <version>1.2.0</version>
             <systemPath>${basedir}/lib/UltiCoreAPI-1.2.0.jar</systemPath>
             <scope>system</scope>
         </dependency>
@@ -103,7 +103,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>[4.13.1,)</version>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
