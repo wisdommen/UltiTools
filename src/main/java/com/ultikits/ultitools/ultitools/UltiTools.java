@@ -123,12 +123,14 @@ public final class UltiTools extends JavaPlugin {
 
         makedirs(folders);
 
-        Arrays.asList(
+         Arrays.asList(
                 new KitsConfig(),
                 new CleanerConfig(),
-//              new GroupPermissionConfig(),
-//              new UserPermissionConfig(),
-//              new GlobuleGroupsConfig(),
+/*权限组功能已弃用
+                new GroupPermissionConfig(),
+                new UserPermissionConfig(),
+                new GlobuleGroupsConfig(),
+*/
                 new LoginConfig(),
                 new JoinWelcomeConfig(),
                 new SideBarConfig(),
@@ -143,7 +145,8 @@ public final class UltiTools extends JavaPlugin {
                 new BagConfig(),
                 new ChatConfig(),
                 new CustomerGUIConfig(),
-                new TradeConfig()
+                new TradeConfig(),
+                new MOTDConfig()
         );
 
         isDatabaseEnabled = getConfig().getBoolean("enableDataBase");
@@ -257,7 +260,7 @@ public final class UltiTools extends JavaPlugin {
         if (this.getConfig().getBoolean("enable_cleaner")) {
             CommandRegister.registerCommand(plugin, new CleanerCommands(), "ultikits.tools.clean", languageUtils.getString("cleaner_function"), "clean");
         }
-/*
+/*权限组功能已弃用
         if (this.getConfig().getBoolean("enable_permission")) {
             CommandRegister.registerCommand(plugin, new PermissionCommands(), "ultikits.tools.permission", languageUtils.getString("permission_function"), "pers");
             getServer().getPluginManager().registerEvents(new PermissionAddOnJoinListener(), this);
@@ -330,6 +333,9 @@ public final class UltiTools extends JavaPlugin {
         }
         if (getConfig().getBoolean("enable_announcement")) {
             BroadcastTask.run();
+        }
+        if (getConfig().getBoolean("enable_motd_funcion")) {
+            getServer().getPluginManager().registerEvents(new MOTDListener(), this);
         }
 
         //注册任务

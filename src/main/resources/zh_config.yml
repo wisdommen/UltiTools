@@ -136,3 +136,6 @@ enable_trade: true
 
 '注释48请勿修改': '开启公告功能'
 enable_announcement: true
+
+'注释49请勿修改': '开启自定义MOTD功能'
+enable_motd_funcion: true
