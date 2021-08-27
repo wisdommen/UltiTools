@@ -76,8 +76,8 @@ public class TradeUtils {
 
     public static void requestTrade(Player From, Player To) {
         inRequestMode.put(From.getName(), To.getName());
-        From.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("trade_you_requested").replace("%s", To.getName()));
-        To.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("trade_request").replace("%s", From.getName()));
+        From.sendMessage(ChatColor.YELLOW + String.format(UltiTools.languageUtils.getString("trade_you_requested"), To.getName()));
+        To.sendMessage(ChatColor.YELLOW + String.format(UltiTools.languageUtils.getString("trade_request"), From.getName()));
         To.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("trade_request_tip"));
         To.sendMessage(ChatColor.GOLD + "================================");
         To.spigot().sendMessage(

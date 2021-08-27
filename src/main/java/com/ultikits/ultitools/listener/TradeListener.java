@@ -32,7 +32,9 @@ public class TradeListener implements Listener {
         Player From = event.getPlayer();
         Player To = (Player) event.getRightClicked();
 
-        if (TradeUtils.isPlayerInRequestMode(To) || TradeUtils.isPlayerInTradeMode(To)) {
+        if (TradeUtils.getOtherParty(From).getName().equals(To.getName())) return;
+
+        if (TradeUtils.isPlayerInTradeMode(To)) {
             From.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("trade_player_in_trading"));
             return;
         }
