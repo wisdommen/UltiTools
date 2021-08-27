@@ -10,6 +10,8 @@ guis:
     command: gui
     # the permission to open this gui (set to null is no permission needed)
     premission: null
+    # right click the item with the lore below will open this gui page (set to null if you dont need it)
+    bind-lore: "§Right click to open main menu"
 
 # all buttons those belong to its page please write under the page name
 main:

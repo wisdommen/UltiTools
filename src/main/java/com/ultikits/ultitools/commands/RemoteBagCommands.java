@@ -31,8 +31,8 @@ public class RemoteBagCommands extends AbstractTabExecutor {
                     Inventory bag = RemoteBagView.setUp(player.getName());
                     player.openInventory(bag);
                     return true;
-                case 2:
-                    if (!(player.hasPermission("ultitools.tools.admin") || player.hasPermission("ultikits.tools.admin"))) {
+                case 3:
+                    if (!(player.hasPermission("ultitools.tools.admin"))) {
                         return false;
                     }
                     List<File> fileList = Utils.getFiles(ConfigsEnum.PLAYER_CHEST.toString());
@@ -42,11 +42,11 @@ public class RemoteBagCommands extends AbstractTabExecutor {
                     }
                     for (File file : fileList) {
                         String playerName = file.getName().replace(".yml", "");
-                        if (playerName.equals(strings[0])) {
+                        if (playerName.equals(strings[1])) {
                             YamlConfiguration chestConfig = YamlConfiguration.loadConfiguration(file);
                             int size = chestConfig.getKeys(false).size();
                             try {
-                                if (size < Integer.parseInt(strings[1])) {
+                                if (size < Integer.parseInt(strings[2])) {
                                     player.sendMessage(warning(UltiTools.languageUtils.getString("bag_player_does_not_have_this_bag")));
                                     return true;
                                 }
@@ -54,15 +54,15 @@ public class RemoteBagCommands extends AbstractTabExecutor {
                                 player.sendMessage(warning(UltiTools.languageUtils.getString("bag_enter_number_of_the_bag")));
                                 return true;
                             }
-                            String bagNumber = strings[1];
-                            String bagName = String.format(UltiTools.languageUtils.getString("bag_title"), strings[0], bagNumber);
-                            ChestPageListener.loadBag(bagName, player, Bukkit.getOfflinePlayer(strings[0]));
+                            String bagNumber = strings[2];
+                            String bagName = String.format(UltiTools.languageUtils.getString("bag_title"), strings[1], bagNumber);
+                            ChestPageListener.loadBag(bagName, player, Bukkit.getPlayerExact(strings[1]));
                             return true;
                         }
                     }
                     player.sendMessage(warning(UltiTools.languageUtils.getString("bag_player_data_not_exists")));
                     return true;
-                case 3:
+                case 4:
                     if (!UltiTools.isProVersion) {
                         return false;
                     }
