@@ -34,7 +34,7 @@ public class TradeCommands extends AbstractTabExecutor {
                 return true;
             case "reject":
                 if (TradeUtils.isPlayerInRequestMode(player)) {
-                    TradeUtils.getInRequestMode().inverse().remove(player.getName());
+                    TradeUtils.rejectTrade(player);
                 } else {
                     player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("trade_you_have_no_request"));
                 }

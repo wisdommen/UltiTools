@@ -18,7 +18,7 @@ public class TradeTask extends BukkitRunnable {
     public TradeTask (Player From, Player To) {
         to = To;
         bossBar = Bukkit.createBossBar(
-                UltiTools.languageUtils.getString("trade_request").replace("%s", From.getName()),
+                String.format(UltiTools.languageUtils.getString("trade_request"), From.getName()),
                 BarColor.PURPLE,
                 BarStyle.SOLID,
                 BarFlag.CREATE_FOG
@@ -35,7 +35,7 @@ public class TradeTask extends BukkitRunnable {
             bossBar.removeAll();
             this.cancel();
         } else {
-            TradeUtils.rejectTrade(to);
+            if (TradeUtils.isPlayerInRequestMode(to)) TradeUtils.rejectTrade(to);
             bossBar.removeAll();
             this.cancel();
         }
