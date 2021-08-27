@@ -31,7 +31,8 @@ public enum ConfigsEnum {
     PLAYERLIST(UltiTools.getInstance().getDataFolder() + "/playerData/playerlist/playerlist.yml"),
     LOBBY(UltiTools.getInstance().getDataFolder() + "/lobby.yml"),
     TRADE(UltiTools.getInstance().getDataFolder() + "/trade.yml"),
-    ANNOUNCEMENT(UltiTools.getInstance().getDataFolder() + "/announcement.yml");
+    ANNOUNCEMENT(UltiTools.getInstance().getDataFolder() + "/announcement.yml"),
+    MOTD(UltiTools.getInstance().getDataFolder() + "/motd.yml");
 
     private final String path;
 

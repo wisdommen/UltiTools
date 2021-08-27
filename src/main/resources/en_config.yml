@@ -136,3 +136,6 @@ enable_trade: true
 
 'comment48': 'enable announcement function'
 enable_announcement: true
+
+'comment49': 'enable custom MOTD function'
+enable_motd_funcion: true
