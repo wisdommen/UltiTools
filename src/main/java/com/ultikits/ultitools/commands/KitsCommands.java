@@ -33,7 +33,7 @@ public class KitsCommands extends AbstractTabExecutor {
                 }
                 if (player.hasPermission("ultikits.tools.admin")){
                     if (ConfigController.getConfig("kits").getConfigurationSection(strings[1]) == null){
-                        player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("kits_no_such_kit")));
+                        player.sendMessage(MessagesUtils.warning(String.format(UltiTools.languageUtils.getString("kits_no_such_kit"), strings[1])));
                         return true;
                     }
                     Inventory inventory1 = CreateKitsView.setUp(strings[1]);

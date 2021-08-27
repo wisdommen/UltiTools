@@ -201,14 +201,14 @@ public class TradeUtils {
                 }
 
                 From.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_success"));
-                From.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("trade_money_you_get").replace("%s", tradeMoney.get(To.getName()).toString()));
-                From.sendMessage(ChatColor.LIGHT_PURPLE+ UltiTools.languageUtils.getString("trade_exp_you_get").replace("%s", tradeExp.get(To.getName()).toString()));
-                From.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("trade_item_you_get").replace("%s", Integer.toString(t2)));
+                From.sendMessage(ChatColor.GOLD + String.format(UltiTools.languageUtils.getString("trade_money_you_get"), tradeMoney.get(To.getName())));
+                From.sendMessage(ChatColor.LIGHT_PURPLE+ String.format(UltiTools.languageUtils.getString("trade_exp_you_get"), tradeExp.get(To.getName())));
+                From.sendMessage(ChatColor.YELLOW + String.format(UltiTools.languageUtils.getString("trade_item_you_get"), t2));
 
                 To.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_success"));
-                To.sendMessage(ChatColor.GOLD + UltiTools.languageUtils.getString("trade_money_you_get").replace("%s", tradeMoney.get(From.getName()).toString()));
-                To.sendMessage(ChatColor.LIGHT_PURPLE+ UltiTools.languageUtils.getString("trade_exp_you_get").replace("%s", tradeExp.get(From.getName()).toString()));
-                To.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("trade_item_you_get").replace("%s", Integer.toString(t1)));
+                To.sendMessage(ChatColor.GOLD + String.format(UltiTools.languageUtils.getString("trade_money_you_get"), tradeMoney.get(From.getName())));
+                To.sendMessage(ChatColor.LIGHT_PURPLE+ String.format(UltiTools.languageUtils.getString("trade_exp_you_get"), tradeExp.get(From.getName())));
+                To.sendMessage(ChatColor.YELLOW + String.format(UltiTools.languageUtils.getString("trade_item_you_get"), t1));
             }
         }.runTaskAsynchronously(UltiTools.getInstance());
 

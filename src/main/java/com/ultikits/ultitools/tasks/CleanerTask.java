@@ -56,7 +56,10 @@ public class CleanerTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (UltiTools.isProVersion) {
+        if (UltiTools.getInstance().getProChecker() == null){
+            return;
+        }
+        if (UltiTools.getInstance().getProChecker().getProStatus()) {
             time += 10;
             if (enableSmartClean) {
                 if (CleanerUtils.checkMobs(worlds) > maxMob && !mobCleaning) {

@@ -20,7 +20,10 @@ public class UnloadChunksTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (!UltiTools.isProVersion) {
+        if (UltiTools.getInstance().getProChecker() == null){
+            return;
+        }
+        if (!UltiTools.getInstance().getProChecker().getProStatus()) {
             return;
         }
         if (enableUnloadChunkTask) {

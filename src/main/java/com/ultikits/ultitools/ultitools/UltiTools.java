@@ -1,9 +1,9 @@
 package com.ultikits.ultitools.ultitools;
 
 import com.ultikits.api.VersionWrapper;
+import com.ultikits.checker.ProChecker;
 import com.ultikits.main.UltiCoreAPI;
 import com.ultikits.ultitools.checker.DependencyChecker;
-import com.ultikits.ultitools.checker.NewProChecker;
 import com.ultikits.ultitools.checker.PlayerlistChecker;
 import com.ultikits.ultitools.checker.VersionChecker;
 import com.ultikits.ultitools.commands.*;
@@ -42,10 +42,10 @@ public final class UltiTools extends JavaPlugin {
     public static VersionWrapper versionAdaptor = new VersionAdaptor().match();
     public static YamlFileUtils yaml;
     public static String language;
-    public static boolean isProVersion;
     public static boolean isDatabaseEnabled;
     public static DatabaseUtils databaseUtils;
     private static boolean isUltiCoreUpToDate;
+    private ProChecker proChecker;
     private static final String banner = "\n" +
             "§b§n==================================================§f\n" +
             "§b§l   __  __ __ __   _  ______               __     §f\n" +
@@ -70,7 +70,7 @@ public final class UltiTools extends JavaPlugin {
         ultiCoreAPI = new UltiCoreAPI(this);
         isPAPILoaded = UltiCoreAPI.isPapiLoaded();
         Metrics metrics = new Metrics(this, 8652);
-        metrics.addCustomChart(new Metrics.SimplePie("pro_user_count", () -> String.valueOf(isProVersion)));
+        metrics.addCustomChart(new Metrics.SimplePie("pro_user_count", () -> String.valueOf(UltiTools.getInstance().getProChecker().getProStatus())));
         metrics.addCustomChart(new Metrics.AdvancedPie("function_used", () -> {
             Map<String, Integer> valueMap = new HashMap<>();
             for (String each : FunctionUtils.getAllFunctions()) {
@@ -177,16 +177,15 @@ public final class UltiTools extends JavaPlugin {
                 public void run() {
                     if (UltiTools.getInstance().getConfig().getBoolean("enable_pro")) {
                         try {
-                            String res = NewProChecker.validatePro();
+                            proChecker = new ProChecker(getConfig().getString("pro_name"), getConfig().getString("pro_password"));
+                            String res = proChecker.validatePro();
                             if (res.equals("Pro Version Activated!")) {
-                                UltiTools.isProVersion = true;
                                 UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools] " + languageUtils.getString("pro_validated"));
                             } else {
                                 UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] " + languageUtils.getString("pro_validation_failed"));
                             }
                             UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.GOLD + "[UltiTools] " + res);
                         } catch (Exception e) {
-                            e.printStackTrace();
                             UltiTools.getInstance().getServer().getConsoleSender().sendMessage(ChatColor.RED + "[UltiTools] " + languageUtils.getString("pro_validation_failed"));
                         }
                     }
@@ -340,15 +339,15 @@ public final class UltiTools extends JavaPlugin {
 
 
         //注册任务
+        if (getConfig().getBoolean("enable_pro")) {
+            new ProCheckerTask().runTaskTimerAsynchronously(this, 12000L, 12000L);
+        }
         if (this.getConfig().getBoolean("enable_name_prefix")) {
             new NamePrefixSuffixTask().runTaskTimer(this, 0, 20L);
         }
         if (this.getConfig().getBoolean("enable_cleaner")) {
             new CleanerTask().runTaskTimer(this, 10 * 20L, 10 * 20L);
             new UnloadChunksTask().runTaskTimer(this, 0L, 60 * 20L);
-        }
-        if (getConfig().getBoolean("enable_pro")) {
-            new ProCheckerTask().runTaskTimerAsynchronously(this, 12000L, 12000L);
         }
 
 
@@ -389,6 +388,10 @@ public final class UltiTools extends JavaPlugin {
 
     public static UltiTools getInstance() {
         return plugin;
+    }
+
+    public ProChecker getProChecker() {
+        return proChecker;
     }
 
     private void setLocalLanguage() {

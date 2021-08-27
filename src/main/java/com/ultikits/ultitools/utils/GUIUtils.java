@@ -50,7 +50,7 @@ public class GUIUtils {
         ItemStack greenGlass = UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.GREEN);
         ItemStack orangeGlass = UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.ORANGE);
         ItemStack grayGlass = UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.GRAY);
-        if (title == LoginRegisterEnum.LOGIN && UltiTools.isProVersion) {
+        if (title == LoginRegisterEnum.LOGIN && UltiTools.getInstance().getProChecker().getProStatus()) {
             ArrayList<String> lore = new ArrayList<>();
             ItemStackManager itemStackManager6;
             if (!config.getBoolean("registered")) {

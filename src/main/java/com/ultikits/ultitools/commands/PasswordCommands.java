@@ -38,7 +38,7 @@ public class PasswordCommands implements TabExecutor {
                                 pwd.append(random.nextInt(10));
                             }
                             DatabasePlayerTools.setPlayerPassword(strings[1], String.valueOf(pwd));
-                            commandSender.sendMessage(info(UltiTools.languageUtils.getString("pwd_reset_success").replace("%s", strings[1])));
+                            commandSender.sendMessage(info(String.format(UltiTools.languageUtils.getString("pwd_reset_success"), strings[1])));
                             commandSender.sendMessage(info(String.valueOf(pwd)));
                         }else {
                             commandSender.sendMessage(warning(UltiTools.languageUtils.getString("pwd_player_not_found")));

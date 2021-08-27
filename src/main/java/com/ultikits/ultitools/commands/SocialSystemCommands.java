@@ -28,8 +28,8 @@ import java.util.List;
 public class SocialSystemCommands extends AbstractTabExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
-        if (!UltiTools.isProVersion) {
-            player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("warning_pro_fuction")));
+        if (!UltiTools.getInstance().getProChecker().getProStatus()) {
+            player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("warning_pro_function")));
             return true;
         }
         switch (strings.length) {

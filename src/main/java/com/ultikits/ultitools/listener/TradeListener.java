@@ -24,7 +24,7 @@ public class TradeListener implements Listener {
 
     @EventHandler
     public void onPlayerClickPlayer (PlayerInteractAtEntityEvent event) {
-        if (!UltiTools.isProVersion) return;
+        if (!UltiTools.getInstance().getProChecker().getProStatus()) return;
         if (!ConfigController.getConfig("trade").getBoolean("enable_shift_click_apply")) return;
         if (!(event.getRightClicked() instanceof Player)) return;
         if (!event.getPlayer().isSneaking()) return;

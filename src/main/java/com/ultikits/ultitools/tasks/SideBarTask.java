@@ -40,7 +40,7 @@ public class SideBarTask extends BukkitRunnable {
                         setUpPlayerSideBar(player);
 //                        player.setScoreboard(ScoreBoardUtils.scoreboardMap.get(player.getUniqueId()));
                     } else {
-                        player.setScoreboard(ScoreBoardUtils.scoreboardMap.get(null));
+                        player.setScoreboard(ScoreBoardUtils.getNewScoreboard());
                     }
                 }
             }.runTaskAsynchronously(UltiTools.getInstance());

@@ -92,7 +92,7 @@ sethome_home_already_have: 你已经有叫这个名字的家了！
 sethome_usage: '[家插件]用法：/sethome [家的名字（不设置则为默认）]'
 sethome_successfully: '[家插件]设置家成功！'
 delhome_successfully: '[家插件] %s 已被删除！'
-warning_pro_fuction: 这是一个付费版功能，激活付费版之后就可以使用啦！
+warning_pro_function: 这是一个付费版功能，激活付费版之后就可以使用啦！
 clean_name: 服务器清理
 clean_usage_check: 检查所有实体数量
 clean_usage_clean_item: 清理所有/某个世界的掉落物
@@ -427,9 +427,9 @@ trade_you_have_no_request: 你还没有任何交易请求
 trade_you_banned: "你已禁止 %s 与你进行交易"
 trade_you_un_banned: "你已解禁 %s 与你进行交易"
 trade_you_cannot_do: "你不能和 %s 交易"
-trade_exp_you_get: "你得到了 %s 点经验"
-trade_money_you_get: "你得到了 %s 金钱"
-trade_item_you_get: "你得到了 %s 个物品"
+trade_exp_you_get: "你得到了 %d 点经验"
+trade_money_you_get: "你得到了 %d 金钱"
+trade_item_you_get: "你得到了 %d 个物品"
 trade_you_cannot_request_two_player: 你不能同时请求两个玩家
 trade_you_cannot_trade_with_yourself: 你不能和自己交易
 trade_you_requested: "你已请求和 %s 进行交易,等待对方回应"

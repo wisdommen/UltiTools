@@ -32,8 +32,8 @@ public class CleanerCommands implements TabExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (command.getName().equalsIgnoreCase("clean") && (sender.hasPermission("ultikits.tools.clean") || sender.hasPermission("ultikits.tools.admin"))) {
-            if (!UltiTools.isProVersion) {
-                sender.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("warning_pro_fuction")));
+            if (!UltiTools.getInstance().getProChecker().getProStatus()) {
+                sender.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("warning_pro_function")));
                 return true;
             }
             new BukkitRunnable() {

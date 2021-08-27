@@ -157,7 +157,7 @@ public class JoinListener implements Listener {
 
     @EventHandler
     public void onJoinSaveIP(PlayerLoginEvent event) {
-        if (!UltiTools.isProVersion) {
+        if (!UltiTools.getInstance().getProChecker().getProStatus()) {
             return;
         }
         Player player = event.getPlayer();

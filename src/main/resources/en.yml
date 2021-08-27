@@ -91,7 +91,7 @@ sethome_home_already_have: '[Home] You have already had this home!'
 sethome_usage: '[Home] Usage: /sethome [Home name (Default if not specific)]'
 sethome_successfully: '[Home] Home has been set!'
 delhome_successfully: '[Home] %s has been deleted!'
-warning_pro_fuction: 'This is a Pro function, active Pro version to get access!'
+warning_pro_function: 'This is a Pro function, active Pro version to get access!'
 clean_name: 'Cleaner'
 clean_usage_check: 'Get the quantity of all entity'
 clean_usage_clean_item: "Clean all/specific world's dropped item"
@@ -423,9 +423,9 @@ trade_you_have_no_request: "You haven't received any transaction requests yet"
 trade_you_banned: "You have banned %s trading with you"
 trade_you_un_banned: "You have lifted the ban on %s trading with you"
 trade_you_cannot_do: "You cannot trade with %s"
-trade_exp_you_get: "You got %s points of experience"
-trade_money_you_get: "You got %s money"
-trade_item_you_get: "You got %s items"
+trade_exp_you_get: "You got %d points of experience"
+trade_money_you_get: "You got %d money"
+trade_item_you_get: "You got %d items"
 trade_you_cannot_request_two_player: "You can't request two players at the same time"
 trade_you_cannot_trade_with_yourself: "You can't trade with yourself"
 trade_you_requested: "You have requested a transaction with %s , please waiting for response"

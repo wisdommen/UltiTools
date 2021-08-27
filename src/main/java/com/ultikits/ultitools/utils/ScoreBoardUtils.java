@@ -19,13 +19,13 @@ public class ScoreBoardUtils {
     public static Map<UUID, Map<Integer, String>> boardMap = new HashMap<>();
     public static ScoreboardManager sb = Bukkit.getScoreboardManager();
     public static Map<UUID, Scoreboard> scoreboardMap = new HashMap<>();
+    private static Scoreboard newScoreboard = sb.getNewScoreboard();
 
 
     static {
         for (Player player : Bukkit.getOnlinePlayers()) {
             scoreboardMap.put(player.getUniqueId(), sb.getNewScoreboard());
         }
-        scoreboardMap.put(null, sb.getNewScoreboard());
     }
 
     public static void registerPlayer(UUID playerId) {
@@ -91,6 +91,10 @@ public class ScoreBoardUtils {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.setScoreboard(sb.getNewScoreboard());
         }
+    }
+
+    public static Scoreboard getNewScoreboard(){
+        return newScoreboard;
     }
 
 }

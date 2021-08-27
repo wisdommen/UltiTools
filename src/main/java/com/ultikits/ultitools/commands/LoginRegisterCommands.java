@@ -29,9 +29,9 @@ public class LoginRegisterCommands extends AbstractTabExecutor {
 
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
-        if (!UltiTools.isProVersion) {
+        if (!UltiTools.getInstance().getProChecker().getProStatus()) {
             if (player.hasPermission(PermissionsEnum.ADMIN.getPermission())) {
-                player.sendMessage(warning(UltiTools.languageUtils.getString("warning_pro_fuction")));
+                player.sendMessage(warning(UltiTools.languageUtils.getString("warning_pro_function")));
             } else {
                 player.sendMessage(warning(UltiTools.languageUtils.getString("no_permission")));
             }

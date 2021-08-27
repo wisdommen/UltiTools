@@ -10,13 +10,13 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TradeCommands extends AbstractTabExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
-        if (!UltiTools.isProVersion) {
+        if (!UltiTools.getInstance().getProChecker().getProStatus()) {
             player.sendMessage(UltiTools.languageUtils.getString("warning_pro_fuction"));
             return true;
         }
@@ -84,16 +84,31 @@ public class TradeCommands extends AbstractTabExecutor {
     @Nullable
     @Override
     protected List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
+        List<String> tabCommands = new ArrayList<>();
         switch (strings.length) {
             case 1:
-                return Arrays.asList("accept", "reject", "toggle", "ban");
+                tabCommands.add("accept");
+                tabCommands.add("reject");
+                tabCommands.add("toggle");
+                tabCommands.add("ban");
+                return tabCommands;
             case 2:
-                if (strings[0].equalsIgnoreCase("ban")) {
-                    return Arrays.asList("add", "remove");
-                } else {
-                    return null;
+                if (strings[0].equals("ban")) {
+                    tabCommands.add("add");
+                    tabCommands.add("remove");
+                    return tabCommands;
                 }
+                for (Player player1 : Bukkit.getOnlinePlayers()) {
+                    tabCommands.add(player1.getName());
+                }
+                return tabCommands;
+            case 3:
+                for (Player player1 : Bukkit.getOnlinePlayers()) {
+                    tabCommands.add(player1.getName());
+                }
+                return tabCommands;
+            default:
+                return null;
         }
-        return null;
     }
 }
