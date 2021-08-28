@@ -32,9 +32,8 @@ public class TradeListener implements Listener {
         Player From = event.getPlayer();
         Player To = (Player) event.getRightClicked();
 
-        if (TradeUtils.getOtherParty(From).getName().equals(To.getName())) return;
-
         if (TradeUtils.isPlayerInTradeMode(To)) {
+            if (TradeUtils.getOtherParty(To).getName().equals(From.getName())) return;
             From.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("trade_player_in_trading"));
             return;
         }
@@ -45,6 +44,7 @@ public class TradeListener implements Listener {
         }
 
         if (TradeUtils.isPlayerInRequestMode(From)) {
+            if (TradeUtils.getOtherParty(From).getName().equals(To.getName())) return;
             From.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("trade_you_cannot_request_two_player"));
             return;
         }
