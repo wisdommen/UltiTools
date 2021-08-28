@@ -63,7 +63,7 @@ public class RemoteBagCommands extends AbstractTabExecutor {
                     player.sendMessage(warning(UltiTools.languageUtils.getString("bag_player_data_not_exists")));
                     return true;
                 case 4:
-                    if (!UltiTools.getInstance().getProChecker().getProStatus()) {
+                    if (!UltiTools.getInstance().getConfig().getBoolean("enable_pro") || !UltiTools.getInstance().getProChecker().getProStatus()) {
                         return false;
                     }
                     switch (strings[1]) {

@@ -140,6 +140,9 @@ public class ChatListener implements Listener {
 
     @EventHandler
     public void onPlayerChatReply(AsyncPlayerChatEvent event) {
+        if (!UltiTools.getInstance().getConfig().getBoolean("enable_pro")){
+            return;
+        }
         if (ConfigController.getConfig("config").getBoolean("enable_auto-reply") && UltiTools.getInstance().getProChecker().getProStatus()) {
             String message = event.getMessage().replace(" ", "_");
             File file = new File(ConfigsEnum.CHAT.toString());

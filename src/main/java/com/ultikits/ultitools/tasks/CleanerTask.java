@@ -56,7 +56,7 @@ public class CleanerTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (UltiTools.getInstance().getProChecker() == null){
+        if (!UltiTools.getInstance().getConfig().getBoolean("enable_pro") || UltiTools.getInstance().getProChecker() == null){
             return;
         }
         if (UltiTools.getInstance().getProChecker().getProStatus()) {

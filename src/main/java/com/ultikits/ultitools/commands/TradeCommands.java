@@ -16,7 +16,7 @@ import java.util.List;
 public class TradeCommands extends AbstractTabExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
-        if (!UltiTools.getInstance().getProChecker().getProStatus()) {
+        if (!UltiTools.getInstance().getConfig().getBoolean("enable_pro") || !UltiTools.getInstance().getProChecker().getProStatus()) {
             player.sendMessage(UltiTools.languageUtils.getString("warning_pro_fuction"));
             return true;
         }

@@ -28,7 +28,7 @@ import java.util.List;
 public class SocialSystemCommands extends AbstractTabExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
-        if (!UltiTools.getInstance().getProChecker().getProStatus()) {
+        if (!UltiTools.getInstance().getConfig().getBoolean("enable_pro") || !UltiTools.getInstance().getProChecker().getProStatus()) {
             player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("warning_pro_function")));
             return true;
         }

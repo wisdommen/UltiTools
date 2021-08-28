@@ -45,7 +45,7 @@ public class ToolsCommands implements TabExecutor {
                         sender.sendMessage(warning(UltiTools.languageUtils.getString("config_reloaded")));
                         return true;
                     default:
-                        if (!UltiTools.getInstance().getProChecker().getProStatus()){
+                        if (!UltiTools.getInstance().getConfig().getBoolean("enable_pro") || !UltiTools.getInstance().getProChecker().getProStatus()){
                             return false;
                         }
                         if (!(sender instanceof Player)) {

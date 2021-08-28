@@ -70,7 +70,7 @@ public final class UltiTools extends JavaPlugin {
         ultiCoreAPI = new UltiCoreAPI(this);
         isPAPILoaded = UltiCoreAPI.isPapiLoaded();
         Metrics metrics = new Metrics(this, 8652);
-        metrics.addCustomChart(new Metrics.SimplePie("pro_user_count", () -> String.valueOf(UltiTools.getInstance().getProChecker().getProStatus())));
+        metrics.addCustomChart(new Metrics.SimplePie("pro_user_count", () -> String.valueOf(UltiTools.getInstance().getConfig().getBoolean("enable_pro") && UltiTools.getInstance().getProChecker().getProStatus())));
         metrics.addCustomChart(new Metrics.AdvancedPie("function_used", () -> {
             Map<String, Integer> valueMap = new HashMap<>();
             for (String each : FunctionUtils.getAllFunctions()) {
