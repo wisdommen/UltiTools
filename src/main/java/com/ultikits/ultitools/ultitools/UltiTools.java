@@ -107,6 +107,10 @@ public final class UltiTools extends JavaPlugin {
         if(!new File(ConfigsEnum.ANNOUNCEMENT.toString()).exists()) {
             yaml.saveYamlFile(getDataFolder().getPath(),"announcement.yml",language + "_announcement.yml");
         }
+        if(!new File(ConfigsEnum.COMMANDALIAS.toString()).exists()) {
+            yaml.saveYamlFile(getDataFolder().getPath(), "command-alias.yml",  language + "_command-alias.yml");
+        }
+
         new PlayerlistChecker().playerlistNewChecker();                                                                 //playerlist.yml文件转换
 
         List<File> folders = new ArrayList<>();
@@ -218,6 +222,7 @@ public final class UltiTools extends JavaPlugin {
         if (this.getConfig().getBoolean("enable_email")) {
             CommandRegister.registerCommand(plugin, new EmailCommands(), "ultikits.tools.email", languageUtils.getString("email_function"), "email", "ultimail", "mail", "mails");
             getServer().getPluginManager().registerEvents(new EmailPageListener(), this);
+            Bukkit.getPluginManager().registerEvents(new EmailToolsViewListener(),this);
         }
         if (this.getConfig().getBoolean("enable_home")) {
             CommandRegister.registerCommand(plugin, new HomeCommands(), "ultikits.tools.home", languageUtils.getString("home_function"), "home", "h");
@@ -336,6 +341,13 @@ public final class UltiTools extends JavaPlugin {
         if (getConfig().getBoolean("enable_motd_funcion")) {
             getServer().getPluginManager().registerEvents(new MOTDListener(), this);
         }
+        if (getConfig().getBoolean("enable_command-alias_function")) {
+            getServer().getPluginManager().registerEvents(new CommandListener(),this);
+            for(String alia : new CommandListener().getCommandAliasList()) {
+                CommandRegister.registerCommand(this,null,null,null,alia);
+            }
+        }
+
 
 
         //注册任务

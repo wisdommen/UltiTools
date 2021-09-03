@@ -32,7 +32,8 @@ public enum ConfigsEnum {
     LOBBY(UltiTools.getInstance().getDataFolder() + "/lobby.yml"),
     TRADE(UltiTools.getInstance().getDataFolder() + "/trade.yml"),
     ANNOUNCEMENT(UltiTools.getInstance().getDataFolder() + "/announcement.yml"),
-    MOTD(UltiTools.getInstance().getDataFolder() + "/motd.yml");
+    MOTD(UltiTools.getInstance().getDataFolder() + "/motd.yml"),
+    COMMANDALIAS(UltiTools.getInstance().getDataFolder() + "/command-alias.yml");
 
     private final String path;
 

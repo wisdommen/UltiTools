@@ -1,0 +1,10 @@
+#####format#####
+#oringal command:
+#  - alia
+#  - another alia(optional)
+#  - the same as above
+#####example#####
+#lobby:
+#  - l
+#  - lb
+#please ensure that the alias you set have no conflicts with other commands

@@ -132,6 +132,8 @@ email_attachment_content_header: ------附件内容------
 email_click_to_claim: 点击领取附件！
 email_click_to_read: 点击来标记为已读！
 email_read: 已读！
+email_tools: "邮件工具箱"
+email_open_mailbox: "打开邮箱"
 unlock_click_to_unlock: 请点击箱子解锁！
 unlock_file_save_fail_click: 文件保存失败，解锁失败！请再次点击。
 unlock_successfully: 解锁成功！
