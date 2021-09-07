@@ -1,37 +1,21 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractTabExecutor;
-import com.ultikits.beans.EmailContentBean;
 import com.ultikits.enums.Sounds;
-import com.ultikits.ultitools.enums.ConfigsEnum;
-import com.ultikits.ultitools.enums.EmailResponse;
-import com.ultikits.ultitools.manager.EmailManager;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.views.EmailView;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Content;
-import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.ultikits.ultitools.utils.EmailUtils.*;
-import static com.ultikits.utils.MessagesUtils.info;
-import static com.ultikits.utils.MessagesUtils.warning;
 
 
 public class EmailCommands extends AbstractTabExecutor {
@@ -150,6 +134,7 @@ public class EmailCommands extends AbstractTabExecutor {
                 tabCommands.add("delread");
                 tabCommands.add("send");
                 tabCommands.add("senditem");
+                tabCommands.add("tools");
                 if (player.isOp()) {
                     tabCommands.add("sendall");
                 }
