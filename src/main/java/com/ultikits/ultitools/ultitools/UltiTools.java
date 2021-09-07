@@ -222,7 +222,6 @@ public final class UltiTools extends JavaPlugin {
         if (this.getConfig().getBoolean("enable_email")) {
             CommandRegister.registerCommand(plugin, new EmailCommands(), "ultikits.tools.email", languageUtils.getString("email_function"), "email", "ultimail", "mail", "mails");
             getServer().getPluginManager().registerEvents(new EmailPageListener(), this);
-            Bukkit.getPluginManager().registerEvents(new EmailToolsViewListener(),this);
         }
         if (this.getConfig().getBoolean("enable_home")) {
             CommandRegister.registerCommand(plugin, new HomeCommands(), "ultikits.tools.home", languageUtils.getString("home_function"), "home", "h");

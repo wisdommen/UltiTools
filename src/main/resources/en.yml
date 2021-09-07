@@ -131,8 +131,6 @@ email_attachment_content_header: '------Attachment content------'
 email_click_to_claim: 'Click to claim the attachment!'
 email_click_to_read: 'Click to mark as read!'
 email_read: 'Read!'
-email_tools: "Email tools"
-email_open_mailbox: "open the mailbox"
 unlock_click_to_unlock: 'Click the chest to unlock!'
 unlock_file_save_fail_click: 'Failed to save file, unlock failed. Please click the chest again!'
 unlock_successfully: 'Unlocked!'

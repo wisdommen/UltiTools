@@ -3,13 +3,11 @@ package com.ultikits.ultitools.commands;
 import com.ultikits.abstracts.AbstractTabExecutor;
 import com.ultikits.enums.Sounds;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.views.EmailToolsView;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -49,10 +47,6 @@ public class EmailCommands extends AbstractTabExecutor {
                         return true;
                     case "help":
                         sendHelpMessage(player);
-                        return true;
-                    case "tools":
-                        Inventory i = EmailToolsView.setUp(player);
-                        player.openInventory(i);
                         return true;
                     default:
                         player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("wrong_format"));
