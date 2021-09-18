@@ -33,7 +33,8 @@ public enum ConfigsEnum {
     TRADE(UltiTools.getInstance().getDataFolder() + "/trade.yml"),
     ANNOUNCEMENT(UltiTools.getInstance().getDataFolder() + "/announcement.yml"),
     MOTD(UltiTools.getInstance().getDataFolder() + "/motd.yml"),
-    COMMANDALIAS(UltiTools.getInstance().getDataFolder() + "/command-alias.yml");
+    COMMANDALIAS(UltiTools.getInstance().getDataFolder() + "/command-alias.yml"),
+    InventoryBackupData(UltiTools.getInstance().getDataFolder() + "/InventoryBackupData");
 
     private final String path;
 

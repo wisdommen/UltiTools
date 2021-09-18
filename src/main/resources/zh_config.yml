@@ -1,4 +1,4 @@
-config_version: 3.29
+config_version: 3.30
 
 '注释0请勿修改': '语言: zh_cn(简体中文), en_us(English)'
 language: zh_cn
@@ -142,3 +142,6 @@ enable_motd_funcion: true
 
 '注释50请勿修改': '开启自定义指令简写功能'
 enable_command-alias_function: true
+
+'注释51请勿修改': '开启背包备份功能'
+enable_inv_backup_function: true
