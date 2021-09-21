@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -26,42 +25,50 @@ import java.util.List;
  */
 public class InventoryBackupCommands extends AbstractTabExecutor {
     Player sender;
+    public static Boolean isWorking = false;
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
         sender = player;
 
         if(!player.isOp()) {
             return false;
-        } else if(strings.length == 1) {
+        }
+        if(strings.length == 1) {
             //  /inv saveall
             if("saveall".equalsIgnoreCase(strings[0])) {
+                isWorking = true;
                 new BukkitRunnable() {
                     @Override
                     public void run() {
                         for(Player p : Bukkit.getOnlinePlayers()) {
                             savePlayerInventoryData(p);
                         }
-                        sender.sendMessage(MessagesUtils.info("inv_backup_save_success"));
+                        sender.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("inv_backup_save_success")));
                     }
                 }.runTaskAsynchronously(UltiTools.getInstance());
-
+                isWorking = false;
                 return true;
             }
             return false;
-        } else if(strings.length == 2) {
+        }
+        if(strings.length == 2) {
             switch (strings[0].toLowerCase()) {
                 case "save":
+                    isWorking = true;
                     savePlayerInventoryData(Bukkit.getPlayer(strings[1]));
+                    isWorking = false;
                     sender.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("inv_backup_save_success")));
                     break;
                 // /inv load [player]
                 case "load":
+                    isWorking = true;
                     loadPlayerInventoryData(Bukkit.getPlayer(strings[1]));
+                    isWorking = false;
                     sender.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("inv_backup_load_success")));
                     break;
                 // /inv look [player]
                 case "look":
-                    if(!new File(ConfigsEnum.InventoryBackupData + "/" + strings[1] + ".yml").exists()) {
+                    if(!new File(ConfigsEnum.InventoryBackupData + File.separator + strings[1] + ".yml").exists()) {
                         sender.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("inv_backup_null")));
                         return true;
                     } else {
@@ -83,63 +90,71 @@ public class InventoryBackupCommands extends AbstractTabExecutor {
             MessagesUtils.warning(UltiTools.languageUtils.getString("player_not_online_or_not_exits"));
             return;
         }
-        //该玩家文件信息
-        Inventory i = p.getInventory();
-        int InventorySize = i.getSize();
-        File playerInventoryDataFile = new File(ConfigsEnum.InventoryBackupData + "/" + p.getName() + ".yml");
-        YamlConfiguration playerInventoryDataConfig = YamlConfiguration.loadConfiguration(playerInventoryDataFile);
-        //遍历 保存物品数据
-        for(int num = 0;num < InventorySize;num++){
-            ItemStack itemStack = i.getItem(num);
-            if(!playerInventoryDataFile.exists()) {
-                try {
-                    playerInventoryDataFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                playerInventoryDataFile.delete();
-                try {
-                    playerInventoryDataFile.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if(itemStack == null) {
-                    playerInventoryDataConfig.set("InventoryData." + num," ");
+        //遍历 异步保存物品数据
+        new BukkitRunnable() {
+            //该玩家文件信息
+            File playerInventoryDataFile = new File(ConfigsEnum.InventoryBackupData + File.separator + p.getName() + ".yml");
+            YamlConfiguration playerInventoryDataConfig = YamlConfiguration.loadConfiguration(playerInventoryDataFile);
+            @Override
+            public void run() {
+                if(!playerInventoryDataFile.exists()) {
+                    try {
+                        playerInventoryDataFile.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 } else {
-                    playerInventoryDataConfig.set("InventoryData." + num,itemStack);
+                    playerInventoryDataFile.delete();
+                    try {
+                        playerInventoryDataFile.createNewFile();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                for(int num = 0;num < p.getInventory().getSize();num++){
+                    ItemStack itemStack = p.getInventory().getItem(num);
+                    if(itemStack == null) {
+                        playerInventoryDataConfig.set("InventoryData." + num," ");
+                    } else {
+                        playerInventoryDataConfig.set("InventoryData." + num,itemStack);
+                    }
+                }
+                //保存完成,补充数据
+                playerInventoryDataConfig.set("InventoryInfo.LatestBackupTime", new TimeUtils().getTimeWithDate());
+                try {
+                    playerInventoryDataConfig.save(playerInventoryDataFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
-        }
-        //保存完成,补充数据
-        playerInventoryDataConfig.set("InventoryInfo.LatestBackupTime", new TimeUtils().getTimeWithDate());
-        try {
-            playerInventoryDataConfig.save(playerInventoryDataFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        }.runTaskAsynchronously(UltiTools.getInstance());
+
     }
 
     //加载玩家物品栏
     private void loadPlayerInventoryData(Player p) {
-        File playerInventoryDataFile = new File(ConfigsEnum.InventoryBackupData + "/" + p.getName() + ".yml");
-        if(!playerInventoryDataFile.exists()) {
-            sender.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("inv_backup_null")));
-            return;
-        }
         if(!Bukkit.getOnlinePlayers().contains(p)) {
             MessagesUtils.warning(UltiTools.languageUtils.getString("player_not_online_or_not_exits"));
             return;
         }
-        YamlConfiguration playerInventoryDataConfig = YamlConfiguration.loadConfiguration(playerInventoryDataFile);
-        Inventory i = Bukkit.getPlayer(p.getName()).getInventory();
-        for(int num = 0; num < i.getSize(); num++) {
-            if(playerInventoryDataConfig.get("InventoryData." + num).equals(" ")) {
-                continue;
-            } else {
-                i.setItem(num,playerInventoryDataConfig.getItemStack("InventoryData." + num));
+        new BukkitRunnable() {
+            File playerInventoryDataFile = new File(ConfigsEnum.InventoryBackupData + File.separator + p.getName() + ".yml");
+            YamlConfiguration playerInventoryDataConfig = YamlConfiguration.loadConfiguration(playerInventoryDataFile);
+            @Override
+            public void run() {
+                if(!playerInventoryDataFile.exists()) {
+                    sender.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("inv_backup_null")));
+                    return;
+                }
+                for(int num = 0; num < p.getInventory().getSize(); num++) {
+                    if(playerInventoryDataConfig.get("InventoryData." + num).equals(" ")) {
+                        continue;
+                    } else {
+                        p.getInventory().setItem(num,playerInventoryDataConfig.getItemStack("InventoryData." + num));
+                    }
+                }
             }
-        }
+        }.runTaskAsynchronously(UltiTools.getInstance());
     }
 
 

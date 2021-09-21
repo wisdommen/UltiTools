@@ -349,6 +349,7 @@ public final class UltiTools extends JavaPlugin {
         }
         if(getConfig().getBoolean("enable_inv_backup_function")) {
             CommandRegister.registerCommand(plugin,new InventoryBackupCommands(),"ultikits.tools.admin","背包备份","inv","inventory");
+            Bukkit.getServer().getPluginManager().registerEvents(new ItemClickListener(),this);
             Bukkit.getServer().getPluginManager().registerEvents(new InventoryBackupViewListener(),this);
         }
 
