@@ -124,6 +124,7 @@ public final class UltiTools extends JavaPlugin {
         folders.add(new File(getDataFolder() + "/kitData"));
         folders.add(new File(getDataFolder() + "/warps"));
         folders.add(new File(getDataFolder() + "/playerData" + "/playerlist"));
+        folders.add(new File(getDataFolder() + "/InventoryBackupData"));
 
         makedirs(folders);
 
@@ -346,7 +347,11 @@ public final class UltiTools extends JavaPlugin {
                 CommandRegister.registerCommand(this,null,null,null,alia);
             }
         }
-
+        if(getConfig().getBoolean("enable_inv_backup_function")) {
+            CommandRegister.registerCommand(plugin,new InventoryBackupCommands(),"ultikits.tools.admin","背包备份","inv","inventory");
+            Bukkit.getServer().getPluginManager().registerEvents(new ItemClickListener(),this);
+            Bukkit.getServer().getPluginManager().registerEvents(new InventoryBackupViewListener(),this);
+        }
 
 
         //注册任务

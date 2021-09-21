@@ -433,3 +433,8 @@ trade_item_you_get: "你得到了 %d 个物品"
 trade_you_cannot_request_two_player: 你不能同时请求两个玩家
 trade_you_cannot_trade_with_yourself: 你不能和自己交易
 trade_you_requested: "你已请求和 %s 进行交易,等待对方回应"
+inv_backup_view_title: "背包备份查看"
+inv_backup_null: "玩家背包备份数据不存在"
+inv_backup_load_success: "载入成功"
+inv_backup_backup_time: "备份时间"
+inv_backup_save_success: "保存成功"
