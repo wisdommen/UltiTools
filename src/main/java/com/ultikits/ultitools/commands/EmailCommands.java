@@ -134,7 +134,6 @@ public class EmailCommands extends AbstractTabExecutor {
                 tabCommands.add("delread");
                 tabCommands.add("send");
                 tabCommands.add("senditem");
-                tabCommands.add("tools");
                 if (player.isOp()) {
                     tabCommands.add("sendall");
                 }

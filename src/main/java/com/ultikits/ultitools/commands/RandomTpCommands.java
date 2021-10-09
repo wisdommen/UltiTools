@@ -18,6 +18,10 @@ public class RandomTpCommands extends AbstractPlayerCommandExecutor {
 
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
+        if(!player.isOp() || !player.hasPermission("ultikits.tools.command.wild")) {
+            player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("no_permission")));
+            return false;
+        }
         World.Environment environment = player.getWorld().getEnvironment();
         if (environment == World.Environment.NETHER || environment == World.Environment.THE_END) {
             player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("random_tp_banned")));
