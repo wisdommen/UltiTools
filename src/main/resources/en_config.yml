@@ -1,4 +1,4 @@
-config_version: 3.30
+config_version: 3.31
 
 'comment0': 'Language: zh_cn(简体中文), en_us(English)'
 language: en_us
@@ -145,3 +145,6 @@ enable_command-alias_function: true
 
 'comment51': 'enable inventory backup function'
 enable_inv_backup_function: true
+
+'comment57': 'enable ban function'
+enable_ban_function: true

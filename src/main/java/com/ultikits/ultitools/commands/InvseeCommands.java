@@ -29,7 +29,7 @@ public class InvseeCommands implements CommandExecutor {
                 switch (command.getName()) {
                     case "invsee":
                         if(targetPlayer == null) {
-                            player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("player_doesnt_exist")));
+                            player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("player_doesnt_exist_or_offline")));
                             return true;
                         } else {
                             player.openInventory(targetPlayer.getInventory());

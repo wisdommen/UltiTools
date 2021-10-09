@@ -110,6 +110,9 @@ public final class UltiTools extends JavaPlugin {
         if(!new File(ConfigsEnum.COMMANDALIAS.toString()).exists()) {
             yaml.saveYamlFile(getDataFolder().getPath(), "command-alias.yml",  language + "_command-alias.yml");
         }
+        if(!new File(ConfigsEnum.BANLIST.toString()).exists()) {
+            yaml.saveYamlFile(getDataFolder().getPath(),"banlist.yml","banlist.yml");
+        }
 
         new PlayerlistChecker().playerlistNewChecker();                                                                 //playerlist.yml文件转换
 
@@ -291,7 +294,7 @@ public final class UltiTools extends JavaPlugin {
             CommandRegister.registerCommand(plugin, new SpawnCommands(), "ultikits.tools.back", languageUtils.getString("back_function"), "setspawn");
         }
         if (this.getConfig().getBoolean("enable_random_tp")) {
-            CommandRegister.registerCommand(plugin, new RandomTpCommands(), "ultikits.tools.randomtp", languageUtils.getString("random_tp_function"), "wild");
+            CommandRegister.registerCommand(plugin, new RandomTpCommands(), "ultikits.tools.command.wild", languageUtils.getString("random_tp_function"), "wild");
         }
         if (this.getConfig().getBoolean("enable_fly_command")) {
             CommandRegister.registerCommand(plugin, new FlyCommands(), "ultikits.tools.command.fly", languageUtils.getString("fly_function"), "fly");
@@ -312,6 +315,10 @@ public final class UltiTools extends JavaPlugin {
         }
 
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
+
+        //防止放入物品至自定义GUI
+        Bukkit.getPluginManager().registerEvents(new CustomGUIProtectListener(),this);
+
         if (getConfig().getBoolean("enable_chat")) {
             getServer().getPluginManager().registerEvents(new ChatListener(), this);
         }
@@ -365,7 +372,14 @@ public final class UltiTools extends JavaPlugin {
             new CleanerTask().runTaskTimer(this, 10 * 20L, 10 * 20L);
             new UnloadChunksTask().runTaskTimer(this, 0L, 60 * 20L);
         }
-
+        if(getConfig().getBoolean("enable_ban_function")) {
+            CommandRegister.registerCommand(this,new BanCommands(),"ultikits.tools.admin",UltiTools.languageUtils.getString("ban_function"),"ultiban");
+            CommandRegister.registerCommand(this,new BanCommands(),"ultikits.tools.admin",UltiTools.languageUtils.getString("ban_function"),"ultibanip");
+            CommandRegister.registerCommand(this,new BanCommands(),"ultikits.tools.admin",UltiTools.languageUtils.getString("ban_function"),"ultibanlist");
+            Bukkit.getServer().getPluginManager().registerEvents(new BanListener(),this);
+            Bukkit.getServer().getPluginManager().registerEvents(new BanlistViewListener(),this);
+            new BanTimeCheckerTask().startBanTimeCheckerTask();
+        }
 
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("plugin_loaded"));
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("author") + "wisdomme");
