@@ -112,7 +112,7 @@ public class ChestLockUtils {
             }
             if (hasChestData(left) || hasChestData(right)) {
                 if (isChestLocked(right) || isChestLocked(left)) {
-                    if (isChestOwner(chest, player) || isChestOwner(chest, player)) {
+                    if (isChestOwner(left, player) || isChestOwner(right, player)) {
                         addChestData(chest, player, true);
                         player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_auto_lock").replace("\\n", "\n"));
                         return true;
