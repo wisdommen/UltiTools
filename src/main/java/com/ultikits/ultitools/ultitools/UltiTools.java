@@ -383,6 +383,7 @@ public final class UltiTools extends JavaPlugin {
 
         if (getConfig().getBoolean("enable_silent_open_chest_function")) {
             Bukkit.getServer().getPluginManager().registerEvents(new SilentOpenListener(), this);
+            CommandRegister.registerCommand(this, new SilentOpenCommands(), "ultikits.tools.silent", "", "ultisilent");
         }
 
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("plugin_loaded"));
