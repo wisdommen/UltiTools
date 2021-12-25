@@ -5,11 +5,12 @@ import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.ViewManager;
 import com.ultikits.inventoryapi.ViewType;
 import com.ultikits.manager.ItemStackManager;
+import com.ultikits.ultitools.commands.HomeCommands;
 import com.ultikits.ultitools.enums.ConfigsEnum;
-import com.ultikits.ultitools.listener.HomeListPageListener;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.Utils;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -57,8 +58,10 @@ public class HomeListView {
                 each = "Def";
             }
             String path = player.getName() + "." + each;
-            String world = String.format(ChatColor.YELLOW + UltiTools.languageUtils.getString("home_page_home_description_in_world")+" %s", config.getString(path + ".world"));
-            String xyz = String.format(ChatColor.GRAY + "X: %d Y: %d Z: %d", config.getInt(path + ".x"), config.getInt(path + ".y"), config.getInt(path + ".z"));
+            String version = UltiTools.getInstance().getServer().getVersion();
+            Location location = HomeCommands.getLegacyLocation(config, path, Integer.parseInt(version.split("MC: ")[1].replaceAll("[.)]", "")) < 1130);
+            String world = String.format(ChatColor.YELLOW + UltiTools.languageUtils.getString("home_page_home_description_in_world")+" %s", location.getWorld().getName());
+            String xyz = String.format(ChatColor.GRAY + "X: %.2f Y: %.2f Z: %.2f", location.getX(), location.getY(), location.getZ());
             lore.add(world);
             lore.add(xyz);
             Random random = new Random();

@@ -105,7 +105,7 @@ public class JoinListener implements Listener {
                     }
                 }
 
-            }.runTaskLater(UltiTools.getInstance(), sendMessageDelay * 20L);
+            }.runTaskLaterAsynchronously(UltiTools.getInstance(), sendMessageDelay * 20L);
         }
 
         //新玩家全服欢迎公告功能

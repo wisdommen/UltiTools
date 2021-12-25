@@ -39,16 +39,25 @@ public class HomeCommands extends AbstractTabExecutor {
                 @Override
                 public void run() {
                     YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+                    Location location;
                     try {
                         if (args.length == 0 || (args.length == 1 && args[0].equals(UltiTools.languageUtils.getString("default")))) {
-                            Location location = config.getObject(player.getName() + ".Def", Location.class);
+                            try {
+                                location = config.getObject(player.getName() + ".Def", Location.class);
+                            } catch (NoSuchMethodError error) {
+                                location = getLegacyLocation(config, player.getName() + ".Def", true);
+                            }
                             if (location == null) {
                                 location = getLegacyLocation(config, player.getName() + ".Def");
                                 HomeUtils.setHome(player, "Def", location);
                             }
                             DelayTeleportUtils.delayTeleport(player, location, homeConfig.getInt("home_tpwait"));
                         } else if (args.length == 1) {
-                            Location location = config.getObject(player.getName() + "." + args[0], Location.class);
+                            try {
+                                location = config.getObject(player.getName() + "." + args[0], Location.class);
+                            } catch (NoSuchMethodError error) {
+                                location = getLegacyLocation(config, player.getName() + "." + args[0], true);
+                            }
                             if (location == null) {
                                 location = getLegacyLocation(config, player.getName() + "." + args[0]);
                                 HomeUtils.setHome(player, args[0], location);
@@ -74,11 +83,23 @@ public class HomeCommands extends AbstractTabExecutor {
         return Utils.getHomeList(player);
     }
 
-    private Location getLegacyLocation(YamlConfiguration config, String path){
+    private static Location getLegacyLocation(YamlConfiguration config, String path) {
+        return getLegacyLocation(config, path, false);
+    }
+
+    public static Location getLegacyLocation(YamlConfiguration config, String path, boolean isLegacyServer) {
+        if (!isLegacyServer) {
+            return (Location) config.get(path);
+        }
         World world = Bukkit.getServer().getWorld(Objects.requireNonNull(config.getString(path + ".world")));
-        int x = config.getInt(path + ".x");
-        int y = config.getInt(path + ".y");
-        int z = config.getInt(path + ".z");
+        double x = config.getDouble(path + ".x");
+        double y = config.getDouble(path + ".y");
+        double z = config.getDouble(path + ".z");
+        if (config.get(path + ".yam") != null && config.get(path + ".pitch") != null) {
+            float yam = (float) config.getDouble(path + ".yam");
+            float pitch = (float) config.getDouble(path + ".pitch");
+            return new Location(world, x, y, z, yam, pitch);
+        }
         return new Location(world, x, y, z);
     }
 }

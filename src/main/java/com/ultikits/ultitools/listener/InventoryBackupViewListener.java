@@ -14,7 +14,9 @@ import org.bukkit.inventory.ItemStack;
 public class InventoryBackupViewListener extends PagesListener {
     @Override
     public CancelResult onItemClick(InventoryClickEvent inventoryClickEvent, Player player, InventoryManager inventoryManager, ItemStack itemStack) {
-        if(inventoryClickEvent.getView().getTitle().contains(UltiTools.languageUtils.getString("inv_backup_view_title")));
-        return CancelResult.TRUE;
+        if(inventoryClickEvent.getView().getTitle().contains(UltiTools.languageUtils.getString("inv_backup_view_title"))) {
+            return CancelResult.TRUE;
+        }
+        return CancelResult.NONE;
     }
 }

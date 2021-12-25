@@ -24,6 +24,7 @@ public class WorldsListListener extends PagesListener {
                 }
             }
             player.performCommand("mw " + aliasName);
+            player.closeInventory();
             return CancelResult.TRUE;
         }
         return CancelResult.NONE;

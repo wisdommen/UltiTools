@@ -15,6 +15,7 @@ public class HomeListPageListener extends PagesListener {
         if (inventoryManager.getTitle().contains(player.getName()+ UltiTools.languageUtils.getString("home_'s_home_list"))) {
             String homeName = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName());
             player.performCommand("home " + homeName);
+            player.closeInventory();
             return CancelResult.TRUE;
         }
         return CancelResult.NONE;

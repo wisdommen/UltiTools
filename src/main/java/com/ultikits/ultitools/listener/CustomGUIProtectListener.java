@@ -57,8 +57,12 @@ public class CustomGUIProtectListener implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        if(isGUIOpen) {
-            e.setCancelled(true);
+        for(String title : titleList) {
+            if (e.getView().getTitle().contains(title)) {
+                if(isGUIOpen) {
+                    e.setCancelled(true);
+                }
+            }
         }
     }
 }

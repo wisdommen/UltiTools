@@ -1,5 +1,5 @@
 # config version, please do not change
-configVersion: 1.0
+config_version: 1.0
 
 # MOTD text
 motd: "&6Welcome to the server!\n&eHave a good time!"
