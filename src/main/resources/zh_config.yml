@@ -148,3 +148,6 @@ enable_inv_backup_function: true
 
 '注释57请勿修改': '开启ban功能'
 enable_ban_function: true
+
+'注释58请勿修改': '开启管理员静默开箱功能'
+enable_silent_open_chest_function: true

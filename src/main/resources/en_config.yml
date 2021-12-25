@@ -148,3 +148,6 @@ enable_inv_backup_function: true
 
 'comment57': 'enable ban function'
 enable_ban_function: true
+
+'comment58': 'enable silent open chest function'
+enable_silent_open_chest_function: true

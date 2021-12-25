@@ -381,6 +381,10 @@ public final class UltiTools extends JavaPlugin {
             new BanTimeCheckerTask().startBanTimeCheckerTask();
         }
 
+        if (getConfig().getBoolean("enable_silent_open_chest_function")) {
+            Bukkit.getServer().getPluginManager().registerEvents(new SilentOpenListener(), this);
+        }
+
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("plugin_loaded"));
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("author") + "wisdomme");
 
