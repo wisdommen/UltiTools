@@ -41,7 +41,7 @@ public class CustomGUIListener extends PagesListener {
                         UltiTools.getInstance().getServer().dispatchCommand(UltiTools.getInstance().getServer().getConsoleSender(), consoleCommand.replace("{PLAYER}", player.getName()));
                     }
                     EconomyUtils.withdraw(player, config.getInt(signature + "." + key + ".price"));
-                    if (config.getConfigurationSection(signature + "." + key + ".keep-open") != null &&
+                    if (config.get(signature + "." + key + ".keep-open") != null &&
                             !config.getBoolean(signature + "." + key + ".keep-open")) {
                         player.closeInventory();
                     }

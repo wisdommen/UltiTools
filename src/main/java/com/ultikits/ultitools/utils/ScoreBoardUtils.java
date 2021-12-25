@@ -43,8 +43,8 @@ public class ScoreBoardUtils {
      * 重复否则后者覆盖前者。设置line参数为null
      * 可将此行隐藏。
      *
-     * @param player 需要更新侧边栏的玩家
-     * @param line 需要更新的内容
+     * @param player    需要更新侧边栏的玩家
+     * @param line      需要更新的内容
      * @param scoreSlot 需要更新的行数
      */
     public static void updateLine(Player player, String line, int scoreSlot) {
@@ -74,12 +74,12 @@ public class ScoreBoardUtils {
         }
         if (scoreMap.containsKey(scoreSlot)) {
             String str = scoreMap.get(scoreSlot);
-            if (str.equals(line)){
+            if (str.equals(line)) {
                 return;
             }
             player.getScoreboard().resetScores(str);
         }
-        if (line != null){
+        if (line != null && information != null) {
             scoreMap.put(scoreSlot, line);
             boardMap.put(player.getUniqueId(), scoreMap);
             information.getScore(line).setScore(scoreSlot);
@@ -93,7 +93,7 @@ public class ScoreBoardUtils {
         }
     }
 
-    public static Scoreboard getNewScoreboard(){
+    public static Scoreboard getNewScoreboard() {
         return newScoreboard;
     }
 
