@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 public class WarpListener extends PagesListener {
     @Override
     public CancelResult onItemClick(InventoryClickEvent inventoryClickEvent, Player player, InventoryManager inventoryManager, ItemStack itemStack) {
-        if (!inventoryManager.getTitle().contains(UltiTools.languageUtils.getString("warp_function"))){
+        if (!inventoryManager.getTitle().contains(UltiTools.languageUtils.getString("warp"))){
             return CancelResult.NONE;
         }
         String name = ChatColor.stripColor(itemStack.getItemMeta().getDisplayName()).replace(UltiTools.languageUtils.getString("sidebar_name"), "").trim();

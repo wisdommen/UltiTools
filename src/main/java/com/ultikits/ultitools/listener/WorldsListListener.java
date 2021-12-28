@@ -14,19 +14,20 @@ import org.bukkit.inventory.ItemStack;
 public class WorldsListListener extends PagesListener {
     @Override
     public CancelResult onItemClick(InventoryClickEvent event, Player player, InventoryManager inventoryManager, ItemStack clickedItem) {
-        if (inventoryManager.getTitle().contains(UltiTools.languageUtils.getString("world_page_title"))) {
-            String aliasName = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName());
-            YamlConfiguration config = ConfigController.getConfig("worlds");
-            for (String each : config.getConfigurationSection("world").getKeys(false)){
-                if (aliasName.equals(config.getString("world."+each+".alias"))){
-                    player.performCommand("mw " + each);
-                    return CancelResult.TRUE;
-                }
-            }
-            player.performCommand("mw " + aliasName);
-            player.closeInventory();
-            return CancelResult.TRUE;
+        if (!inventoryManager.getTitle().contains(UltiTools.languageUtils.getString("world_page_title"))) {
+            return CancelResult.NONE;
         }
-        return CancelResult.NONE;
+        String aliasName = ChatColor.stripColor(clickedItem.getItemMeta().getDisplayName());
+        YamlConfiguration config = ConfigController.getConfig("worlds");
+        for (String each : config.getConfigurationSection("world").getKeys(false)){
+            if (aliasName.equals(config.getString("world."+each+".alias"))){
+                player.performCommand("mw " + each);
+                player.closeInventory();
+                return CancelResult.TRUE;
+            }
+        }
+        player.performCommand("mw " + aliasName);
+        player.closeInventory();
+        return CancelResult.TRUE;
     }
 }

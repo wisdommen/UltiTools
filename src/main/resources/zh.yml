@@ -320,6 +320,7 @@ tpa_target_busy: 对方正在处理另一个传送请求！
 tpahere_enquire: '%s请求您传送至他的位置'
 tpahere_accept_tip: §7输入§c/tpahere accept §b接受§7传送，或者按下§c[shift+左键]§b接受
 tpahere_reject_tip: §7输入§c/tpahere reject §b拒绝§7传送，或者按下§c[shift+右键]§b拒绝
+warp: 地标
 warp_function: 地标功能
 warp_teleport_successfully: 成功传送至%s!
 warp_page_title: 地标

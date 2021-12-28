@@ -61,12 +61,15 @@ public class EmailUtils {
      */
     public static void pushToReceiver(Player receiver) {
         receiver.sendMessage(info(UltiTools.languageUtils.getString("email_received_new_email")));
+        receiver.playSound(receiver.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_CHIME), 10, 1);
+        if (VersionUtils.isLegacyMCVersion()) {
+            return;
+        }
         TextComponent textComponent = new TextComponent(ChatColor.RED + UltiTools.languageUtils.getString("email_message_clickable"));
         TextComponent textComponent_suffix = new TextComponent(ChatColor.AQUA + UltiTools.languageUtils.getString("email_message_clickable_suffix"));
         textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/email read"));
         textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(UltiTools.languageUtils.getString("email_message_clickable") + UltiTools.languageUtils.getString("email_message_clickable_suffix"))));
         receiver.spigot().sendMessage(textComponent, textComponent_suffix);
-        receiver.playSound(receiver.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_CHIME), 10, 1);
     }
 
     /**
