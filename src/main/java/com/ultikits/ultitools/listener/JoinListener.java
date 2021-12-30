@@ -41,7 +41,7 @@ public class JoinListener implements Listener {
     String opQuitMessage = config.getString("op_quit");
     String playerJoinMessage = config.getString("player_join");
     String playerQuitMessage = config.getString("player_quit");
-    int sendMessageDelay = config.getInt("send_message_delay");
+    int sendMessageDelay = config.getInt("sendMessageDelay");
 
     File loginFile = new File(ConfigsEnum.LOGIN.toString());
     YamlConfiguration loginConfig = YamlConfiguration.loadConfiguration(loginFile);
