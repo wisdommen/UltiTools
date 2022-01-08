@@ -1,4 +1,4 @@
-config_version: 3.31
+config_version: 3.32
 
 '注释0请勿修改': '语言: zh_cn(简体中文), en_us(English)'
 language: zh_cn
@@ -148,3 +148,6 @@ enable_inv_backup_function: true
 
 '注释57请勿修改': '开启ban功能'
 enable_ban_function: true
+
+'注释58请勿修改': '开启recall召回指令'
+enable_recall_command: true

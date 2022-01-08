@@ -360,6 +360,10 @@ public final class UltiTools extends JavaPlugin {
             Bukkit.getServer().getPluginManager().registerEvents(new InventoryBackupViewListener(),this);
         }
 
+        if(getConfig().getBoolean("enable_recall_command")) {
+            CommandRegister.registerCommand(plugin,new RecallCommands(),"ultikits.tools.admin","玩家召回","recall");
+        }
+
 
         //注册任务
         if (getConfig().getBoolean("enable_pro")) {
