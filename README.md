@@ -1,5 +1,5 @@
 # UltiTools介绍
-[![Plugin Test](https://github.com/wisdommen/UltiTools/actions/workflows/maven.yml/badge.svg)](https://github.com/wisdommen/UltiTools/actions/workflows/maven.yml)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/wisdommen/UltiTools/Plugin%20Test)
 ![GitHub](https://img.shields.io/github/license/wisdommen/UltiTools)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/wisdommen/UltiTools)
 ![GitHub Repo stars](https://img.shields.io/github/stars/wisdommen/UltiTools)
