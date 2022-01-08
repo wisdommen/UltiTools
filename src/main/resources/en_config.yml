@@ -1,4 +1,4 @@
-config_version: 3.31
+config_version: 3.32
 
 'comment0': 'Language: zh_cn(简体中文), en_us(English)'
 language: en_us
@@ -148,3 +148,6 @@ enable_inv_backup_function: true
 
 'comment57': 'enable ban function'
 enable_ban_function: true
+
+"comment58": "enable recall command"
+enable_recall_command: true

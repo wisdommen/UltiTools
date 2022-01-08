@@ -1,16 +1,23 @@
 # config version, please do not change
-configVersion: 1.2
+configVersion: 1.3
 
-# If enable account limit of the same IP address
+"comment 1": "whether to enable account limit of the same IP address or not"
 enablePlayerLimitForOneIP: true
 
-# number of account that can register for one IP address
+"comment 2": "number of account that can register for one IP address"
 playerLimitForOneIP: 1
 
-# If enable fixed point login for player
+"comment 3": "whether to enable fixed point login for player"
 enableFixPointLogin: false
 
-# fixed point login position
+"comment 4": "whether to perform reward commands after someone finishes binding email"
+enable_emailregister_reward: false
+
+"comment 5": "commands to reward players who finishes binding email"
+emailregister_reward_commands:
+  - givemoney %player% 500
+
+"comment 6": "fixed point login position"
 loginPoint:
   world: World
   x: 100
