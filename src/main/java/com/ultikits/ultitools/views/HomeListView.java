@@ -9,7 +9,6 @@ import com.ultikits.ultitools.commands.HomeCommands;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.Utils;
-import com.ultikits.ultitools.utils.VersionUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -59,7 +58,7 @@ public class HomeListView {
                 each = "Def";
             }
             String path = player.getName() + "." + each;
-            Location location = HomeCommands.getLegacyLocation(config, path, VersionUtils.isLegacyMCVersion());
+            Location location = HomeCommands.getLocation(config, path);
             String world = String.format(ChatColor.YELLOW + UltiTools.languageUtils.getString("home_page_home_description_in_world")+" %s", location.getWorld().getName());
             String xyz = String.format(ChatColor.GRAY + "X: %.2f Y: %.2f Z: %.2f", location.getX(), location.getY(), location.getZ());
             lore.add(world);

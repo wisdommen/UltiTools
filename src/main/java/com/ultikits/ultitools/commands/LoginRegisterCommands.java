@@ -8,7 +8,6 @@ import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.DatabasePlayerTools;
 import com.ultikits.ultitools.utils.Utils;
 import com.ultikits.utils.SendEmailUtils;
-import javafx.scene.control.Alert;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.file.YamlConfiguration;
