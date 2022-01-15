@@ -8,6 +8,7 @@ import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.DatabasePlayerTools;
 import com.ultikits.ultitools.utils.Utils;
 import com.ultikits.utils.SendEmailUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -79,6 +80,16 @@ public class LoginRegisterCommands extends AbstractTabExecutor {
                             config.save(file);
                         } catch (IOException e) {
                             e.printStackTrace();
+                        }
+                        //绑定邮箱奖励
+                        YamlConfiguration loginConfig = YamlConfiguration.loadConfiguration(new File(ConfigsEnum.LOGIN.toString()));
+                        if(loginConfig.getBoolean("enable_emailregister_reward")) {
+                            if(loginConfig.getStringList("emailregister_reward_command") != null) {
+                                List<String> rewardcmds = loginConfig.getStringList("emailregister_reward_commands");
+                                for(String cmd : rewardcmds) {
+                                    Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),cmd.replace("%player%",player.getName()));
+                                }
+                            }
                         }
                         DatabasePlayerTools.setPlayerEmail(player, playersEmail.get(player.getUniqueId()));
                         return true;

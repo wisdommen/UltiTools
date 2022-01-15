@@ -49,7 +49,7 @@ public class SocialSystemCommands extends AbstractTabExecutor {
                 return true;
             case 2:
                 OfflinePlayer requestPlayer = Bukkit.getOfflinePlayer(strings[1]);
-                EmailManager emailManager = new EmailManager(player);
+                EmailManager receiverEmailManager = new EmailManager(requestPlayer);
                 switch (strings[0]) {
                     case "add":
                         if (player.getName().equals(strings[1])) {
@@ -61,7 +61,7 @@ public class SocialSystemCommands extends AbstractTabExecutor {
                             return true;
                         }
                         setApplyList(player.getName(), strings[1], true);
-                        emailManager.sendNotification(player.getName() + UltiTools.languageUtils.getString("friend_apply_lore"), null, Collections.singletonList("friends apply " + player.getName()));
+                        receiverEmailManager.sendNotification(player.getName() + UltiTools.languageUtils.getString("friend_apply_lore"), null, Collections.singletonList("friends apply " + player.getName()));
                         Player player2 = Bukkit.getPlayer(strings[1]);
                         if (player2 != null) {
                             EmailUtils.pushToReceiver(player2);
@@ -75,7 +75,7 @@ public class SocialSystemCommands extends AbstractTabExecutor {
                         }
                         DatabasePlayerTools.removePlayerFriends(player, requestPlayer);
                         DatabasePlayerTools.removePlayerFriends(requestPlayer, player);
-                        emailManager.sendNotification(String.format(UltiTools.languageUtils.getString("friend_no_more_friend"), player.getName(), player.getName()), null, null);
+                        receiverEmailManager.sendNotification(String.format(UltiTools.languageUtils.getString("friend_no_more_friend"), player.getName(), player.getName()), null, null);
                         player.sendMessage(ChatColor.AQUA + String.format(UltiTools.languageUtils.getString("friend_deleted"), ChatColor.YELLOW + requestPlayer.getName() + ChatColor.AQUA));
                         return true;
                     case "accept":

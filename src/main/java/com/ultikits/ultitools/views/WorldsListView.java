@@ -9,6 +9,7 @@ import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.listener.WorldsListListener;
 import com.ultikits.ultitools.ultitools.UltiTools;
+import com.ultikits.ultitools.utils.WorldUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -84,15 +85,7 @@ public class WorldsListView {
             } else {
                 worldMaterial = new ItemStack(material);
             }
-            String aliasName = config.getString("world." + world + ".alias");
-            if (aliasName == null){
-                config.set("world." + world + ".alias", world);
-                try {
-                    config.save(ConfigsEnum.WORLDS.toString());
-                } catch (IOException ignored) {
-                }
-            }
-            aliasName = (aliasName == null ? world : aliasName.replaceAll("&", "§"));
+            String aliasName = WorldUtils.getWorldAlisName(world);
             ItemStackManager itemStackManager = new ItemStackManager(worldMaterial, lore, aliasName);
             itemStackManagers.add(itemStackManager);
         }

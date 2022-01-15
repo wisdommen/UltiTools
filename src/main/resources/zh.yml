@@ -319,6 +319,7 @@ tpa_target_busy: 对方正在处理另一个传送请求！
 tpahere_enquire: '%s请求您传送至他的位置'
 tpahere_accept_tip: §7输入§c/tpahere accept §b接受§7传送，或者按下§c[shift+左键]§b接受
 tpahere_reject_tip: §7输入§c/tpahere reject §b拒绝§7传送，或者按下§c[shift+右键]§b拒绝
+warp: 地标
 warp_function: 地标功能
 warp_teleport_successfully: 成功传送至%s!
 warp_page_title: 地标
@@ -450,4 +451,10 @@ ban_list: "封禁列表"
 ban_from: "起始时间:"
 ban_to: "封禁至:"
 ban_forever: "永久封禁"
-you_have_open_the_chest_silently: "你已静默打开该箱子"
+recall_sending_emails: "正在发送第%d条召回邮件"
+recall_email_title: "服务器召回"
+recall_email_content: "还记得服务器么，什么时候再回来看看？"
+recall_email_send_success: "第%d封邮件已成功发送至邮箱%s"
+recall_email_send_fail: "第%d封邮件未能成功发送至邮箱%s"
+recall_no_player_email: "当前没有玩家绑定邮箱！"
+recall_conclusion: "已成功给绑定邮箱的玩家发送召回电子邮件!(共%d位绑定，其中%d位发送失败)"

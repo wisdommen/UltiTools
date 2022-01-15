@@ -63,6 +63,7 @@ public class EmailPageListener extends PagesListener {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        break;
                     }
                 }
             }

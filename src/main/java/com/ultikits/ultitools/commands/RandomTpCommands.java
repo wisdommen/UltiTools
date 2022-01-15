@@ -2,7 +2,6 @@ package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractPlayerCommandExecutor;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.Utils;
 import com.ultikits.utils.MessagesUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -18,6 +17,7 @@ public class RandomTpCommands extends AbstractPlayerCommandExecutor {
 
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
+
         if(!player.isOp() || !player.hasPermission("ultikits.tools.command.wild")) {
             player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("no_permission")));
             return false;

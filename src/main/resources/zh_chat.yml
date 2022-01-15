@@ -1,7 +1,7 @@
 # 配置版本号，请勿更改
-config_version: 1.0
+config_version: 1.1
 # 聊天前缀
-chat_prefix: '§e[§a%player_world%§e][§c%ul_job%§dLv.%ul_level%§e][§b%player_name%§e]'
+chat_prefix: '§e[§a%ultitools_world_alis%§e][§c%ul_job%§dLv.%ul_level%§e][§b%player_name%§e]'
 # 自动回复，格式：[触发词]: [回复]
 auto-reply:
   test: "You did it! This is a great test!"

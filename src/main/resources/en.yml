@@ -317,6 +317,7 @@ tpa_target_busy: 'This player is dealing with another tpa request!'
 tpahere_enquire: '%s requests teleport you to his location'
 tpahere_accept_tip: '§7Type §c[/tpahere accept] §7to §baccept §7the teleport, or press §c[shift+left mouse] §7to §baccept'
 tpahere_reject_tip: '§7Enter §c[/tpahere reject] §7to §breject §7the teleport, or press §c[shift+right mouse] §7to §breject'
+warp: 'warp'
 warp_function: 'Warp function'
 warp_teleport_successfully: 'Successfully teleported to %s!'
 warp_page_title: 'Warps'
@@ -446,4 +447,10 @@ ban_list: "Banlist"
 ban_from: "From:"
 ban_to: "To:"
 ban_forever: "Forever ban"
-you_have_open_the_chest_silently: "You have opened the chest silently"
+recall_sending_emails: "Now sending the %d email"
+recall_email_title: "Server recall"
+recall_email_content: "Do you remember our server?When would you like to get back? :)"
+recall_email_send_success: "The %d email has successfully be sent to email %s"
+recall_email_send_fail: "The %d email has failed to be sent to email %s"
+recall_no_player_email: "No player has bound email"
+recall_conclusion: "Successfully send recall email to players who had bound email!(Total %d,%d failed)"

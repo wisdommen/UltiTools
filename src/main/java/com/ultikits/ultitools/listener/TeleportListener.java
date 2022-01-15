@@ -1,11 +1,14 @@
 package com.ultikits.ultitools.listener;
 
 
+import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import java.util.HashMap;
 
 public class TeleportListener implements Listener {
@@ -14,9 +17,14 @@ public class TeleportListener implements Listener {
 
     @EventHandler
     public void playerTeleport(PlayerTeleportEvent event) {
-        Player player = event.getPlayer();
-        Location teleportLocation = player.getLocation();
-        playerTeleportLocation.put(player,teleportLocation);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Player player = event.getPlayer();
+                Location teleportLocation = event.getFrom();
+                playerTeleportLocation.put(player,teleportLocation);
+            }
+        }.runTaskLaterAsynchronously(UltiTools.getInstance(),0);
     }
 
     public static Location getPlayerFinalTeleportLocation(Player player) {
