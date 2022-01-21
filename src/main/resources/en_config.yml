@@ -151,3 +151,6 @@ enable_ban_function: true
 
 "comment58": "enable recall command"
 enable_recall_command: true
+
+"comment59": "enable custom tab bar"
+enable_custom_tab_bar: true

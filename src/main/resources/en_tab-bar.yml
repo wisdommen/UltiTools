@@ -1,0 +1,10 @@
+# config version, please do not change
+config_version: 1.0
+
+#You need to enable the PAPI in the config.yml to take any effect below
+
+#Customize tab bar header text
+tab_bar_header: "&6 Welcome %player_name%"
+
+#Customize tab bar footer text
+tab_bar_footer: "&9Have a good time"

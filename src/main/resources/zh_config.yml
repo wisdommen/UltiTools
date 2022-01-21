@@ -151,3 +151,6 @@ enable_ban_function: true
 
 '注释58请勿修改': '开启recall召回指令'
 enable_recall_command: true
+
+"注释59请勿修改": "开启自定义Tab栏"
+enable_custom_tab_bar: true

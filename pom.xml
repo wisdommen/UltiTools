@@ -77,13 +77,6 @@
             <version>1.18.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <!-- NMS支持 单纯的API已经满足不了UltiTools了 -->
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.18.1-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
 <!--    <dependency>                                    -->
 <!--        <groupId>com.github.wisdommen</groupId>     -->
 <!--        <artifactId>UltiCoreAPI</artifactId>        -->

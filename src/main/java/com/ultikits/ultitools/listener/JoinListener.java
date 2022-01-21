@@ -192,4 +192,20 @@ public class JoinListener implements Listener {
             e.printStackTrace();
         }
     }
+
+    @EventHandler
+    public void onJoinSendTabBar(PlayerJoinEvent event) {
+        if (!UltiTools.getInstance().getConfig().getBoolean("enable_custom_tab_bar")) return;
+        Player player = event.getPlayer();
+        String header;
+        String footer;
+        try {
+            header = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, ConfigController.getConfig("tab-bar").getString("tab_bar_header"))).replace("&","§");
+            footer = Objects.requireNonNull(PlaceholderAPI.setPlaceholders(player, ConfigController.getConfig("tab-bar").getString("tab_bar_footer"))).replace("&","§");
+        } catch (Exception e) {
+            header = "";
+            footer = "";
+        }
+        UltiTools.versionAdaptor.sendPlayerList(player, header, footer);
+    }
 }

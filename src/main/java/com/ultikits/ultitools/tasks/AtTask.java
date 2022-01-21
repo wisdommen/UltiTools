@@ -1,30 +1,27 @@
 package com.ultikits.ultitools.tasks;
 
-import org.bukkit.Bukkit;
+import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.ChatColor;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarFlag;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class AtTask extends BukkitRunnable {
 
-    private final BossBar bossBar;
+    private final Player player;
+    private final String message;
+    double timer = 1.00;
 
     public AtTask (Player To, String Message) {
-        bossBar = Bukkit.createBossBar(ChatColor.BOLD + Message, BarColor.YELLOW, BarStyle.SOLID, BarFlag.CREATE_FOG);
-        bossBar.setProgress(1.00);
-        bossBar.addPlayer(To);
+        player = To;
+        message = Message;
     }
 
     @Override
     public void run() {
-        if (bossBar.getProgress() > 0.01) {
-            bossBar.setProgress(bossBar.getProgress() - 0.01);
+        if (timer > 0.01) {
+            UltiTools.versionAdaptor.sendActionBar(player, ChatColor.BOLD + message);
+            timer = timer - 0.01;
         } else {
-            bossBar.removeAll();
             this.cancel();
         }
     }
