@@ -35,7 +35,8 @@ public enum ConfigsEnum {
     MOTD(UltiTools.getInstance().getDataFolder() + "/motd.yml"),
     COMMANDALIAS(UltiTools.getInstance().getDataFolder() + "/command-alias.yml"),
     InventoryBackupData(UltiTools.getInstance().getDataFolder() + "/InventoryBackupData"),
-    BANLIST(UltiTools.getInstance().getDataFolder() + "/banlist.yml");
+    BANLIST(UltiTools.getInstance().getDataFolder() + "/banlist.yml"),
+    TAB_BAR(UltiTools.getInstance().getDataFolder() + "/tab-bar.yml");
 
     private final String path;
 
