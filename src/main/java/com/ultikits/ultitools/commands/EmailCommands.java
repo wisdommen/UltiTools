@@ -22,7 +22,6 @@ public class EmailCommands extends AbstractTabExecutor {
 
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
-
         if ("email".equalsIgnoreCase(command.getName())) {
             if (strings.length == 1) {
                 switch (strings[0].toLowerCase()) {

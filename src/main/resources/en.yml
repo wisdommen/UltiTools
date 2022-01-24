@@ -149,6 +149,7 @@ lock_tip_after_lock: 'If it is a double chest please lock another half as well\n
 lock_op_warning: 'Even you are OP, please do not do things crazy(or let others crazy). :)'
 lock_this_is_others_chest: "This is other's chest, you have no permission to do anything with it. XD"
 lock_chest_deleted: 'You deleted a locked chest!'
+lock_no_permission: 'Access denied! This chest belongs to %s'
 chest_click_add_owner: 'Please click chest to add the owner!'
 chest_click_remove_owner: 'Please click on the box to remove the owner!'
 chest_click_view_info: 'Please click chest to view the details!'
@@ -454,3 +455,11 @@ recall_email_send_success: "The %d email has successfully be sent to email %s"
 recall_email_send_fail: "The %d email has failed to be sent to email %s"
 recall_no_player_email: "No player has bound email"
 recall_conclusion: "Successfully send recall email to players who had bound email!(Total %d,%d failed)"
+heal_function: "Heal Function"
+heal_player: "Your health and hunger level have been set to the maximum"
+speed_set: "Walk/Fly speed set to %s, default is 2"
+gamemode_changed: "Your game mode has been set to %s"
+gamemode_0: "Survival"
+gamemode_1: "Creative"
+gamemode_2: "Adventure"
+gamemode_3: "Spectator"

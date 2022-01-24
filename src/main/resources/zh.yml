@@ -150,6 +150,7 @@ lock_tip_after_lock: 如果是大箱子，请将另一半也锁上\n并且你可
 lock_op_warning: 虽然你是OP，但是请不要为所欲为哦
 lock_this_is_others_chest: 这是别人的箱子，你无权操作哦
 lock_chest_deleted: 你删除了一个上锁的箱子！
+lock_no_permission: "这是 %s 的箱子，你无操作权限！"
 chest_click_add_owner: 请点击箱子来添加拥有者!
 chest_click_remove_owner: 请点击箱子来移除拥有者!
 chest_click_view_info: 请点击箱子来查看详细信息!
@@ -458,3 +459,11 @@ recall_email_send_success: "第%d封邮件已成功发送至邮箱%s"
 recall_email_send_fail: "第%d封邮件未能成功发送至邮箱%s"
 recall_no_player_email: "当前没有玩家绑定邮箱！"
 recall_conclusion: "已成功给绑定邮箱的玩家发送召回电子邮件!(共%d位绑定，其中%d位发送失败)"
+heal_function: "指令治愈功能"
+heal_player: "已恢复生命值与饥饿值"
+speed_set: "行走/飞行速度已设置为%s，默认速度为2"
+gamemode_changed: "你的游戏模式已设置为%s"
+gamemode_0: "生存模式"
+gamemode_1: "创造模式"
+gamemode_2: "冒险模式"
+gamemode_3: "观察者模式"

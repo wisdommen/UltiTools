@@ -101,17 +101,17 @@ public final class UltiTools extends JavaPlugin {
             getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("using_customized_language"));
         }
 
-        if(!new File(ConfigsEnum.LOBBY.toString()).exists()) {
-            yaml.saveYamlFile(getDataFolder().getPath(),"lobby.yml","lobby.yml");
+        if (!new File(ConfigsEnum.LOBBY.toString()).exists()) {
+            yaml.saveYamlFile(getDataFolder().getPath(), "lobby.yml", "lobby.yml");
         }
-        if(!new File(ConfigsEnum.ANNOUNCEMENT.toString()).exists()) {
-            yaml.saveYamlFile(getDataFolder().getPath(),"announcement.yml",language + "_announcement.yml");
+        if (!new File(ConfigsEnum.ANNOUNCEMENT.toString()).exists()) {
+            yaml.saveYamlFile(getDataFolder().getPath(), "announcement.yml", language + "_announcement.yml");
         }
-        if(!new File(ConfigsEnum.COMMANDALIAS.toString()).exists()) {
-            yaml.saveYamlFile(getDataFolder().getPath(), "command-alias.yml",  language + "_command-alias.yml");
+        if (!new File(ConfigsEnum.COMMANDALIAS.toString()).exists()) {
+            yaml.saveYamlFile(getDataFolder().getPath(), "command-alias.yml", language + "_command-alias.yml");
         }
-        if(!new File(ConfigsEnum.BANLIST.toString()).exists()) {
-            yaml.saveYamlFile(getDataFolder().getPath(),"banlist.yml","banlist.yml");
+        if (!new File(ConfigsEnum.BANLIST.toString()).exists()) {
+            yaml.saveYamlFile(getDataFolder().getPath(), "banlist.yml", "banlist.yml");
         }
 
         new PlayerlistChecker().playerlistNewChecker();                                                                 //playerlist.yml文件转换
@@ -131,7 +131,7 @@ public final class UltiTools extends JavaPlugin {
 
         makedirs(folders);
 
-         Arrays.asList(
+        Arrays.asList(
                 new KitsConfig(),
                 new CleanerConfig(),
 /*权限组功能已弃用
@@ -305,20 +305,23 @@ public final class UltiTools extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new TeleportListener(), this);
         }
         if (this.getConfig().getBoolean("enable_lobby_command")) {
-            CommandRegister.registerCommand(plugin,new LobbyCommands(),"ultikits.tools.back",languageUtils.getString("back_function"),"setlobby");
-            CommandRegister.registerCommand(plugin,new LobbyCommands(),"ultikits.tools.back",languageUtils.getString("back_function"),"lobby");
+            CommandRegister.registerCommand(plugin, new LobbyCommands(), "ultikits.tools.back", languageUtils.getString("back_function"), "setlobby");
+            CommandRegister.registerCommand(plugin, new LobbyCommands(), "ultikits.tools.back", languageUtils.getString("back_function"), "lobby");
         }
         if (this.getConfig().getBoolean("enable_invsee_command")) {
-            CommandRegister.registerCommand(plugin,new InvseeCommands(),"ultikits.tools.admin",languageUtils.getString("invsee_function"),"invsee");
+            CommandRegister.registerCommand(plugin, new InvseeCommands(), "ultikits.tools.admin", languageUtils.getString("invsee_function"), "invsee");
         }
         if (this.getConfig().getBoolean("enable_enderChest_see_command")) {
-            CommandRegister.registerCommand(plugin,new InvseeCommands(),"ultikits.tools.admin",languageUtils.getString("enderChest_see_function"),"endersee");
+            CommandRegister.registerCommand(plugin, new InvseeCommands(), "ultikits.tools.admin", languageUtils.getString("enderChest_see_function"), "endersee");
         }
+        CommandRegister.registerCommand(plugin, new HealCommands(), "ultikits.tools.command.heal", languageUtils.getString("heal_function"), "heal", "h");
+        CommandRegister.registerCommand(plugin, new GameModeCommands(), "ultikits.tools.command.gm", "gamemode", "gamemode", "gm");
+        CommandRegister.registerCommand(plugin, new SpeedCommands(), "ultikits.tools.command.speed", "speed", "speed");
 
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
 
         //防止放入物品至自定义GUI
-        Bukkit.getPluginManager().registerEvents(new CustomGUIProtectListener(),this);
+        Bukkit.getPluginManager().registerEvents(new CustomGUIProtectListener(), this);
 
         if (getConfig().getBoolean("enable_chat")) {
             getServer().getPluginManager().registerEvents(new ChatListener(), this);
@@ -340,7 +343,7 @@ public final class UltiTools extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new FriendsViewListener(), this);
         }
         if (getConfig().getBoolean("enable_trade")) {
-            CommandRegister.registerCommand(plugin, new TradeCommands(),"ultikits.tools.trade", languageUtils.getString("trade_function"), "t", "trade");
+            CommandRegister.registerCommand(plugin, new TradeCommands(), "ultikits.tools.trade", languageUtils.getString("trade_function"), "t", "trade");
             getServer().getPluginManager().registerEvents(new TradeListener(), this);
         }
         if (getConfig().getBoolean("enable_announcement")) {
@@ -350,19 +353,19 @@ public final class UltiTools extends JavaPlugin {
             getServer().getPluginManager().registerEvents(new MOTDListener(), this);
         }
         if (getConfig().getBoolean("enable_command-alias_function")) {
-            getServer().getPluginManager().registerEvents(new CommandListener(),this);
-            for(String alia : new CommandListener().getCommandAliasList()) {
-                CommandRegister.registerCommand(this,null,null,null,alia);
+            getServer().getPluginManager().registerEvents(new CommandListener(), this);
+            for (String alia : new CommandListener().getCommandAliasList()) {
+                CommandRegister.registerCommand(this, null, null, null, alia);
             }
         }
-        if(getConfig().getBoolean("enable_inv_backup_function")) {
-            CommandRegister.registerCommand(plugin,new InventoryBackupCommands(),"ultikits.tools.admin","背包备份","inv","inventory");
-            Bukkit.getServer().getPluginManager().registerEvents(new ItemClickListener(),this);
-            Bukkit.getServer().getPluginManager().registerEvents(new InventoryBackupViewListener(),this);
+        if (getConfig().getBoolean("enable_inv_backup_function")) {
+            CommandRegister.registerCommand(plugin, new InventoryBackupCommands(), "ultikits.tools.admin", "背包备份", "inv", "inventory");
+            Bukkit.getServer().getPluginManager().registerEvents(new ItemClickListener(), this);
+            Bukkit.getServer().getPluginManager().registerEvents(new InventoryBackupViewListener(), this);
         }
 
-        if(getConfig().getBoolean("enable_recall_command")) {
-            CommandRegister.registerCommand(plugin,new RecallCommands(),"ultikits.tools.admin","玩家召回","recall");
+        if (getConfig().getBoolean("enable_recall_command")) {
+            CommandRegister.registerCommand(plugin, new RecallCommands(), "ultikits.tools.admin", "玩家召回", "recall");
         }
 
 
@@ -377,12 +380,12 @@ public final class UltiTools extends JavaPlugin {
             new CleanerTask().runTaskTimer(this, 10 * 20L, 10 * 20L);
             new UnloadChunksTask().runTaskTimer(this, 0L, 60 * 20L);
         }
-        if(getConfig().getBoolean("enable_ban_function")) {
-            CommandRegister.registerCommand(this,new BanCommands(),"ultikits.tools.admin",UltiTools.languageUtils.getString("ban_function"),"ultiban");
-            CommandRegister.registerCommand(this,new BanCommands(),"ultikits.tools.admin",UltiTools.languageUtils.getString("ban_function"),"ultibanip");
-            CommandRegister.registerCommand(this,new BanCommands(),"ultikits.tools.admin",UltiTools.languageUtils.getString("ban_function"),"ultibanlist");
-            Bukkit.getServer().getPluginManager().registerEvents(new BanListener(),this);
-            Bukkit.getServer().getPluginManager().registerEvents(new BanlistViewListener(),this);
+        if (getConfig().getBoolean("enable_ban_function")) {
+            CommandRegister.registerCommand(this, new BanCommands(), "ultikits.tools.admin", UltiTools.languageUtils.getString("ban_function"), "ultiban");
+            CommandRegister.registerCommand(this, new BanCommands(), "ultikits.tools.admin", UltiTools.languageUtils.getString("ban_function"), "ultibanip");
+            CommandRegister.registerCommand(this, new BanCommands(), "ultikits.tools.admin", UltiTools.languageUtils.getString("ban_function"), "ultibanlist");
+            Bukkit.getServer().getPluginManager().registerEvents(new BanListener(), this);
+            Bukkit.getServer().getPluginManager().registerEvents(new BanlistViewListener(), this);
             new BanTimeCheckerTask().startBanTimeCheckerTask();
         }
 

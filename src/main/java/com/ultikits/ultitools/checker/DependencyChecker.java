@@ -7,8 +7,8 @@ public class DependencyChecker {
     private DependencyChecker() {
     }
 
-    public static boolean isUltiCoreUpToDate(){
-        int UltiCoreVersionRequired = 122;
+    public static boolean isUltiCoreUpToDate() {
+        int UltiCoreVersionRequired = 125;
         int UltiCoreVersionCurrent = Integer.parseInt(Bukkit.getPluginManager().getPlugin("UltiCore").getDescription().getVersion().replaceAll("\\.", ""));
         return UltiCoreVersionCurrent >= UltiCoreVersionRequired;
     }
