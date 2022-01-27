@@ -21,6 +21,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.File;
 import java.io.IOException;
@@ -196,8 +197,11 @@ public class TradeUtils {
                 }
 
                 if (isExpTradeAllowed()) {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "xp add " + From.getName() + " " + (tradeExp.get(To.getName()) - tradeExp.get(From.getName())) + " points");
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "xp add " + To.getName() + " " + (tradeExp.get(From.getName()) - tradeExp.get(To.getName())) + " points");
+                    Bukkit.getScheduler().callSyncMethod(UltiTools.getInstance(),() -> {
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "xp add " + From.getName() + " " + (tradeExp.get(To.getName()) - tradeExp.get(From.getName())) + " points");
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "xp add " + To.getName() + " " + (tradeExp.get(From.getName()) - tradeExp.get(To.getName())) + " points");
+                        return true;
+                    });
                 }
 
                 From.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_success"));
