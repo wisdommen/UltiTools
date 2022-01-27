@@ -198,6 +198,7 @@ world_teleporting: 'Teleporting...'
 world_teleporting_countdown: '%d seconds to teleport'
 world_page_title: 'World list'
 world_page_description_teleport_denied: 'Has been forbidden to teleport in!'
+world_no_world_found: 'No world found!'
 permission_help_header: '-----Permission Group Help-----'
 permission_help_help: 'Permission Group Help'
 permission_help_give_player: 'Add permissions to players'
@@ -330,6 +331,7 @@ warp_deleted: 'Warp %s deleted successfully!'
 back_function: 'Back function'
 back_havent_dead: "Can't find your death location. This might because of the reloading of plugins or you haven't dead yet."
 spawn_new_spawn_set: "New world spawn location has been set!"
+spawn_no_spawn_world: 'There is no spawn point set in this world!'
 random_tp_function: "Random Teleport Function"
 random_tp_searching: "Searching for safe teleport location..."
 random_tp_success: "Random teleport successfully! Be safe."

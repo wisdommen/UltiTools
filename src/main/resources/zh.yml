@@ -200,6 +200,7 @@ world_teleporting: '[多世界插件]正在传送...'
 world_teleporting_countdown: '离传送还有%d秒'
 world_page_title: 世界列表
 world_page_description_teleport_denied: 已被禁止传送进入！
+world_no_world_found: "未找到世界！"
 permission_help_header: -----权限组管理帮助-----
 permission_help_help: 权限组帮助
 permission_help_give_player: 给玩家添加权限
@@ -332,6 +333,7 @@ warp_deleted: '地标 %s 删除成功!'
 back_function: 死亡返回功能
 back_havent_dead: 无法找到死亡地点！这可能是因为插件重载或者你还没死过哩。
 spawn_new_spawn_set: 新的世界出生点已设置！
+spawn_no_spawn_world: "此世界未设置出生点！"
 random_tp_function: 随机传送功能
 random_tp_searching: 正在搜索安全的传送位置...
 random_tp_success: 成功传送到随机位置！请小心行事。
