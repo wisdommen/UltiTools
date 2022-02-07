@@ -25,13 +25,15 @@ UltiTools是一个高层的基础插件，包含了很多GUI和高级的玩法�
 
 UltiTools包含了不少实用的API，方便你快速的开发自己的插件。
 
-并且本插件开放了一个实用的箱子GUI的API，方便其他开发者快速的建立一个GUI界面（像真正的写一个GUI界面一样，封装了很多实用的接口）。
+[UltiTools API 文档](https://doc.dev.ultikits.com/)
 
-若是以后使用的人多的话我会将其独立出来做出一个独立的API
-
-那么就让我们开始介绍吧！
-
-[UltiTools API 文档](https://doc.ultikits.com/)
-
-
-
+## 主要贡献者
+| 贡献者           | 描述                                      |
+|---------------|-----------------------------------------|
+| @wisdommen    | 创始人，UltiKits套件作者                        |
+| @qianmo2233   | UltiTools&UltiCore开发者，UltiKits开发文档主要维护者 |
+| @Shpries      | UltiTools开发者，UltiTools使用文档主要维护者         |
+| @DevilJueChen | UltiKits问题&漏洞&建议反馈                      |
+| 拾柒            | 美工                                      |
+## 发现问题？想提建议？
+[点击这里提交开启一个Issue！](https://github.com/wisdommen/UltiTools/issues/new)
