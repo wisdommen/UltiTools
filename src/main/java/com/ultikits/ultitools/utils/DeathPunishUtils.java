@@ -30,28 +30,22 @@ public class DeathPunishUtils {
         }
     }
 
-    public static void takeItem(Player player, int drop) {
+    public static void takeItem(Player player, int drop, List<String> whitelist) {
         Inventory inventory = player.getInventory();
         List<Integer> inventorySlot = new ArrayList<>();
         for (int i = 0; i < 45; i++) {
             ItemStack item = inventory.getItem(i);
-            if (item!=null) {
-                inventorySlot.add(i);
-            }
+            if (item!=null && !whitelist.contains(item.getType().toString())) inventorySlot.add(i);
         }
         Collections.shuffle(inventorySlot);
         List<Integer> ints = new ArrayList<>();
         for (int i = 0; i < drop; i++) {
-            if (i >= inventorySlot.size()){
-                break;
-            }
+            if (i >= inventorySlot.size()) break;
             ints.add(inventorySlot.get(i));
         }
         for (Integer slot : ints){
             ItemStack itemStack = inventory.getItem(slot);
-            if (itemStack == null){
-                continue;
-            }
+            if (itemStack == null) continue;
             itemStack.setAmount(itemStack.getAmount()-1);
             inventory.setItem(slot, itemStack);
         }
