@@ -2,6 +2,7 @@ package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractPlayerCommandExecutor;
 import com.ultikits.ultitools.ultitools.UltiTools;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -16,6 +17,14 @@ public class SpawnCommands extends AbstractPlayerCommandExecutor {
         switch (command.getName()){
             case "spawn":
                 if (strings.length == 0){
+                    if (player.getLocation().getWorld() == null){
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("world_no_world_found"));
+                        return false;
+                    }
+                    if (player.getLocation().getWorld().getSpawnLocation().equals(new Location(player.getLocation().getWorld(), 0, 0, 0, 0, 0))) {
+                        player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("spawn_no_spawn_world"));
+                        return false;
+                    }
                     player.teleport(player.getLocation().getWorld().getSpawnLocation());
                     return true;
                 }

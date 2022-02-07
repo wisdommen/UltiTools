@@ -60,6 +60,10 @@ public class DeathPunishmentTask {
     public static List<String> getWorldsEnabledPunishCommand() {
         return ConfigController.getConfig("death").getStringList("worlds_enabled_punish_commands");
     }
+
+    public static List<String> getItemDropWhitelist() {
+        return ConfigController.getConfig("death").getStringList("item_drop_whitelist");
+    }
 }
 
 class CommandExec implements Callable<Object> {
@@ -68,7 +72,7 @@ class CommandExec implements Callable<Object> {
         player = Player;
     }
     @Override
-    public Object call() throws Exception {
+    public Object call() {
         DeathPunishUtils.Exec(DeathPunishmentTask.getPunishCommands(), player.getName());
         return null;
     }
@@ -96,7 +100,7 @@ class Timer extends BukkitRunnable{
                 list = DeathPunishmentTask.getWorldsEnabledItemDrop();
                 for (String s : list) {
                     if (s.equals(world)) {
-                        DeathPunishUtils.takeItem(player, DeathPunishmentTask.getItemDrop());
+                        DeathPunishUtils.takeItem(player, DeathPunishmentTask.getItemDrop(), DeathPunishmentTask.getItemDropWhitelist());
                         player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("punish_item_dropped"), DeathPunishmentTask.getItemDrop()));
                     }
                 }
