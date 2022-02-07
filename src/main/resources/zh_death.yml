@@ -19,6 +19,10 @@ item_dropped_ondeath: 3
 # 死亡后后台执行的指令（{PLAYER}指代玩家占位符）
 punish_command: []
 
+# 死亡掉落物品白名单
+item_drop_whitelist:
+  - AIR
+
 # 开启死亡随机物品掉落的世界
 worlds_enabled_item_drop:
   - world

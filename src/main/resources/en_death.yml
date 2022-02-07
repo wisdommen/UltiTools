@@ -19,6 +19,10 @@ item_dropped_ondeath: 3
 # Console commands executed after death ({PLAYER} means the player name)
 punish_command: []
 
+# the whitelist of items dropping
+item_drop_whitelist:
+  - AIR
+
 # worlds enabled item drop
 worlds_enabled_item_drop:
   - world
