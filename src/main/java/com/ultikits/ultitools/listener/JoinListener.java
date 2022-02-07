@@ -87,7 +87,7 @@ public class JoinListener implements Listener {
                         @Override
                         public void run() {
                             player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("join_send_update_reminding"), version, current_version));
-                            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("join_send_update_tip"));
+                            player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("join_send_update_tip"),"UltiTools"));
                         }
                     }.runTaskLaterAsynchronously(UltiTools.getInstance(), 80L);
                 }

@@ -315,7 +315,7 @@ public final class UltiTools extends JavaPlugin {
             CommandRegister.registerCommand(plugin, new InvseeCommands(), "ultikits.tools.admin", languageUtils.getString("enderChest_see_function"), "endersee");
         }
         CommandRegister.registerCommand(plugin, new HealCommands(), "ultikits.tools.command.heal", languageUtils.getString("heal_function"), "heal", "h");
-        CommandRegister.registerCommand(plugin, new GameModeCommands(), "ultikits.tools.command.gm", "gamemode", "gamemode", "gm");
+        CommandRegister.registerCommand(plugin, new GameModeCommands(), "ultikits.tools.command.gm", "gamemode", "gm");
         CommandRegister.registerCommand(plugin, new SpeedCommands(), "ultikits.tools.command.speed", "speed", "speed");
 
         Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
