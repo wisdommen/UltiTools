@@ -259,6 +259,7 @@ public final class UltiTools extends JavaPlugin {
         if (this.getConfig().getBoolean("enable_multiworlds")) {
             CommandRegister.registerCommand(plugin, new MultiWorldsCommands(), "ultikits.tools.mw", languageUtils.getString("multiworlds_function"), "mw");
             getServer().getPluginManager().registerEvents(new WorldsListListener(), this);
+            getServer().getPluginManager().registerEvents(new MultiWorldListener(), this);
         }
         if (this.getConfig().getBoolean("enable_kits")) {
             CommandRegister.registerCommand(plugin, new KitsCommands(), "ultikits.tools.kits", languageUtils.getString("kits_function"), "kits");

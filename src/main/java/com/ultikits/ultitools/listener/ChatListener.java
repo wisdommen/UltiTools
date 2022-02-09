@@ -51,12 +51,11 @@ public class ChatListener implements Listener {
                         for(Player player : Bukkit.getOnlinePlayers()) {
                             atNotification(player,sender);
                         }
-                        return;
                     } else {
                         sender.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("no_permission")));
                         e.setCancelled(true);
-                        return;
                     }
+                    return;
                 }
                 //被@的玩家的列表
                 List<Player> atedPlayer = new ArrayList();
@@ -140,9 +139,7 @@ public class ChatListener implements Listener {
 
     @EventHandler
     public void onPlayerChatReply(AsyncPlayerChatEvent event) {
-        if (!UltiTools.getInstance().getConfig().getBoolean("enable_pro")){
-            return;
-        }
+        if (!UltiTools.getInstance().getConfig().getBoolean("enable_pro")) return;
         if (ConfigController.getConfig("config").getBoolean("enable_auto-reply") && UltiTools.getInstance().getProChecker().getProStatus()) {
             String message = event.getMessage().replace(" ", "_");
             File file = new File(ConfigsEnum.CHAT.toString());

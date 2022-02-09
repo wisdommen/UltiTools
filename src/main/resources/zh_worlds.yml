@@ -1,5 +1,8 @@
 worlds: []
 blocked_worlds: []
+protected_worlds: []
+nopvp_worlds: []
+nospawn_worlds: []
 world:
   # 世界文件夹的名字
   World:

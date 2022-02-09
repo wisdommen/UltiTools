@@ -57,7 +57,13 @@ public class WorldsListView {
         }
 
         List<String> blockedWorlds = config.getStringList("blocked_worlds");
+        List<String> protectedWorlds = config.getStringList("protected_worlds");
+        List<String> noPvpWorlds = config.getStringList("nopvp_worlds");
+        List<String> noSpawnWorlds = config.getStringList("nospawn_worlds");
         MultiWorldsCommands.replaceOriginalWorldName(blockedWorlds);
+        MultiWorldsCommands.replaceOriginalWorldName(protectedWorlds);
+        MultiWorldsCommands.replaceOriginalWorldName(noPvpWorlds);
+        MultiWorldsCommands.replaceOriginalWorldName(noSpawnWorlds);
         for (String world : worlds) {
             if (config.getString("world." + world + ".type") == null) {
                 config.set("world." + world + ".alias", world);
@@ -71,9 +77,10 @@ public class WorldsListView {
             ArrayList<String> lore = new ArrayList<>();
             String description = config.getString("world." + world + ".describe");
             lore.add(ChatColor.YELLOW + (description == null ? "None" : description));
-            if (blockedWorlds.contains(world)) {
-                lore.add(ChatColor.RED + UltiTools.languageUtils.getString("world_page_description_teleport_denied"));
-            }
+            if (blockedWorlds.contains(world)) lore.add(ChatColor.RED + UltiTools.languageUtils.getString("world_page_description_teleport_denied"));
+            if (protectedWorlds.contains(world)) lore.add(ChatColor.AQUA + UltiTools.languageUtils.getString("world_page_description_protected"));
+            if (noPvpWorlds.contains(world)) lore.add(ChatColor.RED + UltiTools.languageUtils.getString("world_page_description_nopvp"));
+            if (noSpawnWorlds.contains(world)) lore.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("world_page_description_nospawn"));
             String type = config.getString("world." + world + ".type");
             if (type == null) {
                 type = "GRASS_BLOCK";
