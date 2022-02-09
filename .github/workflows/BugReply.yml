@@ -1,0 +1,20 @@
+name: Create Comment
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  create-comment:
+    runs-on: ubuntu-latest
+    if: github.event.label.name == 'bug'
+    steps:
+      - name: Create comment
+        uses: actions-cool/issues-helper@v2
+        with:
+          actions: 'create-comment'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            Hello ${{ github.event.issue.user.login }}. 您提出的问题已被受理
+            在一般情况下，这些问题将会在下个版本被修复，请持续关注版本更新。
