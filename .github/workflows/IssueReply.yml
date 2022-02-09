@@ -1,0 +1,23 @@
+name: Issue Reply
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  reply-helper:
+    runs-on: ubuntu-latest
+    steps:
+      - name: help wanted
+        if: github.event.label.name == 'help wanted'
+        uses: actions-cool/issues-helper@v2.0.0
+        with:
+          actions: 'create-comment'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          assignees: 'qianmo2233,wisdommen'
+          random-to: 1
+          body: |
+            Hello @${{ github.event.issue.user.login }}. 我们发现您开启了一个Issue，开发组将会尽快对您进行答复
+            如果您发现该Issue被添加了标签，那么说明开发组已经受理
+            如果您有任何解决方案，欢迎提交Pull Request
