@@ -1,0 +1,20 @@
+name: Create Comment
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  create-comment:
+    runs-on: ubuntu-latest
+    if: github.event.label.name == 'suggestion'
+    steps:
+      - name: Create comment
+        uses: actions-cool/issues-helper@v2
+        with:
+          actions: 'create-comment'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            Hello ${{ github.event.issue.user.login }}. 您提出的建议已被采纳
+            取决于建议的数量，可能需要经过数个版本的更新进行逐步实现，请持续关注版本更新。
