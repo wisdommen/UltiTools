@@ -8,8 +8,7 @@ jobs:
   reply-helper:
     runs-on: ubuntu-latest
     steps:
-      - name: help wanted
-        if: github.event.label.name == 'help wanted'
+      - name: reply
         uses: actions-cool/issues-helper@v2.0.0
         with:
           actions: 'create-comment'
