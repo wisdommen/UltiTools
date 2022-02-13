@@ -11,8 +11,6 @@ import com.ultikits.ultitools.views.TradeView;
 import com.ultikits.utils.EconomyUtils;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -21,7 +19,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.File;
 import java.io.IOException;
@@ -375,24 +372,24 @@ public class TradeUtils {
     }
 
     public static void addTradeMoney(Player player, boolean tenfold) {
-        if (!(EconomyUtils.checkMoney(player) > TradeUtils.getTradeMoney().get(player.getName()))) return;
         int money = tradeMoney.get(player.getName());
         if (tenfold) {
             money = money == 0 ? 1 : money * 10;
         } else {
             money = money + 1;
         }
+        if (money > EconomyUtils.checkMoney(player)) return;
         tradeMoney.put(player.getName(), money);
     }
 
     public static void addTradeExp(Player player, boolean tenfold) {
-        if (!(player.getTotalExperience() > TradeUtils.getTradeExp().get(player.getName()))) return;
         int exp = tradeExp.get(player.getName());
         if (tenfold) {
             exp = exp == 0 ? 1 : exp * 10;
         } else {
             exp = exp + 1;
         }
+        if (exp > player.getTotalExperience()) return;
         tradeExp.put(player.getName(), exp);
     }
 
