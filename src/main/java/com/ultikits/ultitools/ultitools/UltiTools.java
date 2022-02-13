@@ -155,7 +155,8 @@ public final class UltiTools extends JavaPlugin {
                 new CustomerGUIConfig(),
                 new TradeConfig(),
                 new MOTDConfig(),
-                new TabBarConfig()
+                new TabBarConfig(),
+                new RecipeConfig()
         );
 
         isDatabaseEnabled = getConfig().getBoolean("enableDataBase");
@@ -315,6 +316,11 @@ public final class UltiTools extends JavaPlugin {
         if (this.getConfig().getBoolean("enable_enderChest_see_command")) {
             CommandRegister.registerCommand(plugin, new InvseeCommands(), "ultikits.tools.admin", languageUtils.getString("enderChest_see_function"), "endersee");
         }
+
+        if (this.getConfig().getBoolean("enable_custom_recipe")) {
+            RecipeUtils.initRecipe();
+        }
+
         CommandRegister.registerCommand(plugin, new HealCommands(), "ultikits.tools.command.heal", languageUtils.getString("heal_function"), "heal", "h");
 
         CommandRegister.registerCommand(plugin, new GameModeCommands(), "ultikits.tools.command.gm", "gamemode", "gm");
@@ -421,7 +427,10 @@ public final class UltiTools extends JavaPlugin {
             savePlayerLoginStatus();
         }
         if (this.getConfig().getBoolean("enable_scoreboard")) {
-            ScoreBoardUtils.clearScoreboards();
+            try {
+                ScoreBoardUtils.clearScoreboards();
+            } catch (Exception ignored) {
+            }
         }
 //        ConfigController.saveConfigs();
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("plugin_disabled"));

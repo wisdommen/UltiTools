@@ -12,6 +12,6 @@ public class MainConfig extends AbstractConfigReviewable{
 
     private MainConfig(String name, String filePath) {
         super(name, filePath);
-        version = 3.32;
+        version = 3.33;
     }
 }

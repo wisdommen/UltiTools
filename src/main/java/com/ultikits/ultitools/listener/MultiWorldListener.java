@@ -6,9 +6,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.MoistureChangeEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.Objects;
@@ -33,6 +35,16 @@ public class MultiWorldListener implements Listener {
 
     @EventHandler
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
+        event.setCancelled(!MultiWorldsCommands.protectedWorlds.contains(event.getBlock().getWorld().getName()));
+    }
+
+    @EventHandler
+    public void onEntityExplode(EntityExplodeEvent event) {
+        event.setCancelled(!MultiWorldsCommands.protectedWorlds.contains(event.getEntity().getWorld().getName()));
+    }
+
+    @EventHandler
+    public void onMoistureChange(MoistureChangeEvent event) {
         event.setCancelled(!MultiWorldsCommands.protectedWorlds.contains(event.getBlock().getWorld().getName()));
     }
 

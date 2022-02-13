@@ -1,0 +1,31 @@
+#自定义合成配方
+#每一个配方都按照如下格式编写
+#recipe_example:
+#  output:
+#    item: "EGG"
+#    amount: 1
+#  keys:
+#    - "x"
+#    - "y"
+#  shape:
+#    - "xxx"
+#    - "xyx"
+#    - "y y"
+#  ingredient:
+#    x: "APPLE"
+#    y: "DARK_OAK_WOOD"
+
+recipe_name:
+  output:
+    item: "EGG"
+    amount: 1
+  keys:
+    - "x"
+    - "y"
+  shape:
+    - "xxx"
+    - "xyx"
+    - "y y"
+  ingredient:
+    x: "APPLE"
+    y: "DARK_OAK_WOOD"
