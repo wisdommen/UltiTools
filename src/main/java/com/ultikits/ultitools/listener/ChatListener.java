@@ -2,6 +2,7 @@ package com.ultikits.ultitools.listener;
 
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
+import com.ultikits.ultitools.tasks.AtCDTask;
 import com.ultikits.ultitools.tasks.AtTask;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.utils.MessagesUtils;
@@ -27,6 +28,7 @@ public class ChatListener implements Listener {
     private static final List<String> ultilevelStrings = Arrays.asList("%ul_level%", "%ul_job%", "%ul_exp%", "%ul_mp%",
             "%ul_max_mp%", "%ul_max_exp%", "%ul_health%", "%ul_max_health%", "%ul_q_cd%", "%ul_w_cd%", "%ul_e_cd%",
             "%ul_r_cd%");
+    public static final List<String> atCD = new ArrayList<>();
 
 /*
 * at玩家功能
@@ -43,6 +45,11 @@ public class ChatListener implements Listener {
             String msg = e.getMessage();
             Player sender = e.getPlayer();
             if(msg.contains("@")) {
+                if (atCD.contains(sender.getName())) {
+                    sender.sendMessage(MessagesUtils.warning("at_too_often"));
+                    e.setCancelled(true);
+                    return;
+                }
                 if(msg.toLowerCase().contains("@" + UltiTools.languageUtils.getString("chat_at_all")) || msg.toLowerCase().contains("@ " + UltiTools.languageUtils.getString("chat_at_all"))) {
                     if(sender.hasPermission("ultikits.tools.atall") || sender.isOp() || sender.hasPermission("ultitools.tools.admin")) {
                         String msg0 = msg.replace("@",ChatColor.DARK_GREEN + "@" + ChatColor.RESET);
@@ -63,6 +70,7 @@ public class ChatListener implements Listener {
                 for(Player player : Bukkit.getOnlinePlayers()) {
                     //无视大小写比较
                     if(msg.toLowerCase().contains("@" + player.getName().toLowerCase()) || msg.toLowerCase().contains("@ " + player.getName().toLowerCase())) {
+                        new AtCDTask(ConfigController.getConfig("chat").getInt("at_cd"), sender.getName()).runTaskAsynchronously(UltiTools.getInstance());
                         atNotification(player,sender);
                         atedPlayer.add(player);
                         sum++;

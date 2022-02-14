@@ -18,7 +18,7 @@ public class RandomTpCommands extends AbstractPlayerCommandExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
 
-        if(!player.isOp() || !player.hasPermission("ultikits.tools.command.wild")) {
+        if(!player.isOp() && !player.hasPermission("ultikits.tools.command.wild")) {
             player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("no_permission")));
             return false;
         }
