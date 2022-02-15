@@ -1,5 +1,5 @@
 # config version, please do not change
-config_version: 1.1
+config_version: 1.0
 
 # send welcome message after x seconds
 sendMessageDelay: 4
@@ -10,17 +10,13 @@ welcome_message:
   - §bPlease be nice to others and have fun!
 
 # op join message
-op_join:
-  - §c[Administrator] §e%player_name% §cis now online
+op_join: §c[Administrator] §e%player_name% §cis now online
 
 # op leave message
-op_quit:
-  - §c[Administrator] §e%player_name% §cis now offline
+op_quit: §c[Administrator] §e%player_name% §cis now offline
 
 # player join message
-player_join:
-  - §c[Player] §e%player_name% §cis now online
+player_join: §c[Player] §e%player_name% §cis now online
 
 # player leave message
-player_quit:
-  - §c[Player] §e%player_name% §cis now offline
+player_quit: §c[Player] §e%player_name% §cis now offline

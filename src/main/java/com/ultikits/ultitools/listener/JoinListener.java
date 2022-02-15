@@ -3,8 +3,10 @@ package com.ultikits.ultitools.listener;
 import com.ultikits.ultitools.checker.VersionChecker;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
+import com.ultikits.ultitools.tasks.SideBarTask;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.ScoreBoardUtils;
+import com.ultikits.utils.YamlFileUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -35,10 +37,10 @@ public class JoinListener implements Listener {
 
     List<String> welcomeMessage = config.getStringList("welcome_message");
     String firstJoinBroadcast = UltiTools.languageUtils.getString("first_join_broadcast");
-    List<String> opJoinMessage = config.getStringList("op_join");
-    List<String> opQuitMessage = config.getStringList("op_quit");
-    List<String> playerJoinMessage = config.getStringList("player_join");
-    List<String> playerQuitMessage = config.getStringList("player_quit");
+    String opJoinMessage = config.getString("op_join");
+    String opQuitMessage = config.getString("op_quit");
+    String playerJoinMessage = config.getString("player_join");
+    String playerQuitMessage = config.getString("player_quit");
     int sendMessageDelay = config.getInt("sendMessageDelay");
 
     File loginFile = new File(ConfigsEnum.LOGIN.toString());
@@ -89,23 +91,9 @@ public class JoinListener implements Listener {
                         }
                     }.runTaskLaterAsynchronously(UltiTools.getInstance(), 80L);
                 }
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        for (String each : opJoinMessage) {
-                            Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, opJoinMessage == null ? vanillaJoinMessage : each.replace("%player_name%", player.getName())));
-                        }
-                    }
-                }.runTaskAsynchronously(UltiTools.getInstance());
+                Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, opJoinMessage == null ? vanillaJoinMessage : opJoinMessage.replace("%player_name%", player.getName())));
             } else {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        for (String each : playerJoinMessage) {
-                            Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, playerJoinMessage == null ? vanillaJoinMessage : each.replace("%player_name%", player.getName())));
-                        }
-                    }
-                }.runTaskAsynchronously(UltiTools.getInstance());
+                Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, playerJoinMessage == null ? vanillaJoinMessage : playerJoinMessage.replace("%player_name%", player.getName())));
             }
 
             new BukkitRunnable() {
@@ -158,23 +146,9 @@ public class JoinListener implements Listener {
         String vanillaQuitMessage = event.getQuitMessage() == null ? "" : event.getQuitMessage();
         event.setQuitMessage(null);
         if (event.getPlayer().isOp()) {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    for (String each : opQuitMessage) {
-                        Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, opQuitMessage == null ? vanillaQuitMessage : each.replace("%player_name%", player.getName())));
-                    }
-                }
-            }.runTaskAsynchronously(UltiTools.getInstance());
+            Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, opQuitMessage == null ? vanillaQuitMessage : opQuitMessage.replace("%player_name%", player.getName())));
         } else {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    for (String each : playerQuitMessage) {
-                        Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, playerQuitMessage == null ? vanillaQuitMessage : each.replace("%player_name%", player.getName())));
-                    }
-                }
-            }.runTaskAsynchronously(UltiTools.getInstance());
+            Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, playerQuitMessage == null ? vanillaQuitMessage : playerQuitMessage.replace("%player_name%", player.getName())));
         }
         if (UltiTools.getInstance().getConfig().getBoolean("enable_scoreboard")) {
             ScoreBoardUtils.unregisterPlayer(player.getUniqueId());
