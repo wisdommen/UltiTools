@@ -398,6 +398,10 @@ public final class UltiTools extends JavaPlugin {
             new BanTimeCheckerTask().startBanTimeCheckerTask();
         }
 
+        if (getConfig().getBoolean("enable_lore_editor")) {
+            CommandRegister.registerCommand(this, new LoreCommands(), "ultikits.tools.command.lore", UltiTools.languageUtils.getString("lore_edit_function"), "ultilore");
+        }
+
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("plugin_loaded"));
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("author") + "wisdomme");
 
