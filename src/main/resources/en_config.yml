@@ -160,3 +160,6 @@ enable_custom_recipe: true
 
 "comment61": "enable lore edit function"
 enable_lore_editor: true
+
+"comment62": "enable hide function"
+enable_hide_function: true

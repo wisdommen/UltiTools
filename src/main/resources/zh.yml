@@ -502,3 +502,6 @@ lore_set: Lore设置成功！
 lore_must_be_number: 删除的行数必须为数字！
 lore_removed: 指定行数的Lore已删除！
 lore_cleared: Lore已清除！
+hide_function: 隐身功能
+hide_hided: 你已隐身
+hide_unhided: 你已关闭隐身
