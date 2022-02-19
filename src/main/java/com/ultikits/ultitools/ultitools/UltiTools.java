@@ -402,6 +402,11 @@ public final class UltiTools extends JavaPlugin {
             CommandRegister.registerCommand(this, new LoreCommands(), "ultikits.tools.command.lore", UltiTools.languageUtils.getString("lore_edit_function"), "ultilore");
         }
 
+        if (getConfig().getBoolean("enable_hide_function")) {
+            CommandRegister.registerCommand(this, new BanCommands(), "ultikits.tools.command.hide", UltiTools.languageUtils.getString("hide_function"), "ultihide");
+            Bukkit.getServer().getPluginManager().registerEvents(new HideListener(), this);
+        }
+
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("plugin_loaded"));
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("author") + "wisdomme");
 
