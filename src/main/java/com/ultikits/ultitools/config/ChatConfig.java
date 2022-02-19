@@ -12,6 +12,6 @@ public class ChatConfig extends AbstractConfigReviewable{
 
     private ChatConfig(String name, String filePath) {
         super(name, filePath);
-        version = 1.1;
+        version = 1.2;
     }
 }
