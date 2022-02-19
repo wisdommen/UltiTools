@@ -1,4 +1,4 @@
-config_version: 3.33
+config_version: 3.34
 
 '注释0请勿修改': '语言: zh_cn(简体中文), en_us(English)'
 language: zh_cn
@@ -157,3 +157,6 @@ enable_custom_tab_bar: true
 
 "注释60请勿修改": "开启自定义合成配方"
 enable_custom_recipe: true
+
+"注释61请勿修改": "开启Lore编辑功能"
+enable_lore_editor: true
