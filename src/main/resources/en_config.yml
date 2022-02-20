@@ -163,3 +163,6 @@ enable_lore_editor: true
 
 "comment62": "enable hide function"
 enable_hide_function: true
+
+"comment63": "enable silent chest open function"
+enable_silent_chest_open_function: true

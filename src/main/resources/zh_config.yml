@@ -163,3 +163,6 @@ enable_lore_editor: true
 
 "注释62请勿修改": "开启隐身功能"
 enable_hide_function: true
+
+"注释63请勿修改": "开启静默开箱功能"
+enable_silent_chest_open_function: true

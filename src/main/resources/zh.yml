@@ -505,3 +505,6 @@ lore_cleared: Lore已清除！
 hide_function: 隐身功能
 hide_hided: 你已隐身
 hide_unhided: 你已关闭隐身
+silent_chest_open_function: 静默开箱功能
+sco_enabled: 已开启静默开箱
+sco_disabled: 已关闭静默开箱

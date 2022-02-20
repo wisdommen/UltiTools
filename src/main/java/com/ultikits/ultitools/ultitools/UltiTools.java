@@ -3,6 +3,7 @@ package com.ultikits.ultitools.ultitools;
 import com.ultikits.api.VersionWrapper;
 import com.ultikits.checker.ProChecker;
 import com.ultikits.main.UltiCoreAPI;
+import com.ultikits.packet.PacketController;
 import com.ultikits.ultitools.checker.DependencyChecker;
 import com.ultikits.ultitools.checker.PlayerlistChecker;
 import com.ultikits.ultitools.checker.VersionChecker;
@@ -405,6 +406,12 @@ public final class UltiTools extends JavaPlugin {
         if (getConfig().getBoolean("enable_hide_function")) {
             CommandRegister.registerCommand(this, new BanCommands(), "ultikits.tools.command.hide", UltiTools.languageUtils.getString("hide_function"), "ultihide");
             Bukkit.getServer().getPluginManager().registerEvents(new HideListener(), this);
+        }
+
+        if (getConfig().getBoolean("enable_silent_chest_open_function")) {
+            Bukkit.getServer().getPluginManager().registerEvents(new SilentChestOpenListener(), this);
+            PacketController.registerListener(new SilentChestOpenListener());
+            CommandRegister.registerCommand(plugin, new SilentChestOpenCommands(), "ultikits.tools.command.sco", UltiTools.languageUtils.getString("silent_chest_open_function"), "ultisco");
         }
 
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("plugin_loaded"));
