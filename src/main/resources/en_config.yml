@@ -125,6 +125,9 @@ enable_invsee_command: true
 'comment29': 'enable enderChest_see command'
 enable_enderChest_see_command: true
 
+'comment30': 'enable armor see command'
+enable_armor_see_command: true
+
 'comment42': 'customize above-head display prefix'
 name_prefix: '§e[§dLv.%player_level%§e]'
 
@@ -163,3 +166,6 @@ enable_lore_editor: true
 
 "comment62": "enable hide function"
 enable_hide_function: true
+
+"comment63": "enable silent chest open function"
+enable_silent_chest_open_function: true

@@ -125,6 +125,9 @@ enable_invsee_command: true
 '注释29请勿修改': '开启查看玩家末影箱指令'
 enable_enderChest_see_command: true
 
+'注释30请勿修改': '开启查看装备栏指令'
+enable_armor_see_command: true
+
 '注释42请勿修改': '(头衔) 自定义头顶显示前缀'
 name_prefix: '§e[§dLv.%player_level%§e]'
 
@@ -163,3 +166,6 @@ enable_lore_editor: true
 
 "注释62请勿修改": "开启隐身功能"
 enable_hide_function: true
+
+"注释63请勿修改": "开启静默开箱功能"
+enable_silent_chest_open_function: true
