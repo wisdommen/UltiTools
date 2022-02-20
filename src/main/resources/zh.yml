@@ -508,3 +508,6 @@ hide_unhided: 你已关闭隐身
 silent_chest_open_function: 静默开箱功能
 sco_enabled: 已开启静默开箱
 sco_disabled: 已关闭静默开箱
+armor_see_function: 装备栏查看功能
+armor_see_success: 成功打开该玩家的装备栏
+armor_title: 装备栏

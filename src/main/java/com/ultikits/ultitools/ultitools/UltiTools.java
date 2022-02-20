@@ -318,6 +318,11 @@ public final class UltiTools extends JavaPlugin {
             CommandRegister.registerCommand(plugin, new InvseeCommands(), "ultikits.tools.admin", languageUtils.getString("enderChest_see_function"), "endersee");
         }
 
+        if (this.getConfig().getBoolean("enable_armor_see_command")) {
+            Bukkit.getServer().getPluginManager().registerEvents(new ArmorSeeListener(), this);
+            CommandRegister.registerCommand(plugin, new InvseeCommands(), "ultikits.tools.admin", languageUtils.getString("armor_see_function"), "armorsee");
+        }
+
         if (this.getConfig().getBoolean("enable_custom_recipe")) {
             RecipeUtils.initRecipe();
         }
@@ -400,18 +405,18 @@ public final class UltiTools extends JavaPlugin {
         }
 
         if (getConfig().getBoolean("enable_lore_editor")) {
-            CommandRegister.registerCommand(this, new LoreCommands(), "ultikits.tools.command.lore", UltiTools.languageUtils.getString("lore_edit_function"), "ultilore");
+            CommandRegister.registerCommand(this, new LoreCommands(), "ultikits.tools.command.lore", UltiTools.languageUtils.getString("lore_edit_function"), "ultilore", "lore");
         }
 
         if (getConfig().getBoolean("enable_hide_function")) {
-            CommandRegister.registerCommand(this, new BanCommands(), "ultikits.tools.command.hide", UltiTools.languageUtils.getString("hide_function"), "ultihide");
+            CommandRegister.registerCommand(this, new BanCommands(), "ultikits.tools.command.hide", UltiTools.languageUtils.getString("hide_function"), "ultihide", "hide");
             Bukkit.getServer().getPluginManager().registerEvents(new HideListener(), this);
         }
 
         if (getConfig().getBoolean("enable_silent_chest_open_function")) {
             Bukkit.getServer().getPluginManager().registerEvents(new SilentChestOpenListener(), this);
             PacketController.registerListener(new SilentChestOpenListener());
-            CommandRegister.registerCommand(plugin, new SilentChestOpenCommands(), "ultikits.tools.command.sco", UltiTools.languageUtils.getString("silent_chest_open_function"), "ultisco");
+            CommandRegister.registerCommand(plugin, new SilentChestOpenCommands(), "ultikits.tools.command.sco", UltiTools.languageUtils.getString("silent_chest_open_function"), "ultisco", "sco");
         }
 
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("plugin_loaded"));
