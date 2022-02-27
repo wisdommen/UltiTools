@@ -161,11 +161,5 @@ enable_custom_tab_bar: true
 "comment60": "enable custom crafting recipes"
 enable_custom_recipe: true
 
-"comment61": "enable lore edit function"
-enable_lore_editor: true
-
-"comment62": "enable hide function"
+"comment61": "enable hide function"
 enable_hide_function: true
-
-"comment63": "enable silent chest open function"
-enable_silent_chest_open_function: true

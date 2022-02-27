@@ -161,11 +161,5 @@ enable_custom_tab_bar: true
 "注释60请勿修改": "开启自定义合成配方"
 enable_custom_recipe: true
 
-"注释61请勿修改": "开启Lore编辑功能"
-enable_lore_editor: true
-
-"注释62请勿修改": "开启隐身功能"
+"注释61请勿修改": "开启隐身功能"
 enable_hide_function: true
-
-"注释63请勿修改": "开启静默开箱功能"
-enable_silent_chest_open_function: true
