@@ -31,8 +31,8 @@ public class HideCommands extends AbstractPlayerCommandExecutor {
                 public void run() {
                     for (Player p : Bukkit.getOnlinePlayers()) p.showPlayer(UltiTools.getInstance(), player);
                 }
-            }.runTaskAsynchronously(UltiTools.getInstance());
-            player.sendMessage(info(UltiTools.languageUtils.getString("hide_hided")));
+            }.runTask(UltiTools.getInstance());
+            player.sendMessage(info(UltiTools.languageUtils.getString("hide_unhided")));
         } else {
             hidePlayers.add(player.getName());
             new BukkitRunnable() {
@@ -40,9 +40,9 @@ public class HideCommands extends AbstractPlayerCommandExecutor {
                 public void run() {
                     for (Player p : Bukkit.getOnlinePlayers()) p.hidePlayer(UltiTools.getInstance(), player);
                 }
-            }.runTaskAsynchronously(UltiTools.getInstance());
+            }.runTask(UltiTools.getInstance());
         }
-        player.sendMessage(info(UltiTools.languageUtils.getString("hide_unhided")));
+        player.sendMessage(info(UltiTools.languageUtils.getString("hide_hided")));
         return true;
     }
 }

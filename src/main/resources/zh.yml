@@ -495,19 +495,9 @@ custom_recipe_format_error: 自定义合成配方 -> %s <- 格式错误，将被
 custom_recipe_item_not_found: 自定义合成配方 -> %s <- 存在未知物品，将被忽略
 custom_recipe_row_must_be_three: 自定义合成配方 -> %s <- 配方格式必须为三行，将被忽略
 custom_recipe_loaded_successfully: 成功加载 %s 个自定义合成配方
-lore_edit_function: Lore编辑功能
-lore_no_item: 请手持物品来编辑Lore！
-lore_added: Lore添加成功！
-lore_set: Lore设置成功！
-lore_must_be_number: 删除的行数必须为数字！
-lore_removed: 指定行数的Lore已删除！
-lore_cleared: Lore已清除！
 hide_function: 隐身功能
 hide_hided: 你已隐身
 hide_unhided: 你已关闭隐身
-silent_chest_open_function: 静默开箱功能
-sco_enabled: 已开启静默开箱
-sco_disabled: 已关闭静默开箱
 armor_see_function: 装备栏查看功能
 armor_see_success: 成功打开该玩家的装备栏
 armor_title: 装备栏
