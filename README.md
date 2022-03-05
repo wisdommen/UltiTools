@@ -4,6 +4,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/wisdommen/UltiTools)
 ![GitHub Repo stars](https://img.shields.io/github/stars/wisdommen/UltiTools)
 ![Minecraft Version](https://img.shields.io/badge/Minecraft-1.8--1.18-blue)
+![Spigot Rating](https://img.shields.io/spiget/rating/85214?label=SpigotMC)
 ![bStats Players](https://img.shields.io/bstats/players/8652)
 ![bStats Servers](https://img.shields.io/bstats/servers/8652)
 
