@@ -7,6 +7,7 @@
 ![Spigot Rating](https://img.shields.io/spiget/rating/85214?label=SpigotMC)
 ![bStats Players](https://img.shields.io/bstats/players/8652)
 ![bStats Servers](https://img.shields.io/bstats/servers/8652)
+![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/wisdommen/ultitools?label=Code%20Quality)
 
 ## 给各位服主的介绍
 
