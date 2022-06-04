@@ -18,9 +18,7 @@ public class DoubleChestLocation {
         assert doubleChest != null;
         InventoryHolder rightSide = doubleChest.getRightSide();
         InventoryHolder leftSide = doubleChest.getLeftSide();
-        if (rightSide == null || leftSide == null) {
-            return;
-        }
+        if (rightSide == null || leftSide == null) return;
         Location doubleChestLocation = doubleChest.getLocation();
         rightSideLocation = new Location(doubleChestLocation.getWorld(), doubleChestLocation.getX(), doubleChestLocation.getY(), doubleChestLocation.getZ() - 0.5);
         leftSideLocation = new Location(doubleChestLocation.getWorld(), doubleChestLocation.getX(), doubleChestLocation.getY(), doubleChestLocation.getZ() + 0.5);

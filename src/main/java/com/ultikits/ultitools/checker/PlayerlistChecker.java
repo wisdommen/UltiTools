@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.checker;
 
 import com.ultikits.ultitools.enums.ConfigsEnum;
+import com.ultikits.ultitools.ultitools.ExceptionCatcher;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.YamlFileUtils;
 import org.bukkit.Bukkit;
@@ -57,7 +58,7 @@ public class PlayerlistChecker {
             try {
                 playerlistConfig.save(playerlistFile);
             } catch (IOException e) {
-                e.printStackTrace();
+                ExceptionCatcher.catchException(e);
             }
         }
     }
