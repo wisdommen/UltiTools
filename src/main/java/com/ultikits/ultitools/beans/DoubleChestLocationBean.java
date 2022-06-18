@@ -7,11 +7,11 @@ import org.bukkit.block.DoubleChest;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
-public class DoubleChestLocation {
+public class DoubleChestLocationBean {
     private Location rightSideLocation;
     private Location leftSideLocation;
 
-    public DoubleChestLocation(Block chest) {
+    public DoubleChestLocationBean(Block chest) {
         Chest state = (Chest) chest.getState();
         Inventory inventory = state.getInventory();
         DoubleChest doubleChest = (DoubleChest) inventory.getHolder();

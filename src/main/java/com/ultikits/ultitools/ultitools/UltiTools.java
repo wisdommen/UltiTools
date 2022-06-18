@@ -80,6 +80,9 @@ public final class UltiTools extends JavaPlugin {
         //加载世界
         initWorld();
 
+        //todo 6.0配置文件大改，暂不使用扫描的形式注册监听器
+        //Scanner.scanListener(this, "com.ultikits.ultitools.listener");
+
         Objects.requireNonNull(this.getCommand("ultitools")).setExecutor(new ToolsCommands());
         if (this.getConfig().getBoolean("enable_email")) {
             CommandRegister.registerCommand(plugin, new EmailCommands(), "ultikits.tools.email", languageUtils.getString("email_function"), "email", "ultimail", "mail", "mails");

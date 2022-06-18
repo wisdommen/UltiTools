@@ -32,24 +32,26 @@ import static com.ultikits.ultitools.checker.VersionChecker.*;
 
 public class JoinListener implements Listener {
 
-    File file = new File(ConfigsEnum.JOIN_WELCOME.toString());
+    File              file   = new File(ConfigsEnum.JOIN_WELCOME.toString());
     YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-    List<String> welcomeMessage = config.getStringList("welcome_message");
-    String firstJoinBroadcast = UltiTools.languageUtils.getString("first_join_broadcast");
-    String opJoinMessage = config.getString("op_join");
-    String opQuitMessage = config.getString("op_quit");
-    String playerJoinMessage = config.getString("player_join");
-    String playerQuitMessage = config.getString("player_quit");
-    int sendMessageDelay = config.getInt("sendMessageDelay");
+    List<String> welcomeMessage     = config.getStringList("welcome_message");
+    String       firstJoinBroadcast = UltiTools.languageUtils.getString("first_join_broadcast");
+    String       opJoinMessage      = config.getString("op_join");
+    String       opQuitMessage      = config.getString("op_quit");
+    String       playerJoinMessage  = config.getString("player_join");
+    String       playerQuitMessage  = config.getString("player_quit");
+    int          sendMessageDelay   = config.getInt("sendMessageDelay");
 
-    File loginFile = new File(ConfigsEnum.LOGIN.toString());
+    File              loginFile   = new File(ConfigsEnum.LOGIN.toString());
     YamlConfiguration loginConfig = YamlConfiguration.loadConfiguration(loginFile);
 
     //first_join_broadcast相关准备-----开始   PLAYERLIST是到 yml文件
-    File playerlistFile = new File(ConfigsEnum.PLAYERLIST.toString());
-    YamlConfiguration playerlistConfig = YamlConfiguration.loadConfiguration(playerlistFile);
+    File                 playerlistFile          = new File(ConfigsEnum.PLAYERLIST.toString());
+    YamlConfiguration    playerlistConfig        = YamlConfiguration.loadConfiguration(playerlistFile);
     ConfigurationSection playerlistConfigSection = playerlistConfig.getConfigurationSection("playerlist");    //加载区域
+
+    public static final Map<UUID, Location> lastLocation = new HashMap<>();
 
     private void addPlayerlist(String UUID,String playerName) {
         playerlistConfig.set("playerlist." + UUID,playerName);
@@ -64,9 +66,8 @@ public class JoinListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        if (UltiTools.getInstance().getConfig().getBoolean("enable_scoreboard")) {
-            ScoreBoardUtils.registerPlayer(player.getUniqueId());
-        }
+        lastLocation.put(player.getUniqueId(), player.getLocation());
+        if (UltiTools.getInstance().getConfig().getBoolean("enable_scoreboard")) ScoreBoardUtils.registerPlayer(player.getUniqueId());
         if (loginConfig.getBoolean("enableFixPointLogin")) {
             try {
                 String worldName = loginConfig.getString("loginPoint.world");
@@ -82,15 +83,13 @@ public class JoinListener implements Listener {
             String vanillaJoinMessage = event.getJoinMessage() == null ? "" : event.getJoinMessage();
             event.setJoinMessage(null);
             if (player.isOp()) {
-                if (VersionChecker.isOutDate) {
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("join_send_update_reminding"), version, current_version));
-                            player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("join_send_update_tip"),"UltiTools"));
-                        }
-                    }.runTaskLaterAsynchronously(UltiTools.getInstance(), 80L);
-                }
+                if (VersionChecker.isOutDate) new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("join_send_update_reminding"), version, current_version));
+                        player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("join_send_update_tip"),"UltiTools"));
+                    }
+                }.runTaskLaterAsynchronously(UltiTools.getInstance(), 80L);
                 Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, opJoinMessage == null ? vanillaJoinMessage : opJoinMessage.replace("%player_name%", player.getName())));
             } else {
                 Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, playerJoinMessage == null ? vanillaJoinMessage : playerJoinMessage.replace("%player_name%", player.getName())));
@@ -100,9 +99,7 @@ public class JoinListener implements Listener {
 
                 @Override
                 public void run() {
-                    for (String each : welcomeMessage) {
-                        player.sendMessage(PlaceholderAPI.setPlaceholders(player, each.replaceAll("%player_name%", player.getName())));
-                    }
+                    for (String each : welcomeMessage) player.sendMessage(PlaceholderAPI.setPlaceholders(player, each.replaceAll("%player_name%", player.getName())));
                 }
 
             }.runTaskLaterAsynchronously(UltiTools.getInstance(), sendMessageDelay * 20L);
@@ -117,26 +114,21 @@ public class JoinListener implements Listener {
                 Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player,firstJoinBroadcast.replaceAll("%player_name%",player.getName())));
             }
         } else {
-            if (!playerlistConfigSection.getKeys(false).contains(UUID)) {
-                addPlayerlist(UUID,playerName);
-            }
+            if (!playerlistConfigSection.getKeys(false).contains(UUID)) addPlayerlist(UUID,playerName);
         }
     }
 
     @EventHandler
     public void onJoinCreateEmailData(@NotNull PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        File folder = new File(ConfigsEnum.PLAYER_EMAIL.toString());
-        File file = new File(folder, player.getName() + ".yml");
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        File   folder = new File(ConfigsEnum.PLAYER_EMAIL.toString());
+        File   file   = new File(folder, player.getName() + ".yml");
+        if (!folder.exists()) folder.mkdirs();
+        if (file.exists()) return;
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -150,31 +142,23 @@ public class JoinListener implements Listener {
         } else {
             Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, playerQuitMessage == null ? vanillaQuitMessage : playerQuitMessage.replace("%player_name%", player.getName())));
         }
-        if (UltiTools.getInstance().getConfig().getBoolean("enable_scoreboard")) {
-            ScoreBoardUtils.unregisterPlayer(player.getUniqueId());
-        }
+        if (UltiTools.getInstance().getConfig().getBoolean("enable_scoreboard")) ScoreBoardUtils.unregisterPlayer(player.getUniqueId());
     }
 
     @EventHandler
     public void onJoinSaveIP(PlayerLoginEvent event) {
-        if (!UltiTools.getInstance().getConfig().getBoolean("enable_pro") || !UltiTools.getInstance().getProChecker().getProStatus()) {
-            return;
-        }
+        if (!UltiTools.getInstance().getConfig().getBoolean("enable_pro") || !UltiTools.getInstance().getProChecker().getProStatus()) return;
         Player player = event.getPlayer();
         InetAddress ipAddress = event.getAddress();
         String ip = ipAddress.getHostAddress().replaceAll("\\.", "_");
         File file = new File(ConfigsEnum.LOGIN.toString());
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        if (!config.getBoolean("enablePlayerLimitForOneIP")) {
-            return;
-        }
+        if (!config.getBoolean("enablePlayerLimitForOneIP")) return;
         if (config.get("ip." + ip + ".players") == null) {
             config.set("ip." + ip + ".players", Collections.singletonList(player.getUniqueId().toString()));
         } else {
             List<String> playerList = config.getStringList("ip." + ip + ".players");
-            if (playerList.contains(player.getUniqueId().toString())) {
-                return;
-            }
+            if (playerList.contains(player.getUniqueId().toString())) return;
             int playerCount = playerList.size();
             int playerLimit = config.getInt("playerLimitForOneIP");
             if (playerCount < playerLimit) {

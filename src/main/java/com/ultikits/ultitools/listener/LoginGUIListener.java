@@ -3,6 +3,7 @@ package com.ultikits.ultitools.listener;
 import com.ultikits.beans.CheckResponse;
 import com.ultikits.enums.Sounds;
 import com.ultikits.ultitools.commands.LoginRegisterCommands;
+import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.enums.LoginRegisterEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
@@ -137,21 +138,13 @@ public class LoginGUIListener implements Listener {
                             setIsLogin(player, true);
                             setPlayerPassword(player, password);
                             player.sendMessage(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("login_register_successfully"));
-                            player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_BELL), 10, 1);
-                            player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_CHIME), 10, 1);
-                            player.setGameMode(GameMode.SURVIVAL);
-                            if (player.isFlying()) {
-                                player.setFlying(false);
-                            }
-                            player.closeInventory();
+                            passAuth(player);
                         }
                     }
                 } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getString("button_clear"))) {
                     clearTheFirstLine(currentInventory);
                 } else if (clicked.getItemMeta().getDisplayName().contains(UltiTools.languageUtils.getString("button_quit"))) {
-                    if (tempPlayerPassword.get(player.getUniqueId()) != null) {
-                        tempPlayerPassword.remove(player.getUniqueId());
-                    }
+                    if (tempPlayerPassword.get(player.getUniqueId()) != null) tempPlayerPassword.remove(player.getUniqueId());
                     if (isRegisteringNewPassword.get(player.getUniqueId()) != null && isRegisteringNewPassword.get(player.getUniqueId())) {
                         isRegisteringNewPassword.put(player.getUniqueId(), false);
                         return;
@@ -161,6 +154,18 @@ public class LoginGUIListener implements Listener {
                     player.kickPlayer(ChatColor.AQUA + UltiTools.languageUtils.getString("login_kick_message"));
                 }
             }
+        }
+    }
+
+    private void passAuth(Player player) {
+        player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_BELL), 10, 1);
+        player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_CHIME), 10, 1);
+        player.setGameMode(GameMode.SURVIVAL);
+        if (player.isFlying()) player.setFlying(false);
+        player.closeInventory();
+        if (ConfigController.getConfig("login").getBoolean("enable_teleport_to_last_location")) {
+            player.teleport(JoinListener.lastLocation.get(player.getUniqueId()));
+            player.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("backed_to_last_location"));
         }
     }
 
@@ -289,13 +294,7 @@ public class LoginGUIListener implements Listener {
         } else {
             setIsLogin(player, true);
             player.sendMessage(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("login_successfully"));
-            player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_BELL), 10, 1);
-            player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(Sounds.BLOCK_NOTE_BLOCK_CHIME), 10, 1);
-            player.setGameMode(GameMode.SURVIVAL);
-            if (player.isFlying()) {
-                player.setFlying(false);
-            }
-            player.closeInventory();
+            passAuth(player);
             return true;
         }
     }

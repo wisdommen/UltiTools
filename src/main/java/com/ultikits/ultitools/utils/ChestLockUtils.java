@@ -1,18 +1,15 @@
 package com.ultikits.ultitools.utils;
 
 import com.ultikits.enums.ChestDirection;
-import com.ultikits.ultitools.beans.DoubleChestLocation;
+import com.ultikits.ultitools.beans.DoubleChestLocationBean;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.*;
 import org.bukkit.block.*;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 
 import java.io.File;
 import java.io.IOException;
@@ -138,9 +135,9 @@ public class ChestLockUtils {
 
     public static void addChestData(Block chest, Player player, Boolean locked) {
         if (isDoubleChest(chest)) {
-            DoubleChestLocation doubleChestLocation = new DoubleChestLocation(chest);
-            String formattedRightChestLocation = getFormattedChestLocation(doubleChestLocation.getRightSideLocation());
-            String formattedLeftChestLocation = getFormattedChestLocation(doubleChestLocation.getLeftSideLocation());
+            DoubleChestLocationBean doubleChestLocationBean = new DoubleChestLocationBean(chest);
+            String formattedRightChestLocation = getFormattedChestLocation(doubleChestLocationBean.getRightSideLocation());
+            String formattedLeftChestLocation = getFormattedChestLocation(doubleChestLocationBean.getLeftSideLocation());
             if (configuration.get(formattedRightChestLocation) == null) {
                 configuration.set(formattedRightChestLocation + "." + "location", chest.getLocation());
                 configuration.set(formattedRightChestLocation + "." + "owners", Collections.singletonList(player.getName()));
@@ -169,9 +166,9 @@ public class ChestLockUtils {
 
     public static void setChestOwner(Block chest, List<String> players) {
         if (isDoubleChest(chest)) {
-            DoubleChestLocation doubleChestLocation = new DoubleChestLocation(chest);
-            String formattedRightChestLocation = getFormattedChestLocation(doubleChestLocation.getRightSideLocation());
-            String formattedLeftChestLocation = getFormattedChestLocation(doubleChestLocation.getLeftSideLocation());
+            DoubleChestLocationBean doubleChestLocationBean = new DoubleChestLocationBean(chest);
+            String formattedRightChestLocation = getFormattedChestLocation(doubleChestLocationBean.getRightSideLocation());
+            String formattedLeftChestLocation = getFormattedChestLocation(doubleChestLocationBean.getLeftSideLocation());
             if (configuration.get(formattedRightChestLocation) != null) {
                 configuration.set(formattedRightChestLocation + "." + "owners", players);
             }
@@ -191,9 +188,9 @@ public class ChestLockUtils {
 
     public static void addChestOwner(Block chest, String player) {
         if (isDoubleChest(chest)) {
-            DoubleChestLocation doubleChestLocation = new DoubleChestLocation(chest);
-            String formattedRightChestLocation = getFormattedChestLocation(doubleChestLocation.getRightSideLocation());
-            String formattedLeftChestLocation = getFormattedChestLocation(doubleChestLocation.getLeftSideLocation());
+            DoubleChestLocationBean doubleChestLocationBean = new DoubleChestLocationBean(chest);
+            String formattedRightChestLocation = getFormattedChestLocation(doubleChestLocationBean.getRightSideLocation());
+            String formattedLeftChestLocation = getFormattedChestLocation(doubleChestLocationBean.getLeftSideLocation());
             if (configuration.get(formattedRightChestLocation) != null) {
                 List<String> players = configuration.getStringList(formattedRightChestLocation + "." + "owners");
                 if (!players.contains(player)) {
@@ -224,9 +221,9 @@ public class ChestLockUtils {
 
     public static void removeChestOwner(Block chest, String player) {
         if (isDoubleChest(chest)) {
-            DoubleChestLocation doubleChestLocation = new DoubleChestLocation(chest);
-            String formattedRightChestLocation = getFormattedChestLocation(doubleChestLocation.getRightSideLocation());
-            String formattedLeftChestLocation = getFormattedChestLocation(doubleChestLocation.getLeftSideLocation());
+            DoubleChestLocationBean doubleChestLocationBean = new DoubleChestLocationBean(chest);
+            String formattedRightChestLocation = getFormattedChestLocation(doubleChestLocationBean.getRightSideLocation());
+            String formattedLeftChestLocation = getFormattedChestLocation(doubleChestLocationBean.getLeftSideLocation());
             if (configuration.get(formattedRightChestLocation) != null) {
                 List<String> players = configuration.getStringList(formattedRightChestLocation + "." + "owners");
                 if (players.contains(player)) {
@@ -257,9 +254,9 @@ public class ChestLockUtils {
 
     public static void lockChest(Block chest) {
         if (isDoubleChest(chest)) {
-            DoubleChestLocation doubleChestLocation = new DoubleChestLocation(chest);
-            String formattedRightChestLocation = getFormattedChestLocation(doubleChestLocation.getRightSideLocation());
-            String formattedLeftChestLocation = getFormattedChestLocation(doubleChestLocation.getLeftSideLocation());
+            DoubleChestLocationBean doubleChestLocationBean = new DoubleChestLocationBean(chest);
+            String formattedRightChestLocation = getFormattedChestLocation(doubleChestLocationBean.getRightSideLocation());
+            String formattedLeftChestLocation = getFormattedChestLocation(doubleChestLocationBean.getLeftSideLocation());
             if (configuration.get(formattedRightChestLocation) != null) {
                 configuration.set(formattedRightChestLocation + "." + "locked", true);
             }
@@ -279,9 +276,9 @@ public class ChestLockUtils {
 
     public static void unlockChest(Block chest) {
         if (isDoubleChest(chest)) {
-            DoubleChestLocation doubleChestLocation = new DoubleChestLocation(chest);
-            String formattedRightChestLocation = getFormattedChestLocation(doubleChestLocation.getRightSideLocation());
-            String formattedLeftChestLocation = getFormattedChestLocation(doubleChestLocation.getLeftSideLocation());
+            DoubleChestLocationBean doubleChestLocationBean = new DoubleChestLocationBean(chest);
+            String formattedRightChestLocation = getFormattedChestLocation(doubleChestLocationBean.getRightSideLocation());
+            String formattedLeftChestLocation = getFormattedChestLocation(doubleChestLocationBean.getLeftSideLocation());
             if (configuration.get(formattedRightChestLocation) != null) {
                 configuration.set(formattedRightChestLocation + "." + "locked", false);
             }
@@ -304,9 +301,9 @@ public class ChestLockUtils {
             return;
         }
         if (isDoubleChest(chest)) {
-            DoubleChestLocation doubleChestLocation = new DoubleChestLocation(chest);
-            String formattedRightChestLocation = getFormattedChestLocation(doubleChestLocation.getRightSideLocation());
-            String formattedLeftChestLocation = getFormattedChestLocation(doubleChestLocation.getLeftSideLocation());
+            DoubleChestLocationBean doubleChestLocationBean = new DoubleChestLocationBean(chest);
+            String formattedRightChestLocation = getFormattedChestLocation(doubleChestLocationBean.getRightSideLocation());
+            String formattedLeftChestLocation = getFormattedChestLocation(doubleChestLocationBean.getLeftSideLocation());
             configuration.set(formattedRightChestLocation, null);
             configuration.set(formattedLeftChestLocation, null);
         } else {

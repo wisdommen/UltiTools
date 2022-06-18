@@ -12,12 +12,12 @@
     <packaging>jar</packaging>
 
     <name>UltiTools</name>
+    <url>ultikits.com</url>
 
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <url>ultikits.com</url>
 
     <build>
         <plugins>

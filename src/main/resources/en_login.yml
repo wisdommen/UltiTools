@@ -1,5 +1,5 @@
 # config version, please do not change
-configVersion: 1.3
+configVersion: 1.4
 
 "comment 1": "whether to enable account limit of the same IP address or not"
 enablePlayerLimitForOneIP: true
@@ -23,3 +23,6 @@ loginPoint:
   x: 100
   y: 70
   z: 60
+
+"comment 7":  "enable teleport player to last location who has logged"
+enable_teleport_to_last_location: false
