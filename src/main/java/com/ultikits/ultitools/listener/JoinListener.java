@@ -3,10 +3,8 @@ package com.ultikits.ultitools.listener;
 import com.ultikits.ultitools.checker.VersionChecker;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
-import com.ultikits.ultitools.tasks.SideBarTask;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.ScoreBoardUtils;
-import com.ultikits.utils.YamlFileUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -74,7 +72,7 @@ public class JoinListener implements Listener {
                 double x = loginConfig.getDouble("loginPoint.x");
                 double y = loginConfig.getDouble("loginPoint.y");
                 double z = loginConfig.getDouble("loginPoint.z");
-                Location loginLocation = new Location(Bukkit.getWorld(worldName), x, y, z);
+                Location loginLocation = new Location(Bukkit.getWorld(Objects.requireNonNull(worldName)), x, y, z);
                 player.teleport(loginLocation);
             } catch (Exception ignored) {
             }
@@ -135,12 +133,14 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        String vanillaQuitMessage = event.getQuitMessage() == null ? "" : event.getQuitMessage();
-        event.setQuitMessage(null);
-        if (event.getPlayer().isOp()) {
-            Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, opQuitMessage == null ? vanillaQuitMessage : opQuitMessage.replace("%player_name%", player.getName())));
-        } else {
-            Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, playerQuitMessage == null ? vanillaQuitMessage : playerQuitMessage.replace("%player_name%", player.getName())));
+        if (UltiTools.getInstance().getConfig().getBoolean("enable_onquit")) {
+            String vanillaQuitMessage = event.getQuitMessage() == null ? "" : event.getQuitMessage();
+            event.setQuitMessage(null);
+            if (event.getPlayer().isOp()) {
+                Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, opQuitMessage == null ? vanillaQuitMessage : opQuitMessage.replace("%player_name%", player.getName())));
+            } else {
+                Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, playerQuitMessage == null ? vanillaQuitMessage : playerQuitMessage.replace("%player_name%", player.getName())));
+            }
         }
         if (UltiTools.getInstance().getConfig().getBoolean("enable_scoreboard")) ScoreBoardUtils.unregisterPlayer(player.getUniqueId());
     }
@@ -148,11 +148,13 @@ public class JoinListener implements Listener {
     @EventHandler
     public void onJoinSaveIP(PlayerLoginEvent event) {
         if (!UltiTools.getInstance().getConfig().getBoolean("enable_pro") || !UltiTools.getInstance().getProChecker().getProStatus()) return;
-        Player player = event.getPlayer();
-        InetAddress ipAddress = event.getAddress();
-        String ip = ipAddress.getHostAddress().replaceAll("\\.", "_");
-        File file = new File(ConfigsEnum.LOGIN.toString());
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+
+        Player            player    = event.getPlayer();
+        InetAddress       ipAddress = event.getAddress();
+        String            ip        = ipAddress.getHostAddress().replaceAll("\\.", "_");
+        File              file      = new File(ConfigsEnum.LOGIN.toString());
+        YamlConfiguration config    = YamlConfiguration.loadConfiguration(file);
+
         if (!config.getBoolean("enablePlayerLimitForOneIP")) return;
         if (config.get("ip." + ip + ".players") == null) {
             config.set("ip." + ip + ".players", Collections.singletonList(player.getUniqueId().toString()));

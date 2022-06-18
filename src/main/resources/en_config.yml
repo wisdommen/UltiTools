@@ -1,4 +1,4 @@
-config_version: 3.32
+config_version: 3.33
 
 'comment0': 'Language: zh_cn(简体中文), en_us(English)'
 language: en_us
@@ -154,3 +154,6 @@ enable_recall_command: true
 
 "comment59": "enable custom tab bar"
 enable_custom_tab_bar: true
+
+"comment60": 'if enable Quit Notification function'
+enable_onquit: true
