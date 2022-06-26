@@ -19,6 +19,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.Map;
 import java.util.Random;
@@ -35,7 +36,7 @@ public class ChestLockListener implements Listener {
 
     @EventHandler
     public void onPlayerPlaceChest(BlockPlaceEvent event) {
-        Block chest = event.getBlock();
+        Block  chest  = event.getBlock();
         Player player = event.getPlayer();
 
         Map<ChestDirection, Block> blockMap;
@@ -48,16 +49,14 @@ public class ChestLockListener implements Listener {
 
         //判断被放置的箱子的旁边是否有上锁的箱子
         blockMap = ChestLockUtils.getBlocksBesides(chest);
-        right = blockMap.get(ChestDirection.RIGHT);
-        left = blockMap.get(ChestDirection.LEFT);
+        right    = blockMap.get(ChestDirection.RIGHT);
+        left     = blockMap.get(ChestDirection.LEFT);
 
         if (!(right.getType() == Material.CHEST || left.getType() == Material.CHEST)) {
             //提示
             Random random = new Random();
             int i = random.nextInt(3);
-            if (i <= 1) {
-                player.sendMessage(info(UltiTools.languageUtils.getString("lock_tip")));
-            }
+            if (i <= 1) player.sendMessage(info(UltiTools.languageUtils.getString("lock_tip")));
         } else {
             Boolean result = ChestLockUtils.checkNewChestCanPlace(chest, left, right, player);
             event.setCancelled(!result);
@@ -66,7 +65,7 @@ public class ChestLockListener implements Listener {
 
     @EventHandler
     public void onPlayerOpenChest(PlayerInteractEvent event) {
-        Block chest = event.getClickedBlock();
+        Block  chest  = event.getClickedBlock();
         Player player = event.getPlayer();
 
         if (chest == null) return;
@@ -77,11 +76,11 @@ public class ChestLockListener implements Listener {
         //判断玩家是否处于选择模式
         if (ChestLockUtils.getInAddMode().containsKey(player.getName())) {
             if (ChestLockUtils.hasChestData(chest)) {
-                if (ChestLockUtils.isChestOwner(chest, player)) {
+                if (ChestLockUtils.isChestAdmin(chest, player)) {
                     ChestLockUtils.addChestOwner(chest, ChestLockUtils.getInAddMode().get(player.getName()));
                     player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("chest_add_owner_successfully"));
                 } else {
-                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_this_is_others_chest"));
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("must_be_chest_admin"));
                 }
             } else {
                 player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("chest_data_not_found"));
@@ -92,11 +91,11 @@ public class ChestLockListener implements Listener {
         }
         if (ChestLockUtils.getInRemoveMode().containsKey(player.getName())) {
             if (ChestLockUtils.hasChestData(chest)) {
-                if (ChestLockUtils.isChestOwner(chest, player)) {
+                if (ChestLockUtils.isChestAdmin(chest, player)) {
                     ChestLockUtils.removeChestOwner(chest, ChestLockUtils.getInRemoveMode().get(player.getName()));
                     player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("chest_remove_owner_successfully"));
                 } else {
-                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("lock_this_is_others_chest"));
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("must_be_chest_admin"));
                 }
             } else {
                 player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("chest_data_not_found"));
@@ -143,6 +142,21 @@ public class ChestLockListener implements Listener {
                 player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("unlock_chest_not_locked"));
             }
             ChestLockUtils.getInUnlockMode().remove(player.getName());
+            event.setCancelled(true);
+            return;
+        }
+        if (ChestLockUtils.getInTransferMode().containsKey(player.getName())) {
+            if (ChestLockUtils.hasChestData(chest)) {
+                if (ChestLockUtils.isChestAdmin(chest, player)) {
+                    ChestLockUtils.transferChest(chest, player.getName(), ChestLockUtils.getInTransferMode().get(player.getName()));
+                    player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("chest_transferred"));
+                } else {
+                    player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("must_be_chest_owner"));
+                }
+            } else {
+                player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("chest_data_not_found"));
+            }
+            ChestLockUtils.getInTransferMode().remove(player.getName());
             event.setCancelled(true);
             return;
         }
@@ -203,5 +217,28 @@ public class ChestLockListener implements Listener {
                 }
             }
         }
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Player player  = event.getPlayer();
+        Block  block   = player.getTargetBlock(null, 5);
+
+        if (block.getType() != Material.CHEST) return;
+        if (!ChestLockUtils.hasChestData(block)) return;
+
+        String  owner         = ChestLockUtils.getChestAdmin(block);
+        Boolean locked        = ChestLockUtils.isChestLocked(block);
+
+        UltiTools.versionAdaptor.sendActionBar(
+                player,
+                "" +
+                        ChatColor.YELLOW +
+                        UltiTools.languageUtils.getString("lock_chest_owner") +
+                        owner +
+                        ChatColor.AQUA +
+                        "  |  " +
+                        (locked ? ChatColor.RED + UltiTools.languageUtils.getString("locked") : ChatColor.GREEN + UltiTools.languageUtils.getString("unlocked"))
+        );
     }
 }

@@ -36,6 +36,12 @@ public class LockCommands extends AbstractPlayerCommandExecutor {
                 player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("chest_click_remove_owner"));
                 return true;
             }
+            if("transfer".equalsIgnoreCase(strings[0])) {
+                ChestLockUtils.cleanMode(player);
+                ChestLockUtils.getInTransferMode().put(player.getName(), strings [1]);
+                player.sendMessage(ChatColor.GREEN + UltiTools.languageUtils.getString("chest_click_transfer_owner"));
+                return true;
+            }
         }
         return false;
     }

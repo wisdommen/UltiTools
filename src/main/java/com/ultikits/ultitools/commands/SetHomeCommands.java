@@ -22,6 +22,10 @@ public class SetHomeCommands extends AbstractPlayerCommandExecutor {
 
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] args, @NotNull Player player) {
+        if (!player.hasPermission("ultikits.tools.sethome") && !player.isOp()) {
+            player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("no_permission"));
+            return true;
+        }
         if (!isPlayerCanSetHome(player)) {
             player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("sethome_reached_limit"));
             return true;
