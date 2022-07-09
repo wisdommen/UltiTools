@@ -3,7 +3,7 @@ package com.ultikits.ultitools.commands;
 import com.ultikits.abstracts.AbstractTabExecutor;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.DelayTeleportUtils;
+import com.ultikits.ultitools.services.DelayTeleportService;
 import com.ultikits.ultitools.utils.Utils;
 import com.ultikits.ultitools.views.WorldsListView;
 import org.bukkit.*;
@@ -406,7 +406,7 @@ public class MultiWorldsCommands extends AbstractTabExecutor {
     private void teleportPlayer(Player player, String world) {
         Location location = Objects.requireNonNull(UltiTools.getInstance().getServer().getWorld(world)).getSpawnLocation();
         if (!player.getWorld().getName().equalsIgnoreCase(world)) {
-            DelayTeleportUtils.delayTeleport(player, location, 3);
+            DelayTeleportService.delayTeleport(player, location, 3);
         } else {
             player.sendMessage(warning(UltiTools.languageUtils.getString("world_you_are_in_this_world")));
         }

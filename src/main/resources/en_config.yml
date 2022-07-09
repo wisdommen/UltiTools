@@ -138,7 +138,7 @@ enable_trade: true
 enable_announcement: true
 
 'comment49': 'enable custom MOTD function'
-enable_motd_funcion: true
+enable_motd_function: true
 
 'comment50': 'enable command-alias function'
 enable_command-alias_function: true

@@ -1,4 +1,4 @@
-package com.ultikits.ultitools.utils;
+package com.ultikits.ultitools.services;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
@@ -11,8 +11,6 @@ import com.ultikits.ultitools.views.TradeView;
 import com.ultikits.utils.EconomyUtils;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -21,13 +19,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class TradeUtils {
+public class TradeService {
 
     private static BiMap<String, String> inTradeMode = HashBiMap.create();
     private static BiMap<String, String> inRequestMode = HashBiMap.create();
@@ -40,7 +37,7 @@ public class TradeUtils {
     }
 
     public static void setInTradeMode(BiMap<String, String> inTradeMode) {
-        TradeUtils.inTradeMode = inTradeMode;
+        TradeService.inTradeMode = inTradeMode;
     }
 
     public static BiMap<String, String> getInRequestMode() {
@@ -48,7 +45,7 @@ public class TradeUtils {
     }
 
     public static void setInRequestMode(BiMap<String, String> inRequestMode) {
-        TradeUtils.inRequestMode = inRequestMode;
+        TradeService.inRequestMode = inRequestMode;
     }
 
     public static Map<String, Integer> getTradeMoney() {
@@ -56,7 +53,7 @@ public class TradeUtils {
     }
 
     public static void setTradeMoney(Map<String, Integer> tradeMoney) {
-        TradeUtils.tradeMoney = tradeMoney;
+        TradeService.tradeMoney = tradeMoney;
     }
 
     public static Map<String, Integer> getTradeExp() {
@@ -64,7 +61,7 @@ public class TradeUtils {
     }
 
     public static void setTradeExp(Map<String, Integer> tradeExp) {
-        TradeUtils.tradeExp = tradeExp;
+        TradeService.tradeExp = tradeExp;
     }
 
     public static List<String> getTradeConfirm() {
@@ -72,7 +69,7 @@ public class TradeUtils {
     }
 
     public static void setTradeConfirm(List<String> tradeConfirm) {
-        TradeUtils.tradeConfirm = tradeConfirm;
+        TradeService.tradeConfirm = tradeConfirm;
     }
 
     public static void requestTrade(Player From, Player To) {
@@ -338,18 +335,18 @@ public class TradeUtils {
     }
 
     public static boolean isAllConfirmed(Player player) {
-        return tradeConfirm.contains(player.getName()) && tradeConfirm.contains(TradeUtils.getOtherParty(player).getName());
+        return tradeConfirm.contains(player.getName()) && tradeConfirm.contains(TradeService.getOtherParty(player).getName());
     }
 
     public static void refreshConfirmation(Player player, Inventory inventory, ItemStack itemStack, boolean reset) {
         if (reset) {
-            TradeUtils.getTradeConfirm().remove(player.getName());
-            TradeUtils.getTradeConfirm().remove(TradeUtils.getOtherParty(player).getName());
+            TradeService.getTradeConfirm().remove(player.getName());
+            TradeService.getTradeConfirm().remove(TradeService.getOtherParty(player).getName());
         }
-        TradeUtils.updateConfirmLore(player, inventory, itemStack, reset);
-        TradeUtils.updateConfirmLore(
-                TradeUtils.getOtherParty(player),
-                TradeUtils.getOtherParty(player).getOpenInventory().getTopInventory(),
+        TradeService.updateConfirmLore(player, inventory, itemStack, reset);
+        TradeService.updateConfirmLore(
+                TradeService.getOtherParty(player),
+                TradeService.getOtherParty(player).getOpenInventory().getTopInventory(),
                 itemStack,
                 reset
         );
@@ -375,7 +372,7 @@ public class TradeUtils {
     }
 
     public static void addTradeMoney(Player player, boolean tenfold) {
-        if (!(EconomyUtils.checkMoney(player) > TradeUtils.getTradeMoney().get(player.getName()))) return;
+        if (!(EconomyUtils.checkMoney(player) > TradeService.getTradeMoney().get(player.getName()))) return;
         int money = tradeMoney.get(player.getName());
         if (tenfold) {
             money = money == 0 ? 1 : money * 10;
@@ -386,7 +383,7 @@ public class TradeUtils {
     }
 
     public static void addTradeExp(Player player, boolean tenfold) {
-        if (!(player.getTotalExperience() > TradeUtils.getTradeExp().get(player.getName()))) return;
+        if (!(player.getTotalExperience() > TradeService.getTradeExp().get(player.getName()))) return;
         int exp = tradeExp.get(player.getName());
         if (tenfold) {
             exp = exp == 0 ? 1 : exp * 10;

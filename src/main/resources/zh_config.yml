@@ -138,7 +138,7 @@ enable_trade: true
 enable_announcement: true
 
 '注释49请勿修改': '开启自定义MOTD功能'
-enable_motd_funcion: true
+enable_motd_function: true
 
 '注释50请勿修改': '开启自定义指令简写功能'
 enable_command-alias_function: true

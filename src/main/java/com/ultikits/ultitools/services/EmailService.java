@@ -1,10 +1,11 @@
-package com.ultikits.ultitools.utils;
+package com.ultikits.ultitools.services;
 
 import com.ultikits.beans.EmailContentBean;
 import com.ultikits.enums.Sounds;
 import com.ultikits.ultitools.enums.EmailResponse;
 import com.ultikits.ultitools.manager.EmailManager;
 import com.ultikits.ultitools.ultitools.UltiTools;
+import com.ultikits.ultitools.utils.VersionUtils;
 import com.ultikits.ultitools.views.EmailView;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -23,7 +24,7 @@ import java.util.Map;
 import static com.ultikits.utils.MessagesUtils.info;
 import static com.ultikits.utils.MessagesUtils.warning;
 
-public class EmailUtils {
+public class EmailService {
 
     /**
      * 为一个玩家打开他的收件箱界面

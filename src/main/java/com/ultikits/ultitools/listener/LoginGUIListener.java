@@ -7,14 +7,11 @@ import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.enums.LoginRegisterEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.DatabasePlayerTools;
+import com.ultikits.ultitools.services.DatabasePlayerService;
 import com.ultikits.utils.MD5Utils;
-import com.ultikits.utils.MessagesUtils;
 import com.ultikits.utils.SendEmailUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,7 +31,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import static com.ultikits.ultitools.utils.GUIUtils.*;
-import static com.ultikits.ultitools.utils.DatabasePlayerTools.*;
+import static com.ultikits.ultitools.services.DatabasePlayerService.*;
 import static com.ultikits.utils.MessagesUtils.info;
 import static com.ultikits.utils.MessagesUtils.warning;
 
@@ -94,7 +91,7 @@ public class LoginGUIListener implements Listener {
 
                         @Override
                         public void run() {
-                            String email = DatabasePlayerTools.getPlayerEmail(player);
+                            String email = DatabasePlayerService.getPlayerEmail(player);
                             String code = getValidateCode();
                             CheckResponse response = SendEmailUtils.sendEmail(email, UltiTools.languageUtils.getString("emailregister_email_title"), String.format(UltiTools.languageUtils.getString("emialregister_forget_password_email_content"), code));
                             if (response.code.equals("200")) {
@@ -280,7 +277,7 @@ public class LoginGUIListener implements Listener {
     }
 
     private void encryptExistPassword(Player player, String password) {
-        if (DatabasePlayerTools.getPlayerPassword(player).split("").length < 10) {
+        if (DatabasePlayerService.getPlayerPassword(player).split("").length < 10) {
             setPlayerPassword(player, password);
         }
     }

@@ -5,7 +5,7 @@ import com.ultikits.ultitools.beans.ArmorsBean;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.ScoreBoardUtils;
+import com.ultikits.ultitools.services.ScoreBoardService;
 import com.ultikits.utils.EconomyUtils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
@@ -19,8 +19,8 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 import static com.minecraft.Ultilevel.utils.checkLevel.*;
-import static com.ultikits.ultitools.utils.EmailUtils.getUnReadEmailNum;
-import static com.ultikits.ultitools.utils.ScoreBoardUtils.updateLine;
+import static com.ultikits.ultitools.services.EmailService.getUnReadEmailNum;
+import static com.ultikits.ultitools.services.ScoreBoardService.updateLine;
 
 
 public class SideBarTask extends BukkitRunnable {
@@ -40,7 +40,7 @@ public class SideBarTask extends BukkitRunnable {
                         setUpPlayerSideBar(player);
 //                        player.setScoreboard(ScoreBoardUtils.scoreboardMap.get(player.getUniqueId()));
                     } else {
-                        player.setScoreboard(ScoreBoardUtils.getNewScoreboard());
+                        player.setScoreboard(ScoreBoardService.getNewScoreboard());
                     }
                 }
             }.runTaskAsynchronously(UltiTools.getInstance());

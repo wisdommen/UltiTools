@@ -1,4 +1,4 @@
-package com.ultikits.ultitools.utils;
+package com.ultikits.ultitools.services;
 
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-public class GroupManagerUtils {
+public class GroupManagerService {
     private static final YamlConfiguration usersConfig;
     private static final YamlConfiguration groupsConfig;
     private static final YamlConfiguration inheritedConfig;
@@ -37,7 +37,7 @@ public class GroupManagerUtils {
         inheritedConfig = YamlConfiguration.loadConfiguration(inheritedFile);
     }
 
-    private GroupManagerUtils() {
+    private GroupManagerService() {
     }
 
     public static String getGroup(UUID uuid) {

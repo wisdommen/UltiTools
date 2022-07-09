@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ultikits.ultitools.utils.DatabasePlayerTools.getIsLogin;
-import static com.ultikits.ultitools.utils.DatabasePlayerTools.isPlayerAccountExist;
+import static com.ultikits.ultitools.services.DatabasePlayerService.getIsLogin;
+import static com.ultikits.ultitools.services.DatabasePlayerService.isPlayerAccountExist;
 import static com.ultikits.ultitools.utils.GUIUtils.setupLoginRegisterLayout;
 
 public class LoginListener implements Listener {

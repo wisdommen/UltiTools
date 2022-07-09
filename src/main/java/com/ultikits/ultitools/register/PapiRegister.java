@@ -1,7 +1,7 @@
 package com.ultikits.ultitools.register;
 
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.EmailUtils;
+import com.ultikits.ultitools.services.EmailService;
 import com.ultikits.ultitools.utils.WorldUtils;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
@@ -39,7 +39,7 @@ public class PapiRegister extends PlaceholderExpansion {
         }
         switch (params){
             case "new_email_num":
-                return String.valueOf(EmailUtils.getUnReadEmailNum(player));
+                return String.valueOf(EmailService.getUnReadEmailNum(player));
             case "world_alis":
                 return WorldUtils.getWorldAlisName(player.getUniqueId());
             default:

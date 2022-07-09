@@ -1,4 +1,4 @@
-package com.ultikits.ultitools.utils;
+package com.ultikits.ultitools.services;
 
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.CleanTypeEnum;
@@ -10,9 +10,9 @@ import org.bukkit.entity.*;
 
 import java.util.List;
 
-public class CleanerUtils {
+public class CleanerService {
 
-    private CleanerUtils() {
+    private CleanerService() {
     }
 
     public static int run(CleanTypeEnum cleanType) {

@@ -1,4 +1,4 @@
-package com.ultikits.ultitools.utils;
+package com.ultikits.ultitools.services;
 
 import com.ultikits.enums.Sounds;
 import com.ultikits.ultitools.ultitools.UltiTools;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class DelayTeleportUtils {
+public class DelayTeleportService {
 
     private final static Map<UUID, Boolean> teleportingPlayers = new HashMap<>();
     private final static Map<UUID, String> locationMap = new HashMap<>();
@@ -38,7 +38,7 @@ public class DelayTeleportUtils {
                     } else {
                         String lastLocation = locationMap.get(playerUUID);
                         if (!currentLocation.equals(lastLocation)) {
-                            DelayTeleportUtils.teleportingPlayers.put(playerUUID, false);
+                            DelayTeleportService.teleportingPlayers.put(playerUUID, false);
                         }
                     }
                 }

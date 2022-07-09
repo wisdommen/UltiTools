@@ -5,7 +5,7 @@ import com.ultikits.beans.CheckResponse;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.enums.PermissionsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.DatabasePlayerTools;
+import com.ultikits.ultitools.services.DatabasePlayerService;
 import com.ultikits.ultitools.utils.Utils;
 import com.ultikits.utils.SendEmailUtils;
 import org.bukkit.Bukkit;
@@ -91,7 +91,7 @@ public class LoginRegisterCommands extends AbstractTabExecutor {
                                 }
                             }
                         }
-                        DatabasePlayerTools.setPlayerEmail(player, playersEmail.get(player.getUniqueId()));
+                        DatabasePlayerService.setPlayerEmail(player, playersEmail.get(player.getUniqueId()));
                         return true;
                     }
                     player.sendMessage(warning(UltiTools.languageUtils.getString("emailregister_code_invalid")));
@@ -101,11 +101,11 @@ public class LoginRegisterCommands extends AbstractTabExecutor {
             case 3:
                 if (strings[0].equals("set")){
                     String playerName = strings[1];
-                    if (!DatabasePlayerTools.isPlayerAccountExist(playerName)){
+                    if (!DatabasePlayerService.isPlayerAccountExist(playerName)){
                         player.sendMessage(warning(UltiTools.languageUtils.getString("no_such_player")));
                         return true;
                     }
-                    DatabasePlayerTools.setPlayerPassword(playerName, strings[2]);
+                    DatabasePlayerService.setPlayerPassword(playerName, strings[2]);
                     player.sendMessage(info(UltiTools.languageUtils.getString("emailregister_password_changed")));
                     return true;
                 }

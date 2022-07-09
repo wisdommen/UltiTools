@@ -2,7 +2,7 @@ package com.ultikits.ultitools.listener;
 
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.DatabasePlayerTools;
+import com.ultikits.ultitools.services.DatabasePlayerService;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -28,8 +28,8 @@ public class WhitelistListener implements Listener {
                 event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.AQUA + UltiTools.languageUtils.getString("whitelist_not_on"));
             }
         } else {
-            if (DatabasePlayerTools.isPlayerExist(player.getName(), "userinfo")) {
-                if (DatabasePlayerTools.isPlayerExist(player.getName(), "userinfo") && DatabasePlayerTools.getPlayerData(player.getName(), "userinfo", "whitelisted").equals("false")) {
+            if (DatabasePlayerService.isPlayerExist(player.getName(), "userinfo")) {
+                if (DatabasePlayerService.isPlayerExist(player.getName(), "userinfo") && DatabasePlayerService.getPlayerData(player.getName(), "userinfo", "whitelisted").equals("false")) {
                     event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.AQUA + UltiTools.languageUtils.getString("whitelist_not_on"));
                 }
             }else {
@@ -38,7 +38,7 @@ public class WhitelistListener implements Listener {
                 playerData.put("password", "");
                 playerData.put("whitelisted", "false");
                 playerData.put("banned", "false");
-                DatabasePlayerTools.insertPlayerData(playerData, "userinfo");
+                DatabasePlayerService.insertPlayerData(playerData, "userinfo");
                 event.disallow(PlayerLoginEvent.Result.KICK_OTHER, ChatColor.AQUA + UltiTools.languageUtils.getString("whitelist_not_on"));
             }
         }

@@ -2,6 +2,7 @@ package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractTabExecutor;
 import com.ultikits.ultitools.enums.ConfigsEnum;
+import com.ultikits.ultitools.services.HomeService;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.Utils;
 import org.bukkit.ChatColor;
@@ -42,12 +43,12 @@ public class DeleteHomeCommands extends AbstractTabExecutor {
     @Override
     protected @Nullable
     List<String> onPlayerTabComplete(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
-        return Utils.getHomeList(player);
+        return HomeService.getHomeList(player);
     }
 
     private boolean deleteHome(String homeName, Player player, File file) {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        List<String> homeList = Utils.getHomeList(player);
+        List<String> homeList = HomeService.getHomeList(player);
         if (!homeList.contains(homeName)) {
             player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("home_dont_have"));
             return true;

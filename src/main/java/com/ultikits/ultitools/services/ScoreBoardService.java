@@ -1,4 +1,4 @@
-package com.ultikits.ultitools.utils;
+package com.ultikits.ultitools.services;
 
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.ultitools.UltiTools;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class ScoreBoardUtils {
+public class ScoreBoardService {
 
     public static Map<UUID, Map<Integer, String>> boardMap = new HashMap<>();
     public static ScoreboardManager sb = Bukkit.getScoreboardManager();

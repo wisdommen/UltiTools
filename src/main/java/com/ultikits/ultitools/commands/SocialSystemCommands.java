@@ -4,8 +4,8 @@ import com.ultikits.abstracts.AbstractTabExecutor;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.manager.EmailManager;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.DatabasePlayerTools;
-import com.ultikits.ultitools.utils.EmailUtils;
+import com.ultikits.ultitools.services.DatabasePlayerService;
+import com.ultikits.ultitools.services.EmailService;
 import com.ultikits.ultitools.views.ApplyView;
 import com.ultikits.ultitools.views.FriendsView;
 import com.ultikits.utils.MessagesUtils;
@@ -41,7 +41,7 @@ public class SocialSystemCommands extends AbstractTabExecutor {
                 switch (strings[0]) {
                     case "list":
                         player.sendMessage(ChatColor.YELLOW + UltiTools.languageUtils.getString("friend_list"));
-                        for (String friend : DatabasePlayerTools.getFriendList(player)) {
+                        for (String friend : DatabasePlayerService.getFriendList(player)) {
                             player.sendMessage(friend);
                         }
                         return true;
@@ -56,7 +56,7 @@ public class SocialSystemCommands extends AbstractTabExecutor {
                             player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("friend_not_self"));
                             return true;
                         }
-                        if (DatabasePlayerTools.getFriendList(player).contains(requestPlayer.getName())) {
+                        if (DatabasePlayerService.getFriendList(player).contains(requestPlayer.getName())) {
                             player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("friend_had"));
                             return true;
                         }
@@ -64,28 +64,28 @@ public class SocialSystemCommands extends AbstractTabExecutor {
                         receiverEmailManager.sendNotification(player.getName() + UltiTools.languageUtils.getString("friend_apply_lore"), null, Collections.singletonList("friends apply " + player.getName()));
                         Player player2 = Bukkit.getPlayer(strings[1]);
                         if (player2 != null) {
-                            EmailUtils.pushToReceiver(player2);
+                            EmailService.pushToReceiver(player2);
                         }
                         player.sendMessage(ChatColor.AQUA + UltiTools.languageUtils.getString("friend_apply_sent"));
                         return true;
                     case "remove":
-                        if (!DatabasePlayerTools.getFriendList(player).contains(requestPlayer.getName())) {
+                        if (!DatabasePlayerService.getFriendList(player).contains(requestPlayer.getName())) {
                             player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("friend_not_friend"));
                             return true;
                         }
-                        DatabasePlayerTools.removePlayerFriends(player, requestPlayer);
-                        DatabasePlayerTools.removePlayerFriends(requestPlayer, player);
+                        DatabasePlayerService.removePlayerFriends(player, requestPlayer);
+                        DatabasePlayerService.removePlayerFriends(requestPlayer, player);
                         receiverEmailManager.sendNotification(String.format(UltiTools.languageUtils.getString("friend_no_more_friend"), player.getName(), player.getName()), null, null);
                         player.sendMessage(ChatColor.AQUA + String.format(UltiTools.languageUtils.getString("friend_deleted"), ChatColor.YELLOW + requestPlayer.getName() + ChatColor.AQUA));
                         return true;
                     case "accept":
-                        if (DatabasePlayerTools.getFriendList(player).contains(requestPlayer.getName())) {
+                        if (DatabasePlayerService.getFriendList(player).contains(requestPlayer.getName())) {
                             player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("friend_had"));
                             return true;
                         }
                         setApplyList(strings[1], player.getName(), false);
-                        DatabasePlayerTools.addPlayerFriends(player, requestPlayer);
-                        DatabasePlayerTools.addPlayerFriends(requestPlayer, player);
+                        DatabasePlayerService.addPlayerFriends(player, requestPlayer);
+                        DatabasePlayerService.addPlayerFriends(requestPlayer, player);
                         if (requestPlayer.isOnline()) {
                             Player player1 = (Player) requestPlayer;
                             player1.sendMessage(ChatColor.AQUA + String.format(UltiTools.languageUtils.getString("friend_apply_accept"), ChatColor.YELLOW + player.getName() + ChatColor.AQUA));
@@ -93,7 +93,7 @@ public class SocialSystemCommands extends AbstractTabExecutor {
                         player.sendMessage(ChatColor.AQUA + String.format(UltiTools.languageUtils.getString("friend_apply_accept"), ChatColor.YELLOW + strings[1] + ChatColor.AQUA));
                         return true;
                     case "reject":
-                        if (DatabasePlayerTools.getFriendList(player).contains(requestPlayer.getName())) {
+                        if (DatabasePlayerService.getFriendList(player).contains(requestPlayer.getName())) {
                             player.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("friend_had"));
                             return true;
                         }
@@ -141,7 +141,7 @@ public class SocialSystemCommands extends AbstractTabExecutor {
                 return tabCommands;
             case 2:
                 if (strings[0].equals("remove")) {
-                    return DatabasePlayerTools.getFriendList(player);
+                    return DatabasePlayerService.getFriendList(player);
                 }
                 if (strings[0].equals("accept") || strings[0].equals("reject") || strings[0].equals("apply")) {
                     File file = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");

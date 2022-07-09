@@ -5,7 +5,7 @@ import com.ultikits.inventoryapi.ViewManager;
 import com.ultikits.inventoryapi.ViewType;
 import com.ultikits.manager.ItemStackManager;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.DatabasePlayerTools;
+import com.ultikits.ultitools.services.DatabasePlayerService;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -31,7 +31,7 @@ public class FriendsView {
         new BukkitRunnable() {
             @Override
             public void run() {
-                List<String> friendList = DatabasePlayerTools.getFriendList(player);
+                List<String> friendList = DatabasePlayerService.getFriendList(player);
                 for (ItemStackManager itemStackManager : setUpFriends(friendList)){
                     inventoryManager.addItem(itemStackManager);
                 }

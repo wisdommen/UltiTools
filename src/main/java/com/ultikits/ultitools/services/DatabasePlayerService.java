@@ -1,12 +1,10 @@
-package com.ultikits.ultitools.utils;
+package com.ultikits.ultitools.services;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.listener.LoginListener;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.utils.DatabaseUtils;
 import com.ultikits.utils.MD5Utils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -18,13 +16,13 @@ import java.util.*;
 
 import static com.ultikits.ultitools.ultitools.UltiTools.isDatabaseEnabled;
 
-public class DatabasePlayerTools {
+public class DatabasePlayerService {
 
     private static final String userTable = "userinfo";
     private static final String friendTable = "social_system";
     private static final String primaryID = "username";
 
-    private DatabasePlayerTools() {
+    private DatabasePlayerService() {
     }
 
     public static boolean isPlayerExist(String playerName, String table) {
@@ -234,7 +232,7 @@ public class DatabasePlayerTools {
     public static List<String> getFriendList(OfflinePlayer player){
         if (isDatabaseEnabled){
             if (!isPlayerExist(player.getName(), friendTable)) {
-                String friendListJSON = DatabasePlayerTools.getPlayerData(player.getName(), friendTable, "friends");
+                String friendListJSON = DatabasePlayerService.getPlayerData(player.getName(), friendTable, "friends");
                 return JSON.parseObject(friendListJSON, new TypeReference<ArrayList<String>>(){});
             }
             return Collections.emptyList();

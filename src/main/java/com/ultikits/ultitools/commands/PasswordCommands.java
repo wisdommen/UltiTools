@@ -1,7 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.DatabasePlayerTools;
+import com.ultikits.ultitools.services.DatabasePlayerService;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -30,14 +30,14 @@ public class PasswordCommands implements TabExecutor {
             if (strings.length == 2) {
                 switch (strings[0]) {
                     case "reset" :
-                        if(DatabasePlayerTools.isPlayerAccountExist(strings[1])) {
+                        if(DatabasePlayerService.isPlayerAccountExist(strings[1])) {
                             Random random = new Random();
                             StringBuilder pwd= new StringBuilder();
                             for (int i=0;i<6;i++)
                             {
                                 pwd.append(random.nextInt(10));
                             }
-                            DatabasePlayerTools.setPlayerPassword(strings[1], String.valueOf(pwd));
+                            DatabasePlayerService.setPlayerPassword(strings[1], String.valueOf(pwd));
                             commandSender.sendMessage(info(String.format(UltiTools.languageUtils.getString("pwd_reset_success"), strings[1])));
                             commandSender.sendMessage(info(String.valueOf(pwd)));
                         }else {

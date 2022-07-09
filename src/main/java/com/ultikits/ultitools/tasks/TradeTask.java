@@ -1,7 +1,7 @@
 package com.ultikits.ultitools.tasks;
 
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.TradeUtils;
+import com.ultikits.ultitools.services.TradeService;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarFlag;
@@ -29,13 +29,13 @@ public class TradeTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (bossBar.getProgress() > 0.01 && TradeUtils.isPlayerInRequestMode(to)) {
+        if (bossBar.getProgress() > 0.01 && TradeService.isPlayerInRequestMode(to)) {
             bossBar.setProgress(bossBar.getProgress() - 0.01);
-        } else if (TradeUtils.isPlayerInTradeMode(to)){
+        } else if (TradeService.isPlayerInTradeMode(to)){
             bossBar.removeAll();
             this.cancel();
         } else {
-            if (TradeUtils.isPlayerInRequestMode(to)) TradeUtils.rejectTrade(to);
+            if (TradeService.isPlayerInRequestMode(to)) TradeService.rejectTrade(to);
             bossBar.removeAll();
             this.cancel();
         }

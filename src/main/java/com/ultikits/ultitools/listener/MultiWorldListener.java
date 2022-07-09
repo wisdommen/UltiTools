@@ -17,18 +17,18 @@ public class MultiWorldListener implements Listener {
 
     @EventHandler
     public void onPlayerPlaceBlock(BlockPlaceEvent event) {
-        event.setCancelled(!event.getPlayer().isOp() && MultiWorldsCommands.protectedWorlds.contains(event.getBlock().getWorld().getName()));
+        event.setCancelled(!event.getPlayer().isOp() && !event.getPlayer().hasPermission("ultikits.tools.mw.build") && MultiWorldsCommands.protectedWorlds.contains(event.getBlock().getWorld().getName()));
     }
 
     @EventHandler
     public void onPlayerBreakBlock(BlockBreakEvent event) {
-        event.setCancelled(!event.getPlayer().isOp() && MultiWorldsCommands.protectedWorlds.contains(event.getBlock().getWorld().getName()));
+        event.setCancelled(!event.getPlayer().isOp() && !event.getPlayer().hasPermission("ultikits.tools.mw.build") && MultiWorldsCommands.protectedWorlds.contains(event.getBlock().getWorld().getName()));
     }
 
     @EventHandler
     public void onPlayerInteractBlock(PlayerInteractEvent event) {
         if (event.getClickedBlock() == null) return;
-        event.setCancelled(!event.getPlayer().isOp() && MultiWorldsCommands.protectedWorlds.contains(event.getClickedBlock().getWorld().getName()));
+        event.setCancelled(!event.getPlayer().isOp() && !event.getPlayer().hasPermission("ultikits.tools.mw.build") && !event.getPlayer().hasPermission("ultikits.tools.mw.action") && MultiWorldsCommands.protectedWorlds.contains(event.getClickedBlock().getWorld().getName()));
     }
 
     @EventHandler
@@ -39,7 +39,7 @@ public class MultiWorldListener implements Listener {
     @EventHandler
     public void onPlayerDamage(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player)) return;
-        event.setCancelled(!Objects.requireNonNull(((Player) event.getDamager()).getPlayer()).isOp() && MultiWorldsCommands.noPvpWorlds.contains(event.getDamager().getWorld().getName()));
+        event.setCancelled(!Objects.requireNonNull(((Player) event.getDamager()).getPlayer()).isOp() && !((Player) event.getDamager()).getPlayer().hasPermission("ultikits.tools.mw.build") && !((Player) event.getDamager()).getPlayer().hasPermission("ultikits.tools.mw.action") && MultiWorldsCommands.noPvpWorlds.contains(event.getDamager().getWorld().getName()));
     }
 
     @EventHandler

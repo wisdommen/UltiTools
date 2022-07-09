@@ -3,7 +3,7 @@ package com.ultikits.ultitools.commands;
 import com.ultikits.ultitools.enums.CleanTypeEnum;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.CleanerUtils;
+import com.ultikits.ultitools.services.CleanerService;
 import com.ultikits.utils.MessagesUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.ultikits.ultitools.utils.CleanerUtils.sendMessage;
+import static com.ultikits.ultitools.services.CleanerService.sendMessage;
 import static com.ultikits.utils.MessagesUtils.info;
 
 
@@ -49,7 +49,7 @@ public class CleanerCommands implements TabExecutor {
                             }
                             cleanType = CleanTypeEnum.getTypeByAlis(args[0]);
                             if (cleanType == null) break;
-                            cleanCount = CleanerUtils.run(cleanType);
+                            cleanCount = CleanerService.run(cleanType);
                             sender.sendMessage(sendMessage(cleanType, name, cleanCount));
                             break;
                         case 2:
@@ -60,7 +60,7 @@ public class CleanerCommands implements TabExecutor {
                             cleanType = CleanTypeEnum.getTypeByAlis(args[0]);
                             if (cleanType == null) break;
                             World world = Bukkit.getWorld(args[1]);
-                            cleanCount = CleanerUtils.run(cleanType, Collections.singletonList(world));
+                            cleanCount = CleanerService.run(cleanType, Collections.singletonList(world));
                             sender.sendMessage(sendMessage(cleanType, name, cleanCount));
                             break;
                         default:

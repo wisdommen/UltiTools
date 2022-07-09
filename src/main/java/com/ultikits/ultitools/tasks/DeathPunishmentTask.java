@@ -2,7 +2,7 @@ package com.ultikits.ultitools.tasks;
 
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.DeathPunishUtils;
+import com.ultikits.ultitools.services.DeathPunishService;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -73,7 +73,7 @@ class CommandExec implements Callable<Object> {
     }
     @Override
     public Object call() {
-        DeathPunishUtils.Exec(DeathPunishmentTask.getPunishCommands(), player.getName());
+        DeathPunishService.Exec(DeathPunishmentTask.getPunishCommands(), player.getName());
         return null;
     }
 }
@@ -100,7 +100,7 @@ class Timer extends BukkitRunnable{
                 list = DeathPunishmentTask.getWorldsEnabledItemDrop();
                 for (String s : list) {
                     if (s.equals(world)) {
-                        DeathPunishUtils.takeItem(player, DeathPunishmentTask.getItemDrop(), DeathPunishmentTask.getItemDropWhitelist());
+                        DeathPunishService.takeItem(player, DeathPunishmentTask.getItemDrop(), DeathPunishmentTask.getItemDropWhitelist());
                         player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("punish_item_dropped"), DeathPunishmentTask.getItemDrop()));
                     }
                 }
@@ -110,7 +110,7 @@ class Timer extends BukkitRunnable{
                 list = DeathPunishmentTask.getWorldsEnabledMoneyDrop();
                 for (String s : list) {
                     if (s.equals(world)) {
-                        DeathPunishUtils.takeMoney(player, DeathPunishmentTask.getMoneyDrop());
+                        DeathPunishService.takeMoney(player, DeathPunishmentTask.getMoneyDrop());
                         player.sendMessage(ChatColor.RED + String.format(UltiTools.languageUtils.getString("punish_money_dropped"), DeathPunishmentTask.getMoneyDrop()));
                     }
                 }

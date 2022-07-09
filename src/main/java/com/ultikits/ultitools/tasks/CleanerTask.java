@@ -3,7 +3,7 @@ package com.ultikits.ultitools.tasks;
 import com.ultikits.ultitools.enums.CleanTypeEnum;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.CleanerUtils;
+import com.ultikits.ultitools.services.CleanerService;
 import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -62,15 +62,15 @@ public class CleanerTask extends BukkitRunnable {
         if (UltiTools.getInstance().getProChecker().getProStatus()) {
             time += 10;
             if (enableSmartClean) {
-                if (CleanerUtils.checkMobs(worlds) > maxMob && !mobCleaning) {
+                if (CleanerService.checkMobs(worlds) > maxMob && !mobCleaning) {
                     notice(UltiTools.languageUtils.getString("mobs"));
                     mobCleaning = true;
                 }
-                if (CleanerUtils.checkItems(worlds) > maxItem && !itemCleaning) {
+                if (CleanerService.checkItems(worlds) > maxItem && !itemCleaning) {
                     notice(UltiTools.languageUtils.getString("dropped_item"));
                     itemCleaning = true;
                 }
-                if (CleanerUtils.checkEntities(worlds) > maxEntity && !entityCleaning) {
+                if (CleanerService.checkEntities(worlds) > maxEntity && !entityCleaning) {
                     notice(UltiTools.languageUtils.getString("entity"));
                     entityCleaning = true;
                 }
@@ -100,16 +100,16 @@ public class CleanerTask extends BukkitRunnable {
                     public void run() {
                         int count = 0;
                         if (typeName.equals(UltiTools.languageUtils.getString("mobs"))) {
-                            count = CleanerUtils.cleanMobs(worlds);
+                            count = CleanerService.cleanMobs(worlds);
                             mobCleaning = false;
                         } else if (typeName.equals(UltiTools.languageUtils.getString("dropped_item"))) {
-                            count = CleanerUtils.cleanDroppedItem(worlds);
+                            count = CleanerService.cleanDroppedItem(worlds);
                             itemCleaning = false;
                         } else if (typeName.equals(UltiTools.languageUtils.getString("entity"))) {
-                            count = CleanerUtils.cleanEntities(worlds);
+                            count = CleanerService.cleanEntities(worlds);
                             entityCleaning = (mobCleaning || itemCleaning);
                         }
-                        Bukkit.broadcastMessage(CleanerUtils.sendCleanMessage(typeName, name, count));
+                        Bukkit.broadcastMessage(CleanerService.sendCleanMessage(typeName, name, count));
                         time = 0;
                         cancel();
                     }

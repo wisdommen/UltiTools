@@ -1,9 +1,9 @@
-package com.ultikits.ultitools.utils;
+package com.ultikits.ultitools.services;
 
 import com.ultikits.enums.ChestDirection;
 import com.ultikits.ultitools.beans.DoubleChestLocationBean;
 import com.ultikits.ultitools.enums.ConfigsEnum;
-import com.ultikits.ultitools.ultitools.ExceptionCatcher;
+import com.ultikits.ultitools.utils.ExceptionUtils;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.*;
 import org.bukkit.block.*;
@@ -22,7 +22,7 @@ import static com.ultikits.utils.MessagesUtils.info;
  * @author qianmo
  */
 
-public class ChestLockUtils {
+public class ChestLockService {
     protected static final File              file          = new File(ConfigsEnum.CHEST.toString());
     protected static final YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
 
@@ -151,7 +151,7 @@ public class ChestLockUtils {
         try {
             configuration.save(file);
         } catch (IOException e) {
-            ExceptionCatcher.catchException(e);
+            ExceptionUtils.catchException(e);
         }
     }
 
@@ -169,7 +169,7 @@ public class ChestLockUtils {
         try {
             configuration.save(file);
         } catch (IOException e) {
-            ExceptionCatcher.catchException(e);
+            ExceptionUtils.catchException(e);
         }
     }
 
@@ -202,7 +202,7 @@ public class ChestLockUtils {
         try {
             configuration.save(file);
         } catch (IOException e) {
-            ExceptionCatcher.catchException(e);
+            ExceptionUtils.catchException(e);
         }
     }
 
@@ -235,7 +235,7 @@ public class ChestLockUtils {
         try {
             configuration.save(file);
         } catch (IOException e) {
-            ExceptionCatcher.catchException(e);
+            ExceptionUtils.catchException(e);
         }
     }
 
@@ -253,7 +253,7 @@ public class ChestLockUtils {
         try {
             configuration.save(file);
         } catch (IOException e) {
-            ExceptionCatcher.catchException(e);
+            ExceptionUtils.catchException(e);
         }
     }
 
@@ -271,7 +271,7 @@ public class ChestLockUtils {
         try {
             configuration.save(file);
         } catch (IOException e) {
-            ExceptionCatcher.catchException(e);
+            ExceptionUtils.catchException(e);
         }
     }
 
@@ -290,7 +290,7 @@ public class ChestLockUtils {
         try {
             configuration.save(file);
         } catch (IOException e) {
-            ExceptionCatcher.catchException(e);
+            ExceptionUtils.catchException(e);
         }
 
     }

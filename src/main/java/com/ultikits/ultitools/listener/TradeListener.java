@@ -2,7 +2,7 @@ package com.ultikits.ultitools.listener;
 
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.TradeUtils;
+import com.ultikits.ultitools.services.TradeService;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,24 +32,24 @@ public class TradeListener implements Listener {
         Player From = event.getPlayer();
         Player To = (Player) event.getRightClicked();
 
-        if (TradeUtils.isPlayerInTradeMode(To)) {
-            if (TradeUtils.getOtherParty(To).getName().equals(From.getName())) return;
+        if (TradeService.isPlayerInTradeMode(To)) {
+            if (TradeService.getOtherParty(To).getName().equals(From.getName())) return;
             From.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("trade_player_in_trading"));
             return;
         }
 
-        if (!TradeUtils.isEnableTrade(To)) {
+        if (!TradeService.isEnableTrade(To)) {
             From.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("trade_player_disabled"));
             return;
         }
 
-        if (TradeUtils.isPlayerInRequestMode(From)) {
-            if (TradeUtils.getOtherParty(From).getName().equals(To.getName())) return;
+        if (TradeService.isPlayerInRequestMode(From)) {
+            if (TradeService.getOtherParty(From).getName().equals(To.getName())) return;
             From.sendMessage(ChatColor.RED + UltiTools.languageUtils.getString("trade_you_cannot_request_two_player"));
             return;
         }
 
-        TradeUtils.requestTrade(From, To);
+        TradeService.requestTrade(From, To);
         event.setCancelled(true);
     }
 
@@ -57,33 +57,33 @@ public class TradeListener implements Listener {
     public void onPlayerQuit (PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        if (TradeUtils.isPlayerInTradeMode(player)) {
-            TradeUtils.closeTrade(player, TradeUtils.getOtherParty(player));
+        if (TradeService.isPlayerInTradeMode(player)) {
+            TradeService.closeTrade(player, TradeService.getOtherParty(player));
         }
 
-        if (TradeUtils.isPlayerInRequestMode(player)) {
-            TradeUtils.removeRequest(player);
+        if (TradeService.isPlayerInRequestMode(player)) {
+            TradeService.removeRequest(player);
         }
     }
 
     @EventHandler
     public void onPlayerCloseInventory(InventoryCloseEvent event) {
         if (!event.getView().getTitle().equalsIgnoreCase(UltiTools.languageUtils.getString("trade_title"))) return;
-        if (!TradeUtils.isPlayerInTradeMode((Player) event.getPlayer())) return;
-        if (TradeUtils.getInTradeMode().containsKey(event.getPlayer().getName())) {
-            TradeUtils.closeTrade((Player) event.getPlayer(), TradeUtils.getOtherParty((Player) event.getPlayer()));
+        if (!TradeService.isPlayerInTradeMode((Player) event.getPlayer())) return;
+        if (TradeService.getInTradeMode().containsKey(event.getPlayer().getName())) {
+            TradeService.closeTrade((Player) event.getPlayer(), TradeService.getOtherParty((Player) event.getPlayer()));
         } else {
-            TradeUtils.closeTrade(TradeUtils.getOtherParty((Player) event.getPlayer()), (Player) event.getPlayer());
+            TradeService.closeTrade(TradeService.getOtherParty((Player) event.getPlayer()), (Player) event.getPlayer());
         }
     }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
-        if (!TradeUtils.isPlayerInTradeMode(event.getEntity())) return;
-        if (TradeUtils.getInTradeMode().containsKey(event.getEntity().getName())) {
-            TradeUtils.closeTrade(event.getEntity(), TradeUtils.getOtherParty(event.getEntity()));
+        if (!TradeService.isPlayerInTradeMode(event.getEntity())) return;
+        if (TradeService.getInTradeMode().containsKey(event.getEntity().getName())) {
+            TradeService.closeTrade(event.getEntity(), TradeService.getOtherParty(event.getEntity()));
         } else {
-            TradeUtils.closeTrade(TradeUtils.getOtherParty(event.getEntity()), event.getEntity());
+            TradeService.closeTrade(TradeService.getOtherParty(event.getEntity()), event.getEntity());
         }
     }
 
@@ -98,50 +98,50 @@ public class TradeListener implements Listener {
         ItemStack itemStack = event.getCurrentItem();
         int slot = event.getSlot();
 
-        if (TradeUtils.getBannedPosition().contains(slot)) {
+        if (TradeService.getBannedPosition().contains(slot)) {
             event.setCancelled(true);
-            if (TradeUtils.isAllConfirmed(player)) return;
+            if (TradeService.isAllConfirmed(player)) return;
             switch (slot) {
                 case closeBtn:
-                    TradeUtils.refreshConfirmation(player, inventory, inventory.getItem(confirmBtn), true);
-                    TradeUtils.closeTrade(player);
+                    TradeService.refreshConfirmation(player, inventory, inventory.getItem(confirmBtn), true);
+                    TradeService.closeTrade(player);
                     break;
                 case moneyBtn:
                     if (event.isLeftClick()) {
-                        TradeUtils.addTradeMoney(player, event.isShiftClick());
+                        TradeService.addTradeMoney(player, event.isShiftClick());
                     }
                     if (event.isRightClick()) {
-                        TradeUtils.reduceTradeMoney(player, event.isShiftClick());
+                        TradeService.reduceTradeMoney(player, event.isShiftClick());
                     }
-                    TradeUtils.updateAllMoneyLore(player, inventory, itemStack);
-                    TradeUtils.refreshConfirmation(player, inventory, inventory.getItem(confirmBtn), true);
+                    TradeService.updateAllMoneyLore(player, inventory, itemStack);
+                    TradeService.refreshConfirmation(player, inventory, inventory.getItem(confirmBtn), true);
                     break;
                 case expBtn:
                     if (event.isLeftClick()) {
-                        TradeUtils.addTradeExp(player, event.isShiftClick());
+                        TradeService.addTradeExp(player, event.isShiftClick());
                     }
                     if (event.isRightClick()) {
-                        TradeUtils.reduceTradeExp(player, event.isShiftClick());
+                        TradeService.reduceTradeExp(player, event.isShiftClick());
                     }
-                    TradeUtils.refreshConfirmation(player, inventory, inventory.getItem(confirmBtn), true);
-                    TradeUtils.updateAllExpLore(player, inventory, itemStack);
+                    TradeService.refreshConfirmation(player, inventory, inventory.getItem(confirmBtn), true);
+                    TradeService.updateAllExpLore(player, inventory, itemStack);
                     break;
                 case confirmBtn:
-                    TradeUtils.getTradeConfirm().add(player.getName());
-                    TradeUtils.refreshConfirmation(player, inventory, itemStack, false);
-                    if (!TradeUtils.isAllConfirmed(player)) return;
-                    TradeUtils.confirmTrade(player);
+                    TradeService.getTradeConfirm().add(player.getName());
+                    TradeService.refreshConfirmation(player, inventory, itemStack, false);
+                    if (!TradeService.isAllConfirmed(player)) return;
+                    TradeService.confirmTrade(player);
                     break;
             }
-        } else if (TradeUtils.getItemPlacementArea(player).contains(slot)) {
-            if (TradeUtils.isAllConfirmed(player)) {
+        } else if (TradeService.getItemPlacementArea(player).contains(slot)) {
+            if (TradeService.isAllConfirmed(player)) {
                 event.setCancelled(true);
                 return;
             }
-            if (TradeUtils.isAnyConfirmed(player)) {
-                TradeUtils.refreshConfirmation(player, inventory, inventory.getItem(confirmBtn), true);
+            if (TradeService.isAnyConfirmed(player)) {
+                TradeService.refreshConfirmation(player, inventory, inventory.getItem(confirmBtn), true);
             }
-            TradeUtils.refreshItem(TradeUtils.getOtherParty(player), slot);
+            TradeService.refreshItem(TradeService.getOtherParty(player), slot);
         } else {
             event.setCancelled(true);
         }

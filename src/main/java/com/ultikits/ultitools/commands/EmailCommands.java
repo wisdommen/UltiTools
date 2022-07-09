@@ -15,7 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ultikits.ultitools.utils.EmailUtils.*;
+import static com.ultikits.ultitools.services.EmailService.*;
 
 
 public class EmailCommands extends AbstractTabExecutor {

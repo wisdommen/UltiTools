@@ -1,11 +1,12 @@
-package com.ultikits.ultitools.ultitools;
+package com.ultikits.ultitools.utils;
 
+import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.Bukkit;
 
 import java.util.Objects;
 import java.util.logging.Logger;
 
-public class ExceptionCatcher {
+public class ExceptionUtils {
 
     private static final Logger logger = UltiTools.getInstance().getLogger();
 

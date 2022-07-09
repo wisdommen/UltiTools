@@ -1,4 +1,4 @@
-package com.ultikits.ultitools.utils;
+package com.ultikits.ultitools.services;
 
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.utils.EconomyUtils;
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * @author qianmo, wisdomme
  */
-public class DeathPunishUtils {
+public class DeathPunishService {
     public static void takeMoney(Player player, int money) {
         if (EconomyUtils.checkMoney(player) >= money) {
             EconomyUtils.withdraw(player, Math.min(EconomyUtils.checkMoney(player), money));

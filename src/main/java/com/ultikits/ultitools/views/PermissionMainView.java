@@ -4,9 +4,8 @@ import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.ViewManager;
 import com.ultikits.inventoryapi.ViewType;
 import com.ultikits.manager.ItemStackManager;
-import com.ultikits.ultitools.listener.PermissionListener;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.GroupManagerUtils;
+import com.ultikits.ultitools.services.GroupManagerService;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -48,9 +47,9 @@ public class PermissionMainView {
 
     private static ArrayList<String> setUpLore(OfflinePlayer player) {
         UUID uuid = player.getUniqueId();
-        List<String> permissions = GroupManagerUtils.getAllPlayerPermissions(uuid);
-        String group = GroupManagerUtils.getGroup(uuid);
-        List<String> subGroups = GroupManagerUtils.getSubGroups(uuid);
+        List<String> permissions = GroupManagerService.getAllPlayerPermissions(uuid);
+        String group = GroupManagerService.getGroup(uuid);
+        List<String> subGroups = GroupManagerService.getSubGroups(uuid);
         ArrayList<String> lore = new ArrayList<>();
         if (group == null) group = UltiTools.languageUtils.getString("none");
         lore.add(ChatColor.LIGHT_PURPLE + UltiTools.languageUtils.getString("permission_check_page_main_group")+" " + group);

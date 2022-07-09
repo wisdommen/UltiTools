@@ -65,42 +65,4 @@ public class Utils {
     public static @NotNull FileConfiguration getToolsConfig(){
         return UltiTools.getInstance().getConfig();
     }
-
-    public static List<String> getHomeList(Player player) {
-        List<String> homeList = new ArrayList<>();
-        File file = new File(ConfigsEnum.PLAYER.toString(), player.getName() + ".yml");
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
-        if (file.exists() && config.get(player.getName() + ".homelist") != null) {
-            if (config.get(player.getName() + ".homelist") instanceof String) {
-                String homelist = config.getString(player.getName() + ".homelist");
-                if (homelist.contains(" ")) {
-                    String[] list = homelist.split(" ");
-                    for (String each : list) {
-                        if (each.contains(" ")) {
-                            each.replaceAll(" ", "");
-                        }
-                        homeList.add(each);
-                    }
-                    homeList.removeIf(each -> each.equals(""));
-                    config.set(player.getName() + ".homelist", homeList);
-                    try {
-                        config.save(file);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            } else {
-                homeList = config.getStringList(player.getName() + ".homelist");
-                homeList.removeIf(each -> each.equals(""));
-                config.set(player.getName() + ".homelist", homeList);
-                try {
-                    config.save(file);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return homeList;
-            }
-        }
-        return homeList;
-    }
 }

@@ -1,6 +1,6 @@
 package com.ultikits.ultitools.checker;
 
-import com.ultikits.ultitools.ultitools.ExceptionCatcher;
+import com.ultikits.ultitools.utils.ExceptionUtils;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.ChatColor;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -80,7 +80,7 @@ public class VersionChecker {
                     input.close();
                     connection.disconnect();
                 } catch (Exception e) {
-                    ExceptionCatcher.catchException(e);
+                    ExceptionUtils.catchException(e);
                 }
             }
         }.runTaskAsynchronously(UltiTools.getInstance());
@@ -122,7 +122,7 @@ public class VersionChecker {
             String urlString = "https://download.ultikits.com/collections/Ultitools/UltiTools-" + version + ".jar";
             return download(urlString, "UltiTools-" + version + ".jar");
         } catch (Exception e) {
-            ExceptionCatcher.catchException(e);
+            ExceptionUtils.catchException(e);
             return false;
         }
     }
@@ -132,7 +132,7 @@ public class VersionChecker {
             String urlString = "https://raw.githubusercontent.com/wisdommen/wisdommen.github.io/master/collections/Ultitools/UltiTools-" + version + ".jar";
             return download(urlString, "UltiTools-" + version + ".jar");
         } catch (Exception e) {
-            ExceptionCatcher.catchException(e);
+            ExceptionUtils.catchException(e);
             return false;
         }
     }

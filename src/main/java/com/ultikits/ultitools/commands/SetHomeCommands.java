@@ -2,6 +2,7 @@ package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractPlayerCommandExecutor;
 import com.ultikits.ultitools.enums.ConfigsEnum;
+import com.ultikits.ultitools.services.HomeService;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.Utils;
 import org.bukkit.ChatColor;
@@ -13,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-import static com.ultikits.ultitools.utils.HomeUtils.setHome;
+import static com.ultikits.ultitools.services.HomeService.setHome;
 
 public class SetHomeCommands extends AbstractPlayerCommandExecutor {
 
@@ -56,13 +57,13 @@ public class SetHomeCommands extends AbstractPlayerCommandExecutor {
         if (player.hasPermission("ultikits.tools.admin")) return true;
         if (player.hasPermission("ultikits.tools.level1")) {
             if (homeConfig.getInt("home_pro") == 0) return true;
-            return Utils.getHomeList(player).size() < homeConfig.getInt("home_pro");
+            return HomeService.getHomeList(player).size() < homeConfig.getInt("home_pro");
         } else if (player.hasPermission("ultikits.tools.level2")) {
             if (homeConfig.getInt("home_ultimate") == 0) return true;
-            return Utils.getHomeList(player).size() < homeConfig.getInt("home_ultimate");
+            return HomeService.getHomeList(player).size() < homeConfig.getInt("home_ultimate");
         } else {
             if (homeConfig.getInt("home_normal") == 0) return true;
-            return Utils.getHomeList(player).size() < homeConfig.getInt("home_normal");
+            return HomeService.getHomeList(player).size() < homeConfig.getInt("home_normal");
         }
     }
 }

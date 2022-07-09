@@ -4,7 +4,7 @@ import com.ultikits.ultitools.checker.VersionChecker;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.ScoreBoardUtils;
+import com.ultikits.ultitools.services.ScoreBoardService;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -65,7 +65,7 @@ public class JoinListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         lastLocation.put(player.getUniqueId(), player.getLocation());
-        if (UltiTools.getInstance().getConfig().getBoolean("enable_scoreboard")) ScoreBoardUtils.registerPlayer(player.getUniqueId());
+        if (UltiTools.getInstance().getConfig().getBoolean("enable_scoreboard")) ScoreBoardService.registerPlayer(player.getUniqueId());
         if (loginConfig.getBoolean("enableFixPointLogin")) {
             try {
                 String worldName = loginConfig.getString("loginPoint.world");
@@ -142,7 +142,7 @@ public class JoinListener implements Listener {
                 Bukkit.broadcastMessage(PlaceholderAPI.setPlaceholders(player, playerQuitMessage == null ? vanillaQuitMessage : playerQuitMessage.replace("%player_name%", player.getName())));
             }
         }
-        if (UltiTools.getInstance().getConfig().getBoolean("enable_scoreboard")) ScoreBoardUtils.unregisterPlayer(player.getUniqueId());
+        if (UltiTools.getInstance().getConfig().getBoolean("enable_scoreboard")) ScoreBoardService.unregisterPlayer(player.getUniqueId());
     }
 
     @EventHandler

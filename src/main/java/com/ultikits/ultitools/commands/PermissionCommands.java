@@ -1,7 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.GroupManagerUtils;
+import com.ultikits.ultitools.services.GroupManagerService;
 import com.ultikits.ultitools.views.PermissionMainView;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -45,7 +45,7 @@ public class PermissionCommands implements TabExecutor {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    GroupManagerUtils.createGroup(args[1]);
+                                    GroupManagerService.createGroup(args[1]);
                                     player.sendMessage(info(UltiTools.languageUtils.getString("created")));
                                 }
                             }.runTaskAsynchronously(UltiTools.getInstance());
@@ -54,7 +54,7 @@ public class PermissionCommands implements TabExecutor {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    GroupManagerUtils.deleteGroup(args[1]);
+                                    GroupManagerService.deleteGroup(args[1]);
                                     player.sendMessage(warning(UltiTools.languageUtils.getString("deleted")));
                                 }
                             }.runTaskAsynchronously(UltiTools.getInstance());
@@ -73,7 +73,7 @@ public class PermissionCommands implements TabExecutor {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    GroupManagerUtils.addPlayerToGroup(addedPlayer, args[2]);
+                                    GroupManagerService.addPlayerToGroup(addedPlayer, args[2]);
                                     player.sendMessage(info(UltiTools.languageUtils.getString("added")));
                                 }
                             }.runTaskAsynchronously(UltiTools.getInstance());
@@ -87,7 +87,7 @@ public class PermissionCommands implements TabExecutor {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    GroupManagerUtils.removePlayerFromGroup(removedPlayer, args[2]);
+                                    GroupManagerService.removePlayerFromGroup(removedPlayer, args[2]);
                                     player.sendMessage(info(UltiTools.languageUtils.getString("removed")));
                                 }
                             }.runTaskAsynchronously(UltiTools.getInstance());
@@ -96,7 +96,7 @@ public class PermissionCommands implements TabExecutor {
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    GroupManagerUtils.createGroup(args[1], args[2]);
+                                    GroupManagerService.createGroup(args[1], args[2]);
                                     player.sendMessage(info(UltiTools.languageUtils.getString("created")));
                                 }
                             }.runTaskAsynchronously(UltiTools.getInstance());
@@ -114,11 +114,11 @@ public class PermissionCommands implements TabExecutor {
                                         player.sendMessage(warning(UltiTools.languageUtils.getString("player_not_online_or_not_exits")));
                                         return true;
                                     }
-                                    GroupManagerUtils.addPlayerPermission(addedPlayer, permission);
+                                    GroupManagerService.addPlayerPermission(addedPlayer, permission);
                                     player.sendMessage(info(UltiTools.languageUtils.getString("added")));
                                     return true;
                                 case "group":
-                                    GroupManagerUtils.addGroupPermission(args[2], permission);
+                                    GroupManagerService.addGroupPermission(args[2], permission);
                                     player.sendMessage(info(UltiTools.languageUtils.getString("added")));
                                     return true;
                                 default:
@@ -132,11 +132,11 @@ public class PermissionCommands implements TabExecutor {
                                         player.sendMessage(warning(UltiTools.languageUtils.getString("player_not_online_or_not_exits")));
                                         return true;
                                     }
-                                    GroupManagerUtils.takePlayerPermission(addedPlayer, permission);
+                                    GroupManagerService.takePlayerPermission(addedPlayer, permission);
                                     player.sendMessage(info(UltiTools.languageUtils.getString("removed")));
                                     return true;
                                 case "group":
-                                    GroupManagerUtils.takeGroupPermission(args[2], permission);
+                                    GroupManagerService.takeGroupPermission(args[2], permission);
                                     player.sendMessage(info(UltiTools.languageUtils.getString("removed")));
                                     return true;
                                 default:
@@ -173,7 +173,7 @@ public class PermissionCommands implements TabExecutor {
                     case "delete":
                         List<String> tab = new ArrayList<>();
                         tab.add("[" + UltiTools.languageUtils.getString("permission_group_name") + "]");
-                        tab.addAll(GroupManagerUtils.getGroups());
+                        tab.addAll(GroupManagerService.getGroups());
                         return tab;
                     default:
                         return null;
@@ -190,7 +190,7 @@ public class PermissionCommands implements TabExecutor {
                     case "group":
                         List<String> tab = new ArrayList<>();
                         tab.add("[" + UltiTools.languageUtils.getString("permission_group_name") + "]");
-                        tab.addAll(GroupManagerUtils.getGroups());
+                        tab.addAll(GroupManagerService.getGroups());
                         return tab;
                     default:
                         switch (args[0]) {
@@ -198,7 +198,7 @@ public class PermissionCommands implements TabExecutor {
                             case "remove":
                                 List<String> tab1 = new ArrayList<>();
                                 tab1.add("[" + UltiTools.languageUtils.getString("permission_group_name") + "]");
-                                tab1.addAll(GroupManagerUtils.getGroups());
+                                tab1.addAll(GroupManagerService.getGroups());
                                 return tab1;
                             case "create":
                                 return Collections.singletonList("[" + UltiTools.languageUtils.getString("inherited_permission_group") + "]");

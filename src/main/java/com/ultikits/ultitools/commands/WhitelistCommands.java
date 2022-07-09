@@ -2,7 +2,7 @@ package com.ultikits.ultitools.commands;
 
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.DatabasePlayerTools;
+import com.ultikits.ultitools.services.DatabasePlayerService;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -11,8 +11,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +35,8 @@ public class WhitelistCommands implements TabExecutor {
         YamlConfiguration config = ConfigController.getConfig("whitelist");
         List<String> whitelist = config.getStringList("whitelist");
         if (UltiTools.isDatabaseEnabled) {
-            if (DatabasePlayerTools.isPlayerExist(name, "userinfo") && DatabasePlayerTools.getPlayerData(name, "userinfo", "whitelisted").equals("false")) {
-                DatabasePlayerTools.updatePlayerData(name, "userinfo", "whitelisted", "true");
+            if (DatabasePlayerService.isPlayerExist(name, "userinfo") && DatabasePlayerService.getPlayerData(name, "userinfo", "whitelisted").equals("false")) {
+                DatabasePlayerService.updatePlayerData(name, "userinfo", "whitelisted", "true");
             }
         } else {
             whitelist.add(name);
@@ -52,8 +50,8 @@ public class WhitelistCommands implements TabExecutor {
         YamlConfiguration config = ConfigController.getConfig("whitelist");
         List<String> whitelist = config.getStringList("whitelist");
         if (UltiTools.isDatabaseEnabled) {
-            if (DatabasePlayerTools.isPlayerExist(name, "userinfo") && DatabasePlayerTools.getPlayerData(name, "userinfo", "whitelisted").equals("true")) {
-                DatabasePlayerTools.updatePlayerData(name, "userinfo", "whitelisted", "false");
+            if (DatabasePlayerService.isPlayerExist(name, "userinfo") && DatabasePlayerService.getPlayerData(name, "userinfo", "whitelisted").equals("true")) {
+                DatabasePlayerService.updatePlayerData(name, "userinfo", "whitelisted", "false");
             }
         } else {
             if (whitelist.contains(name)) {

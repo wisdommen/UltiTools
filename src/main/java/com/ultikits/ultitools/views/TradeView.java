@@ -4,7 +4,7 @@ import com.ultikits.enums.Colors;
 import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.ViewManager;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.TradeUtils;
+import com.ultikits.ultitools.services.TradeService;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -46,18 +46,18 @@ public class TradeView {
                     inventoryManager.setItem(i, new ItemStack(itemStack));
                     i = i + 1;
                 }
-                for (int index : TradeUtils.getItemPlacementArea(TradeUtils.getOtherParty(master))) {
+                for (int index : TradeService.getItemPlacementArea(TradeService.getOtherParty(master))) {
                     ItemStack itemStack = new ItemStack(UltiTools.versionAdaptor.getColoredPlaneGlass(Colors.BROWN));
                     ItemMeta itemMeta = itemStack.getItemMeta();
                     Objects.requireNonNull(itemMeta).setDisplayName(" ");
                     itemStack.setItemMeta(itemMeta);
                     inventoryManager.setItem(index, new ItemStack(itemStack));
                 }
-                if (TradeUtils.isMoneyTradeAllowed()) {
+                if (TradeService.isMoneyTradeAllowed()) {
                     ItemStack i2 = new ItemStack(Material.GOLD_INGOT);
                     ItemMeta im2 = i2.getItemMeta();
                     Objects.requireNonNull(im2).setDisplayName(ChatColor.GOLD + UltiTools.languageUtils.getString("trade_money"));
-                    im2.setLore(TradeUtils.getMoneyLore(master));
+                    im2.setLore(TradeService.getMoneyLore(master));
                     i2.setItemMeta(im2);
                     inventoryManager.setItem(48, i2);
                 } else {
@@ -67,11 +67,11 @@ public class TradeView {
                     i2.setItemMeta(im2);
                     inventoryManager.setItem(48, i2);
                 }
-                if (TradeUtils.isExpTradeAllowed()) {
+                if (TradeService.isExpTradeAllowed()) {
                     ItemStack i3 = new ItemStack(Material.EXPERIENCE_BOTTLE);
                     ItemMeta im3 = i3.getItemMeta();
                     Objects.requireNonNull(im3).setDisplayName(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_exp"));
-                    im3.setLore(TradeUtils.getExpLore(master));
+                    im3.setLore(TradeService.getExpLore(master));
                     i3.setItemMeta(im3);
                     inventoryManager.setItem(50, i3);
                 } else {
@@ -90,7 +90,7 @@ public class TradeView {
                 Objects.requireNonNull(im1).setDisplayName(ChatColor.RED + UltiTools.languageUtils.getString("trade_close"));
                 Objects.requireNonNull(im4).setDisplayName(ChatColor.GREEN + UltiTools.languageUtils.getString("trade_confirm"));
                 Objects.requireNonNull(im5).setDisplayName(" ");
-                im4.setLore(TradeUtils.getConfirmLore(master, false));
+                im4.setLore(TradeService.getConfirmLore(master, false));
                 i1.setItemMeta(im1);
                 i4.setItemMeta(im4);
                 i5.setItemMeta(im5);
