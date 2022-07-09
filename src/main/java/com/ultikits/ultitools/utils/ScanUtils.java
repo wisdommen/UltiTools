@@ -13,6 +13,7 @@ public class ScanUtils {
             ClassPath classPath = ClassPath.from(plugin.getClass().getClassLoader());
             for (ClassPath.ClassInfo classInfo : classPath.getTopLevelClassesRecursive(listenerPackage)) {
                 Class<?> c = Class.forName(classInfo.getName());
+                if (FunctionUtils.getAllListeners().get(c.getSimpleName()) == null) continue;
                 if (Listener.class.isAssignableFrom(c) && plugin.getConfig().getBoolean(FunctionUtils.getAllListeners().get(c.getSimpleName()))) {
                     Bukkit.getServer().getPluginManager().registerEvents((Listener) c.getDeclaredConstructor().newInstance(), plugin);
                 }
@@ -27,6 +28,7 @@ public class ScanUtils {
             ClassPath classPath = ClassPath.from(plugin.getClass().getClassLoader());
             for (ClassPath.ClassInfo classInfo : classPath.getTopLevelClassesRecursive(commandPackage)) {
                 Class<?> c = Class.forName(classInfo.getName());
+                if (FunctionUtils.getAllCommands().get(c.getSimpleName()) == null) continue;
                 if (CommandExecutor.class.isAssignableFrom(c) && plugin.getConfig().getBoolean(FunctionUtils.getAllCommands().get(c.getSimpleName()).get(0))) {
                     CommandRegister.registerCommand(
                             plugin,
