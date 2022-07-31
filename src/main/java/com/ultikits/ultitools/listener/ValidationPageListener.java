@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.listener;
 
 import com.ultikits.enums.Sounds;
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.commands.LoginRegisterCommands;
 import com.ultikits.ultitools.enums.LoginRegisterEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
@@ -14,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 
 import static com.ultikits.utils.MessagesUtils.warning;
 
+@EventListener(function = "login")
 public class ValidationPageListener implements Listener {
 
     @EventHandler

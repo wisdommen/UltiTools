@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.listener;
 
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.utils.MessagesUtils;
@@ -18,6 +19,8 @@ import java.nio.charset.StandardCharsets;
 /**
  * @author Shpries
  */
+
+@EventListener(function = "ban")
 public class BanListener implements Listener {
     @EventHandler
     public void onPlayerLogin(PlayerLoginEvent e){

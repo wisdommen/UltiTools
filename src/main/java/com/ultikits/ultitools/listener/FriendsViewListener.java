@@ -3,6 +3,7 @@ package com.ultikits.ultitools.listener;
 import com.ultikits.beans.CancelResult;
 import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.PagesListener;
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -13,6 +14,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+@EventListener(function = "social-system")
 public class FriendsViewListener extends PagesListener {
     @Override
     public CancelResult onItemClick(InventoryClickEvent inventoryClickEvent, Player player, InventoryManager inventoryManager, ItemStack itemStack) {

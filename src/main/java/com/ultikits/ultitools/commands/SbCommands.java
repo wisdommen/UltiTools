@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractTabExecutor;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@CmdExecutor(function = "sidebar", permission = "ultikits.tools.scoreboard", description = "sidebar_function", alias = "sb")
 public class SbCommands extends AbstractTabExecutor {
 
     private final static File sbFile = new File(ConfigsEnum.SIDEBAR_DATA.toString());

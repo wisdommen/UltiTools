@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.listener;
 
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.checker.VersionChecker;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
@@ -28,6 +29,7 @@ import java.util.*;
 
 import static com.ultikits.ultitools.checker.VersionChecker.*;
 
+@EventListener
 public class JoinListener implements Listener {
 
     File              file   = new File(ConfigsEnum.JOIN_WELCOME.toString());

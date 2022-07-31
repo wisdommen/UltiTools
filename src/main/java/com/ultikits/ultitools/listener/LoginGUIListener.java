@@ -2,6 +2,7 @@ package com.ultikits.ultitools.listener;
 
 import com.ultikits.beans.CheckResponse;
 import com.ultikits.enums.Sounds;
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.commands.LoginRegisterCommands;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
@@ -35,7 +36,7 @@ import static com.ultikits.ultitools.services.DatabasePlayerService.*;
 import static com.ultikits.utils.MessagesUtils.info;
 import static com.ultikits.utils.MessagesUtils.warning;
 
-
+@EventListener(function = "login")
 public class LoginGUIListener implements Listener {
 
     public static Map<UUID, Boolean> playerIsValidating = new HashMap<>();

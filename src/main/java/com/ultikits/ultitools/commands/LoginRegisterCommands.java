@@ -2,6 +2,7 @@ package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractTabExecutor;
 import com.ultikits.beans.CheckResponse;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.enums.PermissionsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
@@ -23,6 +24,7 @@ import java.util.*;
 import static com.ultikits.utils.MessagesUtils.info;
 import static com.ultikits.utils.MessagesUtils.warning;
 
+@CmdExecutor(function = "login", permission = "ultikits.tools.login", description = "login_function", alias = "reg,regs,re")
 public class LoginRegisterCommands extends AbstractTabExecutor {
     public static Map<UUID, Boolean> sentCodePlayers = new HashMap<>();
     public static Map<UUID, String> playersValidateCode = new HashMap<>();

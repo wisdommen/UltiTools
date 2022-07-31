@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.commands;
 
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.services.DatabasePlayerService;
 import org.bukkit.Bukkit;
@@ -22,6 +23,7 @@ import static com.ultikits.utils.MessagesUtils.warning;
  * @author qianmo
  */
 
+@CmdExecutor(function = "login", permission = "ultikits.tools.command.password", description = "password_function", alias = "password,pwd")
 public class PasswordCommands implements TabExecutor {
 
     @Override

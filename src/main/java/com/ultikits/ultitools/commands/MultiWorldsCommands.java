@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractTabExecutor;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.services.DelayTeleportService;
@@ -23,6 +24,7 @@ import java.util.Objects;
 
 import static com.ultikits.utils.MessagesUtils.warning;
 
+@CmdExecutor(function = "multi-worlds", permission = "ultikits.tools.mw", description = "multiworlds_function", alias = "mw")
 public class MultiWorldsCommands extends AbstractTabExecutor {
 
     private static final File worldsFile = new File(ConfigsEnum.WORLDS.toString());

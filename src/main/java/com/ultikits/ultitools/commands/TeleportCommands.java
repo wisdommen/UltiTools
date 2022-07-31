@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractTabExecutor;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.tasks.TpTimerTask;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.utils.MessagesUtils;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import static com.ultikits.ultitools.commands.TpaHereCommands.getTpTabList;
 
+@CmdExecutor(function = "tpa", permission = "ultikits.tools.tpa", description = "tpa_function", alias = "tpa")
 public class TeleportCommands extends AbstractTabExecutor {
 
     @Override

@@ -1,10 +1,10 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractTabExecutor;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.services.HomeService;
 import com.ultikits.ultitools.ultitools.UltiTools;
-import com.ultikits.ultitools.utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+@CmdExecutor(function = "home", permission = "ultikits.tools.delhome", description = "delhome_function", alias = "delhome")
 public class DeleteHomeCommands extends AbstractTabExecutor {
 
     @Override

@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.commands;
 
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.services.DatabasePlayerService;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+@CmdExecutor(function = "white-list", permission = "ultikits.tools.whitelist", description = "whitelist_function", alias = "wl")
 public class WhitelistCommands implements TabExecutor {
 
     @Override

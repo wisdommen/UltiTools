@@ -1,11 +1,15 @@
 package com.ultikits.ultitools.utils;
 
 import com.google.common.reflect.ClassPath;
+import com.ultikits.ultitools.annotations.CmdExecutor;
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.register.CommandRegister;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
+
+import static com.ultikits.ultitools.ultitools.UltiTools.languageUtils;
 
 public class ScanUtils {
     public static void scanListeners(String listenerPackage, Plugin plugin) {
@@ -13,10 +17,17 @@ public class ScanUtils {
             ClassPath classPath = ClassPath.from(plugin.getClass().getClassLoader());
             for (ClassPath.ClassInfo classInfo : classPath.getTopLevelClassesRecursive(listenerPackage)) {
                 Class<?> c = Class.forName(classInfo.getName());
-                if (FunctionUtils.getAllListeners().get(c.getSimpleName()) == null) continue;
-                if (Listener.class.isAssignableFrom(c) && plugin.getConfig().getBoolean(FunctionUtils.getAllListeners().get(c.getSimpleName()))) {
-                    Bukkit.getServer().getPluginManager().registerEvents((Listener) c.getDeclaredConstructor().newInstance(), plugin);
-                }
+                if (!(c.isAnnotationPresent(EventListener.class) && c.isAssignableFrom(Listener.class))) continue;
+                EventListener eventListener = c.getAnnotation(EventListener.class);
+                if (
+                        eventListener.function().equals("") ||
+                                (
+                                        FunctionUtils.getAllFunctions().contains(eventListener.function()) &&
+                                                plugin.getConfig().getBoolean(FunctionUtils.getFunctionCode(
+                                                        eventListener.function()
+                                                ))
+                                )
+                ) Bukkit.getServer().getPluginManager().registerEvents((Listener) c.getDeclaredConstructor().newInstance(), plugin);
             }
         } catch (Exception e) {
             ExceptionUtils.catchException(e);
@@ -28,14 +39,23 @@ public class ScanUtils {
             ClassPath classPath = ClassPath.from(plugin.getClass().getClassLoader());
             for (ClassPath.ClassInfo classInfo : classPath.getTopLevelClassesRecursive(commandPackage)) {
                 Class<?> c = Class.forName(classInfo.getName());
-                if (FunctionUtils.getAllCommands().get(c.getSimpleName()) == null) continue;
-                if (CommandExecutor.class.isAssignableFrom(c) && plugin.getConfig().getBoolean(FunctionUtils.getAllCommands().get(c.getSimpleName()).get(0))) {
+                if (!c.isAnnotationPresent(CmdExecutor.class)) continue;
+                CmdExecutor cmdExecutor = c.getAnnotation(CmdExecutor.class);
+                if (
+                        cmdExecutor.function().equals("") ||
+                                (
+                                        FunctionUtils.getAllFunctions().contains(cmdExecutor.function()) &&
+                                                plugin.getConfig().getBoolean(FunctionUtils.getFunctionCode(
+                                                        cmdExecutor.function()
+                                                ))
+                                )
+                ) {
                     CommandRegister.registerCommand(
                             plugin,
                             (CommandExecutor) c.getDeclaredConstructor().newInstance(),
-                            FunctionUtils.getAllCommands().get(c.getSimpleName()).get(1),
-                            FunctionUtils.getAllCommands().get(c.getSimpleName()).get(2),
-                            FunctionUtils.getAllCommands().get(c.getSimpleName()).get(3).split(",")
+                            cmdExecutor.permission(),
+                            languageUtils.getString(cmdExecutor.description()),
+                            cmdExecutor.alias().split(",")
                     );
                 }
             }

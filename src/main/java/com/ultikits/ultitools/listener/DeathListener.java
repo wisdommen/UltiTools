@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.listener;
 
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.tasks.DeathPunishmentTask;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +14,8 @@ import java.util.List;
 /**
  * @author qianmo, wisdomme
  */
+
+@EventListener(function = "death-punish")
 public class DeathListener implements Listener {
     private static final List<Player> list = new ArrayList<>();
 

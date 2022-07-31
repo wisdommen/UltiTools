@@ -1,4 +1,4 @@
-config_version: 3.33
+config_version: 3.35
 
 'comment0': 'Language: zh_cn(简体中文), en_us(English)'
 language: en_us
@@ -125,6 +125,9 @@ enable_invsee_command: true
 'comment29': 'enable enderChest_see command'
 enable_enderChest_see_command: true
 
+'comment30': 'enable armor see command'
+enable_armor_see_command: true
+
 'comment42': 'customize above-head display prefix'
 name_prefix: '§e[§dLv.%player_level%§e]'
 
@@ -155,5 +158,8 @@ enable_recall_command: true
 "comment59": "enable custom tab bar"
 enable_custom_tab_bar: true
 
-"comment60": 'if enable Quit Notification function'
-enable_onquit: true
+"comment60": "enable custom crafting recipes"
+enable_custom_recipe: true
+
+"comment61": "enable hide function"
+enable_hide_function: true

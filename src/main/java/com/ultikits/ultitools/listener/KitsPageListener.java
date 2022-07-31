@@ -4,6 +4,7 @@ import com.minecraft.Ultilevel.utils.checkLevel;
 import com.ultikits.beans.CancelResult;
 import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.PagesListener;
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
@@ -23,6 +24,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+@EventListener(function = "kits")
 public class KitsPageListener extends PagesListener {
 
     @Override

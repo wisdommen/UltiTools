@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.ultitools.ultitools.UltiTools;
+import com.ultikits.ultitools.views.ArmorView;
 import com.ultikits.utils.MessagesUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -8,7 +9,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
+
+import static com.ultikits.enums.Sounds.BLOCK_NOTE_BLOCK_CHIME;
 
 
 public class InvseeCommands implements CommandExecutor {
@@ -48,6 +52,16 @@ public class InvseeCommands implements CommandExecutor {
                             player.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("enderChest_see_success") + targetPlayerName));
                             return true;
                         }
+                    case "armorsee":
+                        if(targetPlayer == null) {
+                            player.sendMessage(MessagesUtils.warning(UltiTools.languageUtils.getString("player_doesnt_exist_or_offline")));
+                        } else {
+                            Inventory inventory = ArmorView.setUp(targetPlayer);
+                            player.openInventory(inventory);
+                            player.playSound(player.getLocation(), UltiTools.versionAdaptor.getSound(BLOCK_NOTE_BLOCK_CHIME), 10, 1);
+                            player.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("armor_see_success") + targetPlayerName));
+                        }
+                        return true;
                     default:
                         return false;
                 }

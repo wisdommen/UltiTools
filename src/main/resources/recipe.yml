@@ -1,0 +1,14 @@
+recipe_name:
+  output:
+    item: "EGG"
+    amount: 1
+  keys:
+    - "x"
+    - "y"
+  shape:
+    - "xxx"
+    - "xyx"
+    - "y y"
+  ingredient:
+    x: "APPLE"
+    y: "DARK_OAK_WOOD"

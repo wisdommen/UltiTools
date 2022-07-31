@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.listener;
 
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.tasks.TpTimerTask;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -7,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+@EventListener(function = "tpa")
 public class TpaAcceptListener implements Listener {
 
     @EventHandler

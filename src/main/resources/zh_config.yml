@@ -1,4 +1,4 @@
-config_version: 3.33
+config_version: 3.35
 
 '注释0请勿修改': '语言: zh_cn(简体中文), en_us(English)'
 language: zh_cn
@@ -125,6 +125,9 @@ enable_invsee_command: true
 '注释29请勿修改': '开启查看玩家末影箱指令'
 enable_enderChest_see_command: true
 
+'注释30请勿修改': '开启查看装备栏指令'
+enable_armor_see_command: true
+
 '注释42请勿修改': '(头衔) 自定义头顶显示前缀'
 name_prefix: '§e[§dLv.%player_level%§e]'
 
@@ -155,5 +158,8 @@ enable_recall_command: true
 "注释59请勿修改": "开启自定义Tab栏"
 enable_custom_tab_bar: true
 
-'注释60请勿修改': '是否开启退出提示功能'
-enable_onquit: true
+"注释60请勿修改": "开启自定义合成配方"
+enable_custom_recipe: true
+
+"注释61请勿修改": "开启隐身功能"
+enable_hide_function: true

@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.listener;
 
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.enums.LoginRegisterEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
@@ -24,6 +25,7 @@ import static com.ultikits.ultitools.services.DatabasePlayerService.getIsLogin;
 import static com.ultikits.ultitools.services.DatabasePlayerService.isPlayerAccountExist;
 import static com.ultikits.ultitools.utils.GUIUtils.setupLoginRegisterLayout;
 
+@EventListener(function = "login")
 public class LoginListener implements Listener {
 
     public static GameMode gameMode;

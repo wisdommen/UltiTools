@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.commands;
 
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -8,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+@CmdExecutor(function = "fly", permission = "ultikits.tools.command.fly", description = "fly_function", alias = "fly")
 public class FlyCommands implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {

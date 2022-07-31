@@ -2,6 +2,7 @@ package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractPlayerCommandExecutor;
 import com.ultikits.beans.CheckResponse;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.utils.MessagesUtils;
 import com.ultikits.utils.SendEmailUtils;
@@ -15,6 +16,7 @@ import java.util.Objects;
 import static com.ultikits.utils.MessagesUtils.info;
 import static com.ultikits.utils.MessagesUtils.warning;
 
+@CmdExecutor(function = "recall", permission = "ultikits.tools.email", description = "recall_function", alias = "email,ultimail,mail,mails")
 public class RecallCommands extends AbstractPlayerCommandExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {

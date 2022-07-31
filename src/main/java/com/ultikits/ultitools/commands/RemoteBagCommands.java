@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractTabExecutor;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.listener.ChestPageListener;
 import com.ultikits.ultitools.ultitools.UltiTools;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import static com.ultikits.utils.MessagesUtils.warning;
 
+@CmdExecutor(function = "remote-bag", permission = "ultikits.tools.bag", description = "bag_function", alias = "bag,b")
 public class RemoteBagCommands extends AbstractTabExecutor {
 
     @Override

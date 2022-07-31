@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractTabExecutor;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.services.TradeService;
 import org.bukkit.Bukkit;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+@CmdExecutor(function = "trade", permission = "ultikits.tools.trade", description = "trade_function", alias = "t,trade")
 public class TradeCommands extends AbstractTabExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {

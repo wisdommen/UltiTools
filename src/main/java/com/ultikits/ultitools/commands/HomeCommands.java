@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractTabExecutor;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.services.HomeService;
 import com.ultikits.ultitools.ultitools.UltiTools;
@@ -20,9 +21,8 @@ import org.jetbrains.annotations.Nullable;
 import java.io.File;
 import java.util.*;
 
+@CmdExecutor( function = "home", permission = "ultikits.tools.home", description = "home_function", alias = "home")
 public class HomeCommands extends AbstractTabExecutor {
-
-
 
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] args, @NotNull Player player) {

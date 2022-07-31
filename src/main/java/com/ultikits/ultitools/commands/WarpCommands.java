@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractPlayerCommandExecutor;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.views.WarpsView;
 import com.ultikits.utils.MessagesUtils;
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.IOException;
 
+@CmdExecutor(function = "warp", permission = "ultikits.tools.warp", description = "warp_function", alias = "warp,w,warps,delwarp,setwarp")
 public class WarpCommands extends AbstractPlayerCommandExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {

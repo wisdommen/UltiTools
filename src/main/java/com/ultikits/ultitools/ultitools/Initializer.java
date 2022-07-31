@@ -6,6 +6,7 @@ import com.ultikits.ultitools.config.*;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.listener.LoginListener;
 import com.ultikits.ultitools.register.PapiRegister;
+import com.ultikits.ultitools.register.RecipeRegister;
 import com.ultikits.ultitools.services.ScoreBoardService;
 import com.ultikits.ultitools.tasks.*;
 import com.ultikits.ultitools.utils.FunctionUtils;
@@ -47,7 +48,15 @@ public class Initializer {
     }
 
     public void initMetrics(Metrics metrics) {
-        metrics.addCustomChart(new Metrics.SimplePie("pro_user_count", () -> String.valueOf(UltiTools.getInstance().getConfig().getBoolean("enable_pro") && UltiTools.getInstance().getProChecker().getProStatus())));
+        metrics.addCustomChart(
+                new Metrics.SimplePie(
+                        "pro_user_count",
+                        () -> String.valueOf(
+                                UltiTools.getInstance().getConfig().getBoolean("enable_pro")
+                                        && UltiTools.getInstance().getProChecker().getProStatus()
+                        )
+                )
+        );
         metrics.addCustomChart(new Metrics.AdvancedPie("function_used", () -> {
             Map<String, Integer> valueMap = new HashMap<>();
             for (String each : FunctionUtils.getAllFunctions()) {
@@ -99,6 +108,7 @@ public class Initializer {
         new TradeConfig();
         new MOTDConfig();
         new TabBarConfig();
+        new RecipeConfig();
     }
 
     public void initDataBase() {
@@ -210,6 +220,7 @@ public class Initializer {
             for (Player player : Bukkit.getOnlinePlayers()) ScoreBoardService.registerPlayer(player.getUniqueId());
             new SideBarTask().runTaskTimerAsynchronously(plugin, 0, 20L);
         }
+        if (plugin.getConfig().getBoolean("enable_custom_recipe")) RecipeRegister.initRecipe();
         if (plugin.getConfig().getBoolean("enable_login")) LoginListener.checkPlayerAlreadyLogin();
         if (plugin.getConfig().getBoolean("enable_announcement")) BroadcastTask.run();
         if (plugin.getConfig().getBoolean("enable_pro")) new ProCheckerTask().runTaskTimerAsynchronously(plugin, 12000L, 12000L);

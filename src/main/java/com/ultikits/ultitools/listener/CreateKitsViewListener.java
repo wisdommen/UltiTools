@@ -3,6 +3,7 @@ package com.ultikits.ultitools.listener;
 import com.ultikits.beans.CancelResult;
 import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.PagesListener;
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.utils.SerializationUtils;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+@EventListener(function = "kits")
 public class CreateKitsViewListener extends PagesListener {
     @Override
     public CancelResult onItemClick(InventoryClickEvent inventoryClickEvent, Player player, InventoryManager inventoryManager, ItemStack itemStack) {

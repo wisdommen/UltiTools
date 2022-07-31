@@ -1,6 +1,6 @@
 package com.ultikits.ultitools.listener;
 
-
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -11,6 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 
+@EventListener(function = "tp-back")
 public class TeleportListener implements Listener {
 
     private static final HashMap<Player, Location> playerTeleportLocation = new HashMap<>();

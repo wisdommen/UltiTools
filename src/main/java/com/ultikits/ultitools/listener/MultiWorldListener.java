@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.listener;
 
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.commands.MultiWorldsCommands;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +14,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.Objects;
 
+@EventListener(function = "multi-worlds")
 public class MultiWorldListener implements Listener {
 
     @EventHandler

@@ -4,6 +4,7 @@ import com.ultikits.beans.CancelResult;
 import com.ultikits.enums.Sounds;
 import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.PagesListener;
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
@@ -30,6 +31,7 @@ import java.util.UUID;
 
 import static com.ultikits.utils.MessagesUtils.not_enough_money;
 
+@EventListener(function = "remote-chest")
 public class ChestPageListener extends PagesListener {
 
     private final static Map<String, UUID> inventoryLock = new HashMap<>();

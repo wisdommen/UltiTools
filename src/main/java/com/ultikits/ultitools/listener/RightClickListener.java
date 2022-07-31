@@ -13,7 +13,6 @@ import java.io.File;
 import java.util.Objects;
 import java.util.Set;
 
-
 public class RightClickListener implements Listener {
     File guiFile = new File(ConfigsEnum.CUSTOMERGUI.toString());
     YamlConfiguration guiConfig = YamlConfiguration.loadConfiguration(guiFile);

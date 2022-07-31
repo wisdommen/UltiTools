@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractPlayerCommandExecutor;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -11,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.ultikits.utils.MessagesUtils.info;
 
+@CmdExecutor(function = "spawn", permission = "ultikits.tools.back", description = "back_function", alias = "spawn,setspawn")
 public class SpawnCommands extends AbstractPlayerCommandExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {

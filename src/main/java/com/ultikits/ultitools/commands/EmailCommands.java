@@ -2,6 +2,7 @@ package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractTabExecutor;
 import com.ultikits.enums.Sounds;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -17,7 +18,7 @@ import java.util.List;
 
 import static com.ultikits.ultitools.services.EmailService.*;
 
-
+@CmdExecutor(function = "email", permission = "ultikits.tools.email", description = "email_function", alias = "email,ultimail,mail,mails")
 public class EmailCommands extends AbstractTabExecutor {
 
     @Override

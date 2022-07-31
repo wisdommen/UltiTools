@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractPlayerCommandExecutor;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.utils.MessagesUtils;
 import org.bukkit.*;
@@ -13,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+@CmdExecutor(function = "random-tp", permission = "ultikits.tools.command.wild", description = "random_tp_function", alias = "wild")
 public class RandomTpCommands extends AbstractPlayerCommandExecutor {
 
     @Override

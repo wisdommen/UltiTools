@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractPlayerCommandExecutor;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.services.HomeService;
 import com.ultikits.ultitools.ultitools.UltiTools;
@@ -16,6 +17,7 @@ import java.io.File;
 
 import static com.ultikits.ultitools.services.HomeService.setHome;
 
+@CmdExecutor(function = "home", permission = "ultikits.tools.sethome", description = "sethome_function", alias = "sethome")
 public class SetHomeCommands extends AbstractPlayerCommandExecutor {
 
     private final static File homeFile = new File(ConfigsEnum.HOME.toString());

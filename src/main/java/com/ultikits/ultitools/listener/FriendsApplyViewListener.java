@@ -4,6 +4,7 @@ import com.ultikits.beans.CancelResult;
 import com.ultikits.enums.Colors;
 import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.PagesListener;
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.ChatColor;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.util.List;
 
+@EventListener(function = "social-system")
 public class FriendsApplyViewListener extends PagesListener {
 
     /*

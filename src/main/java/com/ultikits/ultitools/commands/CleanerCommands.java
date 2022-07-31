@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.commands;
 
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.enums.CleanTypeEnum;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
@@ -24,7 +25,7 @@ import java.util.List;
 import static com.ultikits.ultitools.services.CleanerService.sendMessage;
 import static com.ultikits.utils.MessagesUtils.info;
 
-
+@CmdExecutor(function = "cleaner", permission = "ultikits.tools.clean", description = "cleaner_function", alias = "clean")
 public class CleanerCommands implements TabExecutor {
     final static YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(ConfigsEnum.CLEANER.toString()));
     final static String name = config.getString("cleaner_name");

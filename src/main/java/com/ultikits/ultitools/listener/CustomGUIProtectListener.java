@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.listener;
 
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -17,6 +18,7 @@ import java.util.Set;
 /**
  * @author Shpries
  */
+@EventListener
 public class CustomGUIProtectListener implements Listener {
     private boolean isGUIOpen = false;
     private final List<String> titleList = new ArrayList();

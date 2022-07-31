@@ -2,6 +2,7 @@ package com.ultikits.ultitools.listener;
 
 import com.ultikits.enums.ChestDirection;
 import com.ultikits.enums.Sounds;
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.services.ChestLockService;
@@ -32,6 +33,7 @@ import static com.ultikits.utils.MessagesUtils.info;
  * Code refactoring by qianmo
  */
 
+@EventListener(function = "chest-locker")
 public class ChestLockListener implements Listener {
 
     @EventHandler

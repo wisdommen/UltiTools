@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractConsoleCommandExecutor;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.command.Command;
@@ -13,7 +14,7 @@ import java.io.IOException;
 
 import static com.ultikits.utils.MessagesUtils.info;
 
-
+@CmdExecutor(function = "remote-bag", permission = "ultikits.tools.admin", description = "bag_console_function", alias = "createbag")
 public class RemoteBagConsoleCommands extends AbstractConsoleCommandExecutor {
 
     @Override

@@ -3,6 +3,7 @@ package com.ultikits.ultitools.listener;
 import com.ultikits.beans.CancelResult;
 import com.ultikits.inventoryapi.InventoryManager;
 import com.ultikits.inventoryapi.PagesListener;
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.utils.SerializationUtils;
@@ -17,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-
+@EventListener(function = "email")
 public class EmailPageListener extends PagesListener {
 
     @Override

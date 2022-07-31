@@ -19,7 +19,7 @@ public class CommandRegister {
         PluginCommand command = getCommand(aliases[0], plugin);
 
         command.setAliases(Arrays.asList(aliases));
-//        command.setPermission(permission);
+        command.setPermission(permission);
         command.setDescription(description);
         getCommandMap().register(plugin.getDescription().getName(), command);
         command.setExecutor(commandExecutor);

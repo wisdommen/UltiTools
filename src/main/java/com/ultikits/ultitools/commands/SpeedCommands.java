@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractTabExecutor;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import static com.ultikits.utils.MessagesUtils.warning;
 
+@CmdExecutor(permission = "ultikits.tools.command.speed", description = "speed", alias = "speed")
 public class SpeedCommands extends AbstractTabExecutor {
     List<String> speeds = Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10");
 

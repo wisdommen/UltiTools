@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractPlayerCommandExecutor;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.utils.TimeUtils;
@@ -21,6 +22,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * @author Shpries
  */
+@CmdExecutor(function = "ban", permission = "ultikits.tools.admin", description = "ban_function", alias = "ultiban,ultibanip,ultibanlist")
 public class BanCommands extends AbstractPlayerCommandExecutor {
     private int banDays;
     private String from;

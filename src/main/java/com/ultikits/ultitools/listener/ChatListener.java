@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.listener;
 
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.config.ConfigController;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.tasks.AtTask;
@@ -23,6 +24,8 @@ import static com.ultikits.enums.Sounds.BLOCK_NOTE_BLOCK_BELL;
 /**
  * @author wisdomme,qianmo,Shpries
  */
+
+@EventListener(function = "chat")
 public class ChatListener implements Listener {
     private static final List<String> ultilevelStrings = Arrays.asList("%ul_level%", "%ul_job%", "%ul_exp%", "%ul_mp%",
             "%ul_max_mp%", "%ul_max_exp%", "%ul_health%", "%ul_max_health%", "%ul_q_cd%", "%ul_w_cd%", "%ul_e_cd%",

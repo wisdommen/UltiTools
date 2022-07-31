@@ -1,5 +1,6 @@
 package com.ultikits.ultitools.listener;
 
+import com.ultikits.ultitools.annotations.EventListener;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@EventListener(function = "command-alias")
 public class CommandListener implements Listener {
     File commandaliasFile = new File(ConfigsEnum.COMMANDALIAS.toString());
     YamlConfiguration commandaliasConfig = YamlConfiguration.loadConfiguration(commandaliasFile);

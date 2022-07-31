@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractTabExecutor;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.tasks.TpTimerTask;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.utils.MessagesUtils;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import static com.ultikits.utils.MessagesUtils.warning;
 
+@CmdExecutor(function = "tpa", permission = "ultikits.tools.tpa", description = "tpa_function", alias = "tpahere")
 public class TpaHereCommands extends AbstractTabExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {

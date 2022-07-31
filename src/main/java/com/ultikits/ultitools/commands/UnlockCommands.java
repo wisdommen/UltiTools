@@ -1,6 +1,7 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractPlayerCommandExecutor;
+import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.services.ChestLockService;
 import org.bukkit.ChatColor;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
  * Code refactoring by qianmo
  */
 
+@CmdExecutor(function = "lock", permission = "ultikits.tools.chest.unlock", description = "unlock_chest_function", alias = "unlock,ul")
 public class UnlockCommands extends AbstractPlayerCommandExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
