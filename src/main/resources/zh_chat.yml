@@ -1,8 +1,17 @@
 # 配置版本号，请勿更改
-config_version: 1.1
+config_version: 1.2
 # 聊天前缀
 chat_prefix: '§e[§a%ultitools_world_alis%§e][§c%ul_job%§dLv.%ul_level%§e][§b%player_name%§e]'
 # 自动回复，格式：[触发词]: [回复]
 auto-reply:
   test: "You did it! This is a great test!"
   more_test: "No more test plz!"
+# 敏感词过滤
+chat_filter:
+  # 0为关闭 1为替换 2为屏蔽 3为阻止
+  mode: 0
+  replacement: "*"
+  keywords:
+    - "sb"
+    - "傻逼"
+    - "操你妈"

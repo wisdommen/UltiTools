@@ -17,7 +17,7 @@ public class ScanUtils {
             ClassPath classPath = ClassPath.from(plugin.getClass().getClassLoader());
             for (ClassPath.ClassInfo classInfo : classPath.getTopLevelClassesRecursive(listenerPackage)) {
                 Class<?> c = Class.forName(classInfo.getName());
-                if (!(c.isAnnotationPresent(EventListener.class) && c.isAssignableFrom(Listener.class))) continue;
+                if (!(c.isAnnotationPresent(EventListener.class))) continue;
                 EventListener eventListener = c.getAnnotation(EventListener.class);
                 if (
                         eventListener.function().equals("") ||

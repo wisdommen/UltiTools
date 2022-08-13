@@ -387,6 +387,7 @@ friend_not_self: 'You cannot add yourself as a friend!'
 fly_function: 'Fly Command Function'
 fly_enabled: "Now fly is enabled"
 fly_disabled: "Now fly is disabled"
+chat_forbidden: "Prohibit sending messages containing sensitive words"
 chat_color_nopermission_reply: '§4You do not have permission to send coloured chat messages!'
 chat_at_error: "@ Failed! Since there is no such player or it's offline!"
 chat_atted_beatt: '§e%player%§e@you!'

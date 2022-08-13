@@ -15,7 +15,7 @@ import org.jetbrains.annotations.NotNull;
  * Code refactoring by qianmo
  */
 
-@CmdExecutor(function = "lock", permission = "ultikits.tools.back", description = "lock_chest_function", alias = "lock,l")
+@CmdExecutor(function = "chest-locker", permission = "ultikits.tools.back", description = "lock_chest_function", alias = "lock,l")
 public class LockCommands extends AbstractPlayerCommandExecutor {
     @Override
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {

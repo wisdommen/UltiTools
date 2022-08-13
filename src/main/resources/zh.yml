@@ -324,7 +324,7 @@ button_yes: 好的
 button_no: 拒绝
 button_forget_password: 忘记密码
 inventory_manager_title_page_number: '第%d页'
-chat_prefix_downloading_papi: 正在下载PAPI必须的变量中...
+chat_prefix_downloading_papi: 正在下载必需的PAPI变量中...
 punish_item_dropped: '[死亡惩罚]你因为死亡随机掉落了%d个物品！'
 punish_money_dropped: '[死亡惩罚]你因为死亡而扣除了%d个金币！'
 tpa_function: TPA功能
@@ -389,6 +389,7 @@ friend_not_self: 你不能给你自己发送好友申请！
 fly_function: 飞行指令功能
 fly_enabled: 已打开飞行
 fly_disabled: 已关闭飞行
+chat_forbidden: "§4禁止发送含敏感词的消息"
 chat_color_nopermission_reply: '§4您没有权限发送彩色字体'
 chat_at_error: '艾特失败！玩家不在线或不存在'
 chat_atted: '§e你被玩家§b%player%§e艾特了'

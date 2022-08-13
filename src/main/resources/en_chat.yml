@@ -1,8 +1,17 @@
 # config version, please do not change
-config_version: 1.1
+config_version: 1.2
 # chat prefix
 chat_prefix: '§e[§a%ultitools_world_alis%§e][§c%ul_job%§dLv.%ul_level%§e][§b%player_name%§e]'
 # auto-reply, format: [Trigger word]: [Reply]
 auto-reply:
   test: "You did it! This is a great test!"
   more_test: "No more test plz!"
+# ChatFilter
+chat_filter:
+  # 0-disable 1-replace 2-mask 3-ban
+  mode: 0
+  replacement: "*"
+  keywords:
+    - "sb"
+    - "傻逼"
+    - "操你妈"
