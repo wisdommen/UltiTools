@@ -1,0 +1,48 @@
+name: 🐛 BUG 反馈
+description: 请在这里反馈BUG
+body:
+  - type: markdown
+    attributes:
+      value: |
+        非常感谢你来反馈该插件的BUG！但是在此之前请先确认你遇到的问题确实是一个BUG，按照[自主排错](https://ultikits.com/troubleshoot.html)的步骤也许能够解决你遇到的问题
+  - type: textarea
+    id: the-problem
+    attributes:
+      label: 你遇到的问题
+      description:
+        详细描述一下你遇到的问题以及如何复现
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 插件版本
+      description:
+        你目前正在使用的插件版本
+    validations:
+      required: true
+  - type: input
+    id: dep-version
+    attributes:
+      label: 各个依赖版本(可选,建议填写)
+      description:
+        '例如：PAPI：xxx Core：xxx Vault：xxx'
+  - type: textarea
+    id: logs
+    attributes:
+      label: 服务器日志(如无报错可不填)
+      description:
+        在这里贴上**完整的**异常日志
+      placeholder:
+        可以不用完整的日志，但一定要有**重要的内容**，如果你不确定哪些是有用的，你可以选择上传完整的内容
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 截图
+      description: 如果需要，可以附上截图
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: 额外信息
+      description:
+        有什么想说的吗？
