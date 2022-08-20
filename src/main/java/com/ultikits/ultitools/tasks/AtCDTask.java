@@ -1,6 +1,6 @@
 package com.ultikits.ultitools.tasks;
 
-import com.ultikits.ultitools.listener.ChatListener;
+import com.ultikits.ultitools.services.ChatService;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Date;
@@ -10,7 +10,7 @@ public class AtCDTask extends BukkitRunnable {
     private final String playerName;
 
     public AtCDTask (int cd, String playerName) {
-        ChatListener.atCD.add(playerName);
+        ChatService.AtCD.add(playerName);
         this.cd = cd;
         this.playerName = playerName;
     }
@@ -25,6 +25,6 @@ public class AtCDTask extends BukkitRunnable {
                 e.printStackTrace();
             }
         }
-        ChatListener.atCD.remove(playerName);
+        ChatService.AtCD.remove(playerName);
     }
 }

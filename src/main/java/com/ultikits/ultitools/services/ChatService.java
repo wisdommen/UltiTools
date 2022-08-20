@@ -27,6 +27,8 @@ import static com.ultikits.enums.Sounds.BLOCK_NOTE_BLOCK_BELL;
 
 public class ChatService {
 
+    public static final List<String> AtCD = new ArrayList<>();
+
     private static final List<String> ultilevelStrings = Arrays.asList(
             "%ul_level%",
             "%ul_job%",
