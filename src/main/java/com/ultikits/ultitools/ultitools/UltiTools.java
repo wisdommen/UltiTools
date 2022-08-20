@@ -86,7 +86,7 @@ public final class UltiTools extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("ultitools")).setExecutor(new ToolsCommands());
         if (getConfig().getBoolean("enable_command-alias_function")) {
             for (String alia : new CommandListener().getCommandAliasList()) {
-                CommandRegister.registerCommand(this, null, null, null, alia);
+                CommandRegister.registerCommand(this, null, null, "", alia);
             }
         }
 
