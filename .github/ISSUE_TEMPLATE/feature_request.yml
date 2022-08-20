@@ -18,8 +18,6 @@ body:
     attributes:
       label: 解决方案
       description: 如果你有任何对以上内容的解决方案，可以写在这里，如果能提交相应的 Pull Request 那就更好了
-    validations:
-      required: true
   - type: textarea
     id: additional-context
     attributes:
