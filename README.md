@@ -38,4 +38,4 @@ UltiTools包含了不少实用的API，方便你快速的开发自己的插件�
 | [@DevilJueChen](https://github.com/DevilJueChen) | UltiKits问题&漏洞&建议反馈                          |
 | 拾柒          | 美工                                               |
 ## 发现问题？想提建议？
-[点击这里提交开启一个Issue！](https://github.com/wisdommen/UltiTools/issues/new)
+[点击这里提交开启一个Issue！](https://github.com/wisdommen/UltiTools/issues/new/choose)

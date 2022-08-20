@@ -13,12 +13,35 @@ body:
         详细描述一下你遇到的问题以及如何复现
     validations:
       required: true
-  - type: input
+  - type: dropdown
     id: version
     attributes:
       label: 插件版本
-      description:
-        你目前正在使用的插件版本
+      description: 你现在正在使用的插件版本
+      options:
+        - 6.0.0
+        - 5.2.1
+        - 5.2.0
+        - 5.1.9
+        - 5.1.8
+        - 5.1.7
+        - 5.1.6
+        - 5.1.5
+        - 5.1.4
+        - 5.1.3
+        - 5.1.2
+        - 5.1.1
+        - 5.0.9
+        - 5.0.8
+        - 5.0.7
+        - 5.0.6
+        - 5.0.5
+        - 5.0.4
+        - 5.0.3
+        - 5.0.2
+        - 5.0.1
+        - 5.0.0
+        - 这边建议先更新一下插件版本再看看有没有问题
     validations:
       required: true
   - type: input
@@ -34,7 +57,7 @@ body:
       description:
         在这里贴上**完整的**异常日志
       placeholder:
-        可以不用完整的日志，但一定要有**重要的内容**，如果你不确定哪些是有用的，你可以选择上传完整的内容
+        可以不用完整的日志，但一定要有重要的内容，如果你不确定哪些是有用的，你可以选择上传完整的内容
   - type: textarea
     id: screenshots
     attributes:

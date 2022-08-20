@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 自主排错 Troubleshoot
+    url: https://doc.ultitools.ultikits.com/guide/troubleshoot.html
+    about: 根据我们提供的自主排错步骤，也许能够解决一些您的问题
+  - name: 官方文档 Wiki
+    url: https://doc.ultitools.ultikits.com
+    about: 学会主动看文档是很重要的
+  - name: 在官方 QQ 群寻求帮助 Ask For Help
+    url: https://jq.qq.com/?_wv=1027&k=s7FBdzGh
+    about: 在寻求帮助之前还请一定一定要把文档阅读清楚了
