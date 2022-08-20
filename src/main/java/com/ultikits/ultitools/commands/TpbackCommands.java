@@ -17,8 +17,8 @@ public class TpbackCommands extends AbstractPlayerCommandExecutor {
     protected boolean onPlayerCommand(@NotNull Command command, @NotNull String[] strings, @NotNull Player player) {
         World world = player.getWorld();
         Location location = TeleportListener.getPlayerFinalTeleportLocation(player);
-        Location newLocation = new Location(location.getWorld(), location.getX(),location.getY()+2,location.getZ());
         if (!(location == null)) {
+            Location newLocation = new Location(location.getWorld(), location.getX(),location.getY()+2,location.getZ());
             newLocation.getWorld().getChunkAt(location).load();
             player.teleport(location);
             player.sendMessage(MessagesUtils.info(UltiTools.languageUtils.getString("tpback_success")));
