@@ -2,6 +2,7 @@ package com.ultikits.ultitools.services;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.ultikits.ultitools.dao.UserInfo;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.listener.LoginListener;
 import com.ultikits.ultitools.ultitools.UltiTools;
@@ -9,6 +10,9 @@ import com.ultikits.utils.MD5Utils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,28 +29,13 @@ public class DatabasePlayerService {
     private DatabasePlayerService() {
     }
 
-    public static boolean isPlayerExist(String playerName, String table) {
-        return UltiTools.databaseUtils.isRecordExists(table, primaryID, playerName);
-    }
-
-    public static String getPlayerData(String playerName, String table, String field) {
-        return UltiTools.databaseUtils.getData(primaryID, playerName, table, field);
-    }
-
-    public static boolean updatePlayerData(String playerName, String table, String field, String value) {
-        return UltiTools.databaseUtils.updateData(table, field, primaryID, playerName, value);
-    }
-
-    public static boolean insertPlayerData(Map<String, String> dataMap, String table) {
-        return UltiTools.databaseUtils.insertData(table, dataMap);
-    }
-
     public static String getPlayerPassword(Player player) {
         return getPlayerPassword(player.getName());
     }
 
     public static String getPlayerPassword(String playerName) {
         if (isDatabaseEnabled) {
+
             return getPlayerData(playerName, userTable, "password");
         } else {
             File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
@@ -133,9 +122,6 @@ public class DatabasePlayerService {
             return;
         }
         if (isDatabaseEnabled) {
-            if (!UltiTools.databaseUtils.isColumnExists(userTable, "email")) {
-                UltiTools.databaseUtils.addColumn(userTable, "email");
-            }
             updatePlayerData(playerName, userTable, "email", playerEmail);
         } else {
             File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
@@ -155,7 +141,13 @@ public class DatabasePlayerService {
 
     public static boolean isPlayerAccountExist(String playerName) {
         if (isDatabaseEnabled) {
-            return UltiTools.databaseUtils.getData(primaryID, playerName, userTable, "password") != null && !UltiTools.databaseUtils.getData(primaryID, playerName, userTable, "password").equals("");
+            Session currentSession = UltiTools.getSessionFactory().getCurrentSession();
+            Transaction transaction = currentSession.getTransaction();
+            Query<UserInfo> query = currentSession.createQuery("from UserInfo pd where pd.playerName = :name", UserInfo.class);
+            query.setParameter("name", playerName);
+            List<UserInfo> resultList = query.getResultList();
+            transaction.commit();
+            return !resultList.isEmpty();
         } else {
             File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
             return file.exists();

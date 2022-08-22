@@ -1,8 +1,11 @@
 package com.ultikits.ultitools.ultitools;
 
 import com.ultikits.checker.ProChecker;
+import com.ultikits.data.DatabaseConfig;
+import com.ultikits.manager.HibernateManager;
 import com.ultikits.ultitools.checker.DependencyChecker;
 import com.ultikits.ultitools.config.*;
+import com.ultikits.ultitools.dao.UserInfo;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.listener.LoginListener;
 import com.ultikits.ultitools.register.PapiRegister;
@@ -11,7 +14,6 @@ import com.ultikits.ultitools.services.ScoreBoardService;
 import com.ultikits.ultitools.tasks.*;
 import com.ultikits.ultitools.utils.FunctionUtils;
 import com.ultikits.ultitools.utils.LanguageUtils;
-import com.ultikits.utils.DatabaseUtils;
 import com.ultikits.utils.MessagesUtils;
 import com.ultikits.utils.Metrics;
 import org.bukkit.Bukkit;
@@ -21,6 +23,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.hibernate.SessionFactory;
 
 import java.io.File;
 import java.util.*;
@@ -32,22 +35,22 @@ public class Initializer {
     private final Plugin plugin;
     private ProChecker proChecker;
 
-    public Initializer(Plugin plugin) {
+    protected Initializer(Plugin plugin) {
         this.plugin = plugin;
     }
 
-    public void setLocalLanguage() {
+    protected void setLocalLanguage() {
         Locale defaultLocale = Locale.getDefault();
         List<String> langs = Arrays.asList("en", "zh");
         language = defaultLocale.getLanguage();
         if (!langs.contains(language)) language = "en";
     }
 
-    public void makedirs(List<File> folders) {
+    protected void makedirs(List<File> folders) {
         for (File eachFolder : folders) if (!eachFolder.exists()) eachFolder.mkdirs();
     }
 
-    public void initMetrics(Metrics metrics) {
+    protected void initMetrics(Metrics metrics) {
         metrics.addCustomChart(
                 new Metrics.SimplePie(
                         "pro_user_count",
@@ -67,7 +70,7 @@ public class Initializer {
         }));
     }
 
-    public void initConfig(List<File> folders) {
+    protected void initConfig(List<File> folders) {
         if (!new File(ConfigsEnum.LOBBY.toString()).exists()) yaml.saveYamlFile(plugin.getDataFolder().getPath(), "lobby.yml", "lobby.yml");
         if (!new File(ConfigsEnum.ANNOUNCEMENT.toString()).exists()) yaml.saveYamlFile(plugin.getDataFolder().getPath(), "announcement.yml", language + "_announcement.yml");
         if (!new File(ConfigsEnum.COMMANDALIAS.toString()).exists()) yaml.saveYamlFile(plugin.getDataFolder().getPath(), "command-alias.yml", language + "_command-alias.yml");
@@ -111,28 +114,35 @@ public class Initializer {
         new RecipeConfig();
     }
 
-    public void initDataBase() {
+    protected SessionFactory initDataBase() {
         isDatabaseEnabled = plugin.getConfig().getBoolean("enableDataBase");
         if (isDatabaseEnabled) {
             plugin.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("initializing_database"));
-            String table    = "userinfo";
             String ip       = plugin.getConfig().getString("host");
             String port     = plugin.getConfig().getString("port");
             String username = plugin.getConfig().getString("username");
             String password = plugin.getConfig().getString("password");
             String database = plugin.getConfig().getString("database");
-            ultiCoreAPI.setUpDatabase(database, ip, port, username, password);
-            databaseUtils   = new DatabaseUtils(ultiCoreAPI);
-            if (databaseUtils.createTable(table, new String[]{"username", "password", "whitelisted", "banned"}) && databaseUtils.createTable(table, new String[]{"username", "friends", "black_list"})) {
+            DatabaseConfig config = DatabaseConfig.builder()
+                    .ip(ip)
+                    .port(port)
+                    .username(username)
+                    .password(password)
+                    .database(database)
+                    .build();
+            boolean register = HibernateManager.register(getInstance(), config, UserInfo.class);
+            if (register){
                 plugin.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("database_connected"));
-            } else {
+                return HibernateManager.getSessionFactory(UltiTools.getInstance());
+            }else {
                 plugin.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("database_connect_failed"));
                 isDatabaseEnabled = false;
             }
         }
+        return null;
     }
 
-    public void initLanguage(File folder, File config_file) {
+    protected void initLanguage(File folder, File config_file) {
         setLocalLanguage();
         if (!folder.exists() || !config_file.exists()) {
             folder.mkdirs();
@@ -152,7 +162,7 @@ public class Initializer {
         }
     }
 
-    public ProChecker initPro() {
+    protected ProChecker initPro() {
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -174,7 +184,7 @@ public class Initializer {
         return proChecker;
     }
 
-    public void initPAPI() {
+    protected void initPAPI() {
         if (!isPAPILoaded) {
             plugin.getLogger().warning("[UltiTools] " + languageUtils.getString("papi_not_found"));
             if (plugin.getServer().getPluginManager().getPlugin("UltiLevel") == null) plugin.getLogger().warning("[UltiTools] " + languageUtils.getString("ultilevel_not_found"));
@@ -183,7 +193,7 @@ public class Initializer {
         }
     }
 
-    public void initWorld() {
+    protected void initWorld() {
         if (plugin.getConfig().getBoolean("enable_multiworlds")) return;
         plugin.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("loading_worlds"));
         File worldFile = new File(plugin.getDataFolder(), "worlds.yml");
@@ -193,7 +203,7 @@ public class Initializer {
         plugin.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("worlds_load_successfully"));
     }
 
-    public void sendBanner() {
+    protected void sendBanner() {
         String banner = "\n" +
                 "§b§n==================================================§f\n" +
                 "§b§l   __  __ __ __   _  ______               __     §f\n" +
@@ -206,7 +216,7 @@ public class Initializer {
         plugin.getServer().getConsoleSender().sendMessage(banner);
     }
 
-    public boolean checkCore() {
+    protected boolean checkCore() {
         boolean isUltiCoreUpToDate = DependencyChecker.isUltiCoreUpToDate();
         if (isUltiCoreUpToDate) return true;
         plugin.getServer().getConsoleSender().sendMessage(MessagesUtils.warning("The version of UltiCoreAPI is too old to enable UltiTools!"));
@@ -215,7 +225,7 @@ public class Initializer {
         return false;
     }
 
-    public void runTasks() {
+    protected void runTasks() {
         if (plugin.getConfig().getBoolean("enable_scoreboard")) {
             for (Player player : Bukkit.getOnlinePlayers()) ScoreBoardService.registerPlayer(player.getUniqueId());
             new SideBarTask().runTaskTimerAsynchronously(plugin, 0, 20L);

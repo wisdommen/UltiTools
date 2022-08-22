@@ -11,13 +11,13 @@ import com.ultikits.ultitools.register.CommandRegister;
 import com.ultikits.ultitools.services.ChestLockService;
 import com.ultikits.ultitools.services.ScoreBoardService;
 import com.ultikits.ultitools.utils.*;
-import com.ultikits.utils.DatabaseUtils;
 import com.ultikits.utils.Metrics;
 import com.ultikits.utils.VersionAdaptor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.hibernate.SessionFactory;
 
 import java.io.File;
 import java.util.*;
@@ -35,11 +35,11 @@ public final class UltiTools extends JavaPlugin {
     public  static YamlFileUtils  yaml;
     public  static String         language;
     public  static boolean        isDatabaseEnabled;
-    public  static DatabaseUtils  databaseUtils;
     private static ProChecker     proChecker;
     private static boolean        isUltiCoreUpToDate;
     private static UltiTools      plugin;
     private static Initializer    initializer;
+    private static SessionFactory sessionFactory;
 
     @Override
     public void onLoad() {
@@ -70,7 +70,7 @@ public final class UltiTools extends JavaPlugin {
         //配置文件初始化
         initializer.initConfig(folders);
         //数据库初始化
-        initializer.initDataBase();
+        sessionFactory = initializer.initDataBase();
         //初始化 Pro
         proChecker = initializer.initPro();
         //初始化 PAPI
@@ -127,5 +127,9 @@ public final class UltiTools extends JavaPlugin {
 
     public ProChecker getProChecker() {
         return proChecker;
+    }
+
+    public static SessionFactory getSessionFactory() {
+        return sessionFactory;
     }
 }
