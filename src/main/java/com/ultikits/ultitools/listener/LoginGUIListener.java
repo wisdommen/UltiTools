@@ -1,5 +1,7 @@
 package com.ultikits.ultitools.listener;
 
+import com.ultikits.annotations.ioc.Autowired;
+import com.ultikits.annotations.ioc.Consumer;
 import com.ultikits.beans.CheckResponse;
 import com.ultikits.enums.Sounds;
 import com.ultikits.ultitools.annotations.EventListener;
@@ -37,7 +39,10 @@ import static com.ultikits.utils.MessagesUtils.info;
 import static com.ultikits.utils.MessagesUtils.warning;
 
 @EventListener(function = "login")
+@Consumer
 public class LoginGUIListener implements Listener {
+    @Autowired
+    public DatabasePlayerService databasePlayerService;
 
     public static Map<UUID, Boolean> playerIsValidating = new HashMap<>();
     public static Map<UUID, Boolean> isRegisteringNewPassword = new HashMap<>();
@@ -278,15 +283,15 @@ public class LoginGUIListener implements Listener {
     }
 
     private void encryptExistPassword(Player player, String password) {
-        if (DatabasePlayerService.getPlayerPassword(player).split("").length < 10) {
+        if (databasePlayerService.getPlayerPassword(player).split("").length < 10) {
             setPlayerPassword(player, password);
         }
     }
 
     private boolean validateThePassword(Player player, String password) {
-        encryptExistPassword(player, getPlayerPassword(player));
+        encryptExistPassword(player, databasePlayerService.getPlayerPassword(player));
         password = MD5Utils.encrypt(password, player.getName());
-        if (!password.equals(getPlayerPassword(player))) {
+        if (!password.equals(databasePlayerService.getPlayerPassword(player))) {
             player.sendMessage(warning(UltiTools.languageUtils.getString("login_wrong_password")));
             return false;
         } else {

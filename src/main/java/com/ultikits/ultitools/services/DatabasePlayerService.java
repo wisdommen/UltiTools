@@ -2,17 +2,16 @@ package com.ultikits.ultitools.services;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
-import com.ultikits.ultitools.dao.UserInfo;
+import com.ultikits.annotations.ioc.Autowired;
+import com.ultikits.annotations.ioc.Service;
+import com.ultikits.ultitools.dao.UserInfoDAO;
+import com.ultikits.ultitools.entity.UserInfoEntity;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.listener.LoginListener;
-import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.utils.MD5Utils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,47 +19,44 @@ import java.util.*;
 
 import static com.ultikits.ultitools.ultitools.UltiTools.isDatabaseEnabled;
 
+@Service
 public class DatabasePlayerService {
+    @Autowired
+    public UserInfoDAO userInfoDAO;
 
-    private static final String userTable = "userinfo";
-    private static final String friendTable = "social_system";
-    private static final String primaryID = "username";
-
-    private DatabasePlayerService() {
+    public String getPlayerPassword(Player player) {
+        return getPlayerPassword(player.getUniqueId().toString());
     }
 
-    public static String getPlayerPassword(Player player) {
-        return getPlayerPassword(player.getName());
-    }
-
-    public static String getPlayerPassword(String playerName) {
+    public String getPlayerPassword(String uuid) {
         if (isDatabaseEnabled) {
-
-            return getPlayerData(playerName, userTable, "password");
+            UserInfoEntity userInfoEntity = userInfoDAO.getUserInfoById(uuid);
+            return userInfoEntity.getPassword();
         } else {
-            File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
+            File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), uuid + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             return config.getString("password");
         }
     }
 
-    public static void setPlayerPassword(Player player, String password) {
-        setPlayerPassword(player.getName(), password);
-    }
 
-    public static void setPlayerPassword(String playerName, String password) {
-        password = MD5Utils.encrypt(password, playerName);
+    public void setPlayerPassword(OfflinePlayer player, String password) {
+        password = MD5Utils.encrypt(password, player.getUniqueId().toString());
+        String uuid = player.getUniqueId().toString();
         if (isDatabaseEnabled) {
-            if (isPlayerAccountExist(playerName)) {
-                updatePlayerData(playerName, userTable, "password", password);
+            if (isPlayerAccountExist(uuid)) {
+                UserInfoEntity userInfoEntityById = userInfoDAO.getUserInfoById(uuid);
+                userInfoEntityById.setPassword(password);
             } else {
-                Map<String, String> temp = new HashMap<>();
-                temp.put("username", playerName);
-                temp.put("password", password);
-                insertPlayerData(temp, userTable);
+                UserInfoEntity userInfoEntity = UserInfoEntity.builder()
+                        .uuid(uuid)
+                        .username(player.getName())
+                        .password(password)
+                        .build();
+                userInfoDAO.addUserInfo(userInfoEntity);
             }
         } else {
-            File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
+            File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), uuid + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             config.set("password", password);
             try {
@@ -71,18 +67,16 @@ public class DatabasePlayerService {
         }
     }
 
-    public static void clearPlayerPassword(Player player) {
-        clearPlayerPassword(player.getName());
-    }
-
-    public static void clearPlayerPassword(String playerName) {
-        if (isPlayerAccountExist(playerName)) {
+    public void clearPlayerPassword(OfflinePlayer player) {
+        if (isPlayerAccountExist(player.getUniqueId().toString())) {
             return;
         }
         if (isDatabaseEnabled) {
-            updatePlayerData(playerName, userTable, "password", null);
+            UserInfoEntity userInfoEntityById = userInfoDAO.getUserInfoById(player.getUniqueId().toString());
+            userInfoEntityById.setPassword(null);
+            userInfoDAO.updateUserInfo(userInfoEntityById);
         } else {
-            File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
+            File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), player.getUniqueId() + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             config.set("password", null);
             try {
@@ -93,38 +87,30 @@ public class DatabasePlayerService {
         }
     }
 
-    public static String getPlayerEmail(Player player) {
-        return getPlayerEmail(player.getName());
-    }
-
-    public static String getPlayerEmail(String playerName) {
-        if (!isPlayerAccountExist(playerName)) {
+    public String getPlayerEmail(OfflinePlayer player) {
+        if (!isPlayerAccountExist(player.getUniqueId().toString())) {
             return null;
         }
         if (isDatabaseEnabled) {
-            if (!UltiTools.databaseUtils.isColumnExists(userTable, "email")) {
-                UltiTools.databaseUtils.addColumn(userTable, "email");
-            }
-            return getPlayerData(playerName, userTable, "email");
+            UserInfoEntity userInfoEntityById = userInfoDAO.getUserInfoById(player.getUniqueId().toString());
+            return userInfoEntityById.getEmail();
         } else {
-            File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
+            File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), player.getUniqueId() + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             return config.getString("register_email");
         }
     }
 
-    public static void setPlayerEmail(Player player, String playerEmail) {
-        setPlayerEmail(player.getName(), playerEmail);
-    }
-
-    public static void setPlayerEmail(String playerName, String playerEmail) {
-        if (!isPlayerAccountExist(playerName)) {
+    public void setPlayerEmail(OfflinePlayer player, String playerEmail) {
+        if (!isPlayerAccountExist(player.getUniqueId().toString())) {
             return;
         }
         if (isDatabaseEnabled) {
-            updatePlayerData(playerName, userTable, "email", playerEmail);
+            UserInfoEntity userInfoEntityById = userInfoDAO.getUserInfoById(player.getUniqueId().toString());
+            userInfoEntityById.setEmail(playerEmail);
+            userInfoDAO.updateUserInfo(userInfoEntityById);
         } else {
-            File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
+            File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), player.getUniqueId() + ".yml");
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
             config.set("register_email", playerEmail);
             try {
@@ -135,51 +121,42 @@ public class DatabasePlayerService {
         }
     }
 
-    public static boolean isPlayerAccountExist(Player player) {
-        return isPlayerAccountExist(player.getName());
-    }
-
-    public static boolean isPlayerAccountExist(String playerName) {
+    public boolean isPlayerAccountExist(String uuid) {
         if (isDatabaseEnabled) {
-            Session currentSession = UltiTools.getSessionFactory().getCurrentSession();
-            Transaction transaction = currentSession.getTransaction();
-            Query<UserInfo> query = currentSession.createQuery("from UserInfo pd where pd.playerName = :name", UserInfo.class);
-            query.setParameter("name", playerName);
-            List<UserInfo> resultList = query.getResultList();
-            transaction.commit();
-            return !resultList.isEmpty();
+            UserInfoEntity userInfoEntityById = userInfoDAO.getUserInfoById(uuid);
+            return userInfoEntityById != null;
         } else {
-            File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), playerName + ".yml");
+            File file = new File(ConfigsEnum.PLAYER_LOGIN.toString(), uuid + ".yml");
             return file.exists();
         }
     }
 
-    public static boolean getIsLogin(Player player) {
+    public boolean getIsLogin(Player player) {
         return getIsLogin(player.getName());
     }
 
-    public static boolean getIsLogin(String playerName) {
+    public boolean getIsLogin(String playerName) {
         return LoginListener.playerLoginStatus.get(playerName) != null ? LoginListener.playerLoginStatus.get(playerName) : false;
     }
 
 
-    public static void setIsLogin(Player player, boolean isLogin) {
+    public void setIsLogin(Player player, boolean isLogin) {
         setIsLogin(player.getName(), isLogin);
     }
 
-    public static void setIsLogin(String playerName, boolean isLogin) {
+    public void setIsLogin(String playerName, boolean isLogin) {
         LoginListener.playerLoginStatus.put(playerName, isLogin);
     }
 
-    public static void addPlayerFriends(OfflinePlayer player, OfflinePlayer target) {
+    public void addPlayerFriends(OfflinePlayer player, OfflinePlayer target) {
         playerFriendOperator(player, target, true);
     }
 
-    public static void removePlayerFriends(OfflinePlayer player, OfflinePlayer target) {
+    public void removePlayerFriends(OfflinePlayer player, OfflinePlayer target) {
         playerFriendOperator(player, target, false);
     }
 
-    private static void playerFriendOperator(OfflinePlayer player, OfflinePlayer target, boolean operation) {
+    private void playerFriendOperator(OfflinePlayer player, OfflinePlayer target, boolean operation) {
         if (isDatabaseEnabled) {
             if (!isPlayerExist(player.getName(), friendTable)) {
                 String friends = JSON.toJSONString(new ArrayList<>());
@@ -221,7 +198,7 @@ public class DatabasePlayerService {
         }
     }
 
-    public static List<String> getFriendList(OfflinePlayer player){
+    public List<String> getFriendList(OfflinePlayer player){
         if (isDatabaseEnabled){
             if (!isPlayerExist(player.getName(), friendTable)) {
                 String friendListJSON = DatabasePlayerService.getPlayerData(player.getName(), friendTable, "friends");
@@ -241,7 +218,7 @@ public class DatabasePlayerService {
         return config.getStringList("friends");
     }
 
-    private static void friendsListOperator(List<String> friends, String name, boolean operation) {
+    private void friendsListOperator(List<String> friends, String name, boolean operation) {
         if (operation) {
             if (friends.contains(name)){
                 return;

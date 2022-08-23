@@ -1,5 +1,7 @@
 package com.ultikits.ultitools.commands;
 
+import com.ultikits.annotations.ioc.Autowired;
+import com.ultikits.annotations.ioc.Consumer;
 import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.ultitools.UltiTools;
 import com.ultikits.ultitools.services.DatabasePlayerService;
@@ -23,8 +25,11 @@ import static com.ultikits.utils.MessagesUtils.warning;
  * @author qianmo
  */
 
+@Consumer
 @CmdExecutor(function = "login", permission = "ultikits.tools.command.password", description = "password_function", alias = "password,pwd")
 public class PasswordCommands implements TabExecutor {
+    @Autowired
+    public DatabasePlayerService databasePlayerService;
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -32,14 +37,15 @@ public class PasswordCommands implements TabExecutor {
             if (strings.length == 2) {
                 switch (strings[0]) {
                     case "reset" :
-                        if(DatabasePlayerService.isPlayerAccountExist(strings[1])) {
+                        if(databasePlayerService.isPlayerAccountExist(strings[1])) {
                             Random random = new Random();
                             StringBuilder pwd= new StringBuilder();
                             for (int i=0;i<6;i++)
                             {
                                 pwd.append(random.nextInt(10));
                             }
-                            DatabasePlayerService.setPlayerPassword(strings[1], String.valueOf(pwd));
+                            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(strings[1]);
+                            databasePlayerService.setPlayerPassword(offlinePlayer, String.valueOf(pwd));
                             commandSender.sendMessage(info(String.format(UltiTools.languageUtils.getString("pwd_reset_success"), strings[1])));
                             commandSender.sendMessage(info(String.valueOf(pwd)));
                         }else {

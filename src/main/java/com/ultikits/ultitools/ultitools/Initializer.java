@@ -5,7 +5,7 @@ import com.ultikits.data.DatabaseConfig;
 import com.ultikits.manager.HibernateManager;
 import com.ultikits.ultitools.checker.DependencyChecker;
 import com.ultikits.ultitools.config.*;
-import com.ultikits.ultitools.dao.UserInfo;
+import com.ultikits.ultitools.entity.UserInfoEntity;
 import com.ultikits.ultitools.enums.ConfigsEnum;
 import com.ultikits.ultitools.listener.LoginListener;
 import com.ultikits.ultitools.register.PapiRegister;
@@ -130,7 +130,7 @@ public class Initializer {
                     .password(password)
                     .database(database)
                     .build();
-            boolean register = HibernateManager.register(getInstance(), config, UserInfo.class);
+            boolean register = HibernateManager.register(getInstance(), config, UserInfoEntity.class);
             if (register){
                 plugin.getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[UltiTools] " + languageUtils.getString("database_connected"));
                 return HibernateManager.getSessionFactory(UltiTools.getInstance());

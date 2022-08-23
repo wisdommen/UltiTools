@@ -1,6 +1,8 @@
 package com.ultikits.ultitools.commands;
 
 import com.ultikits.abstracts.AbstractTabExecutor;
+import com.ultikits.annotations.ioc.Autowired;
+import com.ultikits.annotations.ioc.Consumer;
 import com.ultikits.beans.CheckResponse;
 import com.ultikits.ultitools.annotations.CmdExecutor;
 import com.ultikits.ultitools.enums.ConfigsEnum;
@@ -10,6 +12,7 @@ import com.ultikits.ultitools.services.DatabasePlayerService;
 import com.ultikits.ultitools.utils.Utils;
 import com.ultikits.utils.SendEmailUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -24,8 +27,11 @@ import java.util.*;
 import static com.ultikits.utils.MessagesUtils.info;
 import static com.ultikits.utils.MessagesUtils.warning;
 
+@Consumer
 @CmdExecutor(function = "login", permission = "ultikits.tools.login", description = "login_function", alias = "reg,regs,re")
 public class LoginRegisterCommands extends AbstractTabExecutor {
+    @Autowired
+    public DatabasePlayerService databasePlayerService;
     public static Map<UUID, Boolean> sentCodePlayers = new HashMap<>();
     public static Map<UUID, String> playersValidateCode = new HashMap<>();
     public static Map<UUID, String> playersEmail = new HashMap<>();
@@ -103,11 +109,12 @@ public class LoginRegisterCommands extends AbstractTabExecutor {
             case 3:
                 if (strings[0].equals("set")){
                     String playerName = strings[1];
-                    if (!DatabasePlayerService.isPlayerAccountExist(playerName)){
+                    if (!databasePlayerService.isPlayerAccountExist(playerName)){
                         player.sendMessage(warning(UltiTools.languageUtils.getString("no_such_player")));
                         return true;
                     }
-                    DatabasePlayerService.setPlayerPassword(playerName, strings[2]);
+                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+                    databasePlayerService.setPlayerPassword(offlinePlayer, strings[2]);
                     player.sendMessage(info(UltiTools.languageUtils.getString("emailregister_password_changed")));
                     return true;
                 }
