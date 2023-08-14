@@ -23,9 +23,11 @@ UltiTools是一个高层的基础插件，包含了很多GUI和高级的玩法�
 
 ## 给开发者的介绍
 
-希望我的插件能够帮到你的插件开发！
+全新6.0包含了更加齐全的，更加方便的API。
 
-UltiTools包含了不少实用的API，方便你快速的开发自己的插件。
+6.0包含新的GUI框架，数据存储框架（Mysql，Json等），各种封装帮助你高效优雅的编写Spigot插件！
+
+[6.0项目传送门](https://github.com/UltiKits/UltiTools-Reborn)
 
 [UltiTools API 文档](https://doc.dev.ultikits.com/)
 
