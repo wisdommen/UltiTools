@@ -1,26 +1,9 @@
 name: ⭐ 意见与建议
-description: 对这款插件有什么想法，还是有什么新功能的要求，请在这里提出
+description: UltiTools 5 现已不接受任何的新功能请求，请前往 UltiTools 6 仓库，点击右侧按钮来查看详情
 body:
   - type: markdown
     attributes:
       value: |
-        非常感谢你能够来为这个插件提出意见，你可以申请开发新功能，或者对现有功能提出优化和改进等等等等！
-  - type: textarea
-    id: the-feature-request
-    attributes:
-      label: 请求内容
-      description:
-        在这里提出你对插件的意见与建议，可以是要求新功能，也可以是对现有功能的改进
-    validations:
-      required: true
-  - type: textarea
-    id: proposed-solution
-    attributes:
-      label: 解决方案
-      description: 如果你有任何对以上内容的解决方案，可以写在这里，如果能提交相应的 Pull Request 那就更好了
-  - type: textarea
-    id: additional-context
-    attributes:
-      label: 附加信息
-      description:
-        还有什么想说的吗
+        非常感谢你能够来为这个插件提出意见，目前所有的开发工作都已经转到了UltiTools 6.0，**所以暂时5.0版本除了修复bug以外暂时不会更新新的内容**。
+        请前往 UltiTools-Reborn 仓库来提交: https://github.com/UltiKits/UltiTools-Reborn/issues
+        打开的所有新功能请求相关的 Issue 都将会被锁定。
