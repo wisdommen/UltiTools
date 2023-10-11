@@ -1,10 +1,12 @@
 name: 🐛 BUG 反馈
 description: 请在这里反馈BUG
+label: bug 插件功能问题
 body:
   - type: markdown
     attributes:
       value: |
         非常感谢你来反馈该插件的BUG！但是在此之前请先确认你遇到的问题确实是一个BUG，按照[自主排错](https://ultikits.com/troubleshoot.html)的步骤也许能够解决你遇到的问题
+        目前仅接受5.2.1或更高版本的问题反馈，旧版本请先升级后尝试复现问题，仍存在问题再打开 Issue
   - type: textarea
     id: the-problem
     attributes:
@@ -21,26 +23,7 @@ body:
       options:
         - 6.0.0
         - 5.2.1
-        - 5.2.0
-        - 5.1.9
-        - 5.1.8
-        - 5.1.7
-        - 5.1.6
-        - 5.1.5
-        - 5.1.4
-        - 5.1.3
-        - 5.1.2
-        - 5.1.1
-        - 5.0.9
-        - 5.0.8
-        - 5.0.7
-        - 5.0.6
-        - 5.0.5
-        - 5.0.4
-        - 5.0.3
-        - 5.0.2
-        - 5.0.1
-        - 5.0.0
+        - 旧版本已不受支持
         - 这边建议先更新一下插件版本再看看有没有问题
     validations:
       required: true
