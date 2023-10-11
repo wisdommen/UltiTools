@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: UltiTools 6 仓库
+    url: https://github.com/UltiKits/UltiTools-Reborn
+    about: 欢迎关注，有建议也可以提交到这里
   - name: 自主排错 Troubleshoot
     url: https://doc.ultitools.ultikits.com/guide/troubleshoot.html
     about: 根据我们提供的自主排错步骤，也许能够解决一些您的问题
