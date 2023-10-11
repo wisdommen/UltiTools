@@ -1,5 +1,6 @@
 name: ⭐ 意见与建议
 description: UltiTools 5 现已不接受任何的新功能请求，请前往 UltiTools 6 仓库，点击右侧按钮来查看详情
+labels: enhancement 新功能请求
 body:
   - type: markdown
     attributes:
