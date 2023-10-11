@@ -1,6 +1,6 @@
 name: 🐛 BUG 反馈
 description: 请在这里反馈BUG
-label: bug 插件功能问题
+labels: bug 插件功能问题
 body:
   - type: markdown
     attributes:
