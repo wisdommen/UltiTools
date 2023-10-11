@@ -7,7 +7,7 @@ on:
 jobs:
   create-comment:
     runs-on: ubuntu-latest
-    if: github.event.label.name == 'bug'
+    if: github.event.label.name == 'bug 插件功能问题'
     steps:
       - name: Create comment
         uses: actions-cool/issues-helper@v2
