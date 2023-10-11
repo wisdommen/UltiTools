@@ -20,3 +20,7 @@ jobs:
             但很抱歉您提出的建议将不会在这里被采纳。
             目前所有的开发工作都已经转到了UltiTools 6.0，所以暂时5.0版本除了修复bug以外暂时不会更新新的内容。
             请关注一下 UltiTools 6.0：https://github.com/UltiKits/UltiTools-Reborn
+      - name: lock issue
+        uses: OSDKDev/lock-issues@v1.1
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
