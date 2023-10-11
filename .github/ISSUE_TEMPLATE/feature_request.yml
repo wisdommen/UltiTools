@@ -7,3 +7,7 @@ body:
         非常感谢你能够来为这个插件提出意见，目前所有的开发工作都已经转到了UltiTools 6.0，**所以暂时5.0版本除了修复bug以外暂时不会更新新的内容**。
         请前往 UltiTools-Reborn 仓库来提交: https://github.com/UltiKits/UltiTools-Reborn/issues
         打开的所有新功能请求相关的 Issue 都将会被锁定。
+  - type: input
+    id: prevalence
+    attributes:
+      label: 占位用，请勿提交
