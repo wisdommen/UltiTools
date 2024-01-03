@@ -1,3 +1,7 @@
+### 此仓库已经停止维护，请查看6.0版本的项目，谢谢！
+
+### [6.0项目传送门](https://github.com/UltiKits/UltiTools-Reborn)
+
 # UltiTools介绍
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/wisdommen/UltiTools/Plugin%20Test)
 ![GitHub](https://img.shields.io/github/license/wisdommen/UltiTools)
